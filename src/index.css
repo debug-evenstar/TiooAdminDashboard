@@ -1,0 +1,31 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
+
+@font-face {
+    font-family: Inter;
+    src: url('./assets/fonts/static/Inter-Regular.ttf');
+}
+
+html,body,*{
+  font-family: Inter,'Segoe UI',monospace;
+}
+
+div::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+    background: #ccc !important;
+    /* background: #7139f3 !important; */
+    border-radius: 2px;
+}
+
+*{
+    scrollbar-color: #7139f3;
+    scrollbar-width: px;
+}

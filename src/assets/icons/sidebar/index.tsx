@@ -1,15 +1,15 @@
-import { ReactComponent as BagIcon } from './bag.svg';
-import { ReactComponent as BookIcon } from './book.svg';
-import { ReactComponent as HomeIcon } from './home.svg';
-import { ReactComponent as UserIcon } from './user.svg';
-import { ReactComponent as UsersIcon } from './users.svg';
-import { ReactComponent as SchoolIcon } from './school.svg';
+import BookIcon from './book';
+import BagIcon from './bag';
+import HomeIcon from './home';
+import UserIcon from './user';
+import UsersIcon from './users';
+import SchoolIcon from './school';
 
-export  {
+export {
     BagIcon,
     BookIcon,
     HomeIcon,
     UserIcon,
     UsersIcon,
-    SchoolIcon,
+    SchoolIcon
 }

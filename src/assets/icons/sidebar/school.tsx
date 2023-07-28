@@ -1,0 +1,7 @@
+export default function SchoolIcon({ fill = "#aaa" }: { fill: string }) {
+    return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0.585938L18 6.58594V8.99994H22V18.9999H23V20.9999H1V18.9999H2V8.99994H6V6.58594L12 0.585938ZM18 18.9999H20V10.9999H18V18.9999ZM6 10.9999H4V18.9999H6V10.9999ZM8 7.41394V18.9999H11V11.9999H13V18.9999H16V7.41394L12 3.41394L8 7.41394Z" fill={fill}/>
+        </svg>
+    )
+}

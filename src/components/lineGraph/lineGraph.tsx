@@ -41,7 +41,7 @@ function LineGraph() {
 
 export default function LineGraphs({ data }: { data: TLineGraphProps[] }) {
     const [active, setActive] = useState(2);
-
+    console.log(data);
     const tabsPanels: string[] = [
         'Schools',
         'Teachers',

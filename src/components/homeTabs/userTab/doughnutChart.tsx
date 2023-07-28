@@ -9,7 +9,7 @@ export default function DoughnutChart() {
         ];
 
     return (
-    <div className="w-[190px] text-center h-[240px] p-3 border-2 rounded-[8px]">
+    <div className="w-[190px] text-center h-[240px] p-3 rounded-[8px]">
         <h1>Overall Progress</h1>
         <h2 className="text-xs text-gray-400">Keep improving the quality of your reach</h2>
         <div className="w-fit mx-auto mt-4">
@@ -28,7 +28,7 @@ export default function DoughnutChart() {
                     dataKey="value"
                     innerRadius="75%"
                     outerRadius="100%"
-                    fill="#2b5fcf"
+                    fill="#4F46E5"
                     startAngle={90}
                     endAngle={-270}
                     paddingAngle={-9}

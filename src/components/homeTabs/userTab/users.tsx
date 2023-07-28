@@ -25,7 +25,7 @@ export default function Users(){
             <div className="flex mt-4 w-full justify-start space-x-4 items-center">
                 <Analytics {...analyticsData}/>
                 <PieChart data={pieChartData}/>
-                <DoughnutChart/>
+                <DoughnutChart percent={60}/>
             </div>
         </>
     );

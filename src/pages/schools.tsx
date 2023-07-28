@@ -13,6 +13,7 @@ export default function Schools() {
           <SearchBar className="" name="schools" placeholder="Search Schools"/>
           <FilterPanel panels={panels}/>
         </div>
+        
       </div>
     </div>)
 }

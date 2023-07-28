@@ -5,7 +5,7 @@ export default function FilterPanel({ panels }: { panels: string[] }) {
     const [active, setActive] = useState(0);
 
     return (
-        <div className="rounded-[8px] bg-zinc-200 ">
+        <div className="rounded-[8px] bg-neutral-200 ">
             <ul className="flex py-1 px-[0.1rem] duration-300 text-gray-500 items-center space-x-2">
                 {
                     panels.map((panel, index) => (

@@ -44,7 +44,7 @@ export default function Sidebar(): JSX.Element {
                                 <li
                                     key={key}
                                     onClick={() => setActive(key)}
-                                    className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] border-main hover:bg-light cursor-pointer  py-[13px] ${(key === active) ? "bg-light text-main font-[600] border-l-[4px] " : ""}`}>
+                                    className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-l-[4px]  ${(key === active) ? "bg-light text-main font-[600] border-main" : "border-white hover:border-light"}`}>
                                     <div className="pr-4 fill-main">
                                         {<menu.icon fill={key === active ? "#5A51E6" : "#aaa"} />}
                                     </div>

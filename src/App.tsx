@@ -8,17 +8,20 @@ import {
   Marketplace
 } from './pages';
 import './App.css'
+import { Suspense, lazy } from 'react';
 import Sidebar from './components/sidebar/';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 function App() {
-
+  
+  const Loader = lazy(() => import('./components/loader/loader'));
   return (
     <main className="flex h-screen bg-white">
       <Router>
         <Sidebar />
         <div className="w-[81%] h-screen overflow-y-auto">
+          <Suspense fallback={<Loader/>} />
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/schools" element={<Schools />}></Route>

@@ -1,6 +1,7 @@
 import FilterPanel from "../components/filterPanel"
 import Header from "../components/header"
-import ListComponent, { IListProps } from "../components/list/list";
+import { IListProps } from "../components/list/list";
+import PaginatedList from "../components/paginatedList/paginatedList";
 import SearchBar from "../components/searchBar"
 export default function Schools() {
   const panels: string[] = [
@@ -30,7 +31,7 @@ export default function Schools() {
           <FilterPanel panels={panels} />
         </div>
         <div>
-          <ListComponent rows={rows} />
+          <PaginatedList dataPerPage={5} data={rows} />
         </div>
         <div className="py-20"></div>
       </div>

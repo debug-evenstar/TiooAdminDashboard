@@ -1,0 +1,39 @@
+.pagination-container{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin: auto;
+    margin-top: 40px;
+    align-items: center;
+}
+
+.page-li,.next-li,.prev-li{
+    padding: 5px 6px;
+    border-radius: 3px;
+    border: 1px solid rgb(156, 156, 156);
+    color: gray;
+    margin: 0px 6px;
+    font-size: 14px;
+    outline:none;
+}
+
+
+.page-li:focus,.page-li:active{
+    outline:none;
+}
+.page-li-active{
+    color:white;
+    background-color: #5A51E6;
+    border: 1px solid #5A51E6;
+}
+
+.next-li,.prev-li{
+    padding: 6px 18px;
+    font-size: 16px;
+    font-weight: 900;
+    border: 1px solid #5A51E6;
+}
+
+.disabled-li{
+    border: 1px solid rgb(156, 156, 156);
+}

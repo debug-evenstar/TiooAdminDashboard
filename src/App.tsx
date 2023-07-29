@@ -11,6 +11,7 @@ import './App.css'
 import { Suspense, lazy } from 'react';
 import Sidebar from './components/sidebar/';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PaginatedItems from './pages/test';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/students" element={<Students />}></Route>
             <Route path="/library" element={<Library />}></Route>
             <Route path="/marketplace" element={<Marketplace />}></Route>
+            <Route path="/test" element={<PaginatedItems itemsPerPage={4} />}></Route>
           </Routes>
         </div>
       </Router>

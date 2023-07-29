@@ -1,7 +1,8 @@
 import Header from "../components/header"
 import SearchBar from "../components/searchBar"
 import FilterPanel from "../components/filterPanel"
-import ListComponent, { IListProps } from "../components/list/list"
+import { IListProps } from "../components/list/list"
+import PaginatedList from "../components/paginatedList/paginatedList";
 
 
 export default function Students() {
@@ -12,14 +13,14 @@ export default function Students() {
 
 
   const rows: IListProps[] = [
-    { name: "David Jones",      email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Chris Michael",    email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Joshua Karl",      email: "Praiseike123@gmail.com", subscription: true },
-    { name: "HJohn Brandson",   email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Brad Montiago",    email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Josh Smith",       email: "Praiseike123@gmail.com", subscription: false },
-    { name: "Michael Jordan",   email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Some Weird Name",  email: "Praiseike123@gmail.com", subscription: false },
+    { name: "David Jones", email: "Praiseike123@gmail.com", subscription: true },
+    { name: "Chris Michael", email: "Praiseike123@gmail.com", subscription: true },
+    { name: "Joshua Karl", email: "Praiseike123@gmail.com", subscription: true },
+    { name: "HJohn Brandson", email: "Praiseike123@gmail.com", subscription: true },
+    { name: "Brad Montiago", email: "Praiseike123@gmail.com", subscription: true },
+    { name: "Josh Smith", email: "Praiseike123@gmail.com", subscription: false },
+    { name: "Michael Jordan", email: "Praiseike123@gmail.com", subscription: true },
+    { name: "Some Weird Name", email: "Praiseike123@gmail.com", subscription: false },
     { name: "And another Name", email: "Praiseike123@gmail.com", subscription: true },
   ];
 
@@ -32,7 +33,7 @@ export default function Students() {
           <FilterPanel panels={panels} />
         </div>
         <div>
-          <ListComponent rows={rows} />
+          <PaginatedList dataPerPage={5} data={rows} />
         </div>
         <div className="py-20"></div>
       </div>

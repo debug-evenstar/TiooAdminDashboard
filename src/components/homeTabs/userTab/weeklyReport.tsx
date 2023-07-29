@@ -1,13 +1,16 @@
 import ReportCard from "./reportCard";
-
+import schoolImage from '../../../assets/icons/school.svg';
+import freelancerImage from '../../../assets/icons/freelancers.svg';
+import teacherImage from '../../../assets/icons/teachers.svg';
+import studentImage from '../../../assets/icons/students.svg';
 
 
 export default function WeeklyReport(): JSX.Element{
     const reports = [
-        {title: "Schools",icon:"",value: 11,percent: 5},
-        {title: "Freelancers",icon:"",value: 9,percent: 2},
-        {title: "Teachers",icon:"",value: 15,percent: 7},
-        {title: "Students",icon:"",value: 9,percent: 2}
+        {title: "Schools",icon:schoolImage,value: 11,percent: 5},
+        {title: "Freelancers",icon:freelancerImage,value: 9,percent: 2},
+        {title: "Teachers",icon:teacherImage,value: 15,percent: 7},
+        {title: "Students",icon:studentImage,value: 9,percent: 2}
     ];
     
     const accents = [

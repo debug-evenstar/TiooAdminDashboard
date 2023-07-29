@@ -12,7 +12,9 @@ export default function ReportCard({title,icon,accent,value,percent}: TReportCar
             style={{ backgroundColor: accent[1] }}
             className="w-[237px] rounded-[8px] h-[90px] p-4 flex items-center space-x-2 "
             >
-            <div style={{backgroundColor: accent[0]}} className="w-[50px] h-[50px] rounded-full">{icon}</div>
+            <div style={{backgroundColor: accent[0]}} className="w-[50px] flex items-center justify-center h-[50px] rounded-full">
+                <img src={icon} alt="card image"/>
+            </div>
             <div className="block text-gray-800">
                 <h1 className="">{title}</h1>
                 <div className="mt-1 flex items-center">

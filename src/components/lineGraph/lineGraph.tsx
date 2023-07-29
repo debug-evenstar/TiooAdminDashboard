@@ -32,7 +32,7 @@ function LineGraph() {
                 <YAxis axisLine={false} tickLine={false}/>
                 <CartesianGrid strokeDasharray="0.3 0.1" vertical={false}/>
                 <Tooltip />
-                <Area type="monotone" dataKey="y" stroke="#5A51E6" fillOpacity={1} fill="url(#colorUv)" />
+                <Area type="linear" dataKey="y" stroke="#5A51E6" fillOpacity={1} fill="url(#colorUv)" />
             </AreaChart>
         </div>
     );

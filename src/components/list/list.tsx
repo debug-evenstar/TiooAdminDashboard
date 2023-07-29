@@ -9,7 +9,7 @@ export default function ListComponent({ rows }: { rows: IListProps[]}) {
     return (
         <div className="w-full text-left mt-10 ">
             <div className="text-gray-600 px-3 flex justify-between font-bold">
-                <div className="w-[19rem] flex items-center space-x-3">School Name</div>
+                <div className="w-[19rem] flex items-center space-x-3">Name</div>
                 <div className="w-[14rem]">Email Address</div>
                 <div className="w-[10rem]">Subscription</div>
                 <div className="w-[5rem]">Actions</div>

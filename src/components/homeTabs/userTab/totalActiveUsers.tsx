@@ -1,4 +1,5 @@
 import { VictoryPie } from "victory";
+import Select from "../../select/select";
 
 export type TPiechartDataProps = {
     x: string,
@@ -55,20 +56,12 @@ export default function TotalActiveUsers({data}: {data: TPiechartDataProps[]}){
                 </div>
                 <div className="flex justify-end">
                     <div className="space-x-3">
-                        <select name="month" id="select-month">
+                        <Select>
                             <option value="something">Jan</option>
-                            <option value="something">Feb</option>
-                            <option value="something">Mar</option>
-                            <option value="something">Apr</option>
-                        </select>
-                        <select name="year" id="select-year">
+                        </Select>
+                        <Select>
                             <option value="2018">2018</option>
-                            <option value="2018">2019</option>
-                            <option value="2018">2020</option>
-                            <option value="2018">2021</option>
-                            <option value="2018">2022</option>
-                            <option value="2018">2023</option>
-                        </select>
+                        </Select>
                     </div>
                 </div>
             </div>

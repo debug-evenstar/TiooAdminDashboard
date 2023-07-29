@@ -47,7 +47,7 @@ export default function MonthlyUploadedLessons() {
             <div className="flex mt-4 w-full justify-between">
                 {
                     data.map((props,index) => (
-                        <LessonCard {...props} gradient={gradients[index]}/>
+                        <LessonCard key={index} {...props} gradient={gradients[index]}/>
                     ))
                 }
             </div>

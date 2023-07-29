@@ -39,10 +39,12 @@ export default function DailyOverview() {
                     <div className="text-gray-500 text-sm flex-col space-y-3 flex">
                         <h1 className=" text-[1.2rem] text-gray-700">23 Lessons Completed today</h1>
                         <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 rounded-full bg-red-500"></div><span>13 Lessons completed from teachers</span>
+                            <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                            <span>13 Lessons completed from teachers</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 rounded-full bg-yellow-300"></div><span>10 Lessons completed from freelancers</span>
+                            <div className="w-4 h-4 rounded-full bg-yellow-300"></div>
+                            <span>10 Lessons completed from freelancers</span>
                         </div>
                     </div>
                     <div className="h-full pl-10">

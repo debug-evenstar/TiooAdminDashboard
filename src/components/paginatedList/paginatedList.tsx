@@ -32,10 +32,10 @@ export default function PaginatedList({ dataPerPage,data }: {data: IListProps[],
       <ReactPaginate
         className='pagination-container'
         pageLinkClassName='page-li'
-        activeLinkClassName='page-li-active border-main'
-        nextLinkClassName='rounded-[4px] text-gray-600 font-semibold border border-main  py-1.5 text-sm px-5'
-        disabledLinkClassName='border-gray-400'
-        previousLinkClassName='rounded-[4px] text-gray-600 font-semibold border border-main py-1.5 text-sm px-5'
+        activeLinkClassName='page-li-active'
+        nextLinkClassName='next-li'
+        disabledLinkClassName='disabled-li'
+        previousLinkClassName='prev-li'
         breakLabel="..."
         nextLabel="next"
         onPageChange={handlePageClick}

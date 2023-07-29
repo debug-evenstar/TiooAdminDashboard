@@ -1,7 +1,7 @@
 
 export default function Select({children}: {children: any}){
     return (
-        <select className="rounded [8px] cursor-pointer bg-gray-100 text-sm px-2 py-2">
+        <select className="rounded outline-none [8px] cursor-pointer bg-gray-100 text-sm px-2 py-2">
             {children}
         </select>
 

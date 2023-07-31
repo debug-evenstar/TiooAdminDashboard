@@ -6,8 +6,8 @@ export type TPiechartDataProps = {
     y: number
 }
 
-export default function TotalActiveUsers({data}: {data: TPiechartDataProps[]}){
-   
+export default function TotalActiveUsers({ data }: { data: TPiechartDataProps[] }) {
+
 
 
     const accents: string[] = [
@@ -20,12 +20,12 @@ export default function TotalActiveUsers({data}: {data: TPiechartDataProps[]}){
 
 
 
-    return(
+    return (
         <div className="w-full mt-20">
             <div className="w-full shadow border grid grid-cols-3 rounded-[8px] p-8 h-full">
                 <div>
                     <h1>Total Active Users</h1>
-                    <h1 className="text-xl font-bold">3738</h1>
+                    <h1 className="text-xl font-bold">3,738</h1>
                 </div>
                 <div className="flex flex-col items-center justify-center ">
                     <div className="w-56 h-56">
@@ -40,14 +40,14 @@ export default function TotalActiveUsers({data}: {data: TPiechartDataProps[]}){
                                 labels={() => null}
                                 innerRadius={100}
                                 padAngle={1.5}
-                                />
+                            />
                         </div>
                     </div>
                     <div className="flex text-xs text-gray-500 mr-4 justify-center">
                         {
-                            data.map(({x,y},index) => (
+                            data.map(({ x, y }, index) => (
                                 <div key={index} className="flex items-center space-x-1 justify-end w-[8rem]">
-                                    <div className="rounded-full w-2 h-2" style={{backgroundColor: accents[index]}}></div>
+                                    <div className="rounded-full w-2 h-2" style={{ backgroundColor: accents[index] }}></div>
                                     <span>{x}: {y}</span>
                                 </div>
                             ))

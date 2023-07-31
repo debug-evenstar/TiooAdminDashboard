@@ -1,12 +1,12 @@
 
 
 export type TProfile = {
-    image: string,
-    name: string,
-    title: string
+    image: string;
+    name: string;
+    title: string;
 };
 
-export default function Profile({image,name,title}: TProfile){
+export default function Profile({ image, name, title }: TProfile) {
     return (
         <div className="flex items-center space-x-2">
             <img className="w-[40px] h-[40px] rounded-full" src={image} alt="" />

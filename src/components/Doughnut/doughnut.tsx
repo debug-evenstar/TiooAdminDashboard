@@ -1,11 +1,11 @@
 import { Cell, Pie, PieChart } from "recharts";
 
 export type TDoughnutProps = {
-    width: number,
-    percent: number,
-    height: number,
-    innerRadius?: string
-    className?: string
+    width: number;
+    percent: number;
+    height: number;
+    innerRadius?: string;
+    className?: string;
 }
 
 export default function Doughnut({ innerRadius = '75%', percent, width, height, className = "" }: TDoughnutProps) {

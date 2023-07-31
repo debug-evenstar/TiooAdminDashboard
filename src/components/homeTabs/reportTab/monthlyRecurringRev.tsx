@@ -4,11 +4,12 @@ import Select from "../../select/select";
 export default function MonthlyRecurringRevenue() {
 
     const data: TLineGraphProps[] = [
-        { x: '2-8', y: 3 },
-        { x: '9-15', y: 10 },
-        { x: '16-20', y: 50 },
-        { x: '21-25', y: 14 },
-        { x: '26-29', y: 39 },
+        { x: '2-8', y: 0 },
+        { x: '2-8', y: 1 },
+        { x: '9-15', y: 0.7 },
+        { x: '16-20', y: 1.3 },
+        { x: '21-25', y: 2.3 },
+        { x: '26-29', y: 2.7 },
     ];
 
     return (

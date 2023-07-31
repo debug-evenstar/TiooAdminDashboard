@@ -1,8 +1,13 @@
+import MonthlyRecurringRevenue from "./monthlyRecurringRev";
+
 export default function ReportTabComponent(): JSX.Element {
     return (
-        <div className="w-full border">
-            
-        </div>
+        <>
+            <MonthlyRecurringRevenue />
+            <div className="py-20">
+
+            </div>
+        </>
     );
 
 }

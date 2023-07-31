@@ -5,7 +5,7 @@ export interface IListProps {
     image?: string;
 };
 
-export default function ListComponent({ rows }: { rows: IListProps[]}) {
+export default function ListComponent({ rows }: { rows: IListProps[] }) {
     return (
         <div className="w-full text-left mt-10 ">
             <div className="text-gray-600 px-3 flex justify-between font-bold">
@@ -16,7 +16,7 @@ export default function ListComponent({ rows }: { rows: IListProps[]}) {
             </div>
             <div className="w-full mt-3">
                 {
-                    rows.map((entry, index) => (
+                    rows.map((entry: IListProps, index: number) => (
                         <div key={index} className="text-gray-600 text-sm flex items-center justify-between py-3.5 px-3 rounded-[8px] my-5 bg-light shadow">
                             <div className="w-[19rem] flex items-center space-x-2">
                                 <div className="w-6 h-6 rounded-full bg-light"></div>

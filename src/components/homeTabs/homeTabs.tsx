@@ -32,7 +32,7 @@ export default function HomeTabs() {
                     ))
                 }
             </ul>
-            <div className="mt-16 text-gray-600 pr-10">
+            <div className="mt-14 text-gray-600 pr-10">
                 { tabs.map((tab,key) => (active === key ? <div key={key}>{tab.component}</div>:null)) } 
             </div>
 

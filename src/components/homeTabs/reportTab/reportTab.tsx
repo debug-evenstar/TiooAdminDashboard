@@ -1,5 +1,6 @@
 import EarningsReport from "./earningsReport";
 import MonthlyRecurringRevenue from "./monthlyRecurringRev";
+import UsersRevenueReport from "./usersRevenueReport";
 
 export default function ReportTabComponent(): JSX.Element {
     return (
@@ -10,7 +11,7 @@ export default function ReportTabComponent(): JSX.Element {
                     <EarningsReport />
                 </div>
                 <div className="w-[35%]">
-
+                    <UsersRevenueReport />
                 </div>
             </div>
             <div className="py-20">

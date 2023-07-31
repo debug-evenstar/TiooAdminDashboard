@@ -23,7 +23,6 @@ function EarningsCard({ color, title, percentage, amount }: EarningsCardProps) {
     );
 }
 
-
 export default function EarningsReport() {
     const colors: string[] = [
         'bg-[#6557AC]',
@@ -51,7 +50,7 @@ export default function EarningsReport() {
             <div className="grid grid-cols-3 gap-x-4 mt-16">
                 {
                     earningsData.map((data, index) => (
-                        <EarningsCard color={colors[index]} {...data} />
+                        <EarningsCard key={index} color={colors[index]} {...data} />
                     ))
                 }
             </div>

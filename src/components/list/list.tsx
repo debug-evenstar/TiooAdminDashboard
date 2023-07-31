@@ -1,3 +1,5 @@
+import image from '../../assets/images/user.png';
+
 export interface IListProps {
     name: string;
     email: string;
@@ -19,7 +21,10 @@ export default function ListComponent({ rows }: { rows: IListProps[] }) {
                     rows.map((entry: IListProps, index: number) => (
                         <div key={index} className="text-gray-600 text-sm flex items-center justify-between py-3.5 px-3 rounded-[8px] my-5 bg-light shadow">
                             <div className="w-[19rem] flex items-center space-x-2">
-                                <div className="w-6 h-6 rounded-full bg-light"></div>
+                                <div className="w-6 h-6 rounded-full overflow-hidden">
+                                    {/* <img src={entry.image} className="w-full h-full" alt="" /> */}
+                                    <img src={image} className="w-full h-full" alt="" />
+                                </div>
                                 <h1 className="font-bold">{entry.name}</h1>
                             </div>
                             <div className="w-[14rem]">{entry.email}</div>

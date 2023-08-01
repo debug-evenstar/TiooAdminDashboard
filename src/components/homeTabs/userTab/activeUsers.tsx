@@ -24,7 +24,7 @@ export default function ActiveUsers() {
 
     return (
         <div className="mt-16">
-            <div>
+            <div className="mb-3 flex items-center justify-between">
                 <h1 className="text-[24px]">Active Users</h1>
                 <Button>Export CSV</Button>
             </div>

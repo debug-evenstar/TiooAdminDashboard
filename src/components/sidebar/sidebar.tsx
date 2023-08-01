@@ -8,7 +8,7 @@ import {
     SchoolIcon,
 } from '../../assets/icons/sidebar';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../../assets/logos/sabikidfirst.png';
+import logo from '../../assets/logos/logo.png';
 
 
 

@@ -30,7 +30,7 @@ export default function SearchBar({ className, width="w-[430px]", name, placehol
             <input className='w-full  px-3 py-2.5  text-sm outline-none h-full' spellCheck={false} type="text" name={name} placeholder={placeholder} />
             {
                 variant === 'filter' &&
-                <button className="outline-none py-1.5 w-12 h-full flex items-center justify-center border border-main rounded-r-[8px] text-white border bg-main">
+                <button className="outline-none py-1.5 w-12 h-full flex items-center justify-center border-2 border-main rounded-r-[8px] text-white border bg-main">
                     <img src={filterImage} alt="" />
                 </button>
             }

@@ -1,5 +1,6 @@
 import { VictoryPie } from "victory";
 import Select from "../../select/select";
+import Button from "../../button/button";
 
 export type TPiechartDataProps = {
     x: string,
@@ -22,6 +23,9 @@ export default function TotalActiveUsers({ data }: { data: TPiechartDataProps[] 
 
     return (
         <div className="w-full mt-20">
+            <div className="flex mb-3 justify-end">
+                <Button>Export CSV</Button>
+            </div>
             <div className="w-full shadow border grid grid-cols-3 rounded-[8px] p-8 h-full">
                 <div>
                     <h1>Total Active Users</h1>

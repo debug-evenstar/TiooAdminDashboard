@@ -3,6 +3,7 @@ import schoolImage from '../../../assets/icons/school.svg';
 import freelancerImage from '../../../assets/icons/freelancers.svg';
 import teacherImage from '../../../assets/icons/teachers.svg';
 import studentImage from '../../../assets/icons/students.svg';
+import Button from "../../button/button";
 
 
 export default function WeeklyReport(): JSX.Element{
@@ -22,7 +23,10 @@ export default function WeeklyReport(): JSX.Element{
 
     return (
         <>
-            <h1 className="text-[24px]">Weekly Report</h1>
+            <div className="mb-3 flex items-center justify-between">
+                <h1 className="text-[24px]">Weekly Report</h1>
+                <Button>Export CSV</Button>
+            </div>
             <div className="flex mt-4 w-full flex-wrap justify-between">
                 { reports.map((report,key) => <ReportCard key={key} {...report}  accent={accents[key]} />)}
             </div>

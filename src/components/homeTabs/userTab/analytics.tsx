@@ -1,11 +1,11 @@
 import image from '../../../assets/images/image_34-removebg-preview 1.png';
 
 export type TUserAnalyticsProps = {
-    schools: number,
-    teachers: number,
-    hybrid: number,
-    students: number,
-    freelancers: number,
+    Schools: number,
+    Teachers: number,
+    Hybrid: number,
+    Students: number,
+    Freelancers: number,
 }
 
 
@@ -25,7 +25,7 @@ export default function Analytics(data: TUserAnalyticsProps){
                 {
                     Object.entries(data).map((entry,index) => (
                         <div key={index} className="flex items-center drop-shadow-md mt-4 space-x-2">
-                            <div className="flex items-center justify-center rounded w-[61px] h-[32px] bg-[#3673CA]">{entry[1]}</div>
+                            <div className="flex items-center justify-center rounded w-[61px] font-[500] h-[32px] bg-[#3673CA]">{entry[1]}</div>
                             <h1 className="text-xl">{entry[0]}</h1>
                         </div>
                     ))

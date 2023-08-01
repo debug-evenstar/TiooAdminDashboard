@@ -1,3 +1,4 @@
+import Button from "../../button/button";
 import { TLineGraphProps } from "../../lineGraph/lineGraph";
 import ActiveUsersGraph from "./activeUserGraph";
 import TotalActiveUsers, { TPiechartDataProps } from "./totalActiveUsers";
@@ -23,7 +24,10 @@ export default function ActiveUsers() {
 
     return (
         <div className="mt-16">
-            <h1 className="text-[24px]">Active Users</h1>
+            <div>
+                <h1 className="text-[24px]">Active Users</h1>
+                <Button>Export CSV</Button>
+            </div>
             <ActiveUsersGraph data={lineGraphData} />
             <TotalActiveUsers data={pieChartData} />
         </div>

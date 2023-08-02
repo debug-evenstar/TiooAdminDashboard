@@ -14,7 +14,7 @@ export default function ExportBtn({ className, children }: { children: string, c
 
     return (
         <div>
-            <Button onClick={() => setActive(!active)} className={className}>{children}</Button>
+            <Button handler={() => setActive(!active)} className={className}>{children}</Button>
             { active && 
                 <Menu values={data} />
             }

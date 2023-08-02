@@ -45,12 +45,13 @@ export type TLessonCardProps = { title: string, color?: string, description: str
 
 function LessonsCard({ color, title, description, date }: TLessonCardProps) {
   return (
-    <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]">
+    // <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]">
+    <div className="w-full border h-[175px] flex flex-col justify-between rounded-[8px]">
       <div className={`${color} h-[110px] p-3 text-left text-white rounded-t-[8px]`}>
         <h1 className="font-[500] text-lg">{title}</h1>
         <p className="mt-3 text-xs">{description}</p>
       </div>
-      <span className="px-5 text-xs text-gray-500 py-3">
+      <span className="px-5 text-xs text-gray-400 py-3">
         uploaded {date} ago
       </span>
     </div>

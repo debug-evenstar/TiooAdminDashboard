@@ -4,7 +4,7 @@ export default function Library() {
   return (
     <div>
       <Header title="Library" />
-      <div className="mt-5 pl-10 flex justify-end">
+      <div className="mt-5 pl-10">
         Library
         <ExportBtn>Click me</ExportBtn>
       </div>

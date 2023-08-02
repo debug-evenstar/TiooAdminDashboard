@@ -23,7 +23,7 @@ interface ISearchBarProps {
 //         </div>
 //     )
 // }
-export default function SearchBar({ className, width = "w-[429px]", name, placeholder, variant = "filter" }: ISearchBarProps) {
+export default function SearchBar({ className, width = "max-w-[27rem]", name, placeholder, variant = "filter" }: ISearchBarProps) {
     return (
         <div className={`flex overflow-hidden items-center bg-white border-gray-300 border ${width} duration-300 outline-none focus:border-main rounded-l-[8px] rounded-r-[8px] ${variant === 'normal' && "rounded-r-[8px] border-r"} text-gray-700 w-full ${className}`}>
             <img className="w-5 h-5 m-2 ml-4" src={searchImage} alt="" />

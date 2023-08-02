@@ -1,4 +1,5 @@
 import Header from "../components/header"
+import SearchBar from "../components/searchBar";
 
 export type TCategoryCardProps = { title?: string, name?: string, value?: number };
 
@@ -24,7 +25,7 @@ function Categories() {
 
   return (
     <div className="w-[22%] overflow-y-auto h-[calc(100vh_-_95px)] p-4 border-l">
-    
+
       <div className="py-2">
         <h1 className="font-[400] text-primary">Categories</h1>
       </div>
@@ -36,13 +37,50 @@ function Categories() {
         }
       </div>
     </div>
-    
+
   );
 }
 
-function AllLessons() {
+export type TLessonCardProps = { title: string, color?: string, description: string, date: string };
+
+function LessonsCard({ color, title, description, date }: TLessonCardProps) {
   return (
-    <div className="w-[78%] overflow-y-auto max-h-[calc(100vh_-_95px)]">
+    <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]">
+      <div className={`${color} h-[110px] p-3 text-left text-white rounded-t-[8px]`}>
+        <h1 className="font-[500] text-lg">{title}</h1>
+        <p className="mt-3 text-xs">{description}</p>
+      </div>
+      <span className="px-5 text-xs text-gray-500 py-3">
+        uploaded {date} ago
+      </span>
+    </div>
+  );
+}
+function AllLessons() {
+  const lessons: TLessonCardProps[] = [
+    {title: "Public Speaking",description: "Learn conversation skills and develop strong relationship with others",date: "5 days"},
+    {title: "Budgeting",description: "Learn money management skills and the value of money.",date: "10 days"},
+    {title: "Entrepreneurship",description: "Explore and discover personal strengths and areas for development",date: "two weeks"},
+  ];
+
+  const colors: string[] = [
+    'bg-[#AE1E56]',
+    'bg-[#86A94B]',
+    'bg-[#776DB4]',
+  ];
+  return (
+    <div className="w-[78%] overflow-y-auto max-h-[calc(100vh_-_95px)] px-[24px]">
+      <div className="flex items-center justify-between py-7">
+        <h1 className="text-primary text-lg">All Lessons</h1>
+        <SearchBar className="w-[23rem] " name="search-lesson" placeholder="Search" variant="normal"/>
+      </div>
+      <div className="grid gap-x-2 grid-cols-3">
+        {
+          lessons.map((lessonProp,index) => (
+            <LessonsCard {...lessonProp} color={colors[index]}/>
+          ))
+        }
+      </div>
     </div>
   );
 }

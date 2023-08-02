@@ -1,57 +1,51 @@
-import { useState } from 'react';
+// import ExportBtn from "../components/exportBtn/exportBtn"
+import { useState } from "react"
+import Header from "../components/header"
 
-import ReactPaginate from 'react-paginate';
 
-// Example items, to simulate fetching from another resources.
-const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-
-function Items({ currentItems }: { currentItems: number[]}) {
-  return (
-    <>
-      {currentItems &&
-        currentItems.map((item) => (
-          <div>
-            <h3>Item #{item}</h3>
-          </div>
-        ))}
-    </>
-  );
+function Card({ index }: { index: number }) {
+  return <div className="w-[17rem] bg-orange-300 h-40 rounded flex items-center justify-center text-black shadow bg-white">{index}</div>
 }
 
-export default function PaginatedItems({ itemsPerPage }: {itemsPerPage: number}) {
-  // Here we use item offsets; we could also use page offsets
-  // following the API or data you're working with.
-  const [itemOffset, setItemOffset] = useState(0);
+export default function Library() {
+  const data: number[] = [1, 2, 3, 4, 5, 6, 7, 8]
 
-  // Simulate fetching items from another resources.
-  // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
-  const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = items.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(items.length / itemsPerPage);
+  const [units, setUnits] = useState(0);
 
-  // Invoke when user click to request another page.
-  const handlePageClick = (event: any) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
-    setItemOffset(newOffset);
-  };
+  const prev = () => {
+    if(units <= 120)
+      setUnits(0)
+    else
+      setUnits((units) => units + 17)
+  
+  }
+
+  const next = () => {
+    if(units <= -120)
+      setUnits(0)
+    else
+      setUnits((units) => units - 17)
+  }
 
   return (
-    <>
-      <Items currentItems={currentItems} />
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-      />
-    </>
-  );
+    <div>
+      <Header title="Library" />
+      <div className="mt-5 px-10">
+        <div className="flex items-center justify-end">
+          <button className="px-3 mx-1 bg-main rounded text-white" onClick={prev}>prev</button>
+          <button className="px-3 mx-1 bg-main rounded text-white" onClick={next}>next</button>
+        </div>
+        <div className="flex items-center border-2 border-purple-500 h-44 overflow-hidden">
+          <div id="slider" className="flex relative duration-300 h-40 space-x-4" style={{ transform: `translateX(${units}rem)` }}>
+            {
+              data.map((value) => (
+                <Card index={value} />
+              ))
+            }
+          </div>
+        </div>
+        {units}
+      </div>
+    </div>
+  )
 }

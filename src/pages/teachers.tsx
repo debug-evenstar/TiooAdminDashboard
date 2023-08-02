@@ -29,7 +29,7 @@ export default function Teachers() {
       <Header title="Manage Teachers" />
       <div className="mt-5 px-10">
         <div className="flex mt-11 items-center justify-between">
-          <SearchBar variant="normal" className="w-[24rem]" name="schools" placeholder="Search Schools" />
+          <SearchBar variant="normal" className="w-[24rem]" name="schools" placeholder="Search Teachers" />
           <FilterPanel panels={panels} />
         </div>
         <div>

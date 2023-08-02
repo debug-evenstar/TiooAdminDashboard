@@ -1,4 +1,7 @@
 import Doughnut, { TDoughnutProps } from "../../Doughnut/doughnut";
+import ExportMenuBtn from "../../exportMenuBtn/exportMenuBtn";
+import { TMenuProps } from "../../menu/menu";
+import ScrollButton from "../../scrollButtons/scrollButtons";
 import Select from "../../select/select";
 
 
@@ -10,9 +13,22 @@ export default function DailyOverview() {
         innerRadius: '80%'
     }
 
+    const exportMenuEntries: TMenuProps[] = [
+        {id: 1,name: 'Lessons Uploaded'},
+        {id: 1,name: 'Lessons Completed'},
+        {id: 1,name: 'Lessons Uncompleted'},
+    ];
+
+
     return (
         <>
-            <h1 className="text-[24px]">Daily Overview</h1>
+            <div className="flex items-center justify-between">
+                <h1 className="text-[24px]">Daily Overview</h1>
+                <div className="flex items-center space-x-6">
+                    <ExportMenuBtn entries={exportMenuEntries}>Export CSV</ExportMenuBtn>
+                    <ScrollButton/>
+                </div>
+            </div>
             <div className="flex mt-4 w-full flex-wrap justify-between">
                 <div className="shadow p-4 border rounded-[8px] space-x-2 flex items-center">
                     <div>

@@ -1,3 +1,7 @@
+import ExportMenuBtn from "../../exportMenuBtn/exportMenuBtn";
+import { TMenuProps } from "../../menu/menu";
+import ScrollButton from "../../scrollButtons/scrollButtons";
+
 type TCompletedLessonCardProps = {
     title: string;
     value: number;
@@ -31,9 +35,22 @@ export default function CompletedLessons() {
         'bg-[#29ABE0]',
         'bg-[#F47C3C]'
     ];
+
+    const exportMenuEntries: TMenuProps[] = [
+        { id: 1, name: 'Lessons Uploaded' },
+        { id: 1, name: 'Lessons Completed' },
+        { id: 1, name: 'Lessons Uncompleted' },
+    ];
+
     return (
         <div className="mt-10">
-            <h1 className="text-[24px]">Completed Lessons</h1>
+            <div className="flex items-center justify-between">
+                <h1 className="text-[24px]">Completed Lessons</h1>
+                <div className="flex items-center space-x-6">
+                    <ExportMenuBtn entries={exportMenuEntries}>Export CSV</ExportMenuBtn>
+                    <ScrollButton/>
+                </div>
+            </div>
             <div className="flex mt-4 w-fit space-x-7 justify-between">
                 {
                     data.map((props, index) => (

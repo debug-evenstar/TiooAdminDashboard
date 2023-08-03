@@ -18,17 +18,19 @@ type TMenu = {
     icon: any,
 }
 
-export default function Sidebar(): JSX.Element {
+export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
 
-    const menus: TMenu[] = [
-        { route: '/', icon: HomeIcon, title: 'Home' },
-        { route: '/schools', icon: SchoolIcon, title: 'Manage Schools' },
-        { route: '/freelancers', icon: UserIcon, title: 'Manage Freelancers' },
-        { route: '/teachers', icon: UserIcon, title: 'Manage Teachers' },
-        { route: '/students', icon: UsersIcon, title: 'Manage Students' },
-        { route: '/library', icon: BookIcon, title: 'Library' },
-        { route: '/marketplace', icon: BagIcon, title: 'Marketplace' },
-    ];
+    if (!menus) {
+        menus = [
+            { route: '/', icon: HomeIcon, title: 'Home' },
+            { route: '/schools', icon: SchoolIcon, title: 'Manage Schools' },
+            { route: '/freelancers', icon: UserIcon, title: 'Manage Freelancers' },
+            { route: '/teachers', icon: UserIcon, title: 'Manage Teachers' },
+            { route: '/students', icon: UsersIcon, title: 'Manage Students' },
+            { route: '/library', icon: BookIcon, title: 'Library' },
+            { route: '/marketplace', icon: BagIcon, title: 'Marketplace' },
+        ];
+    }
 
     const location = useLocation();
 
@@ -38,8 +40,10 @@ export default function Sidebar(): JSX.Element {
 
     return (
         <div className="bg-orange p-5 pr-1 h-screen overflow-y-auto relative w-[19%] border-r border-gray-200">
-            <div className="">
-                <img className="" src={logo} alt="" />
+            <div className="w-fit">
+                <a href="/">
+                    <img className="" src={logo} alt="" />
+                </a>
             </div>
             <div className='text-gray-500 px-2 mt-10 text-sm flex flex-col justify-between h-full'>
                 <ul className="h-fit">

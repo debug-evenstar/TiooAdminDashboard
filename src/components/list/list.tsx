@@ -1,4 +1,6 @@
+import Popup from 'reactjs-popup';
 import image from '../../assets/images/user.png';
+import Menu, { TMenuProps } from '../menu/menu';
 
 export interface IListProps {
     name: string;
@@ -8,6 +10,13 @@ export interface IListProps {
 };
 
 export default function ListComponent({ rows }: { rows: IListProps[] }) {
+
+    const menuList: TMenuProps[] = [
+        {id: 1, name: 'Show User'},
+        {id: 2, name: 'Goto Dashboard'},
+        {id: 3, name: 'Check out stuff'},
+    ];
+
     return (
         <div className="w-full text-left mt-10 ">
             <div className="text-gray-600 px-3 flex justify-between font-bold">
@@ -35,7 +44,15 @@ export default function ListComponent({ rows }: { rows: IListProps[] }) {
                                 }
                             </div>
                             <div className="w-[5rem] pl-3">
-                                <h1 className="cursor-pointer text-xl font-bold rotate-[90deg] w-fit h-fit">...</h1>
+                                <Popup
+                                    trigger={
+                                        <h1 className="cursor-pointer text-xl font-bold rotate-[90deg] w-fit h-fit">...</h1>
+                                    }
+                                    position="bottom right"
+                                    on="click"
+                                >
+                                    <Menu values={menuList}/>
+                                </Popup>
                             </div>
                         </div>
                     ))

@@ -14,10 +14,10 @@ export default function MonthlyRecurringRevenue() {
 
     return (
         <>
-            <h1 className="text-[24px] text-gray-700">Monthly Recurring Revenue</h1>
+            <h1 className="text-[24px]">Monthly Recurring Revenue</h1>
             <div className="w-full shadow border rounded-[8px] mt-5 p-6 h-full">
                 <div className="w-full flex justify-between items-center">
-                    <h1 className="text-gray-600">Total MRR</h1>
+                    <h1 className="">Total MRR</h1>
                     <div className="flex items-center space-x-2">
                         <Select>
                             <option value="July">July</option>

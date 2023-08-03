@@ -26,7 +26,7 @@ export default function HomeTabs() {
                         <li
                             key={key}
                             onClick={() => setActive(key)}
-                            className={`py-2 pb-3 duration-300 rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4 text-gray-400  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6]" : "border-white"}`}>
+                            className={`py-2 pb-3 duration-300 rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6] font-[500]" : "text-gray-400 border-white"}`}>
                             {tab.name}
                         </li>
                     ))

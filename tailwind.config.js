@@ -6,7 +6,7 @@ export default {
       colors:{
         main: '#5A51E6',
         light: '#5A51E619',
-        primary: '#030036',
+        primary: '#030036BD', // A = BD = 74% => hex((74 /100) * 256)
       }
     },
   },

@@ -25,11 +25,10 @@ function Categories() {
 
   return (
     <div className="w-[22%] overflow-y-auto h-[calc(100vh_-_95px)] p-4 border-l">
-
       <div className="py-2">
         <h1 className="font-[400] text-primary">Categories</h1>
       </div>
-      <div>
+      <div className="mt-4">
         {
           categories.map((catProps, index) => (
             <CategoryCard key={index} {...catProps} />
@@ -59,9 +58,9 @@ function LessonsCard({ color, title, description, date }: TLessonCardProps) {
 }
 function AllLessons() {
   const lessons: TLessonCardProps[] = [
-    {title: "Public Speaking",description: "Learn conversation skills and develop strong relationship with others",date: "5 days"},
-    {title: "Budgeting",description: "Learn money management skills and the value of money.",date: "10 days"},
-    {title: "Entrepreneurship",description: "Explore and discover personal strengths and areas for development",date: "two weeks"},
+    { title: "Public Speaking", description: "Learn conversation skills and develop strong relationship with others", date: "5 days" },
+    { title: "Budgeting", description: "Learn money management skills and the value of money.", date: "10 days" },
+    { title: "Entrepreneurship", description: "Explore and discover personal strengths and areas for development", date: "two weeks" },
   ];
 
   const colors: string[] = [
@@ -69,16 +68,17 @@ function AllLessons() {
     'bg-[#86A94B]',
     'bg-[#776DB4]',
   ];
+
   return (
     <div className="w-[78%] overflow-y-auto max-h-[calc(100vh_-_95px)] px-[24px]">
       <div className="flex items-center justify-between py-7">
         <h1 className="text-primary text-lg">All Lessons</h1>
-        <SearchBar className="w-[23rem] " name="search-lesson" placeholder="Search" variant="normal"/>
+        <SearchBar className="w-[23rem] " name="search-lesson" placeholder="Search" variant="normal" />
       </div>
       <div className="grid gap-x-2 grid-cols-3">
         {
-          lessons.map((lessonProp,index) => (
-            <LessonsCard {...lessonProp} color={colors[index]}/>
+          lessons.map((lessonProp, index) => (
+            <LessonsCard key={index} {...lessonProp} color={colors[index]} />
           ))
         }
       </div>

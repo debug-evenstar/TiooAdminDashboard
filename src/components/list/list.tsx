@@ -2,21 +2,14 @@ import Popup from 'reactjs-popup';
 import image from '../../assets/images/user.png';
 import Menu, { TMenuProps } from '../menu/menu';
 
-export interface IListProps {
+export type IListProps = {
     name: string;
     email: string;
     subscription: boolean;
     image?: string;
 };
 
-export default function ListComponent({ rows }: { rows: IListProps[] }) {
-
-    const menuList: TMenuProps[] = [
-        {id: 1, name: 'Show User'},
-        {id: 2, name: 'Goto Dashboard'},
-        {id: 3, name: 'Check out stuff'},
-    ];
-
+export default function ListComponent({menuList, rows }: {menuList: TMenuProps[], rows: IListProps[] }) {
     return (
         <div className="w-full text-left mt-10 ">
             <div className="text-gray-600 px-3 flex justify-between font-bold">

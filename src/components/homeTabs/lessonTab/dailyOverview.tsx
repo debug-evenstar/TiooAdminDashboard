@@ -29,42 +29,46 @@ export default function DailyOverview() {
                     <ScrollButton/>
                 </div>
             </div>
-            <div className="flex mt-4 w-full flex-wrap justify-between">
-                <div className="shadow p-4 border rounded-[8px] space-x-2 flex items-center">
-                    <div>
-                        <Doughnut  {...doughnutData} />
-                    </div>
-                    <div className="text-gray-500 text-sm flex-col space-y-3 flex">
-                        <h1 className="text-[1.2rem]  text-gray-700">17 Lessons Uploaded today</h1>
-                        <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 rounded-full bg-red-500"></div><span>15 Lessons Uploaded by teachers</span>
+            <div className="flex mt-4 w-full space-x-5 justify-between">
+                <div className="shadow w-full p-4 px-3 border rounded-[8px] flex justify-between space-x-2 flex items-center">
+                    <div className="flex items-center space-x-3">
+                        <div>
+                            <Doughnut  {...doughnutData} />
                         </div>
-                        <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 rounded-full bg-yellow-300"></div><span>2 Lessons Uploaded by freelancers</span>
+                        <div className="text-gray-500 text-sm flex-col space-y-3 flex">
+                            <h1 className="text-[1rem]  text-gray-700">17 Lessons Uploaded today</h1>
+                            <div className="flex text-sm items-center space-x-2">
+                                <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                                <span className="text-xs">15 Lessons Uploaded by teachers</span>
+                            </div>
+                            <div className="flex text-sm items-center space-x-2">
+                                <div className="w-4 h-4 rounded-full bg-yellow-300"></div>
+                                <span className="text-xs">2 Lessons Uploaded by freelancers</span>
+                            </div>
                         </div>
                     </div>
-                    <div className="h-full pl-10">
-                        <Select>
+                    <div className="h-full">
+                        <Select className="text-xs">
                             <option value="">13th July</option>
                         </Select>
                     </div>
 
                 </div>
 
-                <div className="shadow p-4 border rounded-[8px] space-x-2 flex items-center">
+                <div className="shadow p-4 w-full flex justify-between px-3 border rounded-[8px] space-x-2 flex items-center">
                     <div className="text-gray-500 text-sm flex-col space-y-3 flex">
-                        <h1 className=" text-[1.2rem] text-gray-700">23 Lessons Completed today</h1>
-                        <div className="flex items-center space-x-2">
+                        <h1 className=" text-[1rem] text-gray-700">23 Lessons Completed today</h1>
+                        <div className="flex text-sm items-center space-x-2">
                             <div className="w-4 h-4 rounded-full bg-red-500"></div>
-                            <span>13 Lessons completed from teachers</span>
+                            <span className="text-xs">13 Lessons completed from teachers</span>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex text-sm items-center space-x-2">
                             <div className="w-4 h-4 rounded-full bg-yellow-300"></div>
-                            <span>10 Lessons completed from freelancers</span>
+                            <span className="text-xs">10 Lessons completed from freelancers</span>
                         </div>
                     </div>
-                    <div className="h-full pl-10">
-                        <Select>
+                    <div className="h-full">
+                        <Select className="text-xs">
                             <option value="">13th July</option>
                         </Select>
                     </div>

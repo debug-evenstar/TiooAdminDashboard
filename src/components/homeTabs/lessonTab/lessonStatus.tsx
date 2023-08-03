@@ -1,13 +1,12 @@
-import ExportMenuBtn from "../../exportMenuBtn/exportMenuBtn";
-import { TMenuProps } from "../../menu/menu";
+import Button from "../../button/button";
 import ScrollButton from "../../scrollButtons/scrollButtons";
 
-type TCompletedLessonCardProps = {
+export type TLessonStatusCardProps = {
     title: string;
     value: number;
     color?: string;
 }
-function CompletedLessonCard({ title, value, color }: TCompletedLessonCardProps) {
+function LessonCard({ title, value, color }: TLessonStatusCardProps) {
 
     return (
         <div className={`w-[300px] flex flex-col items-center justify-between h-[250px] rounded-[8px] border shadow ${color}`}>
@@ -23,40 +22,34 @@ function CompletedLessonCard({ title, value, color }: TCompletedLessonCardProps)
     );
 }
 
-export default function CompletedLessons() {
-    const data: TCompletedLessonCardProps[] = [
-        { title: 'Total Lessons Completed', value: 5000 },
-        { title: 'Lessons Completed from teachers', value: 4000 },
-        { title: 'Lessons Completed from freelancers', value: 4000 }
-    ];
+export default function LessonStatus({status,data}: {status: string,data: TLessonStatusCardProps[]}) {
 
     const colors: string[] = [
         'bg-[#325D88]',
+        'bg-[#87909E]',
         'bg-[#29ABE0]',
-        'bg-[#F47C3C]'
+        'bg-[#F47C3C]',
+        'bg-[#AE1E56]',
     ];
 
-    const exportMenuEntries: TMenuProps[] = [
-        { id: 1, name: 'Lessons Uploaded' },
-        { id: 1, name: 'Lessons Completed' },
-        { id: 1, name: 'Lessons Uncompleted' },
-    ];
 
     return (
         <div className="mt-10">
             <div className="flex items-center justify-between">
-                <h1 className="text-[24px]">Completed Lessons</h1>
+                <h1 className="text-[24px]">{status} Lessons</h1>
                 <div className="flex items-center space-x-6">
-                    <ExportMenuBtn entries={exportMenuEntries}>Export CSV</ExportMenuBtn>
-                    <ScrollButton/>
+                    <Button>Export CSV</Button>
+                    <ScrollButton />
                 </div>
             </div>
-            <div className="flex mt-4 w-fit space-x-7 justify-between">
-                {
-                    data.map((props, index) => (
-                        <CompletedLessonCard key={index} color={colors[index]}{...props} />
-                    ))
-                }
+            <div className="flex items-center py-2 w-full overflow-hidden">
+                <div className="flex mt-4 w-fit space-x-7 justify-between">
+                    {
+                        data.map((props, index) => (
+                            <LessonCard key={index} color={colors[index]}{...props} />
+                        ))
+                    }
+                </div>
             </div>
         </div>
     );

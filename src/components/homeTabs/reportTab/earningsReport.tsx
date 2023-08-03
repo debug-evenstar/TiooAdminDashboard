@@ -2,6 +2,7 @@ import Select from "../../select/select";
 import walletImage from '../../../assets/icons/wallet.svg';
 import educatorsImage from '../../../assets/icons/educators.svg';
 import referalsImage from '../../../assets/icons/referals.svg';
+import Button from "../../button/button";
 
 type EarningsCardProps = {
     title: string;
@@ -44,27 +45,31 @@ export default function EarningsReport() {
     ];
 
     return (
-        <div className="p-4 rounded-[8px] border shadow w-full">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-lg text-primary">Earnings Report</h1>
-                    <span className="text-gray-400 text-sm"> Monthly earnings overview</span>
+        <>
+            <Button className="my-3">Export CSV</Button>
+            <div className="p-4 rounded-[8px] border shadow w-full">
+
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-lg text-primary">Earnings Report</h1>
+                        <span className="text-gray-400 text-sm"> Monthly earnings overview</span>
+                    </div>
+                    <Select>
+                        <option value="">July</option>
+                    </Select>
                 </div>
-                <Select>
-                    <option value="">July</option>
-                </Select>
+                <div className="grid grid-cols-3 gap-x-4 mt-16">
+                    {
+                        earningsData.map((data, index) => (
+                            <EarningsCard key={index} color={colors[index]} {...data} />
+                        ))
+                    }
+                </div>
+                <div className="mt-7">
+                    <h1 className="font-[500]">Net Earnings EB</h1>
+                    <h2 className="my-3 text-3xl font-[600]">₦ 1,500,000</h2>
+                </div>
             </div>
-            <div className="grid grid-cols-3 gap-x-4 mt-16">
-                {
-                    earningsData.map((data, index) => (
-                        <EarningsCard key={index} color={colors[index]} {...data} />
-                    ))
-                }
-            </div>
-            <div className="mt-7">
-                <h1 className="font-[500]">Net Earnings EB</h1>
-                <h2 className="my-3 text-3xl font-[600]">₦ 1,500,000</h2>
-            </div>
-        </div>
+        </>
     )
 }

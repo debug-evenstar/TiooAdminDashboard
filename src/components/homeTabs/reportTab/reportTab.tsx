@@ -13,7 +13,7 @@ export default function ReportTabComponent(): JSX.Element {
                     <EarningsReport />
                     <div className="mt-10">
                         <Button>Export CSV</Button>
-                        <div className="h-[140px] mt-5 bg-light rounded-[8px] p-4 flex justify-between flex-col">
+                        <div className="h-[140px] mt-3 bg-light rounded-[8px] p-4 flex justify-between flex-col">
                             <div className="flex justify-between items-center">
                                 <div>
                                     <h1 className="font-[500]">School's Mark-up</h1>
@@ -33,6 +33,9 @@ export default function ReportTabComponent(): JSX.Element {
                     </div>
                 </div>
                 <div className="w-[35%]">
+                    <div className="flex justify-end">
+                        <Button className="my-3">Export CSV</Button>
+                    </div>
                     <UsersRevenueReport />
                 </div>
             </div>

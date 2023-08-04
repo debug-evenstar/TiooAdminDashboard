@@ -18,12 +18,12 @@ export function PricingTabComponent({ type }: { type: string }) {
         <>
             <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
             <div className="mt-4">
-                <Input name="pricing" value="₦ 3,000" readonly={true} label={`For ${type}`} />
+                <Input className="py-2.5" name="pricing" value="₦ 3,000" readonly={true} label={`For ${type}`} />
             </div>
             <div className="flex justify-between items-center mt-16">
-                <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
+                <h1 className="font-[500] text-primary">Exceptions</h1>
                 <div className="bg-white rounded px-3 py-2 border text-sm outline-none cursor-pointer">
-                    <select disabled className="text-black cursor-pointer bg-white outline-none" onClick={(e) => { e.preventDefault() }}>
+                    <select disabled className="text-primary cursor-pointer bg-white outline-none" onClick={(e) => { e.preventDefault() }}>
                         <option>Add {type}</option>
                     </select>
                 </div>

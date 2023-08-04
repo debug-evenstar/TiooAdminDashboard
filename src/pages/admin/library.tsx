@@ -1,5 +1,5 @@
-import Header from "../components/header"
-import SearchBar from "../components/searchBar";
+import Header from "../../components/header"
+import SearchBar from "../../components/searchBar";
 
 export type TCategoryCardProps = { title?: string, name?: string, value?: number };
 

@@ -62,14 +62,16 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
                     }
                 </ul>
                 <ul className="h-fit">
-                    <li className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-white border-l-[4px]`}>
+                    <Link to="/settings/pricing">
+                    <li className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-white border-l-[4px] ${checkActive('/settings')}`}>
                         <div className="pr-4 fill-main">
                             <BookIcon fill='#aaa' />
                         </div>
                         Settings
                     </li>
+                    </Link>
 
-                    <li className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-white border-l-[4px]`}>
+                    <li className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-white border-l-[4px] ${checkActive('/help')}`}>
                         <div className="pr-4 fill-main">
                             <HelpIcon fill='#aaa' />
                         </div>

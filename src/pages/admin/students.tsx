@@ -1,11 +1,30 @@
-import Header from "../components/header"
-import SearchBar from "../components/searchBar"
-import FilterPanel from "../components/filterPanel"
-import { IListProps } from "../components/list/list"
-import PaginatedList from "../components/paginatedList/paginatedList";
-import { TMenuProps } from "../components/menu/menu";
+import Header from "../../components/header"
+import SearchBar from "../../components/searchBar"
+import FilterPanel from "../../components/filterPanel"
+import { IListProps } from "../../components/list/list"
+import PaginatedList from "../../components/paginatedList/paginatedList";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
+function StudentContextMenu(): JSX.Element {
+  const menuData = [
+    { route: '/students/profile', name: 'View Student Profile' },
+    { route: '/students/dashboard', name: 'View Student Profile' },
+  ];
+  return (
+    <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-white w-fit rounded-[8px] shadow-lg`}>
+      <ul>
+        {
+          menuData.map((menu) => (
+            <NavLink to={menu.route}>
+              <li className="cursor-pointer py-3 px-8 mr-2 hover:bg-light">{menu.name}</li>
+            </NavLink>
+          ))
+        }
+      </ul>
+    </div>
+  );
+}
 
 export default function Students() {
   const panels: string[] = [
@@ -26,21 +45,16 @@ export default function Students() {
 
   const [rows, setRows] = useState<IListProps[]>(data);
 
-  const menuList: TMenuProps[] = [
-    { id: 1, name: 'View School Profile' },
-    { id: 2, name: 'Enter Student Dashboard' },
-  ];
-
   return (
     <div>
       <Header title="Manage Students" />
       <div className="mt-5 px-10">
         <div className="flex mt-11 items-center justify-between">
           <SearchBar variant="filter" className="w-[24rem]" name="schools" placeholder="Search Students" />
-          <FilterPanel {...{data, setRows, panels}}/>
+          <FilterPanel {...{ data, setRows, panels }} />
         </div>
         <div>
-          <PaginatedList menuList={menuList} dataPerPage={5} data={rows} />
+          <PaginatedList menu={<StudentContextMenu />} dataPerPage={5} data={rows} />
         </div>
         <div className="py-20"></div>
       </div>

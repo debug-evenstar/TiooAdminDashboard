@@ -1,6 +1,6 @@
 import Popup from 'reactjs-popup';
 import image from '../../assets/images/user.png';
-import Menu, { TMenuProps } from '../menu/menu';
+import { ReactNode } from 'react';
 
 export type IListProps = {
     name: string;
@@ -9,7 +9,7 @@ export type IListProps = {
     image?: string;
 };
 
-export default function ListComponent({menuList, rows }: {menuList: TMenuProps[], rows: IListProps[] }) {
+export default function ListComponent({ menu, rows }: { menu: ReactNode, rows: IListProps[] }) {
     return (
         <div className="w-full text-left mt-10 ">
             <div className="text-gray-600 px-3 flex justify-between font-bold">
@@ -44,7 +44,7 @@ export default function ListComponent({menuList, rows }: {menuList: TMenuProps[]
                                     position="bottom right"
                                     on="click"
                                 >
-                                    <Menu values={menuList}/>
+                                    {menu}
                                 </Popup>
                             </div>
                         </div>

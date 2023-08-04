@@ -1,11 +1,10 @@
-import { useState } from 'react';
-
+import { ReactNode, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import ListComponent, { IListProps } from '../list/list';
 
 import './paginate.css'
-import { TMenuProps } from '../menu/menu';
-export default function PaginatedList({ menuList, dataPerPage, data }: { menuList: TMenuProps[], data: IListProps[], dataPerPage: number }) {
+
+export default function PaginatedList({ menu, dataPerPage, data }: { menu: ReactNode, data: IListProps[], dataPerPage: number }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -29,7 +28,7 @@ export default function PaginatedList({ menuList, dataPerPage, data }: { menuLis
 
   return (
     <>
-      <ListComponent menuList={menuList} rows={currentdata} />
+      <ListComponent menu={menu} rows={currentdata} />
       <ReactPaginate
         className='pagination-container'
         pageLinkClassName='page-li'

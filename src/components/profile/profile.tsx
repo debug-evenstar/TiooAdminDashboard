@@ -8,7 +8,7 @@ export type TProfile = {
 
 export default function Profile({ image, name, title }: TProfile) {
     return (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center text-primary space-x-2">
             <img className="w-[40px] h-[40px] rounded-full" src={image} alt="" />
             <div className="block">
                 <h1 className="text-md">{name}</h1>

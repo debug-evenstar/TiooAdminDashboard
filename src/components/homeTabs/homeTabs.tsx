@@ -1,7 +1,12 @@
-import { useState } from "react"
-import UserTabComponent from "./userTab/userTab"
-import LessonTabComponent from "./lessonTab/lessonTab"
-import ReportTabComponent from "./reportTab/reportTab"
+import { Suspense, lazy,useState } from "react"
+// import UserTabComponent from "./userTab/userTab"
+// import LessonTabComponent from "./lessonTab/lessonTab"
+// import ReportTabComponent from "./reportTab/reportTab"
+
+const UserTabComponent = lazy(() => import('./userTab/userTab'));
+const LessonTabComponent = lazy(() => import('./lessonTab/lessonTab'));
+const ReportTabComponent = lazy(() => import('./reportTab/reportTab'));
+
 
 
 type TTab = {
@@ -33,7 +38,9 @@ export default function HomeTabs() {
                 }
             </ul>
             <div className="mt-14 text-gray-600 pr-10">
-                {tabs.map((tab, key) => (active === key ? <div key={key}>{tab.component}</div> : null))}
+                <Suspense fallback={<h1>Loading</h1>}>
+                    {tabs.map((tab, key) => (active === key ? <div key={key}>{tab.component}</div> : null))}
+                </Suspense>
             </div>
 
         </div>

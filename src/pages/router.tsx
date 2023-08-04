@@ -14,6 +14,7 @@ import {
 
 
 import { Routes, Route, Navigate } from 'react-router-dom';
+import UserLevels from '../components/userLevels/userLevels';
 
 export default function AdminRouter() {
     return (
@@ -27,7 +28,7 @@ export default function AdminRouter() {
             <Route path="library" element={<Library />}></Route>
             <Route path="settings" element={<Settings />}>
                 <Route index path="pricing" element={<PricingTab />} />
-                <Route path="addusers" element={<h1>Add User</h1>} />
+                <Route path="userlevels" element={<UserLevels/>} />
                 <Route path="password" element={<h1>Password</h1>} />
                 <Route path="*" element={<Navigate to="pricing"></Navigate>}></Route>
 

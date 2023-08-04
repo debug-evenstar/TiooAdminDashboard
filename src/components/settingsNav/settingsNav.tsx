@@ -1,12 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
 import PriceTagIcon from "../../assets/icons/components/settingsNav/priceTag";
-import PlusIcon from "../../assets/icons/components/settingsNav/plus";
 import LockIcon from "../../assets/icons/components/settingsNav/lock";
+import UserIcon from "../../assets/icons/components/settingsNav/user";
 
 export default function SettingsNav() {
     const settingsNavItems = [
         { name: "Pricing", icon: PriceTagIcon, route: "/settings/pricing" },
-        { name: "Add Users", icon: PlusIcon, route: "/settings/addusers" },
+        { name: "User Levels", icon: UserIcon, route: "/settings/userlevels" },
         { name: "Password", icon: LockIcon, route: "/settings/password" }
     ];
 
@@ -15,8 +15,9 @@ export default function SettingsNav() {
     const checkActive = (route: string) => {
         return (location.pathname === route) ? "bg-light text-main font-[500] border-main" : "border-white hover:border-light";
     }
+
     return (
-        <ul className="flex flex-col text-gray-400 text-sm">
+        <ul className="flex mt-10 flex-col text-gray-400 text-sm">
             {
                 settingsNavItems.map((item, index) => (
                     <NavLink key={index} to={item.route}>

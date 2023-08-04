@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Input from "../Input/Input";
+import NairaInput from "../nairaInput/nairaInput";
 
 export function SchoolsComponent() {
     return (
@@ -18,7 +18,7 @@ export function PricingTabComponent({ type }: { type: string }) {
         <>
             <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
             <div className="mt-4">
-                <Input className="py-2.5" name="pricing" value="₦ 3,000" readonly={true} label={`For ${type}`} />
+                <NairaInput className="py-2.5" name="pricing" value="3,000"  />
             </div>
             <div className="flex justify-between items-center mt-16">
                 <h1 className="font-[500] text-primary">Exceptions</h1>
@@ -51,7 +51,7 @@ export default function PricingTab() {
                         <li
                             key={key}
                             onClick={() => setActive(key)}
-                            className={`py-2 pb-3 duration-300 rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6] font-[500]" : "text-gray-400 border-white"}`}>
+                            className={`py-2 pb-3 duration-300 text-sm rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6] font-[500]" : "text-gray-400 border-white"}`}>
                             {tab.name}
                         </li>
                     ))

@@ -10,7 +10,7 @@ export default function Settings() {
                 <div className="w-[20%] border-r h-screen">
                     <SettingsNav />
                 </div>
-                <div className="w-[80%] pl-6">
+                <div className="w-[80%] pl-6 pt-10">
                     <Outlet />
                 </div>
             </div>

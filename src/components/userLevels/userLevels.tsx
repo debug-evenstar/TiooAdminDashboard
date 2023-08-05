@@ -23,7 +23,7 @@ function UserAccordion({ data }: { data: any }) {
                 <div className="flex items-center w-1/2">
                     <h1 className="text-primary w-[15rem] ">{data.type}</h1>
                     <div className="flex w-full justify-between ">
-                        <h1 className={data.active ? "text-green-600" : "text-red-600"}>
+                        <h1 className={`${data.active ? "text-green-600" : "text-red-600"} font-[500]`}>
                             {data.active ? "Active" : "Inactive"}
                         </h1>
                         <div onClick={() => setActive(!active)}

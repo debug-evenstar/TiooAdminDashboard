@@ -34,9 +34,11 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
 
     const location = useLocation();
 
-    const checkActive = (route: string) => {
-        return (location.pathname === route) ? "bg-light text-main font-[600] border-main" : "border-white hover:border-light";
-    }
+    const checkActive = (route: string,match=false) => {
+        if(!match)
+            return (location.pathname === route) ? "bg-light text-main font-[600] border-main" : "border-white hover:border-light";
+        return (location.pathname.includes(route)) ? "bg-light text-main font-[600] border-main" : "border-white hover:border-light";
+        }
 
     return (
         <div className="bg-orange p-5 pr-1 h-screen overflow-y-auto relative w-[19%] border-r border-gray-200">
@@ -63,9 +65,9 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
                 </ul>
                 <ul className="h-fit">
                     <Link to="/settings/pricing">
-                    <li className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-white border-l-[4px] ${checkActive('/settings')}`}>
+                    <li className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-l-[4px] ${checkActive('/settings',true)}`}>
                         <div className="pr-4 fill-main">
-                            <BookIcon fill='#aaa' />
+                            <BookIcon fill={location.pathname.includes('settings')? "#5A51E6" : "#aaa"} />
                         </div>
                         Settings
                     </li>

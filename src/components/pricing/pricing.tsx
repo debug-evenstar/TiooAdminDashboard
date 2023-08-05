@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import NairaInput from "../nairaInput/nairaInput";
 
 export function SchoolsComponent() {
 
     const [teachers, setTeachers] = useState(5000);
     const [students, setStudents] = useState(3500);
+
+    const handler = (e: ChangeEvent<HTMLInputElement>, setter: any) => {
+        let temp = e.target.value.replace('/\Dg', '');
+        temp = temp.replaceAll(',','');
+        if(temp === '')
+            temp = '0';
+        const result = Number.parseInt(temp);
+        setter(result);
+    }
 
     return (
         <form>
@@ -14,11 +23,15 @@ export function SchoolsComponent() {
                 <NairaInput
                     className="py-2.5" name="pricing"
                     value={teachers.toLocaleString()}
-                    handler={(e: any) => setTeachers(e.target.value)} />
+                    handler={(e: any) => handler(e,setTeachers) } />
             </div>
             <div className="mt-5">
                 <p className="mb-2 text-sm text-gray-400 ">For Students </p>
-                <NairaInput className="py-2.5" readonly={false} name="pricing" value={students.toLocaleString()} handler={(e: any) => setStudents(e.target.value.toLocalString())} />
+                <NairaInput
+                    className="py-2.5" readonly={false}
+                    name="pricing"
+                    value={students.toLocaleString()}
+                    handler={(e: any) => handler(e,setStudents)} />
             </div>
             <div className="mt-5">
                 <p className="mb-2 text-sm text-gray-400 ">Total for schools </p>

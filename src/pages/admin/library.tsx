@@ -24,7 +24,7 @@ function Categories() {
   ];
 
   return (
-    <div className="w-[22%] overflow-y-auto h-[calc(100vh_-_95px)] p-4 border-l">
+    <div className="w-[22%] overflow-y-auto h-[calc(100vh_-_80px)] p-4 border-l">
       <div className="py-2">
         <h1 className="font-[400] text-primary">Categories</h1>
       </div>

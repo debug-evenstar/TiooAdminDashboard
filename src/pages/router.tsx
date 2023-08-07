@@ -1,4 +1,5 @@
-import PricingTab from '../components/pricing/pricing';
+import PricingTab from './admin/settingsPages/pricing';
+import UserLevels from './admin/settingsPages/userLevels';
 import StudentProfile from './admin/studentProfile';
 import {
     Home,
@@ -14,7 +15,7 @@ import {
 
 
 import { Routes, Route, Navigate } from 'react-router-dom';
-import UserLevels from '../components/userLevels/userLevels';
+import CouponTab from './admin/settingsPages/coupon';
 
 export default function AdminRouter() {
     return (
@@ -28,10 +29,10 @@ export default function AdminRouter() {
             <Route path="library" element={<Library />}></Route>
             <Route path="settings" element={<Settings />}>
                 <Route index path="pricing" element={<PricingTab />} />
-                <Route path="userlevels" element={<UserLevels/>} />
+                <Route path="userlevels" element={<UserLevels />} />
                 <Route path="password" element={<h1>Password</h1>} />
+                <Route path="coupon" element={<CouponTab/> } />
                 <Route path="*" element={<Navigate to="pricing"></Navigate>}></Route>
-
             </Route>
 
             <Route path="/marketplace" element={<Marketplace />}></Route>

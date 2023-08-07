@@ -14,8 +14,8 @@ export default function Header({ variant, title }: { variant?: boolean, title: s
     <>
       {
         (!variant) ?
-          <div className="px-[24px] h-[95px] flex items-center justify-between border-b">
-            <h1 className="text-primary text-[24px]">{title}</h1>
+          <div className="px-[24px] h-[80px] flex items-center justify-between border-b">
+            <h1 className="text-primary text-[22px]">{title}</h1>
             <Profile {...user} />
           </div>
           :

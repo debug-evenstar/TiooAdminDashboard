@@ -15,17 +15,12 @@ div::-webkit-scrollbar {
 
 /* Track */
 *::-webkit-scrollbar-track {
-    background: transparent !important;
+    background: #eee;
 }
 
 /* Handle */
 *::-webkit-scrollbar-thumb {
-    background: #ccc !important;
+    background: #5b51e636 !important;
     /* background: #7139f3 !important; */
     border-radius: 2px;
-}
-
-*{
-    scrollbar-color: #7139f3;
-    scrollbar-width: px;
 }

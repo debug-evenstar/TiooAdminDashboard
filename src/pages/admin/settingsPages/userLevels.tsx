@@ -1,6 +1,6 @@
 import { useState } from "react";
-import PlusIcon from "../../assets/icons/components/settingsNav/plus";
-import studentImage from '../../assets/images/student.png';
+import PlusIcon from "../../../assets/icons/components/settingsNav/plus";
+import studentImage from '../../../assets/images/student.png';
 
 
 
@@ -47,8 +47,8 @@ function UserAccordion({ data }: { data: any }) {
                             <span>{data.level}</span>
                         </div>
                         <div className="mb-2">
-                            <span className="text-gray-400">Password: </span>
-                            <span>{data.password}</span>
+                            <span className="text-gray-400">Role: </span>
+                            <span>Add</span>
                         </div>
                     </div>
                     <button className="text-red-600 flex space-x-2 items-center hover:shadow px-2 py-1 rounded">
@@ -75,7 +75,7 @@ const samples = [
 
 export default function UserLevels() {
     return (
-        <div className="mt-10">
+        <div className="mt-2">
             <div className="flex items-center justify-between ">
                 <h1 className="text-xl text-primary">User Levels</h1>
                 <div className="cursor-pointer w-7 h-7 rounded-full bg-main flex items-center justify-center">

@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import Button from "../../../components/button/button";
 import UserChecklist from "../../../components/userChecklist/userChecklist";
-import Popup from "reactjs-popup";
+// import Popup from "reactjs-popup";
 
 const PricingInput = ({ name, state, setState, readOnly }: { state: any, setState: any, name: string, readOnly: boolean }) => {
 
@@ -102,49 +102,70 @@ export function SchoolsComponent() {
     }, [students, teachers]);
 
     return (
-        <form>
-            <>
-                <div className="flex items-center justify-between">
-                    <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
-                    <Button className="outline-none text-sm" handler={(e) => { e.preventDefault(); setEdit(!edit) }}>
-                        {edit ? "Save" : "Edit pricing"}
-                    </Button>
-                </div>
-                <PricingInput state={teachers} setState={setTeachers} name="teachers" readOnly={!edit} />
-                <PricingInput state={students} setState={setStudents} name="students" readOnly={!edit} />
-                <PricingInput state={total} setState={setTotal} name="total" readOnly={true} />
-                <ExceptionsComponent type="Teachers" />
-            </>
-        </form>
+        <>
+            <div className="flex items-center justify-between">
+                <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
+                <Button className="outline-none text-sm" handler={(e) => { e.preventDefault(); setEdit(!edit) }}>
+                    {edit ? "Save" : "Edit pricing"}
+                </Button>
+            </div>
+            <PricingInput state={teachers} setState={setTeachers} name="teachers" readOnly={!edit} />
+            <PricingInput state={students} setState={setStudents} name="students" readOnly={!edit} />
+            <PricingInput state={total} setState={setTotal} name="total" readOnly={true} />
+            <ExceptionsComponent type="Schools" />
+        </>
     );
 }
+
+
+
+// export function ExceptionsComponent({ type }: { type: string }) {
+//     return (
+//         <div className="flex justify-between items-center mt-16">
+//             <h1 className="font-[500] text-primary">Exceptions</h1>
+//             <div className="bg-white rounded px-3 py-2 border text-sm outline-none cursor-pointer">
+//                 <Popup
+//                     on="click"
+//                     position="bottom center"
+//                     trigger={
+//                         <button className="text-primary cursor-pointer bg-white outline-none flex justify-between space-x-10 items-center" onClick={(e) => { e.preventDefault() }}>
+//                             <span>Add {type}</span>
+//                             <svg width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                                 <path d="M1.5 1L7.5 7L13.5 1" stroke="#030036" stroke-opacity="0.74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+//                             </svg>
+//                         </button>
+//                     }
+//                 >
+//                     <UserChecklist/>
+//                 </Popup>
+//             </div>
+//         </div>
+//     );
+// }
 
 
 
 export function ExceptionsComponent({ type }: { type: string }) {
+
+    const [ active , setActive ] = useState(false);
     return (
-        <div className="flex justify-between items-center mt-16">
+        <div className="flex justify-between mt-16">
             <h1 className="font-[500] text-primary">Exceptions</h1>
-            <div className="bg-white rounded px-3 py-2 border text-sm outline-none cursor-pointer">
-                <Popup
-                    on="click"
-                    position="bottom center"
-                    trigger={
-                        <button className="text-primary cursor-pointer bg-white outline-none flex justify-between space-x-10 items-center" onClick={(e) => {  }}>
-                            <span>Add {type}</span>
-                            <svg width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.5 1L7.5 7L13.5 1" stroke="#030036" stroke-opacity="0.74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                    }
-                >
-                    <UserChecklist/>
-                </Popup>
+            <div className="text-sm outline-none cursor-pointer items-end flex flex-col">
+                <button className="bg-white w-fit rounded px-3 py-2 border  text-primary cursor-pointer bg-white outline-none flex justify-between space-x-10 items-center" onClick={(e) => { setActive(!active);e.preventDefault() }}>
+                    <span>Add {type}</span>
+                    <svg width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.5 1L7.5 7L13.5 1" stroke="#030036" stroke-opacity="0.74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                {
+                    active && 
+                    <UserChecklist close={setActive} />
+                }
             </div>
         </div>
     );
 }
-
 
 
 function StudentsTabComponent() {
@@ -168,8 +189,7 @@ function StudentsTabComponent() {
 
             </div>
             <PricingInput state={students} setState={setStudents} name="students" readOnly={!edit} />
-            <ExceptionsComponent type="Schools" />
-            <UserChecklist />
+            <ExceptionsComponent type="Students" />
         </>
     );
 }
@@ -194,7 +214,7 @@ function FreelancersTabComponent() {
 
             </div>
             <PricingInput state={freelancers} setState={setFreelancers} name="freelancers" readOnly={!edit} />
-            <ExceptionsComponent type="Teachers" />
+            <ExceptionsComponent type="Freelancers" />
         </>
     );
 }

@@ -1,28 +1,24 @@
 import { ChangeEvent, useState } from 'react';
 import searchImage from '../../assets/images/search-md.png';
 
+const samples = [
+    { id: 1, value: { name: "Montesorri Gownsill", email: "montesorri@gmail.com" } },
+    { id: 2, value: { name: "Brainy Hive", email: "brainyhive@gmail.com" } },
+    { id: 3, value: { name: "Imao Obong Schools", email: "imaoboon@gmail.com" } },
+    { id: 4, value: { name: "Teeves Academy", email: "teevesacademy@gmail.com" } },
+    { id: 5, value: { name: "Manjaro Academy", email: "mangaroo@gmail.com" } },
+    { id: 6, value: { name: "Fedora Schools", email: "fedoraschools@gmail.com" } },
+];
 
 export default function UserChecklist() {
 
-
-
-    const samples = [
-        { id: 1, value: { name: "Montesorri Gownsill", email: "montesorri@gmail.com" } },
-        { id: 2, value: { name: "Brainy Hive", email: "brainyhive@gmail.com" } },
-        { id: 3, value: { name: "Imao Obong Schools", email: "imaoboon@gmail.com" } },
-        { id: 4, value: { name: "Teeves Academ", email: "teevesacademy@gmail.com" } },
-        { id: 5, value: { name: "Manjaro Academ", email: "mangaroo@gmail.com" } },
-        { id: 6, value: { name: "Fedora Schools", email: "fedoraschools@gmail.com" } },
-    ];
-
-
-
     const [checkedList, setCheckedList] = useState<number[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
+
     const [list, setList] = useState(samples);
 
     const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value: number= Number.parseInt(e.target.value);
+        const value: number = Number.parseInt(e.target.value);
         setCheckedList([...checkedList, value])
     }
 
@@ -34,8 +30,9 @@ export default function UserChecklist() {
     }
 
 
+
     return (
-        <div className="w-[360px] min-h-[370px] bg-white rounded-[8px] shadow-lg border">
+        <div className="w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3]">
             <div className="w-full shadow py-3 flex items-center p-4 space-x-1">
                 <img src={searchImage} alt="" className='w-5 h-5' />
                 <input

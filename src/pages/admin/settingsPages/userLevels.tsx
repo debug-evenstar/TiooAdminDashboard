@@ -65,12 +65,24 @@ function UserAccordion({ data }: { data: any }) {
     );
 }
 
-const samples = [
+
+type TUserLevel = {
+    name: string;
+    email: string;
+    type: string;
+    active: boolean;
+    password: string;
+    level: string;
+}
+
+const samples: TUserLevel[]  = [
     { name: "David micheal", email: "david@gmail.com", type: 'Super Admin', level: "Developer", password: "somepassword", active: true },
     { name: "David micheal", email: "david@gmail.com", type: 'normal', level: "Developer", password: "somepassword", active: false },
     { name: "David micheal", email: "david@gmail.com", type: 'normal', level: "Developer", password: "somepassword", active: true },
 
 ];
+
+
 
 
 export default function UserLevels() {

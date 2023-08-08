@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import Button from "../../../components/button/button";
 import UserChecklist from "../../../components/userChecklist/userChecklist";
+import Popup from "reactjs-popup";
 
 const PricingInput = ({ name, state, setState, readOnly }: { state: any, setState: any, name: string, readOnly: boolean }) => {
 
@@ -125,9 +126,20 @@ export function ExceptionsComponent({ type }: { type: string }) {
         <div className="flex justify-between items-center mt-16">
             <h1 className="font-[500] text-primary">Exceptions</h1>
             <div className="bg-white rounded px-3 py-2 border text-sm outline-none cursor-pointer">
-                <select disabled className="text-primary cursor-pointer bg-white outline-none" onClick={(e) => { e.preventDefault() }}>
-                    <option>Add {type}</option>
-                </select>
+                <Popup
+                    on="click"
+                    position="bottom center"
+                    trigger={
+                        <button className="text-primary cursor-pointer bg-white outline-none flex justify-between space-x-10 items-center" onClick={(e) => {  }}>
+                            <span>Add {type}</span>
+                            <svg width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.5 1L7.5 7L13.5 1" stroke="#030036" stroke-opacity="0.74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    }
+                >
+                    <UserChecklist/>
+                </Popup>
             </div>
         </div>
     );
@@ -157,7 +169,7 @@ function StudentsTabComponent() {
             </div>
             <PricingInput state={students} setState={setStudents} name="students" readOnly={!edit} />
             <ExceptionsComponent type="Schools" />
-            <UserChecklist/>
+            <UserChecklist />
         </>
     );
 }

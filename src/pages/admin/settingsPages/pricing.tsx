@@ -56,7 +56,7 @@ export function PricingSchoolsComponent() {
 
 
 
-function AddExceptionModal({ data, modal, setModal }: { data: TUserChecklistProps[], modal: boolean, setModal: (s: boolean) => void }) {
+function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: TUserChecklistProps[], modal: boolean, setModal: (s: boolean) => void }) {
 
     const [current, setCurrent] = useState<TUserChecklistProps>(data[0]);
     const [price, setPrice] = useState<number>(0);
@@ -102,11 +102,20 @@ function AddExceptionModal({ data, modal, setModal }: { data: TUserChecklistProp
                     }
                     <div className={`h-[12rem] px-4 py-4  ${data.length === 1? "w-full":"w-[66%]"}`}>
                         <h1 className="text-xl font-[500]">{current?.value.name}</h1>
-                        <div className="mt-4">
-                            <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
-                            {/* <input className=" px-3 py-1.5 rounded w-full border" /> */}
-                            <NairaInput className="py-1.5" name="price" value={price.toLocaleString()} handler={handler} />
-                        </div>
+                        { type ==="Schools"? 
+                            <div className="mt-4">
+                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
+                                {/* <input className=" px-3 py-1.5 rounded w-full border" /> */}
+                                <NairaInput className="py-1.5" name="price" value={price.toLocaleString()} handler={handler} />
+                            </div>
+                            :
+                            <div className="mt-4">
+                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
+                                {/* <input className=" px-3 py-1.5 rounded w-full border" /> */}
+                                <NairaInput className="py-1.5" name="price" value={price.toLocaleString()} handler={handler} />
+                            </div>
+
+                        }
                     </div>
                 </div>
                 <div className="h-[44px] border-t px-3 flex items-center justify-between">
@@ -153,13 +162,12 @@ export function ExceptionsComponent({ type }: { type: string }) {
         }
         setActiveList(newList);
         setModal(true);
-
     }
 
 
     return (
         <>
-            {modal && <AddExceptionModal data={activeList} {...{ modal, setModal }} />}
+            {modal && <AddExceptionModal data={activeList} {...{ type,modal, setModal }} />}
             <div className="flex justify-between mt-16">
                 <h1 className="font-[500] text-primary">Exceptions</h1>
                 <div className="text-sm outline-none cursor-pointer items-end flex flex-col">

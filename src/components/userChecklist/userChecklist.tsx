@@ -9,7 +9,7 @@ export type TUserChecklistProps = {
 }
 
 
-export default function UserChecklist({ selection,onApply, setSelection, data, close }: { onApply: () => void,selection: any, setSelection: any, data: TUserChecklistProps[], close: (state: boolean) => void }) {
+export default function UserChecklist({ selection,onApply, className, setSelection, data, close }: { className?: string, onApply: () => void,selection: any, setSelection: any, data: TUserChecklistProps[], close: (state: boolean) => void }) {
 
     const [searchInput, setSearchInput] = useState<string>('');
 
@@ -35,7 +35,7 @@ export default function UserChecklist({ selection,onApply, setSelection, data, c
     }
 
     return (
-        <div className="w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3]">
+        <div className={`w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3] ${className}`}>
             <div className="w-full shadow py-3 flex items-center p-4 space-x-1">
                 <img src={searchImage} alt="" className='w-5 h-5' />
                 <input

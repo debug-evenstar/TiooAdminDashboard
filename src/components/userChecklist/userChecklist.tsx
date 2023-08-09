@@ -1,36 +1,40 @@
 import { ChangeEvent, useState } from 'react';
 import searchImage from '../../assets/images/search-md.png';
 
-const samples = [
-    { id: 1, value: { name: "Montesorri Gownsill", email: "montesorri@gmail.com" } },
-    { id: 2, value: { name: "Brainy Hive", email: "brainyhive@gmail.com" } },
-    { id: 3, value: { name: "Imao Obong Schools", email: "imaoboon@gmail.com" } },
-    { id: 4, value: { name: "Teeves Academy", email: "teevesacademy@gmail.com" } },
-    { id: 5, value: { name: "Manjaro Academy", email: "mangaroo@gmail.com" } },
-    { id: 6, value: { name: "Fedora Schools", email: "fedoraschools@gmail.com" } },
-];
 
-export default function UserChecklist({close}:{close: (state: boolean) => void}) {
 
-    const [checkedList, setCheckedList] = useState<number[]>([]);
+export type TUserChecklistProps = {
+    id: number;
+    value: {name: string,email: string};
+}
+
+
+export default function UserChecklist({ selection,onApply, setSelection, data, close }: { onApply: () => void,selection: any, setSelection: any, data: TUserChecklistProps[], close: (state: boolean) => void }) {
+
     const [searchInput, setSearchInput] = useState<string>('');
 
-    const [list, setList] = useState(samples);
+    const [list, setList] = useState<TUserChecklistProps[]>(data);
 
     const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let updatedList = [...selection];
         const value: number = Number.parseInt(e.target.value);
-        setCheckedList([...checkedList, value])
+
+        if(e.target.checked){
+            updatedList = [...selection, value]
+        }else{
+            updatedList = selection.filter((i: number) => i !== value);
+        }
+        setSelection(updatedList);
     }
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value: string = e.target.value;
         setSearchInput(value);
-        const newList = samples.filter((item) => item.value.name.toLowerCase().includes(value.toLocaleLowerCase()))
+        const newList = data.filter((item) => item.value.name.toLowerCase().includes(value.toLocaleLowerCase()))
         setList(newList);
     }
 
-
-    return  (
+    return (
         <div className="w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3]">
             <div className="w-full shadow py-3 flex items-center p-4 space-x-1">
                 <img src={searchImage} alt="" className='w-5 h-5' />
@@ -58,8 +62,8 @@ export default function UserChecklist({close}:{close: (state: boolean) => void})
                 }
             </div>
             <div className='h-[60px] relative bottom-0 p-4 flex items-center border justify-between'>
-                <button onClick={ () => close(false) } className="rounded-[8px] outline-none border px-3 py-1.5 text-sm">Cancel</button>
-                <button className="rounded-[8px] outline-none text-white bg-main border px-3 py-1.5 text-sm">Apply</button>
+                <button onClick={() => close(false)} className="rounded-[8px] outline-none border px-3 py-1.5 text-sm">Cancel</button>
+                <button onClick={() => onApply() } disabled={selection.length === 0 } className={`${selection.length > 0? "bg-main":"bg-gray-300"} rounded-[8px] outline-none text-white border px-3 py-1.5 text-sm`}>Apply</button>
             </div>
         </div>
     )

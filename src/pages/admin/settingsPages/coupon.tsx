@@ -19,7 +19,7 @@ export default function CouponTab() {
       <div className="mt-7 text-sm">
         <div className="w-full">
           <div className="font-[400] px-2 py-2 font-[500] rounded-[8px] text-primary bg-neutral-100 flex items-center justify-between">
-            <input type="checkbox" />
+            <input type="checkbox" className="bg-orange-400 cursor-pointer outline-none w-4 h-4 checked:bg-orange-400 "/>
             <div className="w-[10rem]">Name</div>
             <div className="w-[6rem]">Code</div>
             <div className="w-[7rem]">Status</div>
@@ -30,7 +30,7 @@ export default function CouponTab() {
           {
               coupons.map((item,index) => (
                 <div key={index} className="font-[400] my-3 px-2 py-2 font-[500] rounded-[8px] text-primary flex items-center justify-between">
-                  <input type="checkbox" />
+                  <input type="checkbox" className="text-green-500 cursor-pointer outline-none border-gray-300 w-4 h-4 "/>
                   <div className="w-[10rem]">{item.name}</div>
                   <div className="w-[6rem]">
                     <span className="p-1 bg-light">{item.code}</span>

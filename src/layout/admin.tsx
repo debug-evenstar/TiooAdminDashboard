@@ -18,7 +18,7 @@ export default function AdminLayout() {
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (token && !user.isAuthenticated) {
+        if (token && user.isAuthenticated) {
             fetchUser()
                 .then(response => {
                     dispatch(update(response.data.profile));

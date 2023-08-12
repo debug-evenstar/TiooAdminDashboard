@@ -36,29 +36,29 @@ export default function PricingInput({ name, state, setState, readOnly }: TPrici
             <div className="">
                 <p className="mb-2 text-sm text-gray-400 ">3 months</p>
                 <NairaInput
-                    className="py-2.5" name={name + ':3months'}
-                    value={name && state['3months'].toLocaleString()}
+                    className="py-2.5" name={name + ':quarter'}
+                    value={name && state['quarter'].toLocaleString()}
 
                     readonly={readOnly}
-                    handler={(e: any) => handler(e, '3months')} />
+                    handler={(e: any) => handler(e, 'quarter')} />
 
             </div>
             <div className="">
                 <p className="mb-2 text-sm text-gray-400 ">6 months </p>
                 <NairaInput
-                    className="py-2.5" name={name + ':6months'}
-                    value={name && state['6months'].toLocaleString()}
+                    className="py-2.5" name={name + ':half'}
+                    value={name && state['half'].toLocaleString()}
                     readonly={readOnly}
-                    handler={(e: any) => handler(e, '6months')} />
+                    handler={(e: any) => handler(e, 'half')} />
 
             </div>
             <div className="">
                 <p className="mb-2 text-sm text-gray-400 ">1 year </p>
                 <NairaInput
-                    className="py-2.5" name={name + ':1year'}
-                    value={name && state['1year'].toLocaleString()}
+                    className="py-2.5" name={name + ':year'}
+                    value={name && state['year'].toLocaleString()}
                     readonly={readOnly}
-                    handler={(e: any) => handler(e, '1year')} />
+                    handler={(e: any) => handler(e, 'year')} />
             </div>
         </div>
     );

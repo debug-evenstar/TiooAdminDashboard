@@ -10,31 +10,31 @@ export function PricingSchoolsComponent() {
 
     const [teachers, setTeachers] = useState({
         teachers: 0,
-        '3months': 0,
-        '6months': 0,
-        '1year': 0,
+        'quarter': 0,
+        'half': 0,
+        'year': 0,
     });
 
     const [students, setStudents] = useState({
         students: 0,
-        '3months': 0,
-        '6months': 0,
-        '1year': 0,
+        'quarter': 0,
+        'half': 0,
+        'year': 0,
     });
 
     const [total, setTotal] = useState({
         total: 0,
-        '3months': 0,
-        '6months': 0,
-        '1year': 0,
+        'quarter': 0,
+        'half': 0,
+        'year': 0,
     });
 
     useEffect(() => {
         setTotal({
             total: students['students'] + teachers['teachers'],
-            '3months': students['3months'] + teachers['3months'],
-            '6months': students['6months'] + teachers['6months'],
-            '1year': students['1year'] + teachers['1year'],
+            'quarter': students['quarter'] + teachers['quarter'],
+            'half': students['half'] + teachers['half'],
+            'year': students['year'] + teachers['year'],
         })
     }, [students, teachers]);
 
@@ -73,18 +73,17 @@ function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: 
     const handleClick = (id: number) => {
         const value = data.filter((item) => item.id === id);
         setCurrent(value[0])
-        console.log(current);
     }
 
     return (
-        <div className={`fixed inset-0 z-[99] h-screen w-screen bg-[#00000044] duration-300 transition ${modal ? "" : "-translate-y-full"}`}>
+        <div className={`fixed inset-0 z-[99] h-screen w-screen bg-[#00000044] duration-300 ${modal ? "" : "-translate-y-full"}`}>
 
-            <div className="duration-1000  translate-y-[8rem] flex flex flex-col justify-between mx-auto w-[40%] h-auto bg-white rounded">
+            <div className={`${modal ? "translate-y-[8rem]" : "translate-y-0"}  duration-1000 flex flex flex-col justify-between mx-auto w-[40%] h-auto bg-white rounded`}>
                 <div className="flex items-center justify-between py-2 px-4 border-b">
                     <h1>Set Price</h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
                 </div>
-                <div className="flex justify-between h-[14rem]">
+                <div className={`flex justify-between ${ type === "Schools"? "h-[19rem]":"h-[15rem]"}`}>
                     {
                         data.length > 1 && 
                         <div className="w-[34%] border-r px-2 py-3 overflow-y-auto">
@@ -100,18 +99,21 @@ function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: 
                             </ul>
                         </div>
                     }
-                    <div className={`h-[12rem] px-4 py-4  ${data.length === 1? "w-full":"w-[66%]"}`}>
+                    <div className={`h-[15rem] px-4 py-4  ${data.length === 1? "w-full":"w-[66%]"}`}>
                         <h1 className="text-xl font-[500]">{current?.value.name}</h1>
-                        { type ==="Schools"? 
+                        { type === "Schools"? 
                             <div className="mt-4">
+                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Teachers</label>
+                                <NairaInput className="py-1.5 mb-2" name="price" value={price.toLocaleString()} handler={handler} />
+                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Students</label>
+                                <NairaInput className="py-1.5 mb-2" name="price" value={price.toLocaleString()} handler={handler} />
                                 <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
-                                {/* <input className=" px-3 py-1.5 rounded w-full border" /> */}
-                                <NairaInput className="py-1.5" name="price" value={price.toLocaleString()} handler={handler} />
+                                <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={price.toLocaleString()} handler={handler} />
+
                             </div>
                             :
                             <div className="mt-4">
                                 <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
-                                {/* <input className=" px-3 py-1.5 rounded w-full border" /> */}
                                 <NairaInput className="py-1.5" name="price" value={price.toLocaleString()} handler={handler} />
                             </div>
 
@@ -124,7 +126,6 @@ function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: 
                         <button className={`${0 ? "bg-main" : "bg-neutral-100"} rounded-[8px] outline-none text-neutral-300 px-3 py-1.5 text-sm`}>Apply on all schools</button>
                         :
                         <button className="text-gray-300 text-xs">Reset prices</button>
-
                     }
                     <button className={`${0 ? "bg-main" : "bg-neutral-100"} rounded-[8px] outline-none text-neutral-300 px-3 py-1.5 text-sm`}>Apply</button>
                 </div>
@@ -167,7 +168,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
 
     return (
         <>
-            {modal && <AddExceptionModal data={activeList} {...{ type,modal, setModal }} />}
+            { <AddExceptionModal data={activeList} {...{ type,modal, setModal }} />}
             <div className="flex justify-between mt-16">
                 <h1 className="font-[500] text-primary">Exceptions</h1>
                 <div className="text-sm outline-none cursor-pointer items-end flex flex-col">
@@ -194,9 +195,9 @@ function StudentsTabComponent() {
     const [edit, setEdit] = useState(false);
     const [students, setStudents] = useState({
         students: 0,
-        '3months': 0,
-        '6months': 0,
-        '1year': 0,
+        'quarter': 0,
+        'half': 0,
+        'year': 0,
     });
 
     return (
@@ -219,9 +220,9 @@ function FreelancersTabComponent() {
     const [edit, setEdit] = useState(false);
     const [freelancers, setFreelancers] = useState({
         freelancers: 0,
-        '3months': 0,
-        '6months': 0,
-        '1year': 0,
+        'quarter': 0,
+        'half': 0,
+        'year': 0,
     });
 
     return (

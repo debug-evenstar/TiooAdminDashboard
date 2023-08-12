@@ -14,13 +14,15 @@ import {
 } from './admin';
 
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 import CouponTab from './admin/settingsPages/coupon';
+import Login from './auth/login';
 
 export default function AdminRouter() {
     return (
-        <Routes>
+        <>
             <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
             <Route path="schools" element={<Schools />}></Route>
             <Route path="freelancers" element={<Freelancers />}></Route>
             <Route path="teachers" element={<Teachers />}></Route>
@@ -39,6 +41,6 @@ export default function AdminRouter() {
             {/* <Route path="*" element={<h1>Not Found in admin</h1>}></Route> */}
 
             <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
-        </Routes>
+        </>
     );
 }

@@ -1,18 +1,18 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import userImage from './../../assets/images/user.png'
 
 
-export type TProfile = {
-    image: string;
-    name: string;
-    title: string;
-};
 
-export default function Profile({ image, name, title }: TProfile) {
+export default function Profile() {
+    const user = useSelector((state: RootState) => state.user.user);
+    console.log(user)
     return (
         <div className="flex items-center text-primary space-x-2">
-            <img className="w-[40px] h-[40px] rounded-full" src={image} alt="" />
+            <img className="w-[40px] h-[40px] rounded-full" src={userImage} alt="" />
             <div className="block">
-                <h1 className="text-md">{name}</h1>
-                <h2 className="text-xs mt-1 text-gray-400">{title}</h2>
+                <h1 className="text-md">{user.name}</h1>
+                <h2 className="text-xs mt-1 text-gray-400">{user.account_type}</h2>
             </div>
         </div>
     );

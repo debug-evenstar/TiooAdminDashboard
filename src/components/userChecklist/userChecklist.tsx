@@ -34,6 +34,11 @@ export default function UserChecklist({ selection,onApply, className, setSelecti
         setList(newList);
     }
 
+    const closeList = () => {
+        setSelection([]);
+        close(false);
+    }
+
     return (
         <div className={`w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3] ${className}`}>
             <div className="w-full shadow py-3 flex items-center p-4 space-x-1">
@@ -62,7 +67,7 @@ export default function UserChecklist({ selection,onApply, className, setSelecti
                 }
             </div>
             <div className='h-[60px] relative bottom-0 p-4 flex items-center border justify-between'>
-                <button onClick={() => close(false)} className="rounded-[8px] outline-none border px-3 py-1.5 text-sm">Cancel</button>
+                <button onClick={closeList} className="rounded-[8px] outline-none border px-3 py-1.5 text-sm">Cancel</button>
                 <button onClick={() => onApply() } disabled={selection.length === 0 } className={`${selection.length > 0? "bg-main":"bg-gray-300"} rounded-[8px] outline-none text-white border px-3 py-1.5 text-sm`}>Apply</button>
             </div>
         </div>

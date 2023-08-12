@@ -21,8 +21,10 @@ export default function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [errors, setErrors] = useState<LoginError>({});
+    const [ active, setActive ] = useState(false);
 
     const handleLogin = async (data: { email: string, password: string }) => {
+        setActive(true);
         try {
             const response = await authUser(data);
             const token: string = response.data.token;
@@ -30,6 +32,7 @@ export default function Login() {
             dispatch(update(response.data.profile))
             navigate('/')
         } catch (e) {
+            setActive(false);
             if (axios.isAxiosError(e)) {
                 if (e.response?.data.error)
                     setErrors({ email: "", password: e.response.data.message })
@@ -52,6 +55,7 @@ export default function Login() {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         const newErrors = validateForm();
+
         if (Object.keys(newErrors).length === 0) {
             setErrors({});
             handleLogin({ email, password });
@@ -60,6 +64,9 @@ export default function Login() {
         }
 
     }
+
+
+
     return (
         <div className="flex items-center justify-between h-screen w-full overflow-hidden">
             <div className="hidden sm:md:block w-1/2 bg-main h-screen">
@@ -90,7 +97,9 @@ export default function Login() {
                         <span className="text-red-500 text-xs mt-2">{errors?.password}</span>
                     </div>
 
-                    <button className="w-full text-center shadow-xl outline-none hover:bg-hover shadow-light py-3 rounded-[8px] text-white font-[500] bg-main mt-10 text-sm">Log In</button>
+                    <button className="w-full text-center shadow-xl outline-none hover:bg-hover shadow-light py-3 rounded-[8px] text-white font-[500] bg-main mt-10 text-sm">
+                        { !active ? <span>Log In</span>: <div className="border-2 border-gray-400 border-r-gray-200 w-6 h-6 rounded-full mx-auto animate-spin"></div> }
+                    </button>
                 </form>
             </div>
         </div>

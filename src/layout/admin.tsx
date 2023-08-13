@@ -3,30 +3,24 @@ import Sidebar from '../components/sidebar/';
 
 import Loader from '../components/loader/loader';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { useDispatch } from 'react-redux';
+// import { RootState } from '../redux/store';
 
-import { fetchUser } from '../services/api';
 import { update } from '../redux/slices/user';
 
 
 
 export default function AdminLayout() {
-    const user = useSelector((state: RootState) => state.user);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const navigate = useNavigate();
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token && user.isAuthenticated) {
-            fetchUser()
-                .then(response => {
-                    dispatch(update(response.data.profile));
-                })
+        const profile = localStorage.getItem('profile');
+        if (profile) {
+            dispatch(update(JSON.parse(profile)));
         } else {
-            navigate('/login')
+            navigate('/login');
         }
-
     }, []);
 
     return (

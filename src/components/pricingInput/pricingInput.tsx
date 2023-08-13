@@ -28,9 +28,9 @@ export default function PricingInput({ name, state, setState, readOnly }: TPrici
                 <p className="mb-2 text-sm text-gray-400 ">{name[0].toUpperCase() + name.slice(1)}</p>
                 <NairaInput
                     className="py-2.5" name={name}
-                    value={name && state[name].toLocaleString()}
+                    value={name && state['value'].toLocaleString()}
                     readonly={readOnly}
-                    handler={(e: any) => handler(e, name)} />
+                    handler={(e: any) => handler(e, 'value')} />
                     
             </div>
             <div className="">

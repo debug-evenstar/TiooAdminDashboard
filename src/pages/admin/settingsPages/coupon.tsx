@@ -1,22 +1,31 @@
 import Popup from "reactjs-popup";
 import PlusIcon from "../../../assets/icons/components/settingsNav/plus";
-import { FormEvent, useState } from "react";
-import UserChecklist, { TUserChecklistProps } from "../../../components/userChecklist/userChecklist";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { TUserChecklistProps } from "../../../components/userChecklist/userChecklist";
+import axiosInstance from "../../../services/api";
+import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { setCoupons } from "../../../redux/slices/coupon";
 
-type TCouponProps = {
-  name: string;
+export type TCouponProps = {
+  id: number;
+  campaign: string;
   code: string;
-  status: boolean;
+  status: string;
   amount: number;
   users: number;
+  updatedAt?: string;
+  createdAt?: string;
+
+};
+
+type TCouponError = {
+  campaign?: string;
+  code?: string;
+  amount?: string;
+  users?: string;
 }
-
-const coupons: TCouponProps[] = [
-  { name: 'FRENZY', code: 'XJE4529EL', status: true, users: 12, amount: 2000 },
-  { name: 'ANYTIME', code: 'SFFAJ55LA', status: false, users: 0, amount: 0 },
-  { name: '4 KIDS', code: 'W5649E545', status: true, users: 0, amount: 500 },
-];
-
 
 const couponMenu: string[] = [
   'Edit Coupon',
@@ -26,19 +35,9 @@ const couponMenu: string[] = [
   'Delete Coupon',
 ];
 
-const samples: TUserChecklistProps[] = [
-  { id: 1, value: { name: "Montesorri Gownsill", email: "montesorri@gmail.com" } },
-  { id: 2, value: { name: "Brainy Hive", email: "brainyhive@gmail.com" } },
-  { id: 3, value: { name: "Imao Obong Schools", email: "imaoboon@gmail.com" } },
-  { id: 4, value: { name: "Teeves Academy", email: "teevesacademy@gmail.com" } },
-  { id: 5, value: { name: "Manjaro Academy", email: "mangaroo@gmail.com" } },
-  { id: 6, value: { name: "Fedora Schools", email: "fedoraschools@gmail.com" } },
-];
 
-function OptionsMenu({ options }: { options: TUserChecklistProps[] }) {
+function OptionsMenu({ selection, setSelection }: { selection: any, setSelection: any }) {
   const [active, setActive] = useState(false);
-  const [selection, setSelection] = useState<TUserChecklistProps[]>([]);
-
   return (
     <>
       <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-full px-3 py-2 border flex justify-end">
@@ -52,7 +51,7 @@ function OptionsMenu({ options }: { options: TUserChecklistProps[] }) {
 
         </div>
       </div>
-      {active && <UserChecklist className="w-full" onApply={() => null} {...{ selection, setSelection }} close={() => null} data={options} />}
+      {active && <StudentsChecklist className="w-full" onApply={() => { setActive(false) }} selection={selection} setSelection={setSelection} close={() => null} />}
     </>
   );
 }
@@ -63,48 +62,98 @@ function ApplyCouponModal({ modal, setModal }: { modal: boolean, setModal: (stat
   const [campaign, setCampaign] = useState('');
   const [code, setCode] = useState('');
   const [amount, setAmount] = useState(0);
-  const [status, setStatus] = useState('Active');
-  const [users, setUsers] = useState([1, 2, 3, 4]);
+  const [status, _] = useState('Active');
+  const [users, setUsers] = useState<TUserChecklistProps[]>([]);
+  const [errors, setErrors] = useState<TCouponError>();
 
-  const validate = () => {
 
+  const dispatch = useDispatch();
+
+  const handleAmountInput = (e: ChangeEvent<HTMLInputElement>) => {
+    let amount = Number.parseInt(e.target.value);
+    if (e.target.value === '')
+      amount = 0;
+    if (!isNaN(amount)) {
+      setAmount(amount)
+    }
   }
 
+  const validate = () => {
+    const newErrors: TCouponError = {};
+
+    if (campaign.length == 0)
+      newErrors.campaign = "Please Enter campaign string";
+    if (code.length === 0)
+      newErrors.code = 'Please enter coupon code';
+    if (users.length == 0)
+      newErrors.users = "please select atleast one user";
+
+    return newErrors;
+
+  }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    alert("submitting coupon data");
+
+
+    const newErrors = validate();
+
+    if (Object.keys(newErrors).length === 0) {
+      setErrors({});
+      const payload =  { campaign, code, status, amount ,users};
+      console.log(payload);
+      // return;
+      axiosInstance.post('/coupon',payload)
+        .then(response => {
+          if (response.data) {
+            dispatch(setCoupons(response.data.data));
+            if (!response.data.error) {
+              setModal(false);
+            }
+          }
+        })
+        .catch(error => console.log(error));
+
+    } else {
+      setErrors(newErrors);
+    }
+
   }
 
   return (
     <div className={`fixed text-primary z-[90] bg-[#00000044] transition inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
       <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[500px] w-[380px] mx-auto `}>
         <div className="p-2 border-b px-4 flex items-center justify-between">
-          <h1>Add Users</h1>
+          <h1>Apply Coupon</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
         </div>
-        <form noValidate onSubmit={handleSubmit}>
+        <div onSubmit={handleSubmit}>
           <div className=" px-4 mt-4 h-[24rem] overflow-y-auto">
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Campaign</label>
               <input type="text" value={campaign} onChange={(e) => setCampaign(e.target.value)} className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+              <span className="text-red-500 mt-4">{errors?.campaign}</span>
             </div>
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Code</label>
               <input type="text" value={code} onChange={(e) => setCode(e.target.value)} className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+              <span className="text-red-500 mt-4">{errors?.code}</span>
             </div>
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Amount</label>
-              <input type="text" value={code} onChange={(e) => setAmount(e.target.value)} name="amount" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+              <input type="text" value={amount} onChange={handleAmountInput} name="amount" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+              <span className="text-red-500 mt-4">{errors?.amount}</span>
+
             </div>
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Add Students</label>
-              <OptionsMenu options={samples} />
+              <OptionsMenu selection={users} setSelection={setUsers} />
+              <span className="text-red-500 mt-4">{errors?.users}</span>
             </div>
           </div>
           <div className="px-4 w-full h-[3rem] mt-[2px] flex items-center">
-            <button className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">Apply</button>
+            <button onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">Apply</button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
@@ -113,6 +162,18 @@ function ApplyCouponModal({ modal, setModal }: { modal: boolean, setModal: (stat
 
 export default function CouponTab() {
   const [modal, setModal] = useState<boolean>(false);
+
+  const coupons = useSelector((state: RootState) => state.coupon.coupons);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axiosInstance.get('/coupon')
+      .then(response => {
+        dispatch(setCoupons(response.data.data))
+      })
+      .catch(error => console.log(error))
+  }, [])
+
 
   return (
     <div className="mt-2">
@@ -134,15 +195,15 @@ export default function CouponTab() {
           </div>
           <div>
             {
-              coupons.map((item: TCouponProps, index) => (
+              coupons?.map((item: TCouponProps, index: number) => (
                 <div key={index} className="font-[400] my-3 px-2 py-2 font-[500] rounded-[8px] text-primary flex items-center justify-between">
-                  <div className="w-[10rem]">{item.name}</div>
+                  <div className="w-[10rem]">{item.campaign}</div>
                   <div className="w-[6rem]">
                     <span className="p-1 bg-light">{item.code}</span>
                   </div>
                   <div className="w-[7rem]">
                     <div className="flex items-center space-x-2">
-                      <div className={`w-2 h-2 rounded-full ${item.status ? "bg-green-500" : "bg-red-500"}`}></div>
+                      <div className={`w-2 h-2 rounded-full ${item.status === 'Active' ? "bg-green-500" : "bg-red-500"}`}></div>
                       <span>{item.status ? "Active" : "Inactive"}</span>
                     </div>
                   </div>

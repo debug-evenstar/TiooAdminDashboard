@@ -3,52 +3,66 @@ import Button from "../../../components/button/button";
 import UserChecklist, { TUserChecklistProps } from "../../../components/userChecklist/userChecklist";
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { PriceState, setFreelancers, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
+
 
 export function PricingSchoolsComponent() {
 
     const [edit, setEdit] = useState(false);
 
-    const [teachers, setTeachers] = useState({
-        teachers: 0,
-        'quarter': 0,
-        'half': 0,
-        'year': 0,
-    });
+    const dispatch = useDispatch();
 
-    const [students, setStudents] = useState({
-        students: 0,
-        'quarter': 0,
-        'half': 0,
-        'year': 0,
-    });
+    const teachers = useSelector((state: RootState) => state.pricing.schools.teachers);
+    const students = useSelector((state: RootState) => state.pricing.schools.students);
+    const total = useSelector((state: RootState) => state.pricing.schools.total);
 
-    const [total, setTotal] = useState({
-        total: 0,
-        'quarter': 0,
-        'half': 0,
-        'year': 0,
-    });
+
+    // console.log(teachers,students,total);
 
     useEffect(() => {
-        setTotal({
-            total: students['students'] + teachers['teachers'],
-            'quarter': students['quarter'] + teachers['quarter'],
-            'half': students['half'] + teachers['half'],
-            'year': students['year'] + teachers['year'],
-        })
+    });
+
+    const handleTeachers = (data: PriceState) => {
+        dispatch(setSchoolsTeachers(data));
+    }
+
+    const handleStudents = (data: PriceState) => {
+        dispatch(setSchoolsStudents(data));
+    }
+
+    useEffect(() => {
+        const total: PriceState = {
+            value: students['value'] + teachers['value'],
+            quarter: students['quarter'] + teachers['quarter'],
+            half: students['half'] + teachers['half'],
+            year: students['year'] + teachers['year']
+        }
+
+        dispatch(setSchoolsTotal(total));
     }, [students, teachers]);
+
+
+    const handleSubmit = () => {
+        if (edit) {
+
+
+        }
+        setEdit(!edit)
+    }
 
     return (
         <>
             <div className="flex items-center justify-between">
                 <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
-                <Button className="outline-none text-sm" handler={(e) => { e.preventDefault(); setEdit(!edit) }}>
+                <Button className="outline-none text-sm" handler={handleSubmit}>
                     {edit ? "Save" : "Edit pricing"}
                 </Button>
             </div>
-            <PricingInput state={teachers} setState={setTeachers} name="teachers" readOnly={!edit} />
-            <PricingInput state={students} setState={setStudents} name="students" readOnly={!edit} />
-            <PricingInput state={total} setState={setTotal} name="total" readOnly={true} />
+            <PricingInput state={teachers} setState={handleTeachers} name="teachers" readOnly={!edit} />
+            <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
+            <PricingInput state={total} setState={() => null} name="total" readOnly={true} />
             <ExceptionsComponent type="Schools" />
         </>
     );
@@ -56,7 +70,7 @@ export function PricingSchoolsComponent() {
 
 
 
-function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: TUserChecklistProps[], modal: boolean, setModal: (s: boolean) => void }) {
+function AddExceptionModal({ type, data, modal, setModal }: { type: string, data: TUserChecklistProps[], modal: boolean, setModal: (s: boolean) => void }) {
 
     const [current, setCurrent] = useState<TUserChecklistProps>(data[0]);
     const [price, setPrice] = useState<number>(0);
@@ -83,25 +97,25 @@ function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: 
                     <h1>Set Price</h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
                 </div>
-                <div className={`flex justify-between ${ type === "Schools"? "h-[19rem]":"h-[15rem]"}`}>
+                <div className={`flex justify-between ${type === "Schools" ? "h-[19rem]" : "h-[15rem]"}`}>
                     {
-                        data.length > 1 && 
+                        data.length > 1 &&
                         <div className="w-[34%] border-r px-2 py-3 overflow-y-auto">
                             <ul className="">
                                 {
                                     data.map((item, index) => (
                                         <li
-                                        onClick={() => handleClick(item.id)}
-                                        className={`my-1 text-xs font-[500] rounded-[8px] py-2 border-l-2  px-2 cursor-pointer  hover:bg-light ${current?.id === item.id ? "border-main bg-light text-main" : "hover:border-gray-300 text-primary border-white"}`}
-                                        key={index}>{item.value.name}</li>
-                                        ))
+                                            onClick={() => handleClick(item.id)}
+                                            className={`my-1 text-xs font-[500] rounded-[8px] py-2 border-l-2  px-2 cursor-pointer  hover:bg-light ${current?.id === item.id ? "border-main bg-light text-main" : "hover:border-gray-300 text-primary border-white"}`}
+                                            key={index}>{item.value.name}</li>
+                                    ))
                                 }
                             </ul>
                         </div>
                     }
-                    <div className={`h-[15rem] px-4 py-4  ${data.length === 1? "w-full":"w-[66%]"}`}>
+                    <div className={`h-[15rem] px-4 py-4  ${data.length === 1 ? "w-full" : "w-[66%]"}`}>
                         <h1 className="text-xl font-[500]">{current?.value.name}</h1>
-                        { type === "Schools"? 
+                        {type === "Schools" ?
                             <div className="mt-4">
                                 <label htmlFor="" className="text-xs text-gray-400 mb-4">Teachers</label>
                                 <NairaInput className="py-1.5 mb-2" name="price" value={price.toLocaleString()} handler={handler} />
@@ -122,10 +136,10 @@ function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: 
                 </div>
                 <div className="h-[44px] border-t px-3 flex items-center justify-between">
                     {
-                        data.length > 1?
-                        <button className={`${0 ? "bg-main" : "bg-neutral-100"} rounded-[8px] outline-none text-neutral-300 px-3 py-1.5 text-sm`}>Apply on all schools</button>
-                        :
-                        <button className="text-gray-300 text-xs">Reset prices</button>
+                        data.length > 1 ?
+                            <button className={`${0 ? "bg-main" : "bg-neutral-100"} rounded-[8px] outline-none text-neutral-300 px-3 py-1.5 text-sm`}>Apply on all schools</button>
+                            :
+                            <button className="text-gray-300 text-xs">Reset prices</button>
                     }
                     <button className={`${0 ? "bg-main" : "bg-neutral-100"} rounded-[8px] outline-none text-neutral-300 px-3 py-1.5 text-sm`}>Apply</button>
                 </div>
@@ -133,8 +147,6 @@ function AddExceptionModal({ type,data, modal, setModal }: { type: string,data: 
         </div>
     );
 }
-
-
 
 const samples: TUserChecklistProps[] = [
     { id: 1, value: { name: "Montesorri Gownsill", email: "montesorri@gmail.com" } },
@@ -158,7 +170,6 @@ export function ExceptionsComponent({ type }: { type: string }) {
         // get { id, value } data from id's in selection
         const newList = samples.filter((item) => newSelection.includes(item.id))
         if (newList.length === 0) {
-            alert("Please make a selection");
             return;
         }
         setActiveList(newList);
@@ -168,7 +179,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
 
     return (
         <>
-            { <AddExceptionModal data={activeList} {...{ type,modal, setModal }} />}
+            {<AddExceptionModal data={activeList} {...{ type, modal, setModal }} />}
             <div className="flex justify-between mt-16">
                 <h1 className="font-[500] text-primary">Exceptions</h1>
                 <div className="text-sm outline-none cursor-pointer items-end flex flex-col">
@@ -193,13 +204,13 @@ export function ExceptionsComponent({ type }: { type: string }) {
 
 function StudentsTabComponent() {
     const [edit, setEdit] = useState(false);
-    const [students, setStudents] = useState({
-        students: 0,
-        'quarter': 0,
-        'half': 0,
-        'year': 0,
-    });
 
+    const students = useSelector((state: RootState) => state.pricing.students);
+    const dispatch = useDispatch();
+
+    const handleStudents = (data: PriceState) => {
+        dispatch(setStudents(data));
+    }
     return (
         <>
             <div className="flex items-center justify-between">
@@ -209,7 +220,7 @@ function StudentsTabComponent() {
                 </Button>
 
             </div>
-            <PricingInput state={students} setState={setStudents} name="students" readOnly={!edit} />
+            <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
             <ExceptionsComponent type="Students" />
         </>
     );
@@ -218,12 +229,13 @@ function StudentsTabComponent() {
 
 function FreelancersTabComponent() {
     const [edit, setEdit] = useState(false);
-    const [freelancers, setFreelancers] = useState({
-        freelancers: 0,
-        'quarter': 0,
-        'half': 0,
-        'year': 0,
-    });
+  
+    const freelancers = useSelector((state: RootState) => state.pricing.freelancers);
+    const dispatch = useDispatch();
+
+    const handleFreelancers = (data: PriceState) => {
+        dispatch(setFreelancers(data));
+    }
 
     return (
         <>
@@ -234,7 +246,7 @@ function FreelancersTabComponent() {
                 </Button>
 
             </div>
-            <PricingInput state={freelancers} setState={setFreelancers} name="freelancers" readOnly={!edit} />
+            <PricingInput state={freelancers} setState={handleFreelancers} name="freelancers" readOnly={!edit} />
             <ExceptionsComponent type="Freelancers" />
         </>
     );

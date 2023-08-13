@@ -1,12 +1,15 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import userImage from './../../assets/images/user.png'
+import { useEffect } from "react";
 
 
 
 export default function Profile() {
     const user = useSelector((state: RootState) => state.user.user);
-    console.log(user)
+    useEffect(() => {
+        console.log(user);
+    }, [])
     return (
         <div className="flex items-center text-primary space-x-2">
             <img className="w-[40px] h-[40px] rounded-full" src={userImage} alt="" />

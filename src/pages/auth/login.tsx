@@ -27,9 +27,12 @@ export default function Login() {
         setActive(true);
         try {
             const response = await authUser(data);
-            const token: string = response.data.token;
-            localStorage.setItem('token', token);
-            dispatch(update(response.data.profile))
+            // const token: string = response.data.token;
+            // localStorage.setItem('token', token);
+            let profile = response.data.profile;
+            profile = JSON.stringify(profile);
+            localStorage.setItem('profile',profile);
+            dispatch(update(profile))
             navigate('/')
         } catch (e) {
             setActive(false);

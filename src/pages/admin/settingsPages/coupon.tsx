@@ -6,7 +6,7 @@ import axiosInstance from "../../../services/api";
 import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { setCoupons } from "../../../redux/slices/coupon";
+import { clearCoupons, setCoupons } from "../../../redux/slices/coupon";
 
 export type TCouponProps = {
   id: number;
@@ -99,17 +99,16 @@ function ApplyCouponModal({ modal, setModal }: { modal: boolean, setModal: (stat
 
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
-      const payload =  { campaign, code, status, amount ,users};
+      const payload = { campaign, code, status, amount, users };
       console.log(payload);
       // return;
-      axiosInstance.post('/coupon',payload)
+      axiosInstance.post('/coupon', payload)
         .then(response => {
-          if (response.data) {
-            dispatch(setCoupons(response.data.data));
-            if (!response.data.error) {
-              setModal(false);
-            }
+          if (!response.data.error) {
+            dispatch(clearCoupons());
+            setModal(false);
           }
+
         })
         .catch(error => console.log(error));
 
@@ -172,7 +171,7 @@ export default function CouponTab() {
         dispatch(setCoupons(response.data.data))
       })
       .catch(error => console.log(error))
-  }, [])
+  }, [coupons])
 
 
   return (
@@ -195,6 +194,8 @@ export default function CouponTab() {
           </div>
           <div>
             {
+              coupons?.length > 0?
+
               coupons?.map((item: TCouponProps, index: number) => (
                 <div key={index} className="font-[400] my-3 px-2 py-2 font-[500] rounded-[8px] text-primary flex items-center justify-between">
                   <div className="w-[10rem]">{item.campaign}</div>
@@ -237,6 +238,10 @@ export default function CouponTab() {
                   </div>
                 </div>
               ))
+              :
+              <div className="w-full h-[20rem] flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-gray-400 animate-spin"></div>
+              </div>
             }
           </div>
         </div>

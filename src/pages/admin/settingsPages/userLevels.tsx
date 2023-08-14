@@ -199,6 +199,7 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
         axiosInstance.post('/user', payload)
             .then(() => {
                 dispatch(clearAdmins());
+                setModal(false);
             })
             .catch(error => console.log(error));
     }

@@ -3,12 +3,14 @@ import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import userReducer from './slices/user';
 import pricingReducer from './slices/pricing';
 import couponReducer from './slices/coupon';
+import adminReducer from './slices/admin';
 
 const store: ToolkitStore = configureStore({
     reducer: {
         user: userReducer,
         pricing: pricingReducer,
         coupon: couponReducer,
+        admin: adminReducer,
     }
 });
 

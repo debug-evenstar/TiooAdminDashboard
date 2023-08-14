@@ -3,8 +3,9 @@ import PlusIcon from "../../../assets/icons/components/settingsNav/plus";
 import studentImage from '../../../assets/images/student.png';
 import searchImage from '../../../assets/images/search-md.png';
 import axiosInstance from "../../../services/api";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { clearAdmins, setAdmins } from "../../../redux/slices/admin";
+import { RootState } from "../../../redux/store";
 
 
 
@@ -21,9 +22,7 @@ type TCheckListProps = {
     value: any;
 }
 
-function CheckList({ data, search }: { search?: boolean, data: TCheckListProps[] }) {
-
-    const [list, setList] = useState<string[]>([]);
+function CheckList({ data, search, selection, setSelection }: { selection: number[], setSelection: (s: number[]) => void, search?: boolean, data: TCheckListProps[] }) {
 
     const [searchInput, setSearchInput] = useState<string>('');
 
@@ -32,8 +31,15 @@ function CheckList({ data, search }: { search?: boolean, data: TCheckListProps[]
     }
 
     const handleSelection = (e: ChangeEvent<HTMLInputElement>) => {
-        const value: string = e.target.value;
-        setList([...list, value]);
+        let updatedList = [...selection];
+        const value: number = Number.parseInt(e.target.value);
+
+        if (e.target.checked) {
+            updatedList = [...selection, value]
+        } else {
+            updatedList = selection.filter((i: number) => i !== value);
+        }
+        setSelection(updatedList);
     }
 
 
@@ -54,7 +60,7 @@ function CheckList({ data, search }: { search?: boolean, data: TCheckListProps[]
                 {
                     data.map(({ id, value }: TCheckListProps) => (
                         <li key={id} className="my-2 rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
-                            <input onChange={handleSelection} type="checkbox" value={value} />
+                            <input className="outline-none cursor-pointer" checked={selection.includes(id)} onChange={handleSelection} type="checkbox" value={id} />
                             <span className="text-gray-500">{value}</span>
                         </li>
                     ))
@@ -64,7 +70,42 @@ function CheckList({ data, search }: { search?: boolean, data: TCheckListProps[]
     );
 }
 
-function OptionsMenu({ options, search = false }: { search?: boolean, options: TCheckListProps[] }) {
+function SingleOptionsMenu({ options, selection, setSelection }: { selection: number, setSelection: (s: number) => void, options: TCheckListProps[] }) {
+    const [active, setActive] = useState(false);
+
+    const handleSelection = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = Number.parseInt(e.target.value);
+        setSelection(value);
+    }
+
+    return (
+        <>
+            <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-full px-3 py-2 border flex justify-end">
+                <div
+                    className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
+                cursor-pointer ${!active ? "rotate-180" : ""}`}
+                >
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M13.7071 7.70711C13.3166 8.09763 12.6834 8.09763 12.2929 7.70711L7 2.41421L1.70711 7.70711C1.31658 8.09763 0.683417 8.09763 0.292893 7.70711C-0.0976315 7.31658 -0.0976316 6.68342 0.292893 6.29289L6.29289 0.292894C6.68342 -0.0976303 7.31658 -0.0976304 7.70711 0.292894L13.7071 6.29289C14.0976 6.68342 14.0976 7.31658 13.7071 7.70711Z" fill="#030036" fillOpacity="0.74" />
+                    </svg>
+
+                </div>
+            </div>
+            {
+                active &&
+                options.map(({ id, value }: TCheckListProps) => (
+                    <li key={id} className="my-2 rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
+                        <input className="outline-none cursor-pointer" checked={selection === id} onChange={handleSelection} type="checkbox" value={id} />
+                        <span className="text-gray-500">{value}</span>
+                    </li>
+                ))
+            }
+        </>
+    );
+}
+
+
+function OptionsMenu({ options, search = false, selection, setSelection }: { selection: number[], setSelection: (s: number[]) => void, search?: boolean, options: TCheckListProps[] }) {
     const [active, setActive] = useState(false);
 
     return (
@@ -80,7 +121,7 @@ function OptionsMenu({ options, search = false }: { search?: boolean, options: T
 
                 </div>
             </div>
-            {active && <CheckList search={search} data={options} />}
+            {active && <CheckList search={search} {...{ selection, setSelection }} data={options} />}
         </>
     );
 }
@@ -102,10 +143,75 @@ const statusOptions: TCheckListProps[] = [
 ];
 
 
+type UserFormError = {
+    fullname?: string;
+    email?: string;
+    status?: string;
+    role?: string;
+    permissions?: string;
+}
 
 function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
 
+    const [fullname, setFullname] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [status, setStatus] = useState<number>(1);
+    const [role, setRole] = useState<string>('');
+    const [permissions, setPermissions] = useState<number[]>([]);
+    const [errors, setErrors] = useState<UserFormError>({});
 
+
+    const dispatch = useDispatch()
+
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>, setter: (s: string) => void) => {
+        const value = e.target.value;
+        setter(value);
+    }
+
+    const validateForm = (): UserFormError => {
+        const newErrors: UserFormError = {};
+        if (!email) {
+            newErrors.email = "Email field in required";
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = "Invalid email format";
+        }
+        if (!role)
+            newErrors.role = "Please enter a valid role";
+        if (status === 0)
+            newErrors.status = "Please select an admin status";
+        if (!fullname)
+            newErrors.fullname = "Please enter admin name";
+        if (!permissions.length)
+            newErrors.permissions = "Please select atlease one permission";
+        return newErrors;
+    }
+
+    const submitForm = () => {
+        const payload = {
+            name: fullname,
+            role: 'admin',
+            position: role,
+            permissions: permissions,
+            email: email,
+        }
+
+        axiosInstance.post('/user', payload)
+            .then(() => {
+                dispatch(clearAdmins());
+            })
+            .catch(error => console.log(error));
+    }
+
+    const handleSubmit = () => {
+        const newErrors = validateForm();
+        if (Object.keys(newErrors).length === 0) {
+            setErrors({});
+            submitForm();
+        } else {
+            setErrors(newErrors);
+        }
+    }
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] transition inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
@@ -117,27 +223,35 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
                 <div className=" px-4 mt-4 h-[24rem] overflow-y-auto">
                     <div className="text-xs mb-3">
                         <label htmlFor="" className="">Full Name</label>
-                        <input type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+                        <input value={fullname} onChange={(e) => handleChange(e, setFullname)} type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+                        <p className="my-1 text-red-400">{errors?.fullname}</p>
                     </div>
                     <div className="text-xs mb-3">
                         <label htmlFor="" className="">Email</label>
-                        <input type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+                        <input value={email} onChange={(e) => handleChange(e, setEmail)} type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+                        <p className="my-1 text-red-400">{errors?.email}</p>
+
                     </div>
                     <div className="text-xs mb-3">
                         <label htmlFor="" className="">Status</label>
-                        <OptionsMenu options={statusOptions} />
+                        <SingleOptionsMenu selection={status} setSelection={setStatus} options={statusOptions} />
+                        <p className="my-1 text-red-400">{errors?.status}</p>
                     </div>
                     <div className="text-xs mb-3">
                         <label htmlFor="" className="">Role</label>
-                        <input type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+                        <input value={role} onChange={(e) => handleChange(e, setRole)} type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+                        <p className="my-1 text-red-400">{errors?.role}</p>
+
                     </div>
                     <div className="text-xs mb-3">
-                        <label htmlFor="" className="">Access Level</label>
-                        <OptionsMenu search options={accessOptions} />
+                        <label htmlFor="" className="">Permissions</label>
+                        <OptionsMenu selection={permissions} setSelection={setPermissions} search options={accessOptions} />
+                        <p className="my-1 text-red-400">{errors?.permissions}</p>
+
                     </div>
                 </div>
                 <div className="px-4 w-full h-[3rem] mt-[2px] flex items-center">
-                    <button className="bg-main w-full text-sm text-center py-1.5 rounded text-white font-[500]">Invite</button>
+                    <button onClick={handleSubmit} className="bg-main w-full text-sm text-center py-1.5 rounded text-white font-[500]">Invite</button>
                 </div>
             </div>
         </div>
@@ -210,7 +324,7 @@ function UserAccordion({ data }: { data: TUserLevel }) {
                         <div className="mb-2 w-[20rem] flex space-x-2">
                             <div className="text-gray-400">Permission: </div>
                             <div className="flex flex-col text-sm text-primary">
-                                {data.permissions.map((name,index) => (
+                                {data.permissions.map((name, index) => (
                                     <span key={index}>{name}</span>
                                 ))}
                             </div>
@@ -239,14 +353,15 @@ function UserAccordion({ data }: { data: TUserLevel }) {
 
 export default function UserLevels() {
     const [modal, setModal] = useState<boolean>(false);
-    const [admins, setAdmins] = useState<TUserLevel[]>([]);
 
+    const admins = useSelector((state: RootState) => state.admin.users );
+    const dispatch = useDispatch();
     const toggleModal = () => setModal(!modal);
 
     useEffect(() => {
         axiosInstance.get('/user')
             .then(response => {
-                setAdmins(response.data.data);
+                dispatch(setAdmins(response.data.data));
             })
             .catch(error => console.log(error))
     }, [])
@@ -264,10 +379,15 @@ export default function UserLevels() {
                 </button>
             </div>
             <div className="mt-10">
-                {
-                    admins.map((admins, index) => (
+
+                {admins.length > 0 ?
+                    admins.map((admins: TUserLevel, index: number) => (
                         <UserAccordion key={index} data={admins} />
                     ))
+                    :
+                    <div className="w-full h-[16rem] flex items-center justify-center">
+                        <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-gray-400 animate-spin"></div>
+                    </div>
                 }
             </div>
         </div>

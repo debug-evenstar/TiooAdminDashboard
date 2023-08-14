@@ -5,6 +5,7 @@ import StudentsChecklist from "../../../components/studentsChecklist/studentsChe
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { clearCoupons, setCoupons } from "../../../redux/slices/coupon";
+import Toast from "../../../components/toast/toast";
 
 export type TCouponProps = {
   id: number;
@@ -55,7 +56,7 @@ function OptionsMenu({ selection, setSelection }: { selection: number[], setSele
 }
 
 
-function ApplyCouponModal({ modal, setModal, data }: { modal: boolean, data?: TCouponProps, setModal: (state: boolean) => void }) {
+function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCouponProps, setModal: (state: boolean) => void }) {
   const [campaign, setCampaign] = useState(data?.campaign || '');
   const [code, setCode] = useState(data?.code || '');
   const [amount, setAmount] = useState(data?.amount || 0);
@@ -89,16 +90,13 @@ function ApplyCouponModal({ modal, setModal, data }: { modal: boolean, data?: TC
   }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-
     const newErrors = validate();
-
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       const payload = { campaign, code, status, amount, users };
 
       if (data) {
-        axiosInstance.put('/coupon', payload)
+        axiosInstance.put('/coupon', { ...payload, id: data.id })
           .then(response => {
             if (!response.data.error) {
               dispatch(clearCoupons());
@@ -138,7 +136,7 @@ function ApplyCouponModal({ modal, setModal, data }: { modal: boolean, data?: TC
             </div>
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Code</label>
-              <input readOnly={data? true: false} type="text" value={code} onChange={(e) => setCode(e.target.value)} className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+              <input readOnly={data ? true : false} type="text" value={code} onChange={(e) => setCode(e.target.value)} className="mt-2 outline-none rounded w-full px-3 py-2 border" />
               <span className="text-red-500 mt-4">{errors?.code}</span>
             </div>
             <div className="text-xs mb-6">
@@ -154,7 +152,7 @@ function ApplyCouponModal({ modal, setModal, data }: { modal: boolean, data?: TC
             </div>
           </div>
           <div className="px-4 w-full h-[3rem] mt-[2px] flex items-center">
-            <button onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">{ data? 'Update':'Apply'}</button>
+            <button onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">{data ? 'Update' : 'Apply'}</button>
           </div>
         </div>
       </div>
@@ -163,7 +161,7 @@ function ApplyCouponModal({ modal, setModal, data }: { modal: boolean, data?: TC
 }
 
 
-function CouponMenuBtn({ id,data}: { data: TCouponProps, id: number }) {
+function CouponMenuBtn({ id, data }: { data: TCouponProps, id: number }) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const menuRef = useRef<any>(null);
@@ -211,7 +209,7 @@ function CouponMenuBtn({ id,data}: { data: TCouponProps, id: number }) {
       case 'Edit Coupon':
         setModal(true);
         break;
-  
+
       default:
         return;
     }
@@ -219,7 +217,7 @@ function CouponMenuBtn({ id,data}: { data: TCouponProps, id: number }) {
 
   return (
     <div ref={menuRef}>
-      {<ApplyCouponModal {...{ modal, setModal }} data={data}/>}
+      {<CouponModal {...{ modal, setModal }} data={data} />}
       <button className="outline-none px-2" onClick={() => setMenuOpen(!menuOpen)}>
         <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2 10C2.55228 10 3 9.55228 3 9C3 8.44772 2.55228 8 2 8C1.44772 8 1 8.44772 1 9C1 9.55228 1.44772 10 2 10Z" stroke="#030036" strokeOpacity="0.74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -260,7 +258,8 @@ export default function CouponTab() {
 
   return (
     <div className="mt-2">
-      {<ApplyCouponModal {...{ modal, setModal }} />}
+      <Toast message="something is about to happen" onClose={() => null} type="something" />
+      <CouponModal {...{ modal, setModal }} />
       <div className="flex items-center justify-between ">
         <h1 className="text-xl font-[500] text-primary">Coupons</h1>
         <button onClick={() => setModal(true)} className="cursor-pointer w-7 h-7 rounded-full bg-main flex items-center justify-center">

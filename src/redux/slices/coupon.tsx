@@ -4,8 +4,9 @@ import { TCouponProps } from "../../pages/admin/settingsPages/coupon";
 
 
 
-const initialState: { coupons: TCouponProps[]} = {
-    coupons: []
+const initialState: { coupons: TCouponProps[],couponModal: boolean} = {
+    coupons: [],
+    couponModal: false
 };
 
 export const couponSlice = createSlice({
@@ -20,6 +21,9 @@ export const couponSlice = createSlice({
         },
         clearCoupons: (state) => {
             state.coupons = [];
+        },
+        toggleCouponModal: (state) => {
+            state.couponModal = !state.couponModal;
         }
     }
 })

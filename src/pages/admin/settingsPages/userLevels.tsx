@@ -1,22 +1,19 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import PlusIcon from "../../../assets/icons/components/settingsNav/plus";
 import studentImage from '../../../assets/images/student.png';
 import searchImage from '../../../assets/images/search-md.png';
+import axiosInstance from "../../../services/api";
 
 
 
 
 
 type TUserLevel = {
-    name: string;
+    fullname: string;
     email: string;
-    type: string;
-    level: string;
+    role: string;
+    permissions: string[];
 }
-
-const samples: TUserLevel[] = [
-    { name: "David micheal", email: "david@gmail.com", type: 'Super Admin', level: "Manage Freelancers" },
-];
 
 
 type TCheckListProps = {
@@ -102,12 +99,14 @@ const accessOptions: TCheckListProps[] = [
 const statusOptions: TCheckListProps[] = [
     { id: 1, value: "Super Admin" },
     { id: 2, value: "Normal" },
-
 ];
 
 
 
 function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
+
+
+
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] transition inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
             <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[500px] w-[380px] mx-auto `}>
@@ -155,7 +154,7 @@ function DeleteUserModal({ modal, setModal }: { modal: boolean, setModal: (state
                 </div>
                 <div className="flex px-4 items-center space-y-3 flex-col  py-10">
                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20.7 15.6335L12.5016 1.39569C12.2967 1.04687 12.0042 0.757642 11.6532 0.556681C11.3021 0.35572 10.9046 0.25 10.5 0.25C10.0955 0.25 9.69798 0.35572 9.3469 0.556681C8.99581 0.757642 8.70334 1.04687 8.49847 1.39569L0.300029 15.6335C0.102907 15.9709 -0.000976562 16.3546 -0.000976562 16.7454C-0.000976562 17.1361 0.102907 17.5199 0.300029 17.8572C0.502276 18.2082 0.794251 18.499 1.14599 18.6998C1.49773 18.9006 1.89658 19.0043 2.30159 19.0001H18.6985C19.1032 19.0039 19.5016 18.9001 19.853 18.6993C20.2044 18.4985 20.4961 18.2079 20.6982 17.8572C20.8956 17.52 20.9998 17.1364 21.0001 16.7456C21.0004 16.3549 20.8969 15.9711 20.7 15.6335ZM19.3997 17.1063C19.3282 17.2282 19.2256 17.3289 19.1024 17.3981C18.9792 17.4673 18.8398 17.5025 18.6985 17.5001H2.30159C2.16029 17.5025 2.02088 17.4673 1.89765 17.3981C1.77442 17.3289 1.67181 17.2282 1.60034 17.1063C1.5356 16.9967 1.50145 16.8717 1.50145 16.7444C1.50145 16.6171 1.5356 16.4922 1.60034 16.3826L9.79878 2.14475C9.87169 2.02341 9.97477 1.92301 10.098 1.8533C10.2212 1.7836 10.3603 1.74696 10.5019 1.74696C10.6435 1.74696 10.7826 1.7836 10.9058 1.8533C11.029 1.92301 11.1321 2.02341 11.205 2.14475L19.4035 16.3826C19.4676 16.4925 19.5011 16.6177 19.5005 16.7449C19.4998 16.8722 19.465 16.997 19.3997 17.1063ZM9.75003 11.5001V7.75006C9.75003 7.55115 9.82905 7.36038 9.9697 7.21973C10.1104 7.07908 10.3011 7.00006 10.5 7.00006C10.6989 7.00006 10.8897 7.07908 11.0304 7.21973C11.171 7.36038 11.25 7.55115 11.25 7.75006V11.5001C11.25 11.699 11.171 11.8897 11.0304 12.0304C10.8897 12.171 10.6989 12.2501 10.5 12.2501C10.3011 12.2501 10.1104 12.171 9.9697 12.0304C9.82905 11.8897 9.75003 11.699 9.75003 11.5001ZM11.625 14.8751C11.625 15.0976 11.559 15.3151 11.4354 15.5001C11.3118 15.6851 11.1361 15.8293 10.9305 15.9144C10.725 15.9996 10.4988 16.0219 10.2806 15.9784C10.0623 15.935 9.86187 15.8279 9.70453 15.6706C9.5472 15.5132 9.44005 15.3128 9.39665 15.0945C9.35324 14.8763 9.37552 14.6501 9.46066 14.4445C9.54581 14.239 9.69001 14.0633 9.87501 13.9397C10.06 13.816 10.2775 13.7501 10.5 13.7501C10.7984 13.7501 11.0845 13.8686 11.2955 14.0796C11.5065 14.2905 11.625 14.5767 11.625 14.8751Z" fill="#030036" fill-opacity="0.74"/>
+                        <path d="M20.7 15.6335L12.5016 1.39569C12.2967 1.04687 12.0042 0.757642 11.6532 0.556681C11.3021 0.35572 10.9046 0.25 10.5 0.25C10.0955 0.25 9.69798 0.35572 9.3469 0.556681C8.99581 0.757642 8.70334 1.04687 8.49847 1.39569L0.300029 15.6335C0.102907 15.9709 -0.000976562 16.3546 -0.000976562 16.7454C-0.000976562 17.1361 0.102907 17.5199 0.300029 17.8572C0.502276 18.2082 0.794251 18.499 1.14599 18.6998C1.49773 18.9006 1.89658 19.0043 2.30159 19.0001H18.6985C19.1032 19.0039 19.5016 18.9001 19.853 18.6993C20.2044 18.4985 20.4961 18.2079 20.6982 17.8572C20.8956 17.52 20.9998 17.1364 21.0001 16.7456C21.0004 16.3549 20.8969 15.9711 20.7 15.6335ZM19.3997 17.1063C19.3282 17.2282 19.2256 17.3289 19.1024 17.3981C18.9792 17.4673 18.8398 17.5025 18.6985 17.5001H2.30159C2.16029 17.5025 2.02088 17.4673 1.89765 17.3981C1.77442 17.3289 1.67181 17.2282 1.60034 17.1063C1.5356 16.9967 1.50145 16.8717 1.50145 16.7444C1.50145 16.6171 1.5356 16.4922 1.60034 16.3826L9.79878 2.14475C9.87169 2.02341 9.97477 1.92301 10.098 1.8533C10.2212 1.7836 10.3603 1.74696 10.5019 1.74696C10.6435 1.74696 10.7826 1.7836 10.9058 1.8533C11.029 1.92301 11.1321 2.02341 11.205 2.14475L19.4035 16.3826C19.4676 16.4925 19.5011 16.6177 19.5005 16.7449C19.4998 16.8722 19.465 16.997 19.3997 17.1063ZM9.75003 11.5001V7.75006C9.75003 7.55115 9.82905 7.36038 9.9697 7.21973C10.1104 7.07908 10.3011 7.00006 10.5 7.00006C10.6989 7.00006 10.8897 7.07908 11.0304 7.21973C11.171 7.36038 11.25 7.55115 11.25 7.75006V11.5001C11.25 11.699 11.171 11.8897 11.0304 12.0304C10.8897 12.171 10.6989 12.2501 10.5 12.2501C10.3011 12.2501 10.1104 12.171 9.9697 12.0304C9.82905 11.8897 9.75003 11.699 9.75003 11.5001ZM11.625 14.8751C11.625 15.0976 11.559 15.3151 11.4354 15.5001C11.3118 15.6851 11.1361 15.8293 10.9305 15.9144C10.725 15.9996 10.4988 16.0219 10.2806 15.9784C10.0623 15.935 9.86187 15.8279 9.70453 15.6706C9.5472 15.5132 9.44005 15.3128 9.39665 15.0945C9.35324 14.8763 9.37552 14.6501 9.46066 14.4445C9.54581 14.239 9.69001 14.0633 9.87501 13.9397C10.06 13.816 10.2775 13.7501 10.5 13.7501C10.7984 13.7501 11.0845 13.8686 11.2955 14.0796C11.5065 14.2905 11.625 14.5767 11.625 14.8751Z" fill="#030036" fill-opacity="0.74" />
                     </svg>
                     <p className="text-center">Are you sure you want to remove this user?</p>
                 </div>
@@ -173,10 +172,10 @@ function DeleteUserModal({ modal, setModal }: { modal: boolean, setModal: (state
 
 
 
-function UserAccordion({ data }: { data: any }) {
+function UserAccordion({ data }: { data: TUserLevel }) {
 
     const [active, setActive] = useState(false);
-    const [ modal,setModal ] = useState(false);
+    const [modal, setModal] = useState(false);
 
     return (
         <div className="w-full mb-5 shadow px-4 py-2 rounded-[8px] transition duration-300">
@@ -184,11 +183,11 @@ function UserAccordion({ data }: { data: any }) {
                 <div className="flex space-x-4 items-center">
                     <img className="w-[48px] h-[48px]" src={studentImage} alt="" />
                     <div className="flex flex-col space-y-1 justify-between">
-                        <h1 className="text-primary text-sm font-[500]">{data.name}</h1>
+                        <h1 className="text-primary text-sm font-[500]">{data.fullname}</h1>
                         <p className="text-gray-400 text-xs">{data.email}</p>
                     </div>
                 </div>
-                <h1 className="text-primary w-[15rem] ">{data.type}</h1>
+                <h1 className="text-primary w-[15rem] ">{data.fullname}</h1>
 
                 <div onClick={() => setActive(!active)}
                     className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
@@ -205,12 +204,16 @@ function UserAccordion({ data }: { data: any }) {
                 <div className="border-t pt-4 mt-3 ml-16 text-sm duration-300 flex justify-between items-end">
                     <div className="">
                         <div className="mb-2">
-                            <span className="text-gray-400">Access Level: </span>
-                            <span>{data.level}</span>
+                            <span className="text-gray-400">Position: </span>
+                            <span className="text-primary">{data.role[0].toUpperCase() + data.role.slice(1)}</span>
                         </div>
-                        <div className="mb-2">
-                            <span className="text-gray-400">Role: </span>
-                            <span>Add</span>
+                        <div className="mb-2 w-[20rem] flex space-x-2">
+                            <div className="text-gray-400">Permission: </div>
+                            <div className="flex flex-col text-sm text-primary">
+                                {data.permissions.map((name,index) => (
+                                    <span key={index}>{name}</span>
+                                ))}
+                            </div>
                         </div>
                     </div>
                     <button
@@ -223,7 +226,7 @@ function UserAccordion({ data }: { data: any }) {
                         <span>Remove user</span>
                     </button>
                     {
-                        modal && <DeleteUserModal {...{modal,setModal}}/>
+                        modal && <DeleteUserModal {...{ modal, setModal }} />
                     }
                 </div>
             }
@@ -236,12 +239,22 @@ function UserAccordion({ data }: { data: any }) {
 
 export default function UserLevels() {
     const [modal, setModal] = useState<boolean>(false);
-    const toggleModal = (): void => setModal(!modal);
+    const [admins, setAdmins] = useState<TUserLevel[]>([]);
+
+    const toggleModal = () => setModal(!modal);
+
+    useEffect(() => {
+        axiosInstance.get('/user')
+            .then(response => {
+                setAdmins(response.data.data);
+            })
+            .catch(error => console.log(error))
+    }, [])
 
     return (
         <div className="mt-2">
             <AddUserModal {...{ modal, setModal }} />
-            
+
             <div className="flex items-center justify-between ">
                 <h1 className="text-xl text-primary">User Levels</h1>
                 <button
@@ -252,8 +265,8 @@ export default function UserLevels() {
             </div>
             <div className="mt-10">
                 {
-                    samples.map((sample, index) => (
-                        <UserAccordion key={index} data={sample} />
+                    admins.map((admins, index) => (
+                        <UserAccordion key={index} data={admins} />
                     ))
                 }
             </div>

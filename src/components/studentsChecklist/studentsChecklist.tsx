@@ -20,7 +20,7 @@ export type TStudentsChecklistProps = {
 
 }
 
-export default function StudentsChecklist({ selection, onApply, className, setSelection, close }: { className?: string, onApply: () => void, selection: any, setSelection: any, close: (state: boolean) => void }) {
+export default function StudentsChecklist({ selection,setSelection, onApply, className, close }: { className?: string, onApply: () => void, selection: number[], setSelection: any, close: (state: boolean) => void }) {
 
     const [searchInput, setSearchInput] = useState<string>('');
     const [data, setData] = useState<TStudentsChecklistProps[]>([]);
@@ -35,7 +35,7 @@ export default function StudentsChecklist({ selection, onApply, className, setSe
                 }
             })
             .catch(error => console.log(error));
-    }, []);
+    }, [list,data]);
 
 
     const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,10 +59,10 @@ export default function StudentsChecklist({ selection, onApply, className, setSe
 
     const closeList = () => {
         setSelection([]);
-        setList([]);
         setData([]);
-        close(false);
+        close(true);
     }
+
 
     return (
         <div className={`w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3] ${className}`}>
@@ -78,7 +78,7 @@ export default function StudentsChecklist({ selection, onApply, className, setSe
                     data.length > 0 ?
                         list.map(({ id, name, email }) => (
                             <div key={id} className="hover:bg-neutral-100 px-4 flex items-center border-b py-3 space-x-3">
-                                <input type="checkbox" onChange={handleCheckChange} className="w-[18px] cursor-pointer h-[18px] outline-none border-0" value={id} />
+                                <input type="checkbox" checked={selection.includes(id)} onChange={handleCheckChange} className="w-[18px] cursor-pointer h-[18px] outline-none border-0" value={id} />
                                 <div className='flex items-center space-x-2'>
                                     <div className="h-[40px] w-[40px] bg-light rounded-full"></div>
                                     <div>
@@ -97,7 +97,7 @@ export default function StudentsChecklist({ selection, onApply, className, setSe
             </div>
             <div className='h-[60px] relative bottom-0 p-4 flex items-center border justify-between'>
                 <button onClick={closeList} className="rounded-[8px] outline-none border px-3 py-1.5 text-sm">Cancel</button>
-                <button onClick={() => onApply()} disabled={selection.length === 0} className={`${selection.length > 0 ? "bg-main" : "bg-gray-300"} rounded-[8px] outline-none text-white border px-3 py-1.5 text-sm`}>Apply</button>
+                <button onClick={() => onApply()} disabled={selection?.length === 0} className={`${selection?.length > 0 ? "bg-main" : "bg-gray-300"} rounded-[8px] outline-none text-white border px-3 py-1.5 text-sm`}>Apply</button>
             </div>
         </div>
     )

@@ -27,8 +27,8 @@ export default function Login() {
         setActive(true);
         try {
             const response = await authUser(data);
-            // const token: string = response.data.token;
-            // localStorage.setItem('token', token);
+            const token: string = response.data.token;
+            localStorage.setItem('token', token);
             let profile = response.data.profile;
             profile = JSON.stringify(profile);
             localStorage.setItem('profile',profile);
@@ -67,8 +67,6 @@ export default function Login() {
         }
 
     }
-
-
 
     return (
         <div className="flex items-center justify-between h-screen w-full overflow-hidden">

@@ -6,6 +6,8 @@ import NairaInput from "../../../components/nairaInput/nairaInput";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { PriceState, setFreelancers, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
+import axiosInstance from "../../../services/api";
+
 
 
 export function PricingSchoolsComponent() {
@@ -18,12 +20,6 @@ export function PricingSchoolsComponent() {
     const students = useSelector((state: RootState) => state.pricing.schools.students);
     const total = useSelector((state: RootState) => state.pricing.schools.total);
 
-
-    // console.log(teachers,students,total);
-
-    useEffect(() => {
-    });
-
     const handleTeachers = (data: PriceState) => {
         dispatch(setSchoolsTeachers(data));
     }
@@ -32,6 +28,8 @@ export function PricingSchoolsComponent() {
         dispatch(setSchoolsStudents(data));
     }
 
+    // fetch prices
+
     useEffect(() => {
         const total: PriceState = {
             value: students['value'] + teachers['value'],
@@ -39,14 +37,25 @@ export function PricingSchoolsComponent() {
             half: students['half'] + teachers['half'],
             year: students['year'] + teachers['year']
         }
-
         dispatch(setSchoolsTotal(total));
+
     }, [students, teachers]);
 
 
     const handleSubmit = () => {
         if (edit) {
+            const payload = {
+                teachers_price: teachers.value,
+                student_price: students.value,
+                accounts: null,
+                tab: "schools",
+                students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
+                teachers_breakdown: { quater: teachers.quarter, half: teachers.half, yearly: teachers.year }
+            }
 
+            axiosInstance.post
+
+            console.log(payload);
 
         }
         setEdit(!edit)
@@ -229,13 +238,14 @@ function StudentsTabComponent() {
 
 function FreelancersTabComponent() {
     const [edit, setEdit] = useState(false);
-  
+
     const freelancers = useSelector((state: RootState) => state.pricing.freelancers);
     const dispatch = useDispatch();
 
     const handleFreelancers = (data: PriceState) => {
         dispatch(setFreelancers(data));
     }
+
 
     return (
         <>
@@ -263,6 +273,55 @@ const tabs: { name: string, component: JSX.Element }[] = [
 export default function PricingTab() {
 
     const [active, setActive] = useState<number>(0)
+    const dispatch = useDispatch();
+
+
+
+    const parseResponseData = (data: any) => {
+        const schools = {
+            teachers: {
+                value: data.schools.teachers_price,
+                quarter: data.schools.teachers_breakdown.quater,
+                half: data.schools.teachers_breakdown.half,
+                year: data.schools.teachers_breakdown.yearly,
+            },
+            students: {
+                value: data.schools.student_price,
+                quarter: data.schools.students_breakdown.quater,
+                half: data.schools.students_breakdown.half,
+                year: data.schools.students_breakdown.yearly,
+            }
+        }
+
+        const freelancers = {
+            value: data.freelancers.student_price,
+            quarter: data.freelancers.students_breakdown.quater,
+            half: data.freelancers.students_breakdown.half,
+            year: data.freelancers.students_breakdown.yearly,
+        }
+
+        const students = {
+            value: data.students.student_price,
+            quarter: data.students.students_breakdown.quater,
+            half: data.students.students_breakdown.half,
+            year: data.students.students_breakdown.yearly,
+        }
+
+        return { schools, freelancers, students };
+    }
+
+    useEffect(() => {
+        axiosInstance.get('/settings/pricing')
+            .then(response => {
+                const parsed = parseResponseData(response.data.data);
+                dispatch(setSchoolsStudents(parsed.schools.students));
+                dispatch(setSchoolsTeachers(parsed.schools.teachers));
+                dispatch(setFreelancers(parsed.freelancers));
+                dispatch(setStudents(parsed.students));
+            })
+            .catch(error => console.log(error));
+    }, []);
+
 
     return (
         <div className="text-primary">

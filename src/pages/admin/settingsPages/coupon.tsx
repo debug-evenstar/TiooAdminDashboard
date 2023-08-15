@@ -244,6 +244,8 @@ export default function CouponTab() {
   const [modal, setModal] = useState<boolean>(false);
 
   const coupons = useSelector((state: RootState) => state.coupon.coupons);
+  const loading = useSelector((state: RootState) => state.coupon.loading);
+  2
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -277,8 +279,7 @@ export default function CouponTab() {
           </div>
           <div>
             {
-              coupons?.length > 0 ?
-
+              !loading?
                 coupons?.map((item: TCouponProps, index: number) => (
                   <div key={index} className="font-[400] my-3 px-2 py-2 font-[500] rounded-[8px] text-primary flex items-center justify-between">
                     <div className="w-[10rem]">{item.campaign}</div>

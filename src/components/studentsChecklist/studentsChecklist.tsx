@@ -1,6 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import searchImage from '../../assets/images/search-md.png';
 import axiosInstance from '../../services/api';
+import { useDispatch } from 'react-redux';
+import { setStudents } from '../../redux/slices/student';
 
 
 
@@ -20,22 +22,26 @@ export type TStudentsChecklistProps = {
 
 }
 
-export default function StudentsChecklist({ selection,setSelection, onApply, className, close }: { className?: string, onApply: () => void, selection: number[], setSelection: any, close: (state: boolean) => void }) {
+export default function StudentsChecklist({ selection, setSelection, onApply, className, close }: { className?: string, onApply: () => void, selection: number[], setSelection: any, close: (state: boolean) => void }) {
 
     const [searchInput, setSearchInput] = useState<string>('');
     const [data, setData] = useState<TStudentsChecklistProps[]>([]);
     const [list, setList] = useState<TStudentsChecklistProps[]>([]);
+    const [reload, setReload] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         axiosInstance.get('https://api.hellotioo.com/students/readall')
             .then(response => {
                 setData(response.data.data);
-                if(list.length == 0){
+                dispatch(setStudents(response.data.data));
+                if (list.length == 0) {
                     setList(response.data.data);
                 }
             })
             .catch(error => console.log(error));
-    }, [list,data]);
+    }, [reload]);
 
 
     const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,12 +66,14 @@ export default function StudentsChecklist({ selection,setSelection, onApply, cla
     const closeList = () => {
         setSelection([]);
         setData([]);
+        setList([]);
+        setReload(!reload);
         close(true);
     }
 
 
     return (
-        <div className={`w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3] ${className}`}>
+        <div className={`min-w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3] ${className}`}>
             <div className="w-full shadow py-3 flex items-center p-4 space-x-1">
                 <img src={searchImage} alt="" className='w-5 h-5' />
                 <input
@@ -91,7 +99,7 @@ export default function StudentsChecklist({ selection,setSelection, onApply, cla
                             </div>
                         )) :
                         <div className="w-full h-full flex items-center justify-center">
-                            <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-gray-300 animate-spin"></div>
+                            <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
                         </div>
                 }
             </div>

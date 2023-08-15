@@ -4,6 +4,9 @@ import userReducer from './slices/user';
 import pricingReducer from './slices/pricing';
 import couponReducer from './slices/coupon';
 import adminReducer from './slices/admin';
+import schoolReducer from './slices/schools';
+import freelanReducer from './slices/freelancer';
+import studentReducer from './slices/student';
 
 const store: ToolkitStore = configureStore({
     reducer: {
@@ -11,6 +14,9 @@ const store: ToolkitStore = configureStore({
         pricing: pricingReducer,
         coupon: couponReducer,
         admin: adminReducer,
+        school: schoolReducer,
+        freelancer: freelanReducer,
+        student: studentReducer
     }
 });
 

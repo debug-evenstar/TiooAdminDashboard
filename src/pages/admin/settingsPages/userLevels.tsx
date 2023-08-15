@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent,useEffect, useState } from "react";
 import PlusIcon from "../../../assets/icons/components/settingsNav/plus";
 import studentImage from '../../../assets/images/student.png';
 import searchImage from '../../../assets/images/search-md.png';
@@ -160,6 +160,7 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
     const [permissions, setPermissions] = useState<number[]>([]);
     const [errors, setErrors] = useState<UserFormError>({});
 
+    const [loading, setLoading] = useState<boolean>(false);
 
     const dispatch = useDispatch()
 
@@ -199,18 +200,26 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
         axiosInstance.post('/user', payload)
             .then(() => {
                 dispatch(clearAdmins());
+                setLoading(false);
                 setModal(false);
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                setLoading(false);
+                alert(error.response.data.message);
+                console.log(error);
+            });
     }
 
     const handleSubmit = () => {
+        setLoading(true);
+
         const newErrors = validateForm();
         if (Object.keys(newErrors).length === 0) {
             setErrors({});
             submitForm();
         } else {
             setErrors(newErrors);
+            setLoading(false);
         }
     }
 
@@ -234,12 +243,12 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 
                     </div>
                     <div className="text-xs mb-3">
-                        <label htmlFor="" className="">Status</label>
+                        <label htmlFor="" className="">Role</label>
                         <SingleOptionsMenu selection={status} setSelection={setStatus} options={statusOptions} />
                         <p className="my-1 text-red-400">{errors?.status}</p>
                     </div>
                     <div className="text-xs mb-3">
-                        <label htmlFor="" className="">Role</label>
+                        <label htmlFor="" className="">Position</label>
                         <input value={role} onChange={(e) => handleChange(e, setRole)} type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
                         <p className="my-1 text-red-400">{errors?.role}</p>
 
@@ -252,7 +261,14 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
                     </div>
                 </div>
                 <div className="px-4 w-full h-[3rem] mt-[2px] flex items-center">
-                    <button onClick={handleSubmit} className="bg-main w-full text-sm text-center py-1.5 rounded text-white font-[500]">Invite</button>
+                    <button onClick={handleSubmit} className="bg-main outline-none hover:bg-hover w-full text-sm text-center py-1.5 rounded text-white font-[500]">
+                        {
+                            loading ?
+                                <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
+                                :
+                                <span>Invite</span>
+                        }
+                    </button>
                 </div>
             </div>
         </div>
@@ -260,7 +276,13 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 }
 
 
-function DeleteUserModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
+function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (state: boolean) => void , id: number}) {
+
+    const handleSubmit = () => {
+        console.log(id);
+        setModal(false);
+    }
+
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] transition inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
             <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} justify-between flex flex-col z-[100] bg-white rounded duration-1000 h-[300px] w-[300px] mx-auto `}>
@@ -274,7 +296,7 @@ function DeleteUserModal({ modal, setModal }: { modal: boolean, setModal: (state
                     <p className="text-center">Are you sure you want to remove this user?</p>
                 </div>
                 <div className="px-4 w-full border-t h-[3.5rem] mt-[2px] flex items-center">
-                    <button className="bg-main w-full text-sm text-center py-2 outline-none rounded text-white font-[500]">
+                    <button onClick={handleSubmit} className="bg-main w-full text-sm text-center py-2 outline-none rounded text-white font-[500]">
                         Continue
                     </button>
                 </div>
@@ -341,7 +363,7 @@ function UserAccordion({ data }: { data: TUserLevel }) {
                         <span>Remove user</span>
                     </button>
                     {
-                        modal && <DeleteUserModal {...{ modal, setModal }} />
+                        modal && <DeleteUserModal id={1} {...{ modal, setModal }} />
                     }
                 </div>
             }
@@ -355,7 +377,7 @@ function UserAccordion({ data }: { data: TUserLevel }) {
 export default function UserLevels() {
     const [modal, setModal] = useState<boolean>(false);
 
-    const admins = useSelector((state: RootState) => state.admin.users );
+    const admins = useSelector((state: RootState) => state.admin.users);
     const dispatch = useDispatch();
     const toggleModal = () => setModal(!modal);
 
@@ -387,7 +409,7 @@ export default function UserLevels() {
                     ))
                     :
                     <div className="w-full h-[16rem] flex items-center justify-center">
-                        <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-gray-400 animate-spin"></div>
+                        <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-main animate-spin"></div>
                     </div>
                 }
             </div>

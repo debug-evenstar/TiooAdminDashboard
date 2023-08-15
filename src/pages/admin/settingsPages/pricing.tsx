@@ -1,12 +1,18 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Button from "../../../components/button/button";
-import UserChecklist, { TUserChecklistProps } from "../../../components/userChecklist/userChecklist";
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { PriceState, setFreelancers, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
 import axiosInstance from "../../../services/api";
+import SchoolsChecklist from "../../../components/schoolsChecklist/schoolsChecklist";
+import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
+import FreelancersChecklist from "../../../components/freelancersChecklist/freelancersChecklist";
+import { TSchoolsProps } from "../../../redux/slices/schools";
+
+import { TFreelancersProps } from "../../../redux/slices/freelancer";
+import { TStudentsProps } from "../../../redux/slices/student";
 
 
 
@@ -79,22 +85,51 @@ export function PricingSchoolsComponent() {
 
 
 
-function AddExceptionModal({ type, data, modal, setModal }: { type: string, data: TUserChecklistProps[], modal: boolean, setModal: (s: boolean) => void }) {
+function AddExceptionModal({ type, data, modal, setModal }: { type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
 
-    const [current, setCurrent] = useState<TUserChecklistProps>(data[0]);
+    const [current, setCurrent] = useState<{ id: number, name: string }>();
     const [price, setPrice] = useState<number>(0);
+    const [active,setActive ] = useState<boolean>(false);
+    const [teacher, setTeacher] = useState<number>(0);
+    const [student, setStudent] = useState<number>(0);
+    const [ total, setTotal ] = useState<number>(0);
 
-    const handler = (e: ChangeEvent<HTMLInputElement>) => {
-        let temp = e.target.value.replace('/\Dg', '');
+    useEffect(() => {
+        // set the first guy
+        if (data.length > 0)
+            setCurrent(data[0]);
+    }, [data])
+
+    useEffect(() => {
+        setTotal(teacher+student);
+        if(teacher && student){
+            setActive(true);
+        }else{
+            setActive(false);
+        }
+
+    }, [teacher,student])
+
+    const handler = (e: ChangeEvent<HTMLInputElement>, type?: string) => {
+        let temp: string = e.target.value.replace('/\Dg', '');
         temp = temp.replaceAll(',', '');
         if (temp === '') temp = '0';
-        let result = Number.parseInt(temp);
+        let result: number = Number.parseInt(temp);
         if (isNaN(result)) result = 0;
-        setPrice(result);
+
+        if (type === "student") {
+            setStudent(result);
+        } else if (type === "teacher") {
+            setTeacher(result);
+        } else {
+            setPrice(result);
+        }
     }
 
     const handleClick = (id: number) => {
-        const value = data.filter((item) => item.id === id);
+        // console.log(data,id);
+        const value = data.filter((item: { id: number, name: string }) => item.id === id);
+        console.log(value[0]);
         setCurrent(value[0])
     }
 
@@ -112,26 +147,26 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                         <div className="w-[34%] border-r px-2 py-3 overflow-y-auto">
                             <ul className="">
                                 {
-                                    data.map((item, index) => (
+                                    data.map((item: { id: number, name: string }, index: number) => (
                                         <li
-                                            onClick={() => handleClick(item.id)}
-                                            className={`my-1 text-xs font-[500] rounded-[8px] py-2 border-l-2  px-2 cursor-pointer  hover:bg-light ${current?.id === item.id ? "border-main bg-light text-main" : "hover:border-gray-300 text-primary border-white"}`}
-                                            key={index}>{item.value.name}</li>
+                                            onClick={() => handleClick(item?.id)}
+                                            className={`my-1 text-xs font-[500] rounded-[8px] py-2 border-l-2  px-2 cursor-pointer  hover:bg-light ${current?.id == item.id ? "border-main bg-light text-main" : "hover:border-gray-300 text-primary border-white"}`}
+                                            key={index}>{item.name}</li>
                                     ))
                                 }
                             </ul>
                         </div>
                     }
                     <div className={`h-[15rem] px-4 py-4  ${data.length === 1 ? "w-full" : "w-[66%]"}`}>
-                        <h1 className="text-xl font-[500]">{current?.value.name}</h1>
+                        <h1 className="text-xl font-[500]">{current?.name}</h1>
                         {type === "Schools" ?
                             <div className="mt-4">
                                 <label htmlFor="" className="text-xs text-gray-400 mb-4">Teachers</label>
-                                <NairaInput className="py-1.5 mb-2" name="price" value={price.toLocaleString()} handler={handler} />
+                                <NairaInput className="py-1.5 mb-2" name="price" value={teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
                                 <label htmlFor="" className="text-xs text-gray-400 mb-4">Students</label>
-                                <NairaInput className="py-1.5 mb-2" name="price" value={price.toLocaleString()} handler={handler} />
+                                <NairaInput className="py-1.5 mb-2" name="price" value={student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
                                 <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
-                                <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={price.toLocaleString()} handler={handler} />
+                                <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
 
                             </div>
                             :
@@ -146,43 +181,74 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                 <div className="h-[44px] border-t px-3 flex items-center justify-between">
                     {
                         data.length > 1 ?
-                            <button className={`${0 ? "bg-main" : "bg-neutral-100"} rounded-[8px] outline-none text-neutral-300 px-3 py-1.5 text-sm`}>Apply on all schools</button>
+                            <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply on all schools</button>
                             :
-                            <button className="text-gray-300 text-xs">Reset prices</button>
+                            <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Reset prices</button>
                     }
-                    <button className={`${0 ? "bg-main" : "bg-neutral-100"} rounded-[8px] outline-none text-neutral-300 px-3 py-1.5 text-sm`}>Apply</button>
+                    <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply</button>
                 </div>
             </div>
         </div>
     );
 }
 
-const samples: TUserChecklistProps[] = [
-    { id: 1, value: { name: "Montesorri Gownsill", email: "montesorri@gmail.com" } },
-    { id: 2, value: { name: "Brainy Hive", email: "brainyhive@gmail.com" } },
-    { id: 3, value: { name: "Imao Obong Schools", email: "imaoboon@gmail.com" } },
-    { id: 4, value: { name: "Teeves Academy", email: "teevesacademy@gmail.com" } },
-    { id: 5, value: { name: "Manjaro Academy", email: "mangaroo@gmail.com" } },
-    { id: 6, value: { name: "Fedora Schools", email: "fedoraschools@gmail.com" } },
-];
-
 export function ExceptionsComponent({ type }: { type: string }) {
+
+    const schools = useSelector((state: RootState) => state.school.schools);
+    const freelancers = useSelector((state: RootState) => state.freelancer.freelancers);
+    const students = useSelector((state: RootState) => state.student.students);
 
     const [active, setActive] = useState(false);
     const [selection, setSelection] = useState<number[]>([]);
     const [modal, setModal] = useState(false);
-    const [activeList, setActiveList] = useState<TUserChecklistProps[]>([]);
+    const [activeList, setActiveList] = useState<{ id: number, name: string }[] | undefined>([]);
+
 
     const onApply = () => {
+        console.log("applying ")
         // filter out duplicates
         const newSelection = selection.filter((item, index) => selection.indexOf(item) === index);
+
+        // return name and id based on type
+        const conditions = (): { id: number, name: string }[] | undefined => {
+            let newList: any = null;
+            switch (type) {
+                case 'Schools':
+                    newList = schools.filter((item: TSchoolsProps) => newSelection.includes(item.school.id))
+                    return newList.map((item: TSchoolsProps) => ({
+                        id: item.school.id,
+                        name: item.school.name,
+                    }));
+
+                case 'Freelancers':
+                    newList = freelancers.filter((item: TFreelancersProps) => newSelection.includes(item.freelancer.id))
+                    return newList.map((item: TFreelancersProps) => ({
+                        id: item.freelancer.id,
+                        name: item.freelancer.name,
+                    }));
+                case 'Students':
+                    newList = students.filter((item: TStudentsProps) => newSelection.includes(item.id));
+                    return newList.map((item: TStudentsProps) => ({
+                        id: item.id,
+                        name: item.name
+                    }));
+                default:
+                    return undefined;
+            }
+        }
+
+
         // get { id, value } data from id's in selection
-        const newList = samples.filter((item) => newSelection.includes(item.id))
-        if (newList.length === 0) {
+
+        const newList: { id: number, name: string }[] | undefined = conditions();
+
+        if (!newList || newList?.length === 0) {
             return;
         }
+
         setActiveList(newList);
         setModal(true);
+        setActive(false);
     }
 
 
@@ -201,8 +267,17 @@ export function ExceptionsComponent({ type }: { type: string }) {
                         </svg>
                     </button>
                     {
-                        active &&
-                        <UserChecklist onApply={onApply} {...{ selection, setSelection }} data={samples} close={setActive} />
+                        active && (
+                            type === "Schools" && (
+                                <SchoolsChecklist onApply={onApply} {...{ selection, setSelection }} close={() => setActive(false)} />
+                            ) ||
+                            type === "Freelancers" && (
+                                <FreelancersChecklist onApply={onApply} {...{ selection, setSelection }} close={() => setActive(false)} />
+                            ) ||
+                            type === "Students" && (
+                                <StudentsChecklist onApply={onApply} {...{ selection, setSelection }} close={() => setActive(false)} />
+                            )
+                        )
                     }
                 </div>
             </div>

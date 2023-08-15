@@ -50,7 +50,7 @@ function OptionsMenu({ selection, setSelection }: { selection: number[], setSele
 
         </div>
       </div>
-      {active && <StudentsChecklist className="w-full" onApply={() => { setActive(false) }} selection={selection} setSelection={setSelection} close={() => null} />}
+      {active && <StudentsChecklist className="w-full" onApply={() => { setActive(false) }} selection={selection} setSelection={setSelection} close={() => setActive(false)} />}
     </>
   );
 }
@@ -63,6 +63,8 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
   const [status, _] = useState(data?.status || 'Active');
   const [users, setUsers] = useState<number[]>([]);
   const [errors, setErrors] = useState<TCouponError>();
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -82,7 +84,8 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
       newErrors.campaign = "Please Enter campaign string";
     if (code.length === 0)
       newErrors.code = 'Please enter coupon code';
-    if (users.length == 0)
+
+    if (users.length == 0 && !data) // only apply when creating coupon
       newErrors.users = "please select atleast one user";
 
     return newErrors;
@@ -90,17 +93,22 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
   }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const newErrors = validate();
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       const payload = { campaign, code, status, amount, users };
 
       if (data) {
+        console.log(users);
         axiosInstance.put('/coupon', { ...payload, id: data.id })
           .then(response => {
             if (!response.data.error) {
               dispatch(clearCoupons());
+              setLoading(false);
               setModal(false);
+            }else{
+              alert("error updating coupon");
             }
           })
           .catch(error => console.log(error));
@@ -110,13 +118,18 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
           .then(response => {
             if (!response.data.error) {
               dispatch(clearCoupons());
+              setLoading(false);
               setModal(false);
             }
           })
-          .catch(error => console.log(error));
+          .catch(error => {
+            setLoading(false);
+            console.log(error)
+          });
       }
     } else {
       setErrors(newErrors);
+      setLoading(false);
     }
   }
 
@@ -132,27 +145,36 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Campaign</label>
               <input type="text" value={campaign} onChange={(e) => setCampaign(e.target.value)} className="mt-2 outline-none rounded w-full px-3 py-2 border" />
-              <span className="text-red-500 mt-4">{errors?.campaign}</span>
+              <p className="text-red-500 mt-1">{errors?.campaign}</p>
             </div>
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Code</label>
-              <input readOnly={data ? true : false} type="text" value={code} onChange={(e) => setCode(e.target.value)} className="mt-2 outline-none rounded w-full px-3 py-2 border" />
-              <span className="text-red-500 mt-4">{errors?.code}</span>
+              <input type="text" value={code} onChange={(e) => setCode(e.target.value)} className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+              <p className="text-red-500 mt-1">{errors?.code}</p>
             </div>
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Amount</label>
               <input type="text" value={amount} onChange={handleAmountInput} name="amount" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
-              <span className="text-red-500 mt-4">{errors?.amount}</span>
+              <p className="text-red-500 mt-1">{errors?.amount}</p>
 
             </div>
             <div className="text-xs mb-6">
               <label htmlFor="" className="">Add Students</label>
               <OptionsMenu selection={users} setSelection={setUsers} />
-              <span className="text-red-500 mt-4">{errors?.users}</span>
+              <p className="text-red-500 mt-1">{errors?.users}</p>
             </div>
           </div>
           <div className="px-4 w-full h-[3rem] mt-[2px] flex items-center">
-            <button onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">{data ? 'Update' : 'Apply'}</button>
+            <button onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
+              {
+                loading ?
+                  <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
+                  :
+                  <span>
+                    {data ? 'Update' : 'Apply'}
+                  </span>
+              }
+            </button>
           </div>
         </div>
       </div>
@@ -244,14 +266,15 @@ export default function CouponTab() {
   const [modal, setModal] = useState<boolean>(false);
 
   const coupons = useSelector((state: RootState) => state.coupon.coupons);
-  const loading = useSelector((state: RootState) => state.coupon.loading);
-  2
+
+  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
     axiosInstance.get('/coupon')
       .then(response => {
         dispatch(setCoupons(response.data.data))
+        setLoading(false);
       })
       .catch(error => console.log(error))
   }, [coupons])
@@ -279,7 +302,7 @@ export default function CouponTab() {
           </div>
           <div>
             {
-              !loading?
+              !loading ?
                 coupons?.map((item: TCouponProps, index: number) => (
                   <div key={index} className="font-[400] my-3 px-2 py-2 font-[500] rounded-[8px] text-primary flex items-center justify-between">
                     <div className="w-[10rem]">{item.campaign}</div>
@@ -288,7 +311,7 @@ export default function CouponTab() {
                     </div>
                     <div className="w-[7rem]">
                       <div className="flex items-center space-x-2">
-                        <div className={`w-2 h-2 rounded-full ${item.status === 'Activate' ? "bg-green-500" : "bg-red-500"}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${item.status === 'Activate' ? "bg-green-500" : "bg-[#fab814]"}`}></div>
                         <span>{item.status === 'Activate' ? "Active" : "Inactive"}</span>
                       </div>
                     </div>
@@ -304,7 +327,7 @@ export default function CouponTab() {
                 ))
                 :
                 <div className="w-full h-[20rem] flex items-center justify-center">
-                  <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-gray-400 animate-spin"></div>
+                  <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-main animate-spin"></div>
                 </div>
             }
           </div>

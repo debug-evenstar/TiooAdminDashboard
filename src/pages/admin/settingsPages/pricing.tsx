@@ -87,28 +87,38 @@ export function PricingSchoolsComponent() {
 
 function AddExceptionModal({ type, data, modal, setModal }: { type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
 
+
     const [current, setCurrent] = useState<{ id: number, name: string }>();
     const [price, setPrice] = useState<number>(0);
-    const [active,setActive ] = useState<boolean>(false);
+    const [active, setActive] = useState<boolean>(false);
     const [teacher, setTeacher] = useState<number>(0);
     const [student, setStudent] = useState<number>(0);
-    const [ total, setTotal ] = useState<number>(0);
+    const [total, setTotal] = useState<number>(0);
 
     useEffect(() => {
-        // set the first guy
         if (data.length > 0)
             setCurrent(data[0]);
     }, [data])
 
+
     useEffect(() => {
-        setTotal(teacher+student);
-        if(teacher && student){
+        setTotal(teacher + student);
+        if (price || teacher && student) {
             setActive(true);
-        }else{
+        } else {
             setActive(false);
         }
+    }, [teacher, student, price])
 
-    }, [teacher,student])
+
+
+    const handleApply = () => {
+        if(type === "Schools")
+        {
+            // axiosInstance.
+        }
+    }
+
 
     const handler = (e: ChangeEvent<HTMLInputElement>, type?: string) => {
         let temp: string = e.target.value.replace('/\Dg', '');
@@ -127,9 +137,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
     }
 
     const handleClick = (id: number) => {
-        // console.log(data,id);
         const value = data.filter((item: { id: number, name: string }) => item.id === id);
-        console.log(value[0]);
         setCurrent(value[0])
     }
 
@@ -185,7 +193,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                             :
                             <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Reset prices</button>
                     }
-                    <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply</button>
+                    <button disabled={active} onClick ={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply</button>
                 </div>
             </div>
         </div>
@@ -238,7 +246,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
         }
 
 
-        // get { id, value } data from id's in selection
+        // get { id, name } data from id's in selection
 
         const newList: { id: number, name: string }[] | undefined = conditions();
 
@@ -280,6 +288,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
                         )
                     }
                 </div>
+                {/*  Exceptiosn come here */}
             </div>
         </>
     );

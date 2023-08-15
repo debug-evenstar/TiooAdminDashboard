@@ -5,7 +5,6 @@ import StudentsChecklist from "../../../components/studentsChecklist/studentsChe
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { clearCoupons, setCoupons } from "../../../redux/slices/coupon";
-import Toast from "../../../components/toast/toast";
 
 export type TCouponProps = {
   id: number;
@@ -283,7 +282,7 @@ export default function CouponTab() {
 
   return (
     <div className="mt-2">
-      <Toast message="something is about to happen" onClose={() => null} type="something" />
+      {/* <Toast message="something is about to happen" onClose={() => null} type="something" /> */}
       <CouponModal {...{ modal, setModal }} />
       <div className="flex items-center justify-between ">
         <h1 className="text-xl font-[500] text-primary">Coupons</h1>

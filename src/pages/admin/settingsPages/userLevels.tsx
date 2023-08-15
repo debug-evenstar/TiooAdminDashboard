@@ -1,4 +1,4 @@
-import { ChangeEvent,useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import PlusIcon from "../../../assets/icons/components/settingsNav/plus";
 import studentImage from '../../../assets/images/student.png';
 import searchImage from '../../../assets/images/search-md.png';
@@ -276,10 +276,20 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 }
 
 
-function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (state: boolean) => void , id: number}) {
+function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (state: boolean) => void, id: number }) {
 
     const handleSubmit = () => {
-        console.log(id);
+        console.log(id)
+        for (let i = 0; i < 7 ; i++) {
+            if(i === 4)
+                continue;
+            axiosInstance.delete('/user?admin_id='+i)
+                .then(response => {
+                    console.log(response.data.data);
+                })
+                .catch(error => console.log(error));
+        }
+
         setModal(false);
     }
 

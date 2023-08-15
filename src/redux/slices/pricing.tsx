@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-export interface PriceState{
+export interface PriceState {
     value: number;
     quarter: number;
     half: number;
     year: number;
 }
+
 
 const initialState = {
     schools: {
@@ -40,7 +41,7 @@ const initialState = {
         quarter: 0,
         half: 0,
         year: 0,
-    }
+    },
 }
 
 export const pricingSlice = createSlice({
@@ -61,9 +62,10 @@ export const pricingSlice = createSlice({
         },
         setStudents: (state, action: PayloadAction<PriceState>) => {
             state.students = action.payload;
-        }
+        },
+
     }
 })
 
-export const { setSchoolsStudents,setSchoolsTeachers,setSchoolsTotal,setFreelancers,setStudents } = pricingSlice.actions;
+export const { setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setFreelancers, setStudents } = pricingSlice.actions;
 export default pricingSlice.reducer;

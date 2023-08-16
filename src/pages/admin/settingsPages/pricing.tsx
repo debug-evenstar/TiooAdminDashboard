@@ -61,7 +61,13 @@ export function PricingSchoolsComponent() {
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
                 teachers_breakdown: { quater: teachers.quarter, half: teachers.half, yearly: teachers.year }
             }
-            axiosInstance.post
+            axiosInstance.post('/settings/pricing', payload)
+                .then(response => {
+                    console.log(response.data.data)
+                    dispatch(reloadPricing());
+                    alert("saved data");
+                })
+                .catch(error => console.log(error));
             console.log(payload);
 
         }
@@ -300,24 +306,24 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
             <div className="w-full p-3 px-4 rounded-[8px] bg-neutral-100 flex items-center justify-between">
                 <h1 className="text-gray-400">{nameCondition()}</h1>
                 <div className="flex items-center space-x-6">
-                            <button className="outline-none" onClick={() => { toggle() }}>
-                                <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="black" />
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="black" />
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="black" />
-                                </svg>
-                            </button>
+                    <button className="outline-none" onClick={() => { toggle() }}>
+                        <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="black" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="black" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="black" />
+                        </svg>
+                    </button>
                     <Popup
                         ref={ref}
                         open={optionActive}
                         trigger={
                             <button className="outline-none" onClick={() => { setOptionActive(true); alert("clicked") }}>
-                              
+
                             </button>
                         }>
                         <ul className="py-3 bg-white shadow rounded-[8px]">
                             <li onClick={() => setOptionActive(false)} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
-                            <li onClick={() => {toggle();removeException()}} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
+                            <li onClick={() => { toggle(); removeException() }} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
                         </ul>
                     </Popup>
                     <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none`}>
@@ -491,11 +497,27 @@ function StudentsTabComponent() {
     const handleStudents = (data: PriceState) => {
         dispatch(setStudents(data));
     }
+    const handleSubmit = () => {
+        if(edit){
+            const payload = {
+                teachers_price: 0,
+                student_price: students.value,
+                accounts: null,
+                tab: "schools",
+                students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
+                teachers_breakdown: { quater: 0, half: 0, yearly: 0 }
+            }
+            axiosInstance.post('/settings/pricing', payload)
+            .then(response => console.log(response.data.data))
+            .catch(error => console.log(error));
+        }
+
+    }
     return (
         <>
             <div className="flex items-center justify-between">
                 <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
-                <Button className="outline-none font-[400]" handler={(e) => { e.preventDefault(); setEdit(!edit) }}>
+                <Button className="outline-none font-[400]" handler={(e) => { handleSubmit(); e.preventDefault(); setEdit(!edit) }}>
                     {edit ? "Save" : "Edit pricing"}
                 </Button>
 

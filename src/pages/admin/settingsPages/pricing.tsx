@@ -1,10 +1,10 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Button from "../../../components/button/button";
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { PriceState, setFreelancers, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
+import { PriceState, reloadPricing, setFreelancers, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
 import axiosInstance from "../../../services/api";
 import SchoolsChecklist from "../../../components/schoolsChecklist/schoolsChecklist";
 import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
@@ -15,6 +15,7 @@ import { TFreelancersProps } from "../../../redux/slices/freelancer";
 import { TStudentsProps } from "../../../redux/slices/student";
 import { setFreelancersException, setSchoolsException, setStudentsException } from "../../../redux/slices/pricingException";
 import Popup from "reactjs-popup";
+
 
 
 
@@ -60,9 +61,7 @@ export function PricingSchoolsComponent() {
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
                 teachers_breakdown: { quater: teachers.quarter, half: teachers.half, yearly: teachers.year }
             }
-
             axiosInstance.post
-
             console.log(payload);
 
         }
@@ -102,7 +101,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
     const [teacher, setTeacher] = useState<number>(0);
     const [student, setStudent] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
-
+    const [loading, setLoading] = useState<boolean>(false);
     const [prices, setPrices] = useState<priceState[]>(data);
 
 
@@ -123,8 +122,28 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
     }, [teacher, student, price]);
 
 
+    const handleApply = async () => {
+        if (!active) {
+            alert("please fill all field");
+            return;
+        }
+        setLoading(true);
+        prices.forEach(async (item) => {
+            const payload = {
+                teachers_price: item.price.teacher,
+                student_price: item.price.student,
+                accounts: item.id,
+                tab: type.toLocaleLowerCase()
+            }
+            try {
+                const response = await axiosInstance.post('/settings/pricing', payload)
+                console.log(response.data.data);
+            } catch (error) {
+                console.log(error)
+            }
 
-    const handleApply = () => {
+        });
+        setLoading(false)
 
     }
 
@@ -227,7 +246,15 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                             :
                             <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Reset prices</button>
                     }
-                    <button disabled={active} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply</button>
+                    <button disabled={!active} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                        {
+                            loading ?
+                                <div className="mx-auto w-5 h-5 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                                :
+                                <span>Apply</span>
+                        }
+
+                    </button>
                 </div>
             </div>
         </div>
@@ -243,40 +270,54 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
             case 'Schools':
                 return data.school_name;
             case 'Freelancers':
-                return data.freelancer_name;
+                return data.school_name;
             case 'Students':
-                return data.student_name;
+                return data.school_name;
             default:
                 return '';
         }
     }
 
+    const dispatch = useDispatch();
+
     const removeException = () => {
-        
+        axiosInstance.delete(`/settings/pricing/${data.id}`)
+            .then(response => {
+                dispatch(reloadPricing());
+                console.log(response.data.data);
+            })
+            .catch(error => console.log(error));
     }
 
 
     const [active, setActive] = useState<boolean>(false);
-    const [ optionActive,setOptionActive ] = useState<boolean>(false);
+    const [optionActive, setOptionActive] = useState<boolean>(false);
+    const ref = useRef<any>();
+    const toggle = () => ref.current.toggle();
+
     return (
         <div className="mb-4">
             <div className="w-full p-3 px-4 rounded-[8px] bg-neutral-100 flex items-center justify-between">
                 <h1 className="text-gray-400">{nameCondition()}</h1>
                 <div className="flex items-center space-x-6">
-                    <Popup
-                        open={optionActive}
-                        trigger={
-                            <button className="outline-none" onClick={() => {setOptionActive(true); alert("clicked")}}>
+                            <button className="outline-none" onClick={() => { toggle() }}>
                                 <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="black" />
                                     <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="black" />
                                     <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="black" />
                                 </svg>
                             </button>
+                    <Popup
+                        ref={ref}
+                        open={optionActive}
+                        trigger={
+                            <button className="outline-none" onClick={() => { setOptionActive(true); alert("clicked") }}>
+                              
+                            </button>
                         }>
                         <ul className="py-3 bg-white shadow rounded-[8px]">
                             <li onClick={() => setOptionActive(false)} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
-                            <li onClick={removeException} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
+                            <li onClick={() => {toggle();removeException()}} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
                         </ul>
                     </Popup>
                     <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none`}>
@@ -331,7 +372,7 @@ function ExceptionsList({ type }: { type: string }) {
         <div className="mt-10 flex flex-col">
             {
                 condition().map((item: any) => (
-                    <div>
+                    <div key={item.id}>
                         <ExceptionAccordion data={item} type={type} />
                     </div>
                 ))
@@ -502,7 +543,10 @@ const tabs: { name: string, component: JSX.Element }[] = [
 
 export default function PricingTab() {
 
+    const pricing = useSelector((state: RootState) => state.pricing.reload);
+
     const [active, setActive] = useState<number>(0)
+
     const dispatch = useDispatch();
 
     const parseResponseData = (data: any) => {
@@ -537,12 +581,13 @@ export default function PricingTab() {
 
         const schoolsException = data.exceptionedSchools;
         const freelancersException = data.exceptionedFreelancers;
-        const studentsException = data.exceptionedIndependentStudents;
-
+        const studentsException = data.exceptionedIndependentsStudents;
+        console.log(data);
         return { schools, freelancers, students, studentsException, schoolsException, freelancersException };
     }
 
     useEffect(() => {
+        console.log("pring tab")
         axiosInstance.get('/settings/pricing')
             .then(response => {
                 const parsed = parseResponseData(response.data.data);
@@ -551,14 +596,14 @@ export default function PricingTab() {
                 dispatch(setSchoolsTeachers(parsed.schools.teachers));
                 dispatch(setFreelancers(parsed.freelancers));
                 dispatch(setStudents(parsed.students));
-
+                // window.parsed = parsed;
                 // dispatching exceptions
                 dispatch(setStudentsException(parsed.studentsException));
                 dispatch(setSchoolsException(parsed.schoolsException));
                 dispatch(setFreelancersException(parsed.freelancersException));
             })
             .catch(error => console.log(error));
-    }, []);
+    }, [pricing]);
 
 
     return (
@@ -578,7 +623,6 @@ export default function PricingTab() {
             <div className="mt-10 text-gray-600 ">
                 {tabs.map((tab, key) => (active === key ? <div key={key}>{tab.component}</div> : null))}
             </div>
-
         </div>
     )
 }

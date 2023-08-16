@@ -10,6 +10,7 @@ import { RootState } from "../../../redux/store";
 
 
 type TUserLevel = {
+    id: number;
     fullname: string;
     email: string;
     role: string;
@@ -278,18 +279,16 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 
 function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (state: boolean) => void, id: number }) {
 
-    const handleSubmit = () => {
-        console.log(id)
-        for (let i = 0; i < 7 ; i++) {
-            if(i === 4)
-                continue;
-            axiosInstance.delete('/user?admin_id='+i)
-                .then(response => {
-                    console.log(response.data.data);
-                })
-                .catch(error => console.log(error));
-        }
+    const [loading, setLoading ] = useState<boolean>(false);
 
+    const handleSubmit =  async ()  => {
+        setLoading(true);
+        try{   
+            const response =  await axiosInstance.delete('/user?admin_id='+id)
+            console.log(response.data.data);
+        }catch(error){
+            console.log(error);
+        }
         setModal(false);
     }
 
@@ -307,7 +306,13 @@ function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (s
                 </div>
                 <div className="px-4 w-full border-t h-[3.5rem] mt-[2px] flex items-center">
                     <button onClick={handleSubmit} className="bg-main w-full text-sm text-center py-2 outline-none rounded text-white font-[500]">
-                        Continue
+                        {
+                            loading?
+                            <div className="mx-auto w-6 h-6 rounded-full border-2 border-gray-400 border-r-white animate-spin"></div>
+                            :
+                            <span>Continue</span>
+                        } 
+
                     </button>
                 </div>
             </div>
@@ -373,7 +378,7 @@ function UserAccordion({ data }: { data: TUserLevel }) {
                         <span>Remove user</span>
                     </button>
                     {
-                        modal && <DeleteUserModal id={1} {...{ modal, setModal }} />
+                        modal && <DeleteUserModal id={data.id} {...{ modal, setModal }} />
                     }
                 </div>
             }

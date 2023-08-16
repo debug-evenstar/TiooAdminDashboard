@@ -10,6 +10,18 @@ type TExceptionProps = {
     teacher: number;
     student: number;
 }
+
+// type TSchoolExceptionProps = {
+//     accounts: number;
+//     id: number;
+//     school_name: string;
+//     student_price: number;
+//     students_breakdown: any[]
+//     tag: string;
+//     teachers_breakdown: any[]
+//     teachers_price: number;
+// }
+
 export interface ExceptionState {
     schools: TExceptionProps[],
     students: TExceptionProps[],
@@ -18,13 +30,13 @@ export interface ExceptionState {
 const initialState: ExceptionState = {
     schools: [],
     students: [],
-    freelancers:[],
+    freelancers: [],
 }
 
 export const pricingExceptionSlice = createSlice({
-    name: "pricing",
+    name: "pricingException",
     initialState: initialState,
-    reducers: {     
+    reducers: {
         setStudentsException: (state, action: PayloadAction<any[]>) => {
             state.students = action.payload;
         },
@@ -37,5 +49,5 @@ export const pricingExceptionSlice = createSlice({
     }
 })
 
-export const {setStudentsException,setSchoolsException,setFreelancersException} = pricingExceptionSlice.actions;
+export const { setStudentsException, setSchoolsException, setFreelancersException } = pricingExceptionSlice.actions;
 export default pricingExceptionSlice.reducer;

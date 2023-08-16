@@ -13,6 +13,8 @@ import { TSchoolsProps } from "../../../redux/slices/schools";
 
 import { TFreelancersProps } from "../../../redux/slices/freelancer";
 import { TStudentsProps } from "../../../redux/slices/student";
+import { setFreelancersException, setSchoolsException, setStudentsException } from "../../../redux/slices/pricingException";
+import Popup from "reactjs-popup";
 
 
 
@@ -84,22 +86,32 @@ export function PricingSchoolsComponent() {
 }
 
 
+type priceState = {
+    id: number;
+    name: string;
+    price: { teacher: number, student: number }
+}
+
 
 function AddExceptionModal({ type, data, modal, setModal }: { type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
 
 
-    const [current, setCurrent] = useState<{ id: number, name: string }>();
+    const [current, setCurrent] = useState<priceState>(data[0]);
     const [price, setPrice] = useState<number>(0);
     const [active, setActive] = useState<boolean>(false);
     const [teacher, setTeacher] = useState<number>(0);
     const [student, setStudent] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
 
-    useEffect(() => {
-        if (data.length > 0)
-            setCurrent(data[0]);
-    }, [data])
+    const [prices, setPrices] = useState<priceState[]>(data);
 
+
+    useEffect(() => {
+        if (data.length > 0) {
+            setPrices(data);
+            setCurrent(data[0]);
+        }
+    }, [data])
 
     useEffect(() => {
         setTotal(teacher + student);
@@ -108,15 +120,12 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
         } else {
             setActive(false);
         }
-    }, [teacher, student, price])
+    }, [teacher, student, price]);
 
 
 
     const handleApply = () => {
-        if(type === "Schools")
-        {
-            // axiosInstance.
-        }
+
     }
 
 
@@ -128,12 +137,34 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
         if (isNaN(result)) result = 0;
 
         if (type === "student") {
+            setPrices(
+                prices.map(
+                    item => (item.id === current.id) ? { ...item, price: { ...item.price, student: result } } : item
+                )
+            );
             setStudent(result);
         } else if (type === "teacher") {
+            setPrices(
+                prices.map(
+                    item => (item.id === current.id) ? { ...item, price: { ...item.price, teacher: result } } : item
+                )
+            );
             setTeacher(result);
         } else {
+            setPrices(
+                prices.map(
+                    item => (item.id === current.id) ? { ...item, price: { student: result, teacher: 0 } } : item
+                )
+            );
             setPrice(result);
+            // console.log(prices);
         }
+    }
+
+    function getCurrentPrice() {
+        // if(type ==="schools")
+        //     return prices.filter((item,_) => item.id === current?.id)[0].price;
+        return prices.filter((item, _) => item.id === current?.id)[0].price;
     }
 
     const handleClick = (id: number) => {
@@ -167,21 +198,24 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                     }
                     <div className={`h-[15rem] px-4 py-4  ${data.length === 1 ? "w-full" : "w-[66%]"}`}>
                         <h1 className="text-xl font-[500]">{current?.name}</h1>
-                        {type === "Schools" ?
-                            <div className="mt-4">
-                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Teachers</label>
-                                <NairaInput className="py-1.5 mb-2" name="price" value={teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
-                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Students</label>
-                                <NairaInput className="py-1.5 mb-2" name="price" value={student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
-                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
-                                <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
+                        {
+                            prices && current && (
+                                type === "Schools" ?
+                                    <div className="mt-4">
+                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Teachers</label>
+                                        <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
+                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Students</label>
+                                        <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
+                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
+                                        <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
 
-                            </div>
-                            :
-                            <div className="mt-4">
-                                <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
-                                <NairaInput className="py-1.5" name="price" value={price.toLocaleString()} handler={handler} />
-                            </div>
+                                    </div>
+                                    :
+                                    <div className="mt-4">
+                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
+                                        <NairaInput className="py-1.5" name="price" value={getCurrentPrice().student.toLocaleString()} handler={handler} />
+                                    </div>
+                            )
 
                         }
                     </div>
@@ -193,12 +227,120 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                             :
                             <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Reset prices</button>
                     }
-                    <button disabled={active} onClick ={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply</button>
+                    <button disabled={active} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply</button>
                 </div>
             </div>
         </div>
     );
 }
+
+
+function ExceptionAccordion({ data, type }: { data: any, type: string }) {
+
+
+    const nameCondition = (): string => {
+        switch (type) {
+            case 'Schools':
+                return data.school_name;
+            case 'Freelancers':
+                return data.freelancer_name;
+            case 'Students':
+                return data.student_name;
+            default:
+                return '';
+        }
+    }
+
+    const removeException = () => {
+        
+    }
+
+
+    const [active, setActive] = useState<boolean>(false);
+    const [ optionActive,setOptionActive ] = useState<boolean>(false);
+    return (
+        <div className="mb-4">
+            <div className="w-full p-3 px-4 rounded-[8px] bg-neutral-100 flex items-center justify-between">
+                <h1 className="text-gray-400">{nameCondition()}</h1>
+                <div className="flex items-center space-x-6">
+                    <Popup
+                        open={optionActive}
+                        trigger={
+                            <button className="outline-none" onClick={() => {setOptionActive(true); alert("clicked")}}>
+                                <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="black" />
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="black" />
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="black" />
+                                </svg>
+                            </button>
+                        }>
+                        <ul className="py-3 bg-white shadow rounded-[8px]">
+                            <li onClick={() => setOptionActive(false)} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
+                            <li onClick={removeException} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
+                        </ul>
+                    </Popup>
+                    <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none`}>
+                        <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L7 7L13 1" stroke="#030036" strokeOpacity="0.74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            {
+                active && data &&
+                <div className="p-4 flex items-center justify-between">
+                    <div className="text-gray-400">
+                        <h1>For Teachers</h1>
+                        <h2 className="text-xl mt-2 text-primary">₦ {data.teachers_price.toLocaleString()}</h2>
+                    </div>
+                    <div className="text-gray-400">
+                        <h1>For Students</h1>
+                        <h2 className="text-xl mt-2 text-primary">₦ {data.student_price.toLocaleString()}</h2>
+                    </div>
+                    <div className="text-gray-400">
+                        <h1>For Teachers</h1>
+                        <h2 className="text-xl mt-2 text-primary">₦ {(data.student_price + data.teachers_price).toLocaleString()}</h2>
+                    </div>
+                </div>
+            }
+        </div>
+    );
+}
+
+function ExceptionsList({ type }: { type: string }) {
+
+    const studentsException = useSelector((state: RootState) => state.pricingException.students);
+    const schoolsException = useSelector((state: RootState) => state.pricingException.schools);
+    const freelancersException = useSelector((state: RootState) => state.pricingException.freelancers);
+
+    const condition = () => {
+        switch (type) {
+            case 'Schools':
+                return schoolsException;
+            case 'Freelancers':
+                return freelancersException;
+            case 'Students':
+                return studentsException;
+            default:
+                return [];
+        }
+    }
+
+    // console.log("rerendered")
+    return (
+        <div className="mt-10 flex flex-col">
+            {
+                condition().map((item: any) => (
+                    <div>
+                        <ExceptionAccordion data={item} type={type} />
+                    </div>
+                ))
+            }
+        </div>
+    );
+}
+
+
 
 export function ExceptionsComponent({ type }: { type: string }) {
 
@@ -218,7 +360,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
         const newSelection = selection.filter((item, index) => selection.indexOf(item) === index);
 
         // return name and id based on type
-        const conditions = (): { id: number, name: string }[] | undefined => {
+        const conditions = (): { id: number, name: string, price: { teacher: number, student: number } }[] | undefined => {
             let newList: any = null;
             switch (type) {
                 case 'Schools':
@@ -226,6 +368,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
                     return newList.map((item: TSchoolsProps) => ({
                         id: item.school.id,
                         name: item.school.name,
+                        price: { teacher: 0, student: 0 }
                     }));
 
                 case 'Freelancers':
@@ -233,12 +376,14 @@ export function ExceptionsComponent({ type }: { type: string }) {
                     return newList.map((item: TFreelancersProps) => ({
                         id: item.freelancer.id,
                         name: item.freelancer.name,
+                        price: { teacher: 0, student: 0 }
                     }));
                 case 'Students':
                     newList = students.filter((item: TStudentsProps) => newSelection.includes(item.id));
                     return newList.map((item: TStudentsProps) => ({
                         id: item.id,
-                        name: item.name
+                        name: item.name,
+                        price: { teacher: 0, student: 0 }
                     }));
                 default:
                     return undefined;
@@ -288,8 +433,9 @@ export function ExceptionsComponent({ type }: { type: string }) {
                         )
                     }
                 </div>
-                {/*  Exceptiosn come here */}
             </div>
+            {/*  Exceptions come here */}
+            <ExceptionsList type={type} />
         </>
     );
 }
@@ -359,8 +505,6 @@ export default function PricingTab() {
     const [active, setActive] = useState<number>(0)
     const dispatch = useDispatch();
 
-
-
     const parseResponseData = (data: any) => {
         const schools = {
             teachers: {
@@ -391,17 +535,27 @@ export default function PricingTab() {
             year: data.students.students_breakdown.yearly,
         }
 
-        return { schools, freelancers, students };
+        const schoolsException = data.exceptionedSchools;
+        const freelancersException = data.exceptionedFreelancers;
+        const studentsException = data.exceptionedIndependentStudents;
+
+        return { schools, freelancers, students, studentsException, schoolsException, freelancersException };
     }
 
     useEffect(() => {
         axiosInstance.get('/settings/pricing')
             .then(response => {
                 const parsed = parseResponseData(response.data.data);
+                // dispatching general pricing
                 dispatch(setSchoolsStudents(parsed.schools.students));
                 dispatch(setSchoolsTeachers(parsed.schools.teachers));
                 dispatch(setFreelancers(parsed.freelancers));
                 dispatch(setStudents(parsed.students));
+
+                // dispatching exceptions
+                dispatch(setStudentsException(parsed.studentsException));
+                dispatch(setSchoolsException(parsed.schoolsException));
+                dispatch(setFreelancersException(parsed.freelancersException));
             })
             .catch(error => console.log(error));
     }, []);

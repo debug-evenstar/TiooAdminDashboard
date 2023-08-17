@@ -18,13 +18,15 @@ import Login from './pages/auth/login';
 import PricingTab from './pages/admin/settingsPages/pricing';
 import UserLevels from './pages/admin/settingsPages/userLevels';
 import CouponTab from './pages/admin/settingsPages/coupon';
+import Notification from './components/notification/notification';
 function App() {
 
   return (
     <>
+      <Notification />
       <Router>
         <Routes>
-          <Route path="/login" element={<Login/>}/>
+          <Route path="/login" element={<Login />} />
           <Route element={<AdminLayout />}>
             <Route path="/" element={<Home />}></Route>
             <Route path="schools" element={<Schools />}></Route>

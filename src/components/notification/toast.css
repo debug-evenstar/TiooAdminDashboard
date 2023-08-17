@@ -1,0 +1,9 @@
+/* toastify-custom.css */
+
+/* Remove the shadow from the notification */
+.Toastify__toast {
+    box-shadow: 0px 0px 10px #00000022;
+    /* border: 1px solid rgb(194, 194, 194); */
+    border-left: 3px solid #5A51E6;
+  }
+  

@@ -1,8 +1,9 @@
+import Popup from "reactjs-popup";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import Button from "../../../components/button/button";
+import { useDispatch, useSelector } from "react-redux";
+
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { PriceState, reloadPricing, setFreelancers, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
 import axiosInstance from "../../../services/api";
@@ -14,7 +15,7 @@ import { TSchoolsProps } from "../../../redux/slices/schools";
 import { TFreelancersProps } from "../../../redux/slices/freelancer";
 import { TStudentsProps } from "../../../redux/slices/student";
 import { setFreelancersException, setSchoolsException, setStudentsException } from "../../../redux/slices/pricingException";
-import Popup from "reactjs-popup";
+import { notify } from "../../../components/notification/notification";
 
 
 
@@ -22,11 +23,13 @@ import Popup from "reactjs-popup";
 export function PricingSchoolsComponent() {
 
     const [edit, setEdit] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
     const teachers = useSelector((state: RootState) => state.pricing.schools.teachers);
     const students = useSelector((state: RootState) => state.pricing.schools.students);
+    const schools = useSelector((state: RootState) => state.pricing.schools)
     const total = useSelector((state: RootState) => state.pricing.schools.total);
 
     const handleTeachers = (data: PriceState) => {
@@ -40,7 +43,9 @@ export function PricingSchoolsComponent() {
     // fetch prices
 
     useEffect(() => {
+        console.log(schools.id)
         const total: PriceState = {
+            id: schools.id,
             value: students['value'] + teachers['value'],
             quarter: students['quarter'] + teachers['quarter'],
             half: students['half'] + teachers['half'],
@@ -48,12 +53,14 @@ export function PricingSchoolsComponent() {
         }
         dispatch(setSchoolsTotal(total));
 
-    }, [students, teachers]);
+    }, []);
 
 
     const handleSubmit = () => {
         if (edit) {
+            setLoading(true);
             const payload = {
+                id: schools.id,
                 teachers_price: teachers.value,
                 student_price: students.value,
                 accounts: null,
@@ -61,14 +68,15 @@ export function PricingSchoolsComponent() {
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
                 teachers_breakdown: { quater: teachers.quarter, half: teachers.half, yearly: teachers.year }
             }
-            axiosInstance.post('/settings/pricing', payload)
+            axiosInstance.put('/settings/pricing', payload)
                 .then(response => {
-                    console.log(response.data.data)
                     dispatch(reloadPricing());
-                    alert("saved data");
+                    notify.success("updated schools pricing")
+                    console.log(response.data.data)
                 })
-                .catch(error => console.log(error));
-            console.log(payload);
+                .catch(() => notify.error("failed to save pricing"))
+                .finally(() => setLoading(false));
+
 
         }
         setEdit(!edit)
@@ -78,9 +86,14 @@ export function PricingSchoolsComponent() {
         <>
             <div className="flex items-center justify-between">
                 <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
-                <Button className="outline-none text-sm" handler={handleSubmit}>
-                    {edit ? "Save" : "Edit pricing"}
-                </Button>
+                <button className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { handleSubmit(); e.preventDefault(); setEdit(!edit) }}>
+                    {edit ?
+                        "Save"
+                        : loading ?
+                            <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                            : "Edit pricing"
+                    }
+                </button>
             </div>
             <PricingInput state={teachers} setState={handleTeachers} name="teachers" readOnly={!edit} />
             <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
@@ -97,6 +110,13 @@ type priceState = {
     price: { teacher: number, student: number }
 }
 
+type TExceptionPayload = {
+    teachers_price: number;
+    student_price: number;
+    accounts: number;
+    tab: string;
+
+}
 
 function AddExceptionModal({ type, data, modal, setModal }: { type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
 
@@ -117,43 +137,64 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
             setCurrent(data[0]);
         }
     }, [data])
+    
+    useEffect(() => {
+        // takes effect when switching tabs 
+        if (prices.length && data.length) {
+            setTotal(getCurrentPrice().student + getCurrentPrice().teacher);
+        }
+    }, [prices, current])
 
     useEffect(() => {
-        setTotal(teacher + student);
         if (price || teacher && student) {
             setActive(true);
         } else {
             setActive(false);
         }
-    }, [teacher, student, price]);
+    }, [teacher, student, price, total]);
 
+    const sendRequst = async (payload: TExceptionPayload) => {
+        try {
+            const response = await axiosInstance.post('/settings/pricing', payload)
+            console.log(response.data.data);
+            notify.success("added exception pricing")
+            setLoading(false);
+            setModal(false);
+        } catch (error) {
+            setLoading(false);
+            notify.success("failed to create exception pricing")
+            console.log(error)
+        }
+
+    }
 
     const handleApply = async () => {
-        if (!active) {
-            alert("please fill all field");
-            return;
-        }
         setLoading(true);
         prices.forEach(async (item) => {
-            const payload = {
+            const payload: TExceptionPayload = {
                 teachers_price: item.price.teacher,
                 student_price: item.price.student,
                 accounts: item.id,
                 tab: type.toLocaleLowerCase()
             }
-            try {
-                const response = await axiosInstance.post('/settings/pricing', payload)
-                console.log(response.data.data);
-            } catch (error) {
-                console.log(error)
-            }
-
+            sendRequst(payload);
         });
-        setLoading(false)
 
     }
 
+    const handleApplyAll = () => {
+        setLoading(true);
+        prices.forEach(async () => {
+            const payload: TExceptionPayload = {
+                teachers_price: getCurrentPrice().teacher,
+                student_price: getCurrentPrice().student,
+                accounts: current.id,
+                tab: type.toLocaleLowerCase()
+            }
+            sendRequst(payload);
+        });
 
+    }
     const handler = (e: ChangeEvent<HTMLInputElement>, type?: string) => {
         let temp: string = e.target.value.replace('/\Dg', '');
         temp = temp.replaceAll(',', '');
@@ -186,9 +227,8 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
         }
     }
 
-    function getCurrentPrice() {
-        // if(type ==="schools")
-        //     return prices.filter((item,_) => item.id === current?.id)[0].price;
+
+    const getCurrentPrice = () => {
         return prices.filter((item, _) => item.id === current?.id)[0].price;
     }
 
@@ -231,7 +271,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                                         <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
                                         <label htmlFor="" className="text-xs text-gray-400 mb-4">Students</label>
                                         <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
-                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
+                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Total</label>
                                         <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
 
                                     </div>
@@ -246,16 +286,13 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
                     </div>
                 </div>
                 <div className="h-[44px] border-t px-3 flex items-center justify-between">
-                    {
-                        data.length > 1 ?
-                            <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Apply on all schools</button>
-                            :
-                            <button disabled={active} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>Reset prices</button>
-                    }
-                    <button disabled={!active} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                    <button disabled={!active} onClick={handleApplyAll} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                        {data.length > 1 ? "Apply on all schools" : "Reset prices"}
+                    </button>
+                    <button disabled={!active && !loading} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
                         {
                             loading ?
-                                <div className="mx-auto w-5 h-5 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                                <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
                                 :
                                 <span>Apply</span>
                         }
@@ -269,19 +306,21 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
 
 
 function ExceptionAccordion({ data, type }: { data: any, type: string }) {
-
-
     const nameCondition = (): string => {
-        switch (type) {
-            case 'Schools':
-                return data.school_name;
-            case 'Freelancers':
-                return data.school_name;
-            case 'Students':
-                return data.school_name;
-            default:
-                return '';
-        }
+        // just in case
+
+        // switch (type) {
+        //     case 'Schools':
+        //         return data.school_name;
+        //     case 'Freelancers':
+        //         return data.school_name;
+        //     case 'Students':
+        //         return data.school_name;
+        //     default:
+        //         return '';
+        // }
+        // useless type
+        return data.school_name || type;
     }
 
     const dispatch = useDispatch();
@@ -290,9 +329,13 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
         axiosInstance.delete(`/settings/pricing/${data.id}`)
             .then(response => {
                 dispatch(reloadPricing());
+                notify.success("removed exception")
                 console.log(response.data.data);
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                notify.error("error deleting exception")
+                console.log(error)
+            });
     }
 
 
@@ -372,8 +415,6 @@ function ExceptionsList({ type }: { type: string }) {
                 return [];
         }
     }
-
-    // console.log("rerendered")
     return (
         <div className="mt-10 flex flex-col">
             {
@@ -402,7 +443,6 @@ export function ExceptionsComponent({ type }: { type: string }) {
 
 
     const onApply = () => {
-        console.log("applying ")
         // filter out duplicates
         const newSelection = selection.filter((item, index) => selection.indexOf(item) === index);
 
@@ -492,14 +532,17 @@ function StudentsTabComponent() {
     const [edit, setEdit] = useState(false);
 
     const students = useSelector((state: RootState) => state.pricing.students);
+    const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const handleStudents = (data: PriceState) => {
         dispatch(setStudents(data));
     }
     const handleSubmit = () => {
-        if(edit){
+        if (edit) {
+            setLoading(true);
             const payload = {
+                id: students.id,
                 teachers_price: 0,
                 student_price: students.value,
                 accounts: null,
@@ -508,8 +551,16 @@ function StudentsTabComponent() {
                 teachers_breakdown: { quater: 0, half: 0, yearly: 0 }
             }
             axiosInstance.post('/settings/pricing', payload)
-            .then(response => console.log(response.data.data))
-            .catch(error => console.log(error));
+                .then(response => {
+                    notify.success("updated students pricing")
+                    console.log(response.data.data)
+                })
+                .catch(error => {
+                    notify.error("failed to update students pricing")
+                    console.log(error)
+                })
+                .finally(() => setLoading(false));
+
         }
 
     }
@@ -517,9 +568,14 @@ function StudentsTabComponent() {
         <>
             <div className="flex items-center justify-between">
                 <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
-                <Button className="outline-none font-[400]" handler={(e) => { handleSubmit(); e.preventDefault(); setEdit(!edit) }}>
-                    {edit ? "Save" : "Edit pricing"}
-                </Button>
+                <button className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { handleSubmit(); e.preventDefault(); setEdit(!edit) }}>
+                    {edit ?
+                        "Save"
+                        : loading ?
+                            <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                            : "Edit pricing"
+                    }
+                </button>
 
             </div>
             <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
@@ -533,20 +589,51 @@ function FreelancersTabComponent() {
     const [edit, setEdit] = useState(false);
 
     const freelancers = useSelector((state: RootState) => state.pricing.freelancers);
+    const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const handleFreelancers = (data: PriceState) => {
         dispatch(setFreelancers(data));
     }
+    const handleSubmit = () => {
+        if (edit) {
+            setLoading(true);
+            console.log(freelancers);
+            const payload = {
+                id: freelancers.id,
+                teachers_price: 0,
+                student_price: freelancers.value,
+                accounts: null,
+                tab: "schools",
+                students_breakdown: { quater: freelancers.quarter, half: freelancers.half, yearly: freelancers.year },
+                teachers_breakdown: { quater: 0, half: 0, yearly: 0 }
+            }
+            axiosInstance.put('/settings/pricing', payload)
+                .then(response => {
+                    notify.success("updated freelancer pricing")
+                    console.log(response.data.data)
+                })
+                .catch(error => {
+                    notify.error("failed to update frelancer pricing")
+                    console.log(error.reponse.data);
+                })
+                .finally(() => setLoading(false));
+        }
 
+    }
 
     return (
         <>
             <div className="flex items-center justify-between">
                 <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
-                <Button className="outline-none text-sm" handler={(e) => { e.preventDefault(); setEdit(!edit) }}>
-                    {edit ? "Save" : "Edit pricing"}
-                </Button>
+                <button className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { handleSubmit(); e.preventDefault(); setEdit(!edit) }}>
+                    {edit ?
+                        "Save"
+                        : loading ?
+                            <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                            : "Edit pricing"
+                    }
+                </button>
 
             </div>
             <PricingInput state={freelancers} setState={handleFreelancers} name="freelancers" readOnly={!edit} />
@@ -565,21 +652,25 @@ const tabs: { name: string, component: JSX.Element }[] = [
 
 export default function PricingTab() {
 
-    const pricing = useSelector((state: RootState) => state.pricing.reload);
+    const pricingReload = useSelector((state: RootState) => state.pricing.reload);
 
     const [active, setActive] = useState<number>(0)
 
     const dispatch = useDispatch();
 
     const parseResponseData = (data: any) => {
+        console.log("received id", data);
         const schools = {
+            id: data.schools.id,
             teachers: {
+                id: 0,
                 value: data.schools.teachers_price,
                 quarter: data.schools.teachers_breakdown.quater,
                 half: data.schools.teachers_breakdown.half,
                 year: data.schools.teachers_breakdown.yearly,
             },
             students: {
+                id: 0,
                 value: data.schools.student_price,
                 quarter: data.schools.students_breakdown.quater,
                 half: data.schools.students_breakdown.half,
@@ -588,6 +679,7 @@ export default function PricingTab() {
         }
 
         const freelancers = {
+            id: data.freelancers.id,
             value: data.freelancers.student_price,
             quarter: data.freelancers.students_breakdown.quater,
             half: data.freelancers.students_breakdown.half,
@@ -595,6 +687,7 @@ export default function PricingTab() {
         }
 
         const students = {
+            id: data.freelancers.id,
             value: data.students.student_price,
             quarter: data.students.students_breakdown.quater,
             half: data.students.students_breakdown.half,
@@ -604,14 +697,14 @@ export default function PricingTab() {
         const schoolsException = data.exceptionedSchools;
         const freelancersException = data.exceptionedFreelancers;
         const studentsException = data.exceptionedIndependentsStudents;
-        console.log(data);
+
         return { schools, freelancers, students, studentsException, schoolsException, freelancersException };
     }
 
     useEffect(() => {
-        console.log("pring tab")
         axiosInstance.get('/settings/pricing')
             .then(response => {
+                console.log(response.data.data);
                 const parsed = parseResponseData(response.data.data);
                 // dispatching general pricing
                 dispatch(setSchoolsStudents(parsed.schools.students));
@@ -619,13 +712,15 @@ export default function PricingTab() {
                 dispatch(setFreelancers(parsed.freelancers));
                 dispatch(setStudents(parsed.students));
                 // window.parsed = parsed;
+
                 // dispatching exceptions
                 dispatch(setStudentsException(parsed.studentsException));
                 dispatch(setSchoolsException(parsed.schoolsException));
                 dispatch(setFreelancersException(parsed.freelancersException));
+                console.log("pricing tab", parsed);
             })
             .catch(error => console.log(error));
-    }, [pricing]);
+    }, [pricingReload]);
 
 
     return (

@@ -4,7 +4,8 @@ import axiosInstance from "../../../services/api";
 import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { clearCoupons, setCoupons } from "../../../redux/slices/coupon";
+import { setCouponReload, setCoupons } from "../../../redux/slices/coupon";
+import { notify } from "../../../components/notification/notification";
 
 export type TCouponProps = {
   id: number;
@@ -103,11 +104,12 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
         axiosInstance.put('/coupon', { ...payload, id: data.id })
           .then(response => {
             if (!response.data.error) {
-              dispatch(clearCoupons());
+              dispatch(setCouponReload());
+              notify.success("updated coupon");
               setLoading(false);
               setModal(false);
-            }else{
-              alert("error updating coupon");
+            } else {
+              notify.error("error updating coupon");
             }
           })
           .catch(error => console.log(error));
@@ -116,12 +118,14 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
         axiosInstance.post('/coupon', payload)
           .then(response => {
             if (!response.data.error) {
-              dispatch(clearCoupons());
+              dispatch(setCouponReload());
+              notify.success("created coupon");
               setLoading(false);
               setModal(false);
             }
           })
           .catch(error => {
+            notify.error("failed to create coupon");
             setLoading(false);
             console.log(error)
           });
@@ -204,17 +208,21 @@ function CouponMenuBtn({ id, data }: { data: TCouponProps, id: number }) {
       case 'Delete Coupon':
         axiosInstance.delete('/coupon?id=' + id)
           .then(response => {
-            if (!response.data.error)
-              dispatch(clearCoupons());
+            if (!response.data.error) {
+              dispatch(setCouponReload());
+              notify.success("deleted coupon successfuly")
+            }
           })
-          .catch(error => console.log(error))
+          .catch(() => notify.error("error deleting coupon"))
         break;
 
       case 'Activate Coupon':
         axiosInstance.post('/coupon/activate', { id: id, activate: true })
           .then(response => {
-            if (!response.data.error)
-              dispatch(clearCoupons());
+            if (!response.data.error) {
+              dispatch(setCouponReload());
+              notify.success("Activated coupon");
+            }
           })
           .catch(error => console.log(error))
         break;
@@ -222,8 +230,10 @@ function CouponMenuBtn({ id, data }: { data: TCouponProps, id: number }) {
       case 'Deactivate Coupon':
         axiosInstance.post('/coupon/activate', { id: id, activate: false })
           .then(response => {
-            if (!response.data.error)
-              dispatch(clearCoupons());
+            if (!response.data.error) {
+              dispatch(setCouponReload());
+              notify.success("Deactivated coupon");
+            }
           })
           .catch(error => console.log(error))
         break;
@@ -265,18 +275,20 @@ export default function CouponTab() {
   const [modal, setModal] = useState<boolean>(false);
 
   const coupons = useSelector((state: RootState) => state.coupon.coupons);
+  const couponReload = useSelector((state: RootState) => state.coupon.reload);
 
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("changing");
     axiosInstance.get('/coupon')
       .then(response => {
         dispatch(setCoupons(response.data.data))
         setLoading(false);
       })
       .catch(error => console.log(error))
-  }, [coupons])
+  }, [couponReload])
 
 
 
@@ -310,8 +322,8 @@ export default function CouponTab() {
                     </div>
                     <div className="w-[7rem]">
                       <div className="flex items-center space-x-2">
-                        <div className={`w-2 h-2 rounded-full ${item.status === 'Activate' ? "bg-green-500" : "bg-[#fab814]"}`}></div>
-                        <span>{item.status === 'Activate' ? "Active" : "Inactive"}</span>
+                        <div className={`w-2 h-2 rounded-full ${item.status === 'Active' ? "bg-green-500" : "bg-[#fab814]"}`}></div>
+                        <span>{item.status}</span>
                       </div>
                     </div>
                     <div className="w-[7rem]">{item.amount > 0 ? '₦ ' + item.amount.toLocaleString() : "..."}</div>

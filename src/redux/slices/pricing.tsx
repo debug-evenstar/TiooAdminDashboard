@@ -6,11 +6,13 @@ export interface PriceState {
     quarter: number;
     half: number;
     year: number;
+    id: number;
 }
 
 
 const initialState = {
     schools: {
+        id: 0,
         teachers: {
             value: 0,
             quarter: 0,
@@ -31,12 +33,14 @@ const initialState = {
         }
     },
     freelancers: {
+        id: 0,
         value: 0,
         quarter: 0,
         half: 0,
         year: 0,
     },
     students: {
+        id: 0,
         value: 0,
         quarter: 0,
         half: 0,

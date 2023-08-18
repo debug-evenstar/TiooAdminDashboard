@@ -43,7 +43,7 @@ export function PricingSchoolsComponent() {
     // fetch prices
 
     useEffect(() => {
-        console.log(schools.id)
+        console.log("schools id",schools)
         const total: PriceState = {
             id: schools.id,
             value: students['value'] + teachers['value'],
@@ -53,12 +53,13 @@ export function PricingSchoolsComponent() {
         }
         dispatch(setSchoolsTotal(total));
 
-    }, []);
+    }, [students,teachers]);
 
 
     const handleSubmit = () => {
         if (edit) {
             setLoading(true);
+            console.log(schools.id)
             const payload = {
                 id: schools.id,
                 teachers_price: teachers.value,
@@ -541,16 +542,17 @@ function StudentsTabComponent() {
     const handleSubmit = () => {
         if (edit) {
             setLoading(true);
+            console.log("sending payload for id",students);
             const payload = {
                 id: students.id,
-                teachers_price: 0,
+                teachers_price: 0.0,
                 student_price: students.value,
                 accounts: null,
-                tab: "schools",
+                tab: "students",
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
-                teachers_breakdown: { quater: 0, half: 0, yearly: 0 }
+                teachers_breakdown: { quater: 0.0, half: 0.0, yearly: 0.0 }
             }
-            axiosInstance.post('/settings/pricing', payload)
+            axiosInstance.put('/settings/pricing', payload)
                 .then(response => {
                     notify.success("updated students pricing")
                     console.log(response.data.data)
@@ -604,7 +606,7 @@ function FreelancersTabComponent() {
                 teachers_price: 0,
                 student_price: freelancers.value,
                 accounts: null,
-                tab: "schools",
+                tab: "freelancers",
                 students_breakdown: { quater: freelancers.quarter, half: freelancers.half, yearly: freelancers.year },
                 teachers_breakdown: { quater: 0, half: 0, yearly: 0 }
             }
@@ -671,27 +673,27 @@ export default function PricingTab() {
             },
             students: {
                 id: 0,
-                value: data.schools.student_price,
-                quarter: data.schools.students_breakdown.quater,
-                half: data.schools.students_breakdown.half,
-                year: data.schools.students_breakdown.yearly,
+                value: data.schools?.student_price,
+                quarter: data.schools?.students_breakdown.quater,
+                half: data.schools?.students_breakdown.half,
+                year: data.schools?.students_breakdown.yearly,
             }
         }
 
         const freelancers = {
-            id: data.freelancers.id,
-            value: data.freelancers.student_price,
-            quarter: data.freelancers.students_breakdown.quater,
-            half: data.freelancers.students_breakdown.half,
-            year: data.freelancers.students_breakdown.yearly,
+            id: data.freelancers?.id,
+            value: data.freelancers?.student_price,
+            quarter: data.freelancers?.students_breakdown.quater,
+            half: data.freelancers?.students_breakdown.half,
+            year: data.freelancers?.students_breakdown.yearly,
         }
 
         const students = {
-            id: data.freelancers.id,
-            value: data.students.student_price,
-            quarter: data.students.students_breakdown.quater,
-            half: data.students.students_breakdown.half,
-            year: data.students.students_breakdown.yearly,
+            id: data.students?.id,
+            value: data.students?.student_price,
+            quarter: data.students?.students_breakdown.quater,
+            half: data.students?.students_breakdown.half,
+            year: data.students?.students_breakdown.yearly,
         }
 
         const schoolsException = data.exceptionedSchools;

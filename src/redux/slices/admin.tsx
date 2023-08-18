@@ -10,8 +10,9 @@ type TUserLevel = {
 }
 
 
-const initialState: { users: TUserLevel[] } = {
-    users: []
+const initialState: { reload: boolean,users: TUserLevel[] } = {
+    users: [],
+    reload: false,
 };
 
 export const adminSlice = createSlice({
@@ -27,9 +28,12 @@ export const adminSlice = createSlice({
         clearAdmins: (state) => {
             state.users = [];
         },
+        setAdminReload: (state) => {
+            state.reload = !state.reload;
+        }
 
     }
 })
 
-export const { addAdmin, setAdmins, clearAdmins } = adminSlice.actions;
+export const { addAdmin, setAdmins,setAdminReload, clearAdmins } = adminSlice.actions;
 export default adminSlice.reducer;

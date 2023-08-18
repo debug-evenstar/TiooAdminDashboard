@@ -4,8 +4,9 @@ import studentImage from '../../../assets/images/student.png';
 import searchImage from '../../../assets/images/search-md.png';
 import axiosInstance from "../../../services/api";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAdmins, setAdmins } from "../../../redux/slices/admin";
+import { setAdminReload, setAdmins } from "../../../redux/slices/admin";
 import { RootState } from "../../../redux/store";
+import { notify } from "../../../components/notification/notification";
 
 
 
@@ -156,8 +157,8 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 
     const [fullname, setFullname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const [status, setStatus] = useState<number>(1);
-    const [role, setRole] = useState<string>('');
+    const [role, setRole] = useState<number>(1);
+    const [position,setPosition] = useState<string>('');
     const [permissions, setPermissions] = useState<number[]>([]);
     const [errors, setErrors] = useState<UserFormError>({});
 
@@ -180,7 +181,7 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
         }
         if (!role)
             newErrors.role = "Please enter a valid role";
-        if (status === 0)
+        if (role === 0)
             newErrors.status = "Please select an admin status";
         if (!fullname)
             newErrors.fullname = "Please enter admin name";
@@ -192,7 +193,10 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
     const submitForm = () => {
         const payload = {
             name: fullname,
-            role: 'admin',
+            role: statusOptions.map((item) => {
+                if(item.id === role)
+                    return item.value;
+            })[0],
             position: role,
             permissions: permissions,
             email: email,
@@ -200,13 +204,14 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 
         axiosInstance.post('/user', payload)
             .then(() => {
-                dispatch(clearAdmins());
+                dispatch(setAdminReload());
                 setLoading(false);
+                notify.success("Created new admin")
                 setModal(false);
             })
             .catch(error => {
                 setLoading(false);
-                alert(error.response.data.message);
+                notify.error(error.response.data.message);
                 console.log(error);
             });
     }
@@ -245,12 +250,12 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
                     </div>
                     <div className="text-xs mb-3">
                         <label htmlFor="" className="">Role</label>
-                        <SingleOptionsMenu selection={status} setSelection={setStatus} options={statusOptions} />
+                        <SingleOptionsMenu selection={role} setSelection={setRole} options={statusOptions} />
                         <p className="my-1 text-red-400">{errors?.status}</p>
                     </div>
                     <div className="text-xs mb-3">
                         <label htmlFor="" className="">Position</label>
-                        <input value={role} onChange={(e) => handleChange(e, setRole)} type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
+                        <input value={position} onChange={(e) => handleChange(e, setPosition)} type="text" className="mt-2 outline-none rounded w-full px-3 py-2 border" />
                         <p className="my-1 text-red-400">{errors?.role}</p>
 
                     </div>
@@ -279,14 +284,18 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 
 function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (state: boolean) => void, id: number }) {
 
-    const [loading, setLoading ] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const dispatch = useDispatch();
 
-    const handleSubmit =  async ()  => {
+    const handleSubmit = async () => {
         setLoading(true);
-        try{   
-            const response =  await axiosInstance.delete('/user?admin_id='+id)
+        try {
+            const response = await axiosInstance.delete('/user?admin_id=' + id)
+            dispatch(setAdminReload());
+            notify.success("deleted admin user")
             console.log(response.data.data);
-        }catch(error){
+        } catch (error) {
+            notify.error("failed to delete admin user");
             console.log(error);
         }
         setModal(false);
@@ -300,18 +309,18 @@ function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (s
                 </div>
                 <div className="flex px-4 items-center space-y-3 flex-col  py-10">
                     <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20.7 15.6335L12.5016 1.39569C12.2967 1.04687 12.0042 0.757642 11.6532 0.556681C11.3021 0.35572 10.9046 0.25 10.5 0.25C10.0955 0.25 9.69798 0.35572 9.3469 0.556681C8.99581 0.757642 8.70334 1.04687 8.49847 1.39569L0.300029 15.6335C0.102907 15.9709 -0.000976562 16.3546 -0.000976562 16.7454C-0.000976562 17.1361 0.102907 17.5199 0.300029 17.8572C0.502276 18.2082 0.794251 18.499 1.14599 18.6998C1.49773 18.9006 1.89658 19.0043 2.30159 19.0001H18.6985C19.1032 19.0039 19.5016 18.9001 19.853 18.6993C20.2044 18.4985 20.4961 18.2079 20.6982 17.8572C20.8956 17.52 20.9998 17.1364 21.0001 16.7456C21.0004 16.3549 20.8969 15.9711 20.7 15.6335ZM19.3997 17.1063C19.3282 17.2282 19.2256 17.3289 19.1024 17.3981C18.9792 17.4673 18.8398 17.5025 18.6985 17.5001H2.30159C2.16029 17.5025 2.02088 17.4673 1.89765 17.3981C1.77442 17.3289 1.67181 17.2282 1.60034 17.1063C1.5356 16.9967 1.50145 16.8717 1.50145 16.7444C1.50145 16.6171 1.5356 16.4922 1.60034 16.3826L9.79878 2.14475C9.87169 2.02341 9.97477 1.92301 10.098 1.8533C10.2212 1.7836 10.3603 1.74696 10.5019 1.74696C10.6435 1.74696 10.7826 1.7836 10.9058 1.8533C11.029 1.92301 11.1321 2.02341 11.205 2.14475L19.4035 16.3826C19.4676 16.4925 19.5011 16.6177 19.5005 16.7449C19.4998 16.8722 19.465 16.997 19.3997 17.1063ZM9.75003 11.5001V7.75006C9.75003 7.55115 9.82905 7.36038 9.9697 7.21973C10.1104 7.07908 10.3011 7.00006 10.5 7.00006C10.6989 7.00006 10.8897 7.07908 11.0304 7.21973C11.171 7.36038 11.25 7.55115 11.25 7.75006V11.5001C11.25 11.699 11.171 11.8897 11.0304 12.0304C10.8897 12.171 10.6989 12.2501 10.5 12.2501C10.3011 12.2501 10.1104 12.171 9.9697 12.0304C9.82905 11.8897 9.75003 11.699 9.75003 11.5001ZM11.625 14.8751C11.625 15.0976 11.559 15.3151 11.4354 15.5001C11.3118 15.6851 11.1361 15.8293 10.9305 15.9144C10.725 15.9996 10.4988 16.0219 10.2806 15.9784C10.0623 15.935 9.86187 15.8279 9.70453 15.6706C9.5472 15.5132 9.44005 15.3128 9.39665 15.0945C9.35324 14.8763 9.37552 14.6501 9.46066 14.4445C9.54581 14.239 9.69001 14.0633 9.87501 13.9397C10.06 13.816 10.2775 13.7501 10.5 13.7501C10.7984 13.7501 11.0845 13.8686 11.2955 14.0796C11.5065 14.2905 11.625 14.5767 11.625 14.8751Z" fill="#030036" fill-opacity="0.74" />
+                        <path d="M20.7 15.6335L12.5016 1.39569C12.2967 1.04687 12.0042 0.757642 11.6532 0.556681C11.3021 0.35572 10.9046 0.25 10.5 0.25C10.0955 0.25 9.69798 0.35572 9.3469 0.556681C8.99581 0.757642 8.70334 1.04687 8.49847 1.39569L0.300029 15.6335C0.102907 15.9709 -0.000976562 16.3546 -0.000976562 16.7454C-0.000976562 17.1361 0.102907 17.5199 0.300029 17.8572C0.502276 18.2082 0.794251 18.499 1.14599 18.6998C1.49773 18.9006 1.89658 19.0043 2.30159 19.0001H18.6985C19.1032 19.0039 19.5016 18.9001 19.853 18.6993C20.2044 18.4985 20.4961 18.2079 20.6982 17.8572C20.8956 17.52 20.9998 17.1364 21.0001 16.7456C21.0004 16.3549 20.8969 15.9711 20.7 15.6335ZM19.3997 17.1063C19.3282 17.2282 19.2256 17.3289 19.1024 17.3981C18.9792 17.4673 18.8398 17.5025 18.6985 17.5001H2.30159C2.16029 17.5025 2.02088 17.4673 1.89765 17.3981C1.77442 17.3289 1.67181 17.2282 1.60034 17.1063C1.5356 16.9967 1.50145 16.8717 1.50145 16.7444C1.50145 16.6171 1.5356 16.4922 1.60034 16.3826L9.79878 2.14475C9.87169 2.02341 9.97477 1.92301 10.098 1.8533C10.2212 1.7836 10.3603 1.74696 10.5019 1.74696C10.6435 1.74696 10.7826 1.7836 10.9058 1.8533C11.029 1.92301 11.1321 2.02341 11.205 2.14475L19.4035 16.3826C19.4676 16.4925 19.5011 16.6177 19.5005 16.7449C19.4998 16.8722 19.465 16.997 19.3997 17.1063ZM9.75003 11.5001V7.75006C9.75003 7.55115 9.82905 7.36038 9.9697 7.21973C10.1104 7.07908 10.3011 7.00006 10.5 7.00006C10.6989 7.00006 10.8897 7.07908 11.0304 7.21973C11.171 7.36038 11.25 7.55115 11.25 7.75006V11.5001C11.25 11.699 11.171 11.8897 11.0304 12.0304C10.8897 12.171 10.6989 12.2501 10.5 12.2501C10.3011 12.2501 10.1104 12.171 9.9697 12.0304C9.82905 11.8897 9.75003 11.699 9.75003 11.5001ZM11.625 14.8751C11.625 15.0976 11.559 15.3151 11.4354 15.5001C11.3118 15.6851 11.1361 15.8293 10.9305 15.9144C10.725 15.9996 10.4988 16.0219 10.2806 15.9784C10.0623 15.935 9.86187 15.8279 9.70453 15.6706C9.5472 15.5132 9.44005 15.3128 9.39665 15.0945C9.35324 14.8763 9.37552 14.6501 9.46066 14.4445C9.54581 14.239 9.69001 14.0633 9.87501 13.9397C10.06 13.816 10.2775 13.7501 10.5 13.7501C10.7984 13.7501 11.0845 13.8686 11.2955 14.0796C11.5065 14.2905 11.625 14.5767 11.625 14.8751Z" fill="#030036" fillOpacity="0.74" />
                     </svg>
                     <p className="text-center">Are you sure you want to remove this user?</p>
                 </div>
                 <div className="px-4 w-full border-t h-[3.5rem] mt-[2px] flex items-center">
                     <button onClick={handleSubmit} className="bg-main w-full text-sm text-center py-2 outline-none rounded text-white font-[500]">
                         {
-                            loading?
-                            <div className="mx-auto w-6 h-6 rounded-full border-2 border-gray-400 border-r-white animate-spin"></div>
-                            :
-                            <span>Continue</span>
-                        } 
+                            loading ?
+                                <div className="mx-auto w-6 h-6 rounded-full border-2 border-gray-400 border-r-white animate-spin"></div>
+                                :
+                                <span>Continue</span>
+                        }
 
                     </button>
                 </div>
@@ -339,7 +348,7 @@ function UserAccordion({ data }: { data: TUserLevel }) {
                         <p className="text-gray-400 text-xs">{data.email}</p>
                     </div>
                 </div>
-                <h1 className="text-primary w-[15rem] ">{data.fullname}</h1>
+                <h1 className="text-primary w-[15rem] ">{data.role}</h1>
 
                 <div onClick={() => setActive(!active)}
                     className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
@@ -357,7 +366,7 @@ function UserAccordion({ data }: { data: TUserLevel }) {
                     <div className="">
                         <div className="mb-2">
                             <span className="text-gray-400">Position: </span>
-                            <span className="text-primary">{data.role[0].toUpperCase() + data.role.slice(1)}</span>
+                            <span className="text-primary">{data.role}</span>
                         </div>
                         <div className="mb-2 w-[20rem] flex space-x-2">
                             <div className="text-gray-400">Permission: </div>
@@ -393,6 +402,7 @@ export default function UserLevels() {
     const [modal, setModal] = useState<boolean>(false);
 
     const admins = useSelector((state: RootState) => state.admin.users);
+    const reload = useSelector((state: RootState) => state.admin.reload);
     const dispatch = useDispatch();
     const toggleModal = () => setModal(!modal);
 
@@ -402,7 +412,7 @@ export default function UserLevels() {
                 dispatch(setAdmins(response.data.data));
             })
             .catch(error => console.log(error))
-    }, [])
+    }, [reload]);
 
     return (
         <div className="mt-2">

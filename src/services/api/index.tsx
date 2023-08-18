@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
   response => response,
   error => {
     if(error.response.status === 401){
-      alert("you need to login to continue");
+      window.location.assign('/login');
     }
     return Promise.reject(error);
   }

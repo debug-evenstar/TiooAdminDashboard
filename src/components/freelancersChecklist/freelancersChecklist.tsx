@@ -44,6 +44,7 @@ export default function FreelancersChecklist({ selection, setSelection, onApply,
     const [list, setList] = useState<TFreelancersChecklistProps[]>([]);
     const [reload,setReload ] = useState<boolean>(false);
 
+    const [loading, setLoading ] = useState<boolean>(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -55,7 +56,8 @@ export default function FreelancersChecklist({ selection, setSelection, onApply,
                     setList(response.data.data);
                 }
             })
-            .catch(error => console.log(error));
+            .catch(error => console.log(error))
+            .finally(() => setLoading(false));
     }, [reload]);
 
 
@@ -115,7 +117,10 @@ export default function FreelancersChecklist({ selection, setSelection, onApply,
                             </div>
                         )) :
                         <div className="w-full h-full flex items-center justify-center">
-                            <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
+                            {
+                                !loading? "No data":
+                                    <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
+                            }
                         </div>
                 }
             </div>

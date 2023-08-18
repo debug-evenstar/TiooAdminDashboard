@@ -23,14 +23,16 @@ type TExceptionProps = {
 // }
 
 export interface ExceptionState {
-    schools: TExceptionProps[],
-    students: TExceptionProps[],
-    freelancers: TExceptionProps[],
+    schools: TExceptionProps[];
+    students: TExceptionProps[];
+    freelancers: TExceptionProps[];
+    reload: boolean;
 }
 const initialState: ExceptionState = {
     schools: [],
     students: [],
     freelancers: [],
+    reload: false
 }
 
 export const pricingExceptionSlice = createSlice({
@@ -46,8 +48,11 @@ export const pricingExceptionSlice = createSlice({
         setFreelancersException: (state, action: PayloadAction<any[]>) => {
             state.students = action.payload;
         },
+        setExceptionReload: (state) => {
+            state.reload = !state.reload;
+        },
     }
 })
 
-export const { setStudentsException, setSchoolsException, setFreelancersException } = pricingExceptionSlice.actions;
+export const { setStudentsException, setExceptionReload,setSchoolsException, setFreelancersException } = pricingExceptionSlice.actions;
 export default pricingExceptionSlice.reducer;

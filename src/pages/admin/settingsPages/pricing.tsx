@@ -14,7 +14,7 @@ import { TSchoolsProps } from "../../../redux/slices/schools";
 
 import { TFreelancersProps } from "../../../redux/slices/freelancer";
 import { TStudentsProps } from "../../../redux/slices/student";
-import { setFreelancersException, setSchoolsException, setStudentsException } from "../../../redux/slices/pricingException";
+import { setExceptionReload, setFreelancersException, setSchoolsException, setStudentsException } from "../../../redux/slices/pricingException";
 import { notify } from "../../../components/notification/notification";
 
 
@@ -43,7 +43,6 @@ export function PricingSchoolsComponent() {
     // fetch prices
 
     useEffect(() => {
-        console.log("schools id", schools)
         const total: PriceState = {
             id: schools.id,
             value: students['value'] + teachers['value'],
@@ -76,7 +75,6 @@ export function PricingSchoolsComponent() {
                 })
                 .catch(() => notify.error("failed to save pricing"))
                 .finally(() => setLoading(false));
-
 
         }
         setEdit(!edit)
@@ -156,12 +154,12 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
 
     const sendRequst = async (payload: TExceptionPayload) => {
         try {
-            const response = await axiosInstance.post('/settings/pricing', payload)
-            console.log(response.data.data);
+            await axiosInstance.post('/settings/pricing', payload)
             notify.success("added exception pricing")
             setLoading(false);
             setModal(false);
             dispatch(reloadPricing());
+            dispatch(setExceptionReload());
         } catch (error) {
             setLoading(false);
             notify.success("failed to create exception pricing")
@@ -308,6 +306,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
 
 
 function ExceptionAccordion({ data, type }: { data: any, type: string }) {
+
     const nameCondition = (): string => {
         // just in case
 
@@ -329,10 +328,10 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
     const removeException = () => {
         axiosInstance.delete(`/settings/pricing/${data.id}`)
-            .then(response => {
+            .then(() => {
+                dispatch(setExceptionReload());
                 dispatch(reloadPricing());
                 notify.success("removed exception")
-                console.log(response.data.data);
             })
             .catch(error => {
                 notify.error("error deleting exception")
@@ -417,6 +416,7 @@ function ExceptionsList({ type }: { type: string }) {
                 return [];
         }
     }
+
     return (
         <div className="mt-10 flex flex-col">
             {
@@ -543,7 +543,6 @@ function StudentsTabComponent() {
     const handleSubmit = () => {
         if (edit) {
             setLoading(true);
-            console.log("sending payload for id", students);
             const payload = {
                 id: students.id,
                 teachers_price: 0.0,
@@ -554,13 +553,12 @@ function StudentsTabComponent() {
                 teachers_breakdown: { quater: 0.0, half: 0.0, yearly: 0.0 }
             }
             axiosInstance.put('/settings/pricing', payload)
-                .then(response => {
+                .then(() => {
                     notify.success("updated students pricing")
-                    console.log(response.data.data)
                 })
                 .catch(error => {
                     notify.error("failed to update students pricing")
-                    console.log(error)
+                    console.error(error)
                 })
                 .finally(() => setLoading(false));
 
@@ -601,7 +599,6 @@ function FreelancersTabComponent() {
     const handleSubmit = () => {
         if (edit) {
             setLoading(true);
-            console.log(freelancers);
             const payload = {
                 id: freelancers.id,
                 teachers_price: 0,
@@ -613,12 +610,11 @@ function FreelancersTabComponent() {
             }
             axiosInstance.put('/settings/pricing', payload)
                 .then(response => {
-                    notify.success("updated freelancer pricing")
-                    console.log(response.data.data)
+                    notify.success(response.data.message);
                 })
                 .catch(error => {
                     notify.error("failed to update frelancer pricing")
-                    console.log(error.reponse.data);
+                    console.error(error.reponse.data);
                 })
                 .finally(() => setLoading(false));
         }
@@ -662,7 +658,6 @@ export default function PricingTab() {
     const dispatch = useDispatch();
 
     const parseResponseData = (data: any) => {
-        console.log("received id", data);
         const schools = {
             id: data.schools?.id,
             teachers: {
@@ -707,7 +702,6 @@ export default function PricingTab() {
     useEffect(() => {
         axiosInstance.get('/settings/pricing')
             .then(response => {
-                console.log(response.data.data);
                 const parsed = parseResponseData(response.data.data);
                 // dispatching general pricing
                 dispatch(setSchoolsID(parsed.schools.id));
@@ -721,7 +715,6 @@ export default function PricingTab() {
                 dispatch(setStudentsException(parsed.studentsException));
                 dispatch(setSchoolsException(parsed.schoolsException));
                 dispatch(setFreelancersException(parsed.freelancersException));
-                console.log("pricing tab", parsed);
             })
             .catch(error => console.log(error));
     }, [pricingReload]);

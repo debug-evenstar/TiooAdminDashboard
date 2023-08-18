@@ -37,7 +37,8 @@ export default function SchoolsChecklist({ selection, setSelection, onApply, cla
     const [searchInput, setSearchInput] = useState<string>('');
 
     const [list, setList] = useState<TSchoolsChecklistProps[]>([]);
-    const [reload,setReload ] = useState<boolean>(false);
+    const [reload, setReload] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         axiosInstance.get('/schools')
@@ -47,7 +48,8 @@ export default function SchoolsChecklist({ selection, setSelection, onApply, cla
                     setList(response.data.data);
                 }
             })
-            .catch(error => console.log(error));
+            .catch(error => console.log(error))
+            .finally(() => setLoading(false));
     }, [reload]);
 
 
@@ -106,7 +108,10 @@ export default function SchoolsChecklist({ selection, setSelection, onApply, cla
                             </div>
                         )) :
                         <div className="w-full h-full flex items-center justify-center">
-                            <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
+                            {
+                                !loading ? "No data" :
+                                    <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
+                            }
                         </div>
                 }
             </div>

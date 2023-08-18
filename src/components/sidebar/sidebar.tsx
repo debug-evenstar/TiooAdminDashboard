@@ -19,7 +19,6 @@ type TMenu = {
 }
 
 export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
-
     if (!menus) {
         menus = [
             { route: '/', icon: HomeIcon, title: 'Home' },

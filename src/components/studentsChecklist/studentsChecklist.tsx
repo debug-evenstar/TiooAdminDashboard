@@ -3,6 +3,7 @@ import searchImage from '../../assets/images/search-md.png';
 import axiosInstance from '../../services/api';
 import { useDispatch } from 'react-redux';
 import { setStudents } from '../../redux/slices/student';
+import { notify } from '../notification/notification';
 
 
 
@@ -27,20 +28,26 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
     const [searchInput, setSearchInput] = useState<string>('');
     const [data, setData] = useState<TStudentsChecklistProps[]>([]);
     const [list, setList] = useState<TStudentsChecklistProps[]>([]);
+    const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState<boolean>(false);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        setList(data);
+    }, [data]);
 
     useEffect(() => {
         axiosInstance.get('https://api.hellotioo.com/students/readall')
             .then(response => {
                 setData(response.data.data);
                 dispatch(setStudents(response.data.data));
-                if (list.length == 0) {
-                    setList(response.data.data);
-                }
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                notify.error(error.data.message);
+                console.log(error);
+            })
+            .finally(() => setLoading(false));
     }, [reload]);
 
 
@@ -71,7 +78,6 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
         close(true);
     }
 
-
     return (
         <div className={`min-w-[320px] min-h-[370px] bg-white rounded-[8px] shadow-lg border border-[#e3e3e3] ${className}`}>
             <div className="w-full shadow py-3 flex items-center p-4 space-x-1">
@@ -99,7 +105,10 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
                             </div>
                         )) :
                         <div className="w-full h-full flex items-center justify-center">
-                            <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
+                            {
+                                !loading? "No data":
+                                    <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
+                            }
                         </div>
                 }
             </div>

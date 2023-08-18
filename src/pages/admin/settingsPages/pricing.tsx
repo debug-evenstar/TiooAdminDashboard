@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import { RootState } from "../../../redux/store";
-import { PriceState, reloadPricing, setFreelancers, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
+import { PriceState, reloadPricing, setFreelancers, setSchoolsID, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
 import axiosInstance from "../../../services/api";
 import SchoolsChecklist from "../../../components/schoolsChecklist/schoolsChecklist";
 import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
@@ -43,7 +43,7 @@ export function PricingSchoolsComponent() {
     // fetch prices
 
     useEffect(() => {
-        console.log("schools id",schools)
+        console.log("schools id", schools)
         const total: PriceState = {
             id: schools.id,
             value: students['value'] + teachers['value'],
@@ -53,13 +53,12 @@ export function PricingSchoolsComponent() {
         }
         dispatch(setSchoolsTotal(total));
 
-    }, [students,teachers]);
+    }, [students, teachers]);
 
 
     const handleSubmit = () => {
         if (edit) {
             setLoading(true);
-            console.log(schools.id)
             const payload = {
                 id: schools.id,
                 teachers_price: teachers.value,
@@ -131,6 +130,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
     const [loading, setLoading] = useState<boolean>(false);
     const [prices, setPrices] = useState<priceState[]>(data);
 
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (data.length > 0) {
@@ -138,7 +138,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
             setCurrent(data[0]);
         }
     }, [data])
-    
+
     useEffect(() => {
         // takes effect when switching tabs 
         if (prices.length && data.length) {
@@ -161,6 +161,7 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
             notify.success("added exception pricing")
             setLoading(false);
             setModal(false);
+            dispatch(reloadPricing());
         } catch (error) {
             setLoading(false);
             notify.success("failed to create exception pricing")
@@ -542,7 +543,7 @@ function StudentsTabComponent() {
     const handleSubmit = () => {
         if (edit) {
             setLoading(true);
-            console.log("sending payload for id",students);
+            console.log("sending payload for id", students);
             const payload = {
                 id: students.id,
                 teachers_price: 0.0,
@@ -663,7 +664,7 @@ export default function PricingTab() {
     const parseResponseData = (data: any) => {
         console.log("received id", data);
         const schools = {
-            id: data.schools.id,
+            id: data.schools?.id,
             teachers: {
                 id: 0,
                 value: data.schools.teachers_price,
@@ -709,6 +710,7 @@ export default function PricingTab() {
                 console.log(response.data.data);
                 const parsed = parseResponseData(response.data.data);
                 // dispatching general pricing
+                dispatch(setSchoolsID(parsed.schools.id));
                 dispatch(setSchoolsStudents(parsed.schools.students));
                 dispatch(setSchoolsTeachers(parsed.schools.teachers));
                 dispatch(setFreelancers(parsed.freelancers));

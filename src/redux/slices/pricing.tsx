@@ -59,6 +59,9 @@ export const pricingSlice = createSlice({
         setSchoolsStudents: (state, action: PayloadAction<PriceState>) => {
             state.schools.students = action.payload;
         },
+        setSchoolsID: (state, action: PayloadAction<number>) => {
+            state.schools.id = action.payload;
+        },
         setSchoolsTotal: (state, action: PayloadAction<PriceState>) => {
             state.schools.total = action.payload;
         },
@@ -81,5 +84,5 @@ export const pricingSlice = createSlice({
     }
 })
 
-export const { setSchoolsStudents,reloadPricing, setSchoolsTeachers,clearPricing, setSchoolsTotal, setFreelancers, setStudents } = pricingSlice.actions;
+export const { setSchoolsStudents,reloadPricing,setSchoolsID, setSchoolsTeachers,clearPricing, setSchoolsTotal, setFreelancers, setStudents } = pricingSlice.actions;
 export default pricingSlice.reducer;

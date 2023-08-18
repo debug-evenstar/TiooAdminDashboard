@@ -9,8 +9,10 @@ html,body,*{
   font-family: Inter,'Segoe UI',sans-serif;
 }
 
+
+
 div::-webkit-scrollbar {
-    width: 4px;
+    width: 0px;
 }
 
 /* Track */

@@ -10,7 +10,7 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/logos/logo.png';
 
-
+import './sidebar.css';
 
 type TMenu = {
     title: string
@@ -40,7 +40,7 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
         }
 
     return (
-        <div className="bg-orange p-5 pr-1 h-screen overflow-y-auto relative w-[19%] border-r border-gray-200">
+        <div id="sidebar" className="bg-orange p-5 pr-1 h-screen overflow-y-auto relative w-[19%] border-r border-gray-200">
             <div className="w-fit">
                 <a href="/">
                     <img className="" src={logo} alt="" />

@@ -2,8 +2,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-
-
 type TExceptionProps = {
     id: number;
     name: string;
@@ -11,23 +9,13 @@ type TExceptionProps = {
     student: number;
 }
 
-// type TSchoolExceptionProps = {
-//     accounts: number;
-//     id: number;
-//     school_name: string;
-//     student_price: number;
-//     students_breakdown: any[]
-//     tag: string;
-//     teachers_breakdown: any[]
-//     teachers_price: number;
-// }
-
 export interface ExceptionState {
     schools: TExceptionProps[];
     students: TExceptionProps[];
     freelancers: TExceptionProps[];
     reload: boolean;
 }
+
 const initialState: ExceptionState = {
     schools: [],
     students: [],
@@ -46,7 +34,7 @@ export const pricingExceptionSlice = createSlice({
             state.schools = action.payload;
         },
         setFreelancersException: (state, action: PayloadAction<any[]>) => {
-            state.students = action.payload;
+            state.freelancers = action.payload;
         },
         setExceptionReload: (state) => {
             state.reload = !state.reload;

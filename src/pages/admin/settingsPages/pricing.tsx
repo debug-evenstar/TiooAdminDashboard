@@ -113,10 +113,11 @@ type TExceptionPayload = {
     student_price: number;
     accounts: number;
     tab: string;
+    id?: number;
 
 }
 
-function AddExceptionModal({ type, data, modal, setModal }: { type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
+function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: boolean, type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
 
 
     const [current, setCurrent] = useState<priceState>(data[0]);
@@ -135,6 +136,8 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
             setPrices(data);
             setCurrent(data[0]);
         }
+        if(edit)
+            setActive(true);
     }, [data])
 
     useEffect(() => {
@@ -153,19 +156,23 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
     }, [teacher, student, price, total]);
 
     const sendRequst = async (payload: TExceptionPayload) => {
+        let response = null;
+        console.log(payload);
         try {
-            await axiosInstance.post('/settings/pricing', payload)
-            notify.success("added exception pricing")
-            setLoading(false);
+            if(edit)
+                response = await axiosInstance.put('/settings/pricing', payload)
+            else
+                response = await axiosInstance.post('/settings/pricing', payload)
+            notify.success(response.data.message);
             setModal(false);
+            setLoading(false);
             dispatch(reloadPricing());
             dispatch(setExceptionReload());
         } catch (error) {
             setLoading(false);
-            notify.success("failed to create exception pricing")
+            notify.error("failed to create exception pricing")
             console.log(error)
         }
-
     }
 
     const handleApply = async () => {
@@ -307,6 +314,8 @@ function AddExceptionModal({ type, data, modal, setModal }: { type: string, data
 
 function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
+    const [ modal, setModal ] = useState<boolean>(false);
+
     const nameCondition = (): string => {
         // just in case
 
@@ -321,8 +330,9 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
         //         return '';
         // }
         // useless type
-        return data.school_name || type;
+        return data.school_name || type.toLowerCase();
     }
+
 
     const dispatch = useDispatch();
 
@@ -339,6 +349,18 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
             });
     }
 
+    const editData = [{
+        id: data.id,
+        name: data.school_name,
+        price:{
+            student: data.student_price,
+            teacher: data.teachers_price
+        }
+    }];
+
+    const editException = () => {
+        setModal(!modal);
+    }
 
     const [active, setActive] = useState<boolean>(false);
     const [optionActive, setOptionActive] = useState<boolean>(false);
@@ -347,6 +369,8 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
     return (
         <div className="mb-4">
+
+            { <AddExceptionModal edit data={editData} {...{type,modal,setModal}} /> }
             <div className="w-full p-3 px-4 rounded-[8px] bg-neutral-100 flex items-center justify-between">
                 <h1 className="text-gray-400">{nameCondition()}</h1>
                 <div className="flex items-center space-x-6">
@@ -360,13 +384,12 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
                     <Popup
                         ref={ref}
                         open={optionActive}
-                        trigger={
+                        trigger={// hahaha
                             <button className="outline-none" onClick={() => { setOptionActive(true); alert("clicked") }}>
-
                             </button>
                         }>
                         <ul className="py-3 bg-white shadow rounded-[8px]">
-                            <li onClick={() => setOptionActive(false)} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
+                            <li onClick={() => { toggle(); editException()}} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
                             <li onClick={() => { toggle(); removeException() }} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
                         </ul>
                     </Popup>
@@ -389,7 +412,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
                         <h2 className="text-xl mt-2 text-primary">₦ {data.student_price.toLocaleString()}</h2>
                     </div>
                     <div className="text-gray-400">
-                        <h1>For Teachers</h1>
+                        <h1>Total</h1>
                         <h2 className="text-xl mt-2 text-primary">₦ {(data.student_price + data.teachers_price).toLocaleString()}</h2>
                     </div>
                 </div>
@@ -496,7 +519,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
 
     return (
         <>
-            {<AddExceptionModal data={activeList} {...{ type, modal, setModal }} />}
+            <AddExceptionModal data={activeList} {...{ type, modal, setModal }} />
             <div className="flex justify-between mt-16">
                 <h1 className="font-[500] text-primary">Exceptions</h1>
                 <div className="text-sm outline-none cursor-pointer items-end flex flex-col">

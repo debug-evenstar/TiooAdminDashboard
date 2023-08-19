@@ -367,7 +367,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
     const editData = [{
         id: data.id,
-        name: data.school_name,
+        name: nameCondition(),
         price: {
             student: data.student_price,
             teacher: data.teachers_price
@@ -386,7 +386,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
     return (
         <div className="mb-4">
 
-            {<AddExceptionModal edit data={editData} {...{ type, modal, setModal }} />}
+            <AddExceptionModal edit data={editData} {...{ type, modal, setModal }} />
             <div className="w-full p-3 px-4 rounded-[8px] bg-neutral-100 flex items-center justify-between">
                 <h1 className="text-gray-400">{nameCondition()}</h1>
                 <div className="flex items-center space-x-6">
@@ -413,7 +413,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
                             </ul>
                         </Popup>
                     </div>
-                    <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none`}>
+                    <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none px-1 py-2 hover:bg-neutral-200 rounded-full`}>
                         <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 1L7 7L13 1" stroke="#030036" strokeOpacity="0.74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>

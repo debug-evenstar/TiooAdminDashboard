@@ -117,7 +117,7 @@ type TExceptionPayload = {
 
 }
 
-function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: boolean, type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
+function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit?: boolean, type: string, data: any, modal: boolean, setModal: (s: boolean) => void }) {
 
 
     const [current, setCurrent] = useState<priceState>(data[0]);
@@ -134,10 +134,15 @@ function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: b
     useEffect(() => {
         if (data.length > 0) {
             setPrices(data);
+            if(edit){
+                updatePrices(data[0]?.price.student,'student');
+                updatePrices(data[0]?.price.teacher,'teacher');
+                if(type != "Schools")
+                    updatePrices(data[0]?.price.student,'price');
+                setActive(true);
+            }
             setCurrent(data[0]);
         }
-        if(edit)
-            setActive(true);
     }, [data])
 
     useEffect(() => {
@@ -148,18 +153,20 @@ function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: b
     }, [prices, current])
 
     useEffect(() => {
+        // for enabling and disabling the buttons
         if (price || teacher && student) {
             setActive(true);
         } else {
             setActive(false);
         }
+
     }, [teacher, student, price, total]);
 
     const sendRequst = async (payload: TExceptionPayload) => {
         let response = null;
         console.log(payload);
         try {
-            if(edit)
+            if (edit)
                 response = await axiosInstance.put('/settings/pricing', payload)
             else
                 response = await axiosInstance.post('/settings/pricing', payload)
@@ -202,13 +209,8 @@ function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: b
         });
 
     }
-    const handler = (e: ChangeEvent<HTMLInputElement>, type?: string) => {
-        let temp: string = e.target.value.replace('/\Dg', '');
-        temp = temp.replaceAll(',', '');
-        if (temp === '') temp = '0';
-        let result: number = Number.parseInt(temp);
-        if (isNaN(result)) result = 0;
 
+    const updatePrices = (result: number, type?: string,) => {
         if (type === "student") {
             setPrices(
                 prices.map(
@@ -232,6 +234,16 @@ function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: b
             setPrice(result);
             // console.log(prices);
         }
+    }
+
+    const handler = (e: ChangeEvent<HTMLInputElement>, type?: string) => {
+        console.log(price, teacher, student);
+        let temp: string = e.target.value.replace('/\Dg', '');
+        temp = temp.replaceAll(',', '');
+        if (temp === '') temp = '0';
+        let result: number = Number.parseInt(temp);
+        if (isNaN(result)) result = 0;
+        updatePrices(result, type);
     }
 
 
@@ -293,9 +305,16 @@ function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: b
                     </div>
                 </div>
                 <div className="h-[44px] border-t px-3 flex items-center justify-between">
-                    <button disabled={!active} onClick={handleApplyAll} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
-                        {data.length > 1 ? "Apply on all schools" : "Reset prices"}
-                    </button>
+                    {
+                        data.length > 1 ?
+                            <button disabled={!active} onClick={handleApplyAll} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                                Apply on all schools
+                            </button>
+                            :
+                            <button disabled={!active} onClick={() => notify.info("reset prices")} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                                Reset prices
+                            </button>
+                    }
                     <button disabled={!active && !loading} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
                         {
                             loading ?
@@ -314,24 +333,7 @@ function AddExceptionModal({ edit=false,type, data, modal, setModal }: {edit?: b
 
 function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
-    const [ modal, setModal ] = useState<boolean>(false);
-
-    const nameCondition = (): string => {
-        // just in case
-
-        // switch (type) {
-        //     case 'Schools':
-        //         return data.school_name;
-        //     case 'Freelancers':
-        //         return data.school_name;
-        //     case 'Students':
-        //         return data.school_name;
-        //     default:
-        //         return '';
-        // }
-        // useless type
-        return data.school_name || type.toLowerCase();
-    }
+    const [modal, setModal] = useState<boolean>(false);
 
 
     const dispatch = useDispatch();
@@ -349,10 +351,24 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
             });
     }
 
+
+    const nameCondition = () => {
+        switch(type){
+            case "Schools":
+                return data.school_name;
+            case "Freelancers":
+                return data.school_name;
+            case "Students":
+                return data.student_name;
+            default:
+                return "";
+        }
+    }
+
     const editData = [{
         id: data.id,
         name: data.school_name,
-        price:{
+        price: {
             student: data.student_price,
             teacher: data.teachers_price
         }
@@ -370,29 +386,33 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
     return (
         <div className="mb-4">
 
-            { <AddExceptionModal edit data={editData} {...{type,modal,setModal}} /> }
+            {<AddExceptionModal edit data={editData} {...{ type, modal, setModal }} />}
             <div className="w-full p-3 px-4 rounded-[8px] bg-neutral-100 flex items-center justify-between">
                 <h1 className="text-gray-400">{nameCondition()}</h1>
                 <div className="flex items-center space-x-6">
-                    <button className="outline-none" onClick={() => { toggle() }}>
-                        <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="black" />
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="black" />
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="black" />
-                        </svg>
-                    </button>
-                    <Popup
-                        ref={ref}
-                        open={optionActive}
-                        trigger={// hahaha
-                            <button className="outline-none" onClick={() => { setOptionActive(true); alert("clicked") }}>
-                            </button>
-                        }>
-                        <ul className="py-3 bg-white shadow rounded-[8px]">
-                            <li onClick={() => { toggle(); editException()}} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
-                            <li onClick={() => { toggle(); removeException() }} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
-                        </ul>
-                    </Popup>
+
+                    <div className="flex items-center">
+                        <button className="outline-none px-2 hover:bg-neutral-200 rounded-lg py-2" onClick={() => { toggle() }}>
+                            <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="black" />
+                                <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="black" />
+                                <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="black" />
+                            </svg>
+                        </button>
+                        <Popup
+                            ref={ref}
+                            open={optionActive}
+                            position="left center"
+                            trigger={// hahaha
+                                <button className="outline-none" onClick={() => { setOptionActive(true); alert("clicked") }}>
+                                </button>
+                            }>
+                            <ul className="py-3 bg-white shadow rounded-[8px]">
+                                <li onClick={() => { toggle(); editException() }} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
+                                <li onClick={() => { toggle(); removeException() }} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
+                            </ul>
+                        </Popup>
+                    </div>
                     <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none`}>
                         <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 1L7 7L13 1" stroke="#030036" strokeOpacity="0.74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

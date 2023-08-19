@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import searchImage from '../../assets/images/search-md.png';
 import axiosInstance from '../../services/api';
 import { useDispatch } from 'react-redux';
@@ -47,20 +47,23 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
                 notify.error(error.data.message);
                 console.log(error);
             })
-            .finally(() => setLoading(false));
+            .finally(() => setLoading(false))
     }, [reload]);
 
 
-    const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleOptionClick = (e: MouseEvent<HTMLDivElement>) => {
         let updatedList = [...selection];
-        const value: number = Number.parseInt(e.target.value);
-
-        if (e.target.checked) {
-            updatedList = [...selection, value]
-        } else {
-            updatedList = selection.filter((i: number) => i !== value);
+        const value = e.currentTarget.getAttribute('data-value');
+        if (value) {
+            const id = Number.parseInt(value);
+            if (!selection.includes(id)) {
+                updatedList = [...selection, id]
+            } else {
+                updatedList = selection.filter((i: number) => i !== id);
+            }
+            setSelection(updatedList);
         }
-        setSelection(updatedList);
+        // const value: number = Number.parseInt(e.currentTarget.getAttribute('value'));
     }
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -91,8 +94,8 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
                 {
                     data.length > 0 ?
                         list.map(({ id, name, email }) => (
-                            <div key={id} className="hover:bg-neutral-100 px-4 flex items-center border-b py-3 space-x-3">
-                                <input type="checkbox" checked={selection.includes(id)} onChange={handleCheckChange} className="w-[18px] cursor-pointer h-[18px] outline-none border-0" value={id} />
+                            <div data-value={id} onClick={handleOptionClick} key={id} className="hover:bg-neutral-100 px-4 flex items-center border-b py-3 space-x-3">
+                                <input type="checkbox" onClick={() => null} checked={selection.includes(id)} className="w-[18px] cursor-pointer h-[18px] outline-none border-0" value={id} />
                                 <div className='flex items-center space-x-2'>
                                     <div className="h-[40px] w-[40px] bg-light rounded-full"></div>
                                     <div>
@@ -106,7 +109,7 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
                         )) :
                         <div className="w-full h-full flex items-center justify-center">
                             {
-                                !loading? "No data":
+                                !loading ? "No data" :
                                     <div className="w-7 h-7 border-[.2rem] rounded-full border-gray-100 border-r-main animate-spin"></div>
                             }
                         </div>

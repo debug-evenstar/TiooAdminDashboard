@@ -313,7 +313,7 @@ export default function CouponTab() {
           </div>
           <div>
             {
-              !loading ?
+              coupons.length > 0 ?
                 coupons?.map((item: TCouponProps, index: number) => (
                   <div key={index} className="font-[400] my-3 px-2 py-2 font-[500] rounded-[8px] text-primary flex items-center justify-between">
                     <div className="w-[10rem]">{item.campaign}</div>
@@ -338,7 +338,12 @@ export default function CouponTab() {
                 ))
                 :
                 <div className="w-full h-[20rem] flex items-center justify-center">
-                  <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-main animate-spin"></div>
+                  {
+                    loading?
+                      <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-main animate-spin"></div>
+                      :
+                      <span className="text-gray-400">No coupons available</span>
+                  }
                 </div>
             }
           </div>

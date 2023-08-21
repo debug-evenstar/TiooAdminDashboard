@@ -51,7 +51,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number, 
             {
               options.map((option, index) => (
                 <li key={index} onClick={handleClick} data-value={option.id} className="flex items-center mb-2 cursor-pointer space-x-3 shadow p-2">
-                  <input onChange={handleCheckChange} type="checkbox" checked={option.id === selection} className=" w-4 h-4 rounded-full outline-none" />
+                  <input type="checkbox" checked={option.id === selection} className=" w-4 h-4 rounded-full outline-none" />
                   <span>{option.name}</span>
                 </li>
               ))

@@ -7,6 +7,7 @@ export type IListProps = {
     email: string;
     subscription: boolean;
     image?: string;
+    id?: number;
 };
 
 export default function ListComponent({ menu, rows }: { menu: ReactNode, rows: IListProps[] }) {

@@ -32,7 +32,7 @@ export default function PaginatedList({ menu, dataPerPage, data }: { menu: React
       <ReactPaginate
         className='pagination-container'
         pageLinkClassName='page-li'
-        activeLinkClassName='page-li-active'
+        activeLinkClassName='page-li-active text-main'
         nextLinkClassName='next-li'
         disabledLinkClassName='disabled-li'
         previousLinkClassName='prev-li'

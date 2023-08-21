@@ -9,19 +9,19 @@ type TOptionProps = {
 }
 
 
-type TLessonError = {
-  class?: string,
-  age?: string,
-  name?: string,
-  description?: string,
-}
+// type TLessonError = {
+//   class?: string,
+//   age?: string,
+//   name?: string,
+//   description?: string,
+// }
 
 function OptionsMenu({ selection, setSelection, options }: { selection: number, setSelection: any, options: TOptionProps[] }) {
   const [active, setActive] = useState(false);
 
-  const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
+  // const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
 
-  }
+  // }
 
   const handleClick = (e: MouseEvent<HTMLLIElement>) => {
     const value = e.currentTarget.getAttribute('data-value');
@@ -50,7 +50,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number, 
           <ul className="">
             {
               options.map((option, index) => (
-                <li key={index} onClick={handleClick} data-value={option.id} className="flex items-center mb-2 cursor-pointer2 space-x-3 shadow p-2">
+                <li key={index} onClick={handleClick} data-value={option.id} className="flex items-center mb-2 cursor-pointer space-x-3 shadow p-2">
                   <input onChange={handleCheckChange} type="checkbox" checked={option.id === selection} className=" w-4 h-4 rounded-full outline-none" />
                   <span>{option.name}</span>
                 </li>
@@ -97,11 +97,11 @@ function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: (state:
     })
   }
 
-  const validate = () => {
-    const newErrors: TLessonError = {};
+  // const validate = () => {
+  //   const newErrors: TLessonError = {};
 
-    return newErrors;
-  }
+  //   return newErrors;
+  // }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

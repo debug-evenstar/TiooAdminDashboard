@@ -281,7 +281,6 @@ export default function CouponTab() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("changing");
     axiosInstance.get('/coupon')
       .then(response => {
         dispatch(setCoupons(response.data.data))
@@ -294,7 +293,6 @@ export default function CouponTab() {
 
   return (
     <div className="mt-2">
-      {/* <Toast message="something is about to happen" onClose={() => null} type="something" /> */}
       <CouponModal {...{ modal, setModal }} />
       <div className="flex items-center justify-between ">
         <h1 className="text-xl font-[500] text-primary">Coupons</h1>

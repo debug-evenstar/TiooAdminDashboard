@@ -15,10 +15,6 @@ const axiosInstance = axios.create({
   // }
 })
 
-const axiosDownloadInstance = axios.create({
-  baseURL: API_BASE_URL,
-})
-
 // request interceptor for adding bearer tokens
 axiosInstance.interceptors.request.use(
   config => {

@@ -1,7 +1,12 @@
-import './App.css'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
-import AdminLayout from './layout/admin';
+import AdminLayout from "./layout/admin";
 import {
   Home,
   Library,
@@ -10,23 +15,39 @@ import {
   Settings,
   Teachers,
   Freelancers,
-  Marketplace
-
-} from './pages/admin';
-import StudentProfile from './pages/admin/studentProfile';
-import Login from './pages/auth/login';
-import PricingTab from './pages/admin/settingsPages/pricing';
-import UserLevels from './pages/admin/settingsPages/userLevels';
-import CouponTab from './pages/admin/settingsPages/coupon';
-import Notification from './components/notification/notification';
+  Marketplace,
+  SchoolLessons,
+  LessonsDisplay,
+  SchoolHome,
+} from "./pages/admin";
+import StudentProfile from "./pages/admin/studentProfile";
+import Login from "./pages/auth/login";
+import PricingTab from "./pages/admin/settingsPages/pricing";
+import UserLevels from "./pages/admin/settingsPages/userLevels";
+import CouponTab from "./pages/admin/settingsPages/coupon";
+import Notification from "./components/notification/notification";
+import AdminLayoutExt from "./layout/school";
 function App() {
-
   return (
     <>
       <Notification />
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          {/* school dashboard routes */}
+          <Route element={<AdminLayoutExt />}>
+            <Route index path="schools/:id" element={<SchoolHome/>} />
+            <Route
+              index
+              path="schools/:id/lesson"
+              element={<SchoolLessons/>}
+            />
+            <Route
+              index
+              path="schools/:id/lesson/:lessonid/:activeid"
+              element={<LessonsDisplay/>}
+            />
+          </Route>
           <Route element={<AdminLayout />}>
             <Route path="/" element={<Home />}></Route>
             <Route path="schools" element={<Schools />}></Route>
@@ -40,16 +61,18 @@ function App() {
               <Route path="userlevels" element={<UserLevels />} />
               <Route path="password" element={<h1>Password</h1>} />
               <Route path="coupon" element={<CouponTab />} />
-              <Route path="*" element={<Navigate to="pricing"></Navigate>}></Route>
+              <Route
+                path="*"
+                element={<Navigate to="pricing"></Navigate>}
+              ></Route>
             </Route>
             <Route path="/marketplace" element={<Marketplace />}></Route>
             <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
           </Route>
-
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

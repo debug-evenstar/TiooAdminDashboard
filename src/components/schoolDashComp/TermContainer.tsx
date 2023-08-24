@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import TopicContainer from "./TopicContainer";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 

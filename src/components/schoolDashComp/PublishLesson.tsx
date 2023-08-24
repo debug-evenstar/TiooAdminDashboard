@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 // import { PrimaryButton } from "../../../../components/Buttons";
 import { IoMdClose } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";

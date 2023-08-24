@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getSchoolLesson, getSchoolSubjects } from "../../../services/api";
 import LessonClasses from "../../../components/schoolDashComp/LessonClasses";
@@ -8,7 +8,7 @@ const LessonDisplay = () => {
   const { id, lessonid, activeid } = useParams();
   const [data, setData] = useState<any>([]);
   const [less, setLess] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [activeClass, setActiveClass] = useState("");
   const [currentId, setCurrentId] = useState("");
   const [allSubject, setAllSubject] = useState<any[]>([]);
@@ -30,18 +30,18 @@ const LessonDisplay = () => {
     // }
     getSchoolLesson(lessonid)
     .then((response) => {
-      setLoading(false);
+      // setLoading(false);
       setData(response?.data?.data);
     })
     .catch((error) => {
         console.log(error);
-      setLoading(false);
+      // setLoading(false);
     });
   };
   const getAllSubjects = (id:any) => {
     getSchoolSubjects(id)
     .then((response) => {
-      setLoading(false);
+      // setLoading(false);
       const dataWithLesson = response.data.data.filter(
         (where: any) => where.lessons > 0
       );
@@ -49,7 +49,7 @@ const LessonDisplay = () => {
     })
     .catch((error) => {
         console.log(error);
-      setLoading(false);
+      // setLoading(false);
     });
   }
   useEffect(() => {
@@ -76,14 +76,14 @@ const LessonDisplay = () => {
     setCurrentId(e.target.value);
     getSchoolLesson(e.target.value)
     .then((response) => {
-      setLoading(false);
+      // setLoading(false);
       setData(response?.data?.data);
       setChangeSubjectId(response?.data?.data[0].id)
       filterLesson(response?.data?.data[0].id)
     })
     .catch((error) => {
         console.log(error);
-      setLoading(false);
+      // setLoading(false);
     });
   };
 

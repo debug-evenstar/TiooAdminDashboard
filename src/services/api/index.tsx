@@ -15,6 +15,10 @@ const axiosInstance = axios.create({
   // }
 })
 
+const axiosDownloadInstance = axios.create({
+  baseURL: API_BASE_URL,
+})
+
 // request interceptor for adding bearer tokens
 axiosInstance.interceptors.request.use(
   config => {
@@ -68,7 +72,7 @@ export const getSchoolLesson = (id:any) => {
   return axiosInstance.get(`/management/lesson/check?subject_id=${id}`)
 }
 export const downloadLessonFile = (id:any) => {
-  return axiosInstance.get(`/management/lesson/${id}/download`)
+  return axiosInstance.get(`/management/lesson/${id}/download`, {responseType: "blob"})
 }
 export const publishLesson = (id:string, status:string) => {
   return axiosInstance.put(`/management/lesson/${id}/status?status=${status}`)

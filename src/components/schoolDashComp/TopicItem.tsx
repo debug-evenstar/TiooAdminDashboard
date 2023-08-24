@@ -11,8 +11,7 @@ import {
   BsThreeDotsVertical,
 } from "react-icons/bs";
 import { RiShareBoxLine, RiShareForwardLine } from "react-icons/ri";
-import JsFileDownloader from "js-file-downloader";
-import { API_BASE_URL, downloadLessonFile } from "../../services/api";
+import { downloadLessonFile } from "../../services/api";
 import CenterModal from "../modal/CenterModal";
 import PublishLesson from "./PublishLesson";
 import UploadTemplateForm from "./UploadTemplate";
@@ -38,15 +37,14 @@ const TopicItem: FC<Props> = ({ items, refetch }) => {
     setActiveTab(0);
   };
 
-  const downloadLesson = async (id:any) => {
+  const downloadLesson = async (items:any) => {
 
-    await downloadLessonFile(id)
-    .then((res:any) => new Blob([res.data]))
-    .then(blob => {
-      const url = URL.createObjectURL(blob);
+    await downloadLessonFile(items.id)
+    .then((res:any) => {
+      const url = URL.createObjectURL(res.data);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'filename.docx';
+      a.download = `${items.topic}`;
       a.click();
       URL.revokeObjectURL(url);
     })
@@ -71,7 +69,7 @@ const TopicItem: FC<Props> = ({ items, refetch }) => {
               <MenuList>
                 <MenuItem
                   className="flex gap-x-2 items-center"
-                  onClick={() => downloadLesson(items.id)}
+                  onClick={() => downloadLesson(items)}
                 >
                   <BsDownload className="text-lg" />
                   Download Lesson

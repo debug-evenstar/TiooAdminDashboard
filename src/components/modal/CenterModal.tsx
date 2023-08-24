@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 
 interface CenterModalProps {
   isOpen?: boolean;
@@ -15,7 +13,7 @@ const CenterModal: React.FC<CenterModalProps> = ({
   variant = 'small'
 }) => {
   // eslint-disable-next-line
-  const [showModal, setShowModal] = useState(isOpen);
+  // const [showModal, setShowModal] = useState(isOpen);
 
   if (!isOpen) {
     return null;

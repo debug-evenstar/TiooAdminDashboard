@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import LessonCard from '../../../components/schoolDashComp/LessonCard';
 import { getSchoolSubjects } from '../../../services/api';
 import {  useParams } from 'react-router-dom';
@@ -39,7 +39,7 @@ const SchoolLessons = () => {
             <h3 className="font-inter font-medium text-[#030036] opacity-70 text-[22px]">
               Subjects
             </h3>
-
+            {loading && <p>Loading</p>}
             <div className="mt-[32px] w-full grid grid-cols-3 gap-[24px]">
               { subjects && !!subjects.length && subjects.map((item: any, index) => {
                 const colorIndex = index % colors.length;

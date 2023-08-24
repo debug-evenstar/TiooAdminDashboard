@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import PickClass from "./PickClass";
 import CenterModal from "../modal/CenterModal";
 
@@ -14,35 +14,33 @@ const LessonCard: React.FC<LessonCardProps> = ({
   color,
   item,
 }) => {
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  // const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(false);
   const [items, setItems] = useState<number>()
 
   const openGroups = (id:number) => {
     setItems(id)
         setActive(true)
-        console.log(id);
-        
   } 
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       dropdownRef.current &&
+  //       !dropdownRef.current.contains(event.target as Node)
+  //     ) {
+  //       setIsOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener("click", handleClickOutside);
+  //   document.addEventListener("click", handleClickOutside);
 
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
 
   return (
     <>

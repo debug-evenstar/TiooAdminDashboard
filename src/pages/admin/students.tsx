@@ -54,7 +54,7 @@ export default function Students() {
           <FilterPanel {...{ data, setRows, panels }} />
         </div>
         <div>
-          <PaginatedList menu={<StudentContextMenu />} dataPerPage={5} data={rows} />
+          <PaginatedList menu={<StudentContextMenu />} dataPerPage={5} data={rows} selectRow={() => false} />
         </div>
         <div className="py-20"></div>
       </div>

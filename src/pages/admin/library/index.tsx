@@ -69,24 +69,24 @@ type TLibraryModalError = {
   class?: string;
   age?: string;
   description?: string;
+  file?: string;
 }
 
-// const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
+const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
 
   const [klass, setClass] = useState<number[]>([]);
-  // const [age, setAge] = useState<number>(0);
+  const [age, setAge] = useState<number[]>([]);
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // probably wanted to try something sha
-  const [formData, setFormData] = useState<{ name: string, description: string, age: number}>({
+  const [formData, setFormData] = useState<{ name: string, description: string }>({
     name: '',
     description: '',
-    age: 0,
   });
 
   useEffect(() => {
@@ -102,8 +102,8 @@ export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: 
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     let { name, value } = e.target;
-    if(name == 'age'){
-      value = value.replace(/\D/g,'');
+    if (name == 'age') {
+      value = value.replace(/\D/g, '');
     }
     setFormData({
       ...formData,
@@ -121,11 +121,17 @@ export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: 
     if (klass.length == 0)
       newErrors.class = "Please select a class from the menu";
 
-    if (formData.age == 0)
+    if (age.length == 0)
       newErrors.age = "Please enter a valid age ";
 
     if (formData.description == '')
       newErrors.description = "Please fill in a description";
+
+    if (!selectedFile)
+      newErrors.file = "please select a file";
+
+    if(selectedFile && selectedFile?.size > (50 * 1024 * 1024)) // 50mb
+      newErrors.file = "File too large [max: 50mb]";
 
     return newErrors;
   }
@@ -133,10 +139,13 @@ export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: 
   const sendRequest = () => {
     const payload = {
       naming: formData.name,
-      class: [2],
+      class: klass,
       description: formData.description,
-      age: 15
+      age: age,
+      size: selectedFile?.size
     }
+
+    // axiosInstance.post('/management/classes/count')
     console.log(payload);
   }
 
@@ -166,30 +175,30 @@ export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: 
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Lesson title</label>
               <input type="text" name="name" value={formData.name} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
-              <p className="text-red-500 mt-1">{errors?.name}</p>
+              <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
             </div>
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Class</label>
               <OptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, name: item.naming }))} setSelection={setClass} />
-              <p className="text-red-500 mt-1">{errors?.class}</p>
+              <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
             </div>
 
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Age</label>
-              {/* <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} /> */}
-              <input type="text" name="age" value={formData.age} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
-              <p className="text-red-500 mt-1">{errors?.age}</p>
+              <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} />
+              {/* <input type="text" name="age" value={formData.age} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" /> */}
+              <p className="text-red-500 text-xs mt-1">{errors?.age}</p>
             </div>
 
 
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Description</label>
               <textarea rows={3} style={{ resize: "none" }} name="description" value={formData.description} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
-              <p className="text-red-500 mt-1">{errors?.description}</p>
+              <p className="text-red-500 text-xs mt-1">{errors?.description}</p>
             </div>
             <div className="flex flex-col">
               <UploadFile {...{ selectedFile, setSelectedFile }} />
-
+              <p className="text-red-500 text-xs mt-1">{errors?.file}</p>
               {selectedFile &&
                 <div className="text-main flex items-center space-x-2">
                   <span className="text-xs">{selectedFile.name}</span>

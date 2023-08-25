@@ -1,21 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddLessonModal } from "../../pages/admin/library";
+import axiosInstance from "../../services/api";
 
-type TLessonCardProps = { title: string, color?: string, description: string, date?: string };
+type TLessonCardProps = { title: string, color?: string, description: string, count: number };
+type TLessonCardItem = {
+  id: number,
+  naming: string,
+  description: string,
+  age: number,
+  library: boolean,
+  SchoolManagementId: number,
+  lessonCount: number,
+}
 
-function LessonsCard({ color, title, description }: TLessonCardProps) {
+function LessonsCard({ color, title, description ,count}: TLessonCardProps) {
   return (
     // <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]">
-    <div className="w-full border min-h-[175px] flex flex-col justify-between rounded-[8px]">
+    <div className="w-[320px] border min-h-[175px] flex flex-col justify-between rounded-[8px]">
       <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
         <h1 className="font-[500] text-lg">{title}</h1>
         <p className="mt-3 text-xs">{description}</p>
       </div>
       <div className="px-4 mb-2 mt">
         <span className="text-xs text-gray-400">Lessons uploaded</span><br />
-        <div className="text-xs mb-2 font-semibold">0</div>
+        <div className="text-xs mb-2 font-semibold">{count}</div>
         <div className="w-full grid grid-cols-2 gap-x-4">
-          <button className="px-4 py-1.5 text-sm font-semibold rounded border border-main text-main">View Lesson</button>
+          <button disabled={count > 1} className={`px-4 py-1.5 text-sm font-semibold rounded border outline-none ${count > 0? "border-main text-main":"border-gray-400 text-gray-400"}`}>View Lesson</button>
           <button className="px-4 py-1.5 text-sm font-semibold rounded border border-main bg-main text-white">Create Lesson</button>
         </div>
       </div>
@@ -24,31 +34,49 @@ function LessonsCard({ color, title, description }: TLessonCardProps) {
 }
 
 export default function LibrarySchoolsCurricula() {
-  const lessons: TLessonCardProps[] = [
-    // { title: "Public Speaking", description: "Learn conversation skills and develop strong relationship with others", date: "5 days" },
-    // { title: "Budgeting", description: "Learn money management skills and the value of money.", date: "10 days" },
-    // { title: "Entrepreneurship", description: "Explore and discover personal strengths and areas for development", date: "two weeks" },
-  ];
+
+
+  const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
+
 
   const colors: string[] = [
-    'bg-[#AE1E56]',
-    'bg-[#86A94B]',
-    'bg-[#776DB4]',
+    "bg-[#AE1E56]",
+    "bg-[#86A94B]",
+    "bg-[#776DB4]",
+    "bg-[#148CFA]",
+    "bg-[#DDA0DD]",
+    "bg-[#681AB0]",
+    "bg-[#330072]",
+    "bg-[#4F46E5]",
   ];
+  
+  useEffect(() => {
+    axiosInstance.get('management/subjects/lessons/count')
+      .then(response => {
+        setLessons(response.data.data.map((item: TLessonCardItem,index: number) => {
+          return {
+            title: item.naming,
+            color: colors[index % colors.length],
+            description: item.description,
+            count: item.lessonCount
+          }
+        }))
+      })
+      .catch(error => console.error(error));
+  },[]);
+
 
   const [modal, setModal] = useState<boolean>(false);
 
   return (
     <div className="w-full overflow-y-auto max-h-[calc(100vh_-_95px)] px-[24px]">
       <AddLessonModal {...{ modal, setModal }} />
-      <div className="grid gap-x-2 grid-cols-3">
+      <div className="flex space-x-2 flex-wrap items-center">
         {
           lessons.map((lessonProp, index) => (
             <LessonsCard key={index} {...lessonProp} color={colors[index]} />
           ))
         }
-      </div>
-      <div className="mt-5">
         <button
           onClick={() => setModal(!modal)}
           className="w-[221px] h-[170px] px-[52px] py-[35px] border shadow rounded-[8px]
@@ -58,6 +86,9 @@ export default function LibrarySchoolsCurricula() {
           </svg>
           <p className="text-center font-[500]">Add a lesson material</p>
         </button>
+
+      </div>
+      <div className="mt-5">
       </div>
     </div>
   );

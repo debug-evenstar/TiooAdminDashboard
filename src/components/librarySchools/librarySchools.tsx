@@ -3,10 +3,9 @@ import axiosInstance from "../../services/api";
 import AddLibraryMaterial from "../libraryMaterialModal/libraryMaterialModal";
 import AddLibraryLesson from "../libraryLessonModal/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLibraryMaterials } from "../../redux/slices/library";
-
-type TLessonCardProps = { title: string, color?: string, description: string, count: number, id: number };
+import { useDispatch, useSelector } from "react-redux";
+import { TLibraryMaterials, setLibraryMaterials } from "../../redux/slices/library";
+import { RootState } from "../../redux/store";
 
 type TLessonCardItem = {
   id: number,
@@ -18,29 +17,37 @@ type TLessonCardItem = {
   lessonCount: number,
 }
 
-
-function LessonsCard({ color, title, description, count, id }: TLessonCardProps) {
+// setLessons(response.data.data.map((item: TLessonCardItem, index: number) => {
+//   return {
+//     title: item.naming,
+//     color: colors[index % colors.length],
+//     description: item.description,
+//     count: item.lessonCount,
+//     id: item.id
+//   }
+// }))
+function LessonsCard({color,lessonProps}:{color: string, lessonProps: TLessonCardItem}) {
   const [modal, setModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const viewLessonButton = () => {
-    navigate(`view/${id}`)    
+    navigate(`view/${lessonProps.id}`)    
   }
 
   return (
     <>
-      <AddLibraryLesson {...{ modal, setModal, id }} />
+      <AddLibraryLesson {...{ modal, setModal }} id={lessonProps.id} />
       {/* <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]"> */}
-      <div className="w-[320px] border min-h-[175px] flex flex-col justify-between rounded-[8px]">
+      <div className="w-[320px] mr-5 border min-h-[175px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
-          <h1 className="font-[500] text-lg">{title}</h1>
-          <p className="mt-3 text-xs">{description}</p>
+          <h1 className="font-[500] text-lg">{lessonProps.naming}</h1>
+          <p className="mt-3 text-xs">{lessonProps.description}</p>
         </div>
         <div className="px-4 mb-2 mt">
           <span className="text-xs text-gray-400">Lessons uploaded</span><br />
-          <div className="text-xs mb-2 font-semibold">{count}</div>
+          <div className="text-xs mb-2 font-semibold">{lessonProps.lessonCount}</div>
 
           <div className="w-full grid grid-cols-2 gap-x-4">
-            <button onClick={viewLessonButton} disabled={!(count)} className={`px-4 py-1.5 text-sm font-semibold rounded border outline-none ${count > 0 ? "border-main text-main" : "border-gray-400 text-gray-400"}`}>View Lesson</button>
+            <button onClick={viewLessonButton} disabled={!(lessonProps.lessonCount)} className={`px-4 py-1.5 text-sm font-semibold rounded border outline-none ${lessonProps.lessonCount > 0 ? "border-main text-main" : "border-gray-400 text-gray-400"}`}>View Lesson</button>
             <button onClick={() => setModal(true)} className="px-4 py-1.5 text-sm font-semibold duration-300 hover:bg-hover rounded border border-main bg-main text-white">Create Lesson</button>
           </div>
         </div>
@@ -52,7 +59,8 @@ function LessonsCard({ color, title, description, count, id }: TLessonCardProps)
 export default function LibrarySchoolsCurricula() {
 
 
-  const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
+  // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
+  const materials = useSelector((state: RootState) => state.library.materials);
 
   const dispatch = useDispatch();
 
@@ -71,15 +79,6 @@ export default function LibrarySchoolsCurricula() {
     axiosInstance.get('management/subjects/lessons/count')
       .then(response => {
         dispatch(setLibraryMaterials(response.data.data));
-        setLessons(response.data.data.map((item: TLessonCardItem, index: number) => {
-          return {
-            title: item.naming,
-            color: colors[index % colors.length],
-            description: item.description,
-            count: item.lessonCount,
-            id: item.id
-          }
-        }))
       })
       .catch(error => console.error(error));
   }, []);
@@ -88,12 +87,12 @@ export default function LibrarySchoolsCurricula() {
   const [modal, setModal] = useState<boolean>(false);
 
   return (
-    <div className="w-full overflow-y-auto max-h-[calc(100vh_-_95px)] px-[24px]">
+    <div className="w-full overflow-y-auto">
       <AddLibraryMaterial {...{ modal, setModal }} />
-      <div className="flex space-x-2 flex-wrap items-center">
+      <div className="grid grid-cols-3 gap-4 items-center">
         {
-          lessons.map((lessonProp, index) => (
-            <LessonsCard key={index} {...lessonProp} color={colors[index]} />
+          materials.map((lessonProps: TLibraryMaterials, index: number) => (
+            <LessonsCard key={index} lessonProps={lessonProps}  color={colors[index % colors.length]} />
           ))
         }
         <button

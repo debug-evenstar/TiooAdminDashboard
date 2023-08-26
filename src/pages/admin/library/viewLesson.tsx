@@ -8,10 +8,10 @@ import { TLibraryLesson, TLibraryMaterials, setLibraryLessons, setLibraryMateria
 
 function ClassLessonCard(lesson: TLibraryLesson) {
     return (
-        <div className="w-[200px] rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
+        <div className="w-[200px] hover:shadow-lg rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
             <div className="flex justify-between">
                 <h1 className="text-primary  text-lg font-[500]">{lesson.topic}</h1>
-                <button className="h-fit mt-2">
+                <button className="h-fit py-2 px-1 hover:bg-neutral-100 outline-none  rounded">
                     <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="#87909E"/>
                         <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="#87909E"/>
@@ -26,16 +26,16 @@ function ClassLessonCard(lesson: TLibraryLesson) {
 }
 
 
-function ClassCard({ onClick, name }: { onClick?: any, name: string }) {
+function ClassCard({ active, onClick, name }: {active: boolean, onClick?: any, name: string }) {
     return (
-        <div onClick={onClick} className="w-full rounded-[8px] shadow border px-2 py-3">
+        <div onClick={onClick} className={`cursor-pointer w-full rounded-[8px] shadow border px-2 py-3 ${active? "border-main bg-light":""}`}>
             <h1 className="text-primary text-lg font-[500]">{name.replace('Level', 'Primary')}</h1>
             <hr className="my-3" />
             <h2 className='text-gray-400'>All Arms</h2>
         </div>
     );
 }
-function Classes({setCurrentClass}:{setCurrentClass: any}) {
+function Classes({currentClass, setCurrentClass}:{currentClass: number, setCurrentClass: any}) {
 
     const [ classes,setClasses ] = useState<any[]>([]);
 
@@ -52,7 +52,7 @@ function Classes({setCurrentClass}:{setCurrentClass: any}) {
             <div className="flex flex-col space-y-4">
                 {
                     classes?.map((item, index) => (
-                        <ClassCard onClick={() => setCurrentClass(item.id)} key={index} name={item.naming} />
+                        <ClassCard active={item.id === currentClass} onClick={() => setCurrentClass(item.id)} key={index} name={item.naming} />
                     ))
                 }
             </div>
@@ -64,10 +64,9 @@ function AllLessonsCard({ id }: { id: number }) {
     const [active, setActive] = useState<boolean>(false);
     const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
     const lessons = useSelector((state: RootState) => state.library.lessons);
-    console.log("all lesson id",id)
+
     useEffect(() => {
         setClassLessons(lessons.filter((item: any) => item.ClassId === id))
-        console.log(classLessons);
     }, [id]);
 
     return (
@@ -77,24 +76,27 @@ function AllLessonsCard({ id }: { id: number }) {
                     <h1>All Lessons</h1>
                 </div>
                 <div className={`px-4 duration-700 transition-[max-height]  ease-out ${active ? "max-h-[30rem]" : "max-h-0"}`}>
-                    <div className="py-10 flex flex-wrap space-x-3">
-                        {
-                            classLessons?.length > 0 ?
-                                classLessons.map((lesson) => (
-                                    <ClassLessonCard {...lesson}/>
-                                ))
-                                :
-                                <h2 className='mb-5 text-lg text-gray-400'>You haven't added any lesson</h2>
-                        }
-                        <button
-                            // onClick={() => setModal(!modal)}
-                            className="w-[200px] h-[140px] outline-none active:outline-main px-[52px] py-[35px] border shadow rounded-[8px]
-                                flex items-center justify-center flex-col text-main hover:shadow-lg duration-300">
-                            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M24 8C32.822 8 40 15.178 40 24C40 32.822 32.822 40 24 40C15.178 40 8 32.822 8 24C8 15.178 15.178 8 24 8ZM24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4ZM34 22H26V14H22V22H14V26H22V34H26V26H34V22Z" fill="#4F46E5" />
-                            </svg>
-                            <p className="text-center mt-1 font-[500]">Add lessons</p>
-                        </button>
+
+                    <div className="py-10">
+                        { classLessons?.length  > 0? null:<h2 className='mb-5 text-lg text-gray-400'>You haven't added any lesson</h2> }
+                        <div className={`flex flex-wrap space-x-3`}>
+                            {
+                                classLessons?.length > 0 &&
+                                    classLessons.map((lesson) => (
+                                        <ClassLessonCard {...lesson}/>
+                                    ))
+                                
+                            }
+                            <button
+                                // onClick={() => setModal(!modal)}
+                                className="w-[200px] h-[140px] outline-none active:outline-main px-[52px] py-[35px] border shadow rounded-[8px]
+                                    flex items-center justify-center flex-col text-main hover:shadow-lg duration-300">
+                                <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M24 8C32.822 8 40 15.178 40 24C40 32.822 32.822 40 24 40C15.178 40 8 32.822 8 24C8 15.178 15.178 8 24 8ZM24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4ZM34 22H26V14H22V22H14V26H22V34H26V26H34V22Z" fill="#4F46E5" />
+                                </svg>
+                                <p className="text-center mt-1 font-[500]">Add lessons</p>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div className="h-[50px] bg-white relative z-[100] border-t flex items-center px-4 justify-between">
@@ -142,6 +144,7 @@ export default function ViewLesson() {
                 dispatch(setLibraryLessons(response.data.data));
             })
             .catch(error => console.log(error));
+        console.log("effect");
     }, [])
 
     return (
@@ -165,7 +168,7 @@ export default function ViewLesson() {
                     </div>
                     <div className="w-[30%] flex justify-end">
                         <div className="w-[14rem]">
-                            <Classes {...{setCurrentClass}}/>
+                            <Classes {...{currentClass,setCurrentClass}}/>
                         </div>
                     </div>
                 </div>

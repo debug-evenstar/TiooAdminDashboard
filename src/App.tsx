@@ -19,6 +19,7 @@ import PricingTab from './pages/admin/settingsPages/pricing';
 import UserLevels from './pages/admin/settingsPages/userLevels';
 import CouponTab from './pages/admin/settingsPages/coupon';
 import Notification from './components/notification/notification';
+import ViewLesson from './pages/admin/library/viewLesson';
 function App() {
 
   return (
@@ -34,7 +35,9 @@ function App() {
             <Route path="teachers" element={<Teachers />}></Route>
             <Route path="students/profile" element={<StudentProfile />}></Route>
             <Route path="students" element={<Students />}></Route>
+            <Route path="library/view/:id" element={<ViewLesson/>}></Route>
             <Route path="library" element={<Library />}></Route>
+
             <Route path="settings" element={<Settings />}>
               <Route index path="pricing" element={<PricingTab />} />
               <Route path="userlevels" element={<UserLevels />} />

@@ -8,6 +8,7 @@ import schoolReducer from './slices/schools';
 import freelanReducer from './slices/freelancer';
 import studentReducer from './slices/student';
 import pricingExceptionReducer from './slices/pricingException';
+import libraryReducer from './slices/library';
 
 const store: ToolkitStore = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ const store: ToolkitStore = configureStore({
         freelancer: freelanReducer,
         student: studentReducer,
         pricingException: pricingExceptionReducer,
+        library: libraryReducer,
     }
 });
 

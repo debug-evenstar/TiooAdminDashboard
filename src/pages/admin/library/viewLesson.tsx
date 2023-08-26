@@ -5,13 +5,11 @@ import { RootState } from '../../../redux/store';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../../services/api';
 import { TLibraryMaterials, setLibraryMaterials } from '../../../redux/slices/library';
-import { notify } from '../../../components/notification/notification';
 
-
-function ClassCard({name}:{name: string}) {
+function ClassCard({ name }: { name: string }) {
     return (
         <div className="w-full rounded-[8px] shadow border px-2 py-3">
-            <h1 className="text-primary text-lg font-[500]">{name.replace('Level','Primary')}</h1>
+            <h1 className="text-primary text-lg font-[500]">{name.replace('Level', 'Primary')}</h1>
             <hr className="my-3" />
             <h2 className='text-gray-400'>All Arms</h2>
         </div>
@@ -34,7 +32,7 @@ function Classes() {
         <>
             <div className="flex flex-col space-y-4">
                 {
-                    classes?.map((item,index) => (
+                    classes?.map((item, index) => (
                         <ClassCard key={index} name={item.naming} />
                     ))
                 }
@@ -93,16 +91,16 @@ export default function ViewLesson() {
         navigate('/library');
     }
     const dispatch = useDispatch();
-    const material = useSelector((state: RootState) => state.library.materials);
+    const materials = useSelector((state: RootState) => state.library.materials);
+
     useEffect(() => {
         axiosInstance.get('/management/subjects/lessons/count')
             .then(response => {
                 dispatch(setLibraryMaterials(response.data.data));
-                setCurrent(material.filter((item: TLibraryMaterials) => item.id === newID));
-                notify.info("fetched data");
+                setCurrent(materials.find((item: TLibraryMaterials) => item.id === newID));
             })
             .catch(error => console.log(error));
-        setCurrent(() => material.find((item: TLibraryMaterials) => item.id == newID));
+        // setCurrent(() => materials.find((item: TLibraryMaterials) => item.id == newID));
     }, [])
 
     return (

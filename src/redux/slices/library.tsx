@@ -9,9 +9,37 @@ export type TLibraryMaterials = {
     lessonCount: number,
 }
 
+export type TLibraryLesson = {
+    id: number,
+    topic: string,
+    duration: string,
+    curriculum: string | null,
+    description: string,
+    objective: string,
+    additional_instruction: string | null,
+    week: string | null,
+    start_date: string | null,
+    end_date: string | null,
+    status: string,
+    admin_status: string,
+    published: number,
+    term: number,
+    files: any[],
+    age: number,
+    library: boolean,
+    createdAt: string,
+    updatedAt: string,
+    GroupId: number | null,
+    SubjectId: number,
+    ClassId: number | null,
+    ChapterId: number | null,
+    ClassArms: any[],
+    Class: any | null
+}
+
 type TStateProps = {
     materials: TLibraryMaterials[],
-    lessons:any[],
+    lessons: TLibraryLesson[],
     reload: boolean,
 }
 

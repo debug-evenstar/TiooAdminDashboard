@@ -4,36 +4,55 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../../services/api';
-import { TLibraryMaterials, setLibraryMaterials } from '../../../redux/slices/library';
+import { TLibraryLesson, TLibraryMaterials, setLibraryLessons, setLibraryMaterials } from '../../../redux/slices/library';
 
-function ClassCard({ name }: { name: string }) {
+function ClassLessonCard(lesson: TLibraryLesson) {
     return (
-        <div className="w-full rounded-[8px] shadow border px-2 py-3">
+        <div className="w-[200px] rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
+            <div className="flex justify-between">
+                <h1 className="text-primary  text-lg font-[500]">{lesson.topic}</h1>
+                <button className="h-fit mt-2">
+                    <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="#87909E"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="#87909E"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="#87909E"/>
+                    </svg>
+                </button>
+            </div>
+
+            <span className='text-gray-400 text-xs'>{lesson.files?.length} slides</span>
+        </div>
+    );
+}
+
+
+function ClassCard({ onClick, name }: { onClick?: any, name: string }) {
+    return (
+        <div onClick={onClick} className="w-full rounded-[8px] shadow border px-2 py-3">
             <h1 className="text-primary text-lg font-[500]">{name.replace('Level', 'Primary')}</h1>
             <hr className="my-3" />
             <h2 className='text-gray-400'>All Arms</h2>
         </div>
     );
 }
+function Classes({setCurrentClass}:{setCurrentClass: any}) {
 
-function Classes() {
-    const [classes, setClasses] = useState<any[]>();
+    const [ classes,setClasses ] = useState<any[]>([]);
 
     useEffect(() => {
         axiosInstance.get('https://api.hellotioo.com/tio/classes')
             .then(response => {
-                setClasses(response.data.data);
+                setClasses(response.data.data.reverse());
             })
             .catch(error => console.log(error));
     }, []);
-
 
     return (
         <>
             <div className="flex flex-col space-y-4">
                 {
                     classes?.map((item, index) => (
-                        <ClassCard key={index} name={item.naming} />
+                        <ClassCard onClick={() => setCurrentClass(item.id)} key={index} name={item.naming} />
                     ))
                 }
             </div>
@@ -41,8 +60,15 @@ function Classes() {
     );
 }
 
-function AllLessonsCard() {
+function AllLessonsCard({ id }: { id: number }) {
     const [active, setActive] = useState<boolean>(false);
+    const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
+    const lessons = useSelector((state: RootState) => state.library.lessons);
+    console.log("all lesson id",id)
+    useEffect(() => {
+        setClassLessons(lessons.filter((item: any) => item.ClassId === id))
+        console.log(classLessons);
+    }, [id]);
 
     return (
         <>
@@ -50,9 +76,16 @@ function AllLessonsCard() {
                 <div className="px-4 h-[50px] bg-neutral-200 text-xl font-[500] text-primary rounded-t-[8px] flex items-center">
                     <h1>All Lessons</h1>
                 </div>
-                <div className={`px-4 duration-500 ease-out ${active ? "max-h-[20rem]" : "max-h-0"}`}>
-                    <div className="py-10">
-                        <h2 className='mb-5 text-lg text-primary'>You haven't added any lesson</h2>
+                <div className={`px-4 duration-700 transition-[max-height]  ease-out ${active ? "max-h-[30rem]" : "max-h-0"}`}>
+                    <div className="py-10 flex flex-wrap space-x-3">
+                        {
+                            classLessons?.length > 0 ?
+                                classLessons.map((lesson) => (
+                                    <ClassLessonCard {...lesson}/>
+                                ))
+                                :
+                                <h2 className='mb-5 text-lg text-gray-400'>You haven't added any lesson</h2>
+                        }
                         <button
                             // onClick={() => setModal(!modal)}
                             className="w-[200px] h-[140px] outline-none active:outline-main px-[52px] py-[35px] border shadow rounded-[8px]
@@ -83,6 +116,8 @@ function AllLessonsCard() {
 export default function ViewLesson() {
     const [current, setCurrent] = useState<TLibraryMaterials>();
     const navigate = useNavigate();
+    const [currentClass, setCurrentClass] = useState<number>(0);
+
     const { id } = useParams<{ id: string }>();
     let newID = 0;
     if (id) {
@@ -90,6 +125,7 @@ export default function ViewLesson() {
     } else {
         navigate('/library');
     }
+
     const dispatch = useDispatch();
     const materials = useSelector((state: RootState) => state.library.materials);
 
@@ -100,7 +136,12 @@ export default function ViewLesson() {
                 setCurrent(materials.find((item: TLibraryMaterials) => item.id === newID));
             })
             .catch(error => console.log(error));
-        // setCurrent(() => materials.find((item: TLibraryMaterials) => item.id == newID));
+
+        axiosInstance.get(`/library/lesson/check?subject_id=${newID}`)
+            .then(response => {
+                dispatch(setLibraryLessons(response.data.data));
+            })
+            .catch(error => console.log(error));
     }, [])
 
     return (
@@ -120,11 +161,11 @@ export default function ViewLesson() {
                 </div>
                 <div className="flex mt-7 justify-between pb-20">
                     <div className='w-[70%] h-screen'>
-                        <AllLessonsCard />
+                        <AllLessonsCard id={currentClass} />
                     </div>
                     <div className="w-[30%] flex justify-end">
                         <div className="w-[14rem]">
-                            <Classes />
+                            <Classes {...{setCurrentClass}}/>
                         </div>
                     </div>
                 </div>

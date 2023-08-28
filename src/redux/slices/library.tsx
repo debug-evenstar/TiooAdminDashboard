@@ -37,26 +37,25 @@ export type TLibraryLesson = {
     Class: any | null
 }
 
+export type TLibraryClass = {
+    id: number,
+    type: string,
+    naming: string,
+    SchoolManagementId: number,
+}
+
 type TStateProps = {
     materials: TLibraryMaterials[],
     lessons: TLibraryLesson[],
+    classes: TLibraryClass[],
     reload: boolean,
 }
 
+
 const initialState: TStateProps = {
-    materials: [
-        {
-            id: 42,
-            naming: "Public Speaking",
-            description: "how to speak in a public setting",
-            age: 16,
-            library: true,
-            SchoolManagementId: 3,
-            lessonCount: 2,
-        }
-        
-    ], 
+    materials: [], 
     lessons: [],
+    classes: [],
     reload: false,
 }
 
@@ -67,8 +66,11 @@ const librarySlice = createSlice({
         setLibraryMaterials: (state, action: PayloadAction<TLibraryMaterials[]>) => {
             state.materials = action.payload;
         },
-        setLibraryLessons: (state, action: PayloadAction<any[]>) => {
+        setLibraryLessons: (state, action: PayloadAction<TLibraryLesson[]>) => {
             state.lessons = action.payload
+        },
+        setLibraryClass: (state, action: PayloadAction<TLibraryClass[]>) => {
+            state.classes = action.payload
         },
         setLibraryReload: (state) => {
             state.reload = !state.reload;
@@ -77,5 +79,5 @@ const librarySlice = createSlice({
 })
 
 
-export const { setLibraryReload,setLibraryMaterials,setLibraryLessons }  = librarySlice.actions;
+export const { setLibraryReload, setLibraryClass,setLibraryMaterials,setLibraryLessons }  = librarySlice.actions;
 export default librarySlice.reducer;

@@ -17,20 +17,11 @@ type TLessonCardItem = {
   lessonCount: number,
 }
 
-// setLessons(response.data.data.map((item: TLessonCardItem, index: number) => {
-//   return {
-//     title: item.naming,
-//     color: colors[index % colors.length],
-//     description: item.description,
-//     count: item.lessonCount,
-//     id: item.id
-//   }
-// }))
 function LessonsCard({color,lessonProps}:{color: string, lessonProps: TLessonCardItem}) {
   const [modal, setModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const viewLessonButton = () => {
-    navigate(`view/${lessonProps.id}`)    
+    navigate(`view/${lessonProps.id}`,{state: lessonProps});    
   }
 
   return (
@@ -61,6 +52,7 @@ export default function LibrarySchoolsCurricula() {
 
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
   const materials = useSelector((state: RootState) => state.library.materials);
+  const reload = useSelector((state: RootState) => state.library.reload);
 
   const dispatch = useDispatch();
 
@@ -74,14 +66,14 @@ export default function LibrarySchoolsCurricula() {
     "bg-[#330072]",
     "bg-[#4F46E5]",
   ];
-
+  console.log("Library Reload");
   useEffect(() => {
     axiosInstance.get('management/subjects/lessons/count')
       .then(response => {
         dispatch(setLibraryMaterials(response.data.data));
       })
       .catch(error => console.error(error));
-  }, []);
+  }, [reload]);
 
 
   const [modal, setModal] = useState<boolean>(false);

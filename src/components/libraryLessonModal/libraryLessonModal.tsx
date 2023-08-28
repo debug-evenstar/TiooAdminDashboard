@@ -2,6 +2,8 @@ import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import axiosInstance from "../../services/api";
 import UploadFile from "../updateFile/uploadFile";
 import { notify } from "../notification/notification";
+import { useDispatch } from "react-redux";
+import { setLibraryReload } from "../../redux/slices/library";
 
 type classOptionProps = {
     SchoolManagementId: number;
@@ -41,7 +43,13 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
 
     return (
         <>
-            <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-end">
+            <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center">
+                {
+                selection.length > 0?
+                    <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
+                    :<p></p>
+                }
+                
                 <div
                     className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
                 cursor-pointer ${!active && "rotate-180"}`}
@@ -73,7 +81,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
 const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 
-export default function AddLibraryLesson({ modal, setModal, id }: { modal: boolean, setModal: (state: boolean) => void, id: number }) {
+export default function AddLibraryLesson({ modal, setModal, id, variant, data }: { data?: any, variant?: boolean, modal: boolean, setModal: (state: boolean) => void, id: number }) {
 
     const [klass, setClass] = useState<number[]>([]);
     const [age, setAge] = useState<number[]>([]);
@@ -82,6 +90,8 @@ export default function AddLibraryLesson({ modal, setModal, id }: { modal: boole
     const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+    const dispatch = useDispatch();
+
     // probably wanted to try something sha
     const [formData, setFormData] = useState<{ title: string, objective: string }>({
         title: '',
@@ -89,11 +99,15 @@ export default function AddLibraryLesson({ modal, setModal, id }: { modal: boole
     });
 
     useEffect(() => {
-        axiosInstance.get('https://api.hellotioo.com/tio/classes')
-            .then((response) => {
-                setClassOptions(response.data.data);
-            })
-            .catch((error => console.log(error)))
+        if (variant) {
+
+        } else {
+            axiosInstance.get('https://api.hellotioo.com/tio/classes')
+                .then((response) => {
+                    setClassOptions(response.data.data);
+                })
+                .catch((error => console.log(error)))
+        }
     }, []);
 
 
@@ -134,7 +148,7 @@ export default function AddLibraryLesson({ modal, setModal, id }: { modal: boole
     }
 
     const sendRequest = () => {
-        const payload = {
+        let payload = {
             topic: formData.title,
             class: klass[0],
             objective: formData.objective,
@@ -142,11 +156,18 @@ export default function AddLibraryLesson({ modal, setModal, id }: { modal: boole
             subject: id,
             file: selectedFile
         }
+        
+        if(variant){
+            payload['class'] = data.class;
+        }
+
 
         axiosInstance.post('/library/lesson', payload)
             .then(response => {
                 console.log(response.data.data);
                 notify.success("Created library lesson ");
+                dispatch(setLibraryReload());
+                setModal(false);
             })
             .catch(error => {
                 notify.error(error);
@@ -170,32 +191,37 @@ export default function AddLibraryLesson({ modal, setModal, id }: { modal: boole
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[550px] w-[380px] mx-auto `}>
+            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[550px]s h-auto w-[380px] mx-auto `}>
                 <div className="p-2 border-b px-4 flex items-center justify-between">
-                    <h1>Add Lesson Material</h1>
+                    <h1>Add Lesson </h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
                 </div>
                 <div onSubmit={handleSubmit}>
-                    <div className=" px-4 mt-4 h-[27.17rem] overflow-y-auto">
+                    <div className={`px-4 mt-4 ${variant? "h-auto mb-10":"h-[27.17rem]"} overflow-y-auto`}>
 
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Lesson title</label>
                             <input type="text" name="title" value={formData.title} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
                             <p className="text-red-500 text-xs mt-1">{errors?.title}</p>
                         </div>
-                        <div className="text-sm mb-3">
-                            <label htmlFor="" className="text-sm">Class</label>
-                            <OptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, name: item.naming }))} setSelection={setClass} />
-                            <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
-                        </div>
+                        {
+                            !variant && (
+                                <>
+                                    <div className="text-sm mb-3">
+                                        <label htmlFor="" className="text-sm">Class</label>
+                                        <OptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, name: item.naming }))} setSelection={setClass} />
+                                        <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
+                                    </div>
+                                </>
+                            )
 
+                        }
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Age</label>
                             <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} />
                             {/* <input type="text" name="age" value={formData.age} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" /> */}
                             <p className="text-red-500 text-xs mt-1">{errors?.age}</p>
                         </div>
-
 
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Lesson Objective</label>

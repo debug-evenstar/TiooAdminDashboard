@@ -1,23 +1,45 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Header from '../../../components/header';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axiosInstance from '../../../services/api';
-import { TLibraryLesson, TLibraryMaterials, setLibraryLessons, setLibraryMaterials } from '../../../redux/slices/library';
+import { TLibraryClass, TLibraryLesson, TLibraryMaterials, setLibraryClass, setLibraryLessons, setLibraryMaterials } from '../../../redux/slices/library';
+import AddLibraryLesson from '../../../components/libraryLessonModal/libraryLessonModal';
+import Popup from 'reactjs-popup';
 
 function ClassLessonCard(lesson: TLibraryLesson) {
+    const [ active, setActive ] = useState<boolean>(false);
+    const ref = useRef<any>();
+
+    const toggle = () => ref.current.toggle();
+
     return (
         <div className="w-[200px] hover:shadow-lg rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
             <div className="flex justify-between">
                 <h1 className="text-primary  text-lg font-[500]">{lesson.topic}</h1>
-                <button className="h-fit py-2 px-1 hover:bg-neutral-100 outline-none  rounded">
-                    <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="#87909E"/>
-                        <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="#87909E"/>
-                        <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="#87909E"/>
-                    </svg>
-                </button>
+                <div className="flex items-center">
+                    <Popup
+                        ref={ref}
+                        open={active}
+                        position="bottom right"
+                        trigger={// hahaha
+                            <button className="outline-none" onClick={() => setActive(true)}>
+                            </button>
+                        }>
+                        <ul className="py-3 px-3 bg-white shadow rounded-[8px]">
+                            <li onClick={() => { toggle()}} className="py-2 rounded mb-1 px-4 bg-light cursor-pointer text-main text-sm">Edit price</li>
+                            <li onClick={() => { toggle()}} className="py-2 rounded px-4 bg-red-400 cursor-pointer text-white text-sm">Remove</li>
+                        </ul>
+                    </Popup>
+                    <button onClick={toggle} className="h-fit py-2 px-1 hover:bg-neutral-100 outline-none  rounded">
+                        <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="#87909E"/>
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="#87909E"/>
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="#87909E"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <span className='text-gray-400 text-xs'>{lesson.files?.length} slides</span>
@@ -36,22 +58,16 @@ function ClassCard({ active, onClick, name }: {active: boolean, onClick?: any, n
     );
 }
 function Classes({currentClass, setCurrentClass}:{currentClass: number, setCurrentClass: any}) {
-
-    const [ classes,setClasses ] = useState<any[]>([]);
-
+    // const [ classes,setClasses ] = useState<any[]>([]);
+    const classes = useSelector((state: RootState) => state.library.classes);
+    // const dispatch = useDispatch();
     useEffect(() => {
-        axiosInstance.get('https://api.hellotioo.com/tio/classes')
-            .then(response => {
-                setClasses(response.data.data.reverse());
-            })
-            .catch(error => console.log(error));
     }, []);
-
     return (
         <>
             <div className="flex flex-col space-y-4">
                 {
-                    classes?.map((item, index) => (
+                    classes?.map((item: TLibraryClass, index: number) => (
                         <ClassCard active={item.id === currentClass} onClick={() => setCurrentClass(item.id)} key={index} name={item.naming} />
                     ))
                 }
@@ -64,13 +80,19 @@ function AllLessonsCard({ id }: { id: number }) {
     const [active, setActive] = useState<boolean>(false);
     const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
     const lessons = useSelector((state: RootState) => state.library.lessons);
+    const [ modal, setModal ] = useState<boolean>(false);
+    const [data, setData] = useState<any>();
 
     useEffect(() => {
-        setClassLessons(lessons.filter((item: any) => item.ClassId === id))
+        const group = lessons.filter((item: any) => item.ClassId === id);
+        setClassLessons(group)
+        setData(group);
+        // console.log("filtering lessons for id",id);
     }, [id]);
 
     return (
         <>
+            <AddLibraryLesson {...{setModal, modal, id, data }}  variant />
             <div className="w-full rounded-[8px] shadow overflow-hidden">
                 <div className="px-4 h-[50px] bg-neutral-200 text-xl font-[500] text-primary rounded-t-[8px] flex items-center">
                     <h1>All Lessons</h1>
@@ -83,12 +105,12 @@ function AllLessonsCard({ id }: { id: number }) {
                             {
                                 classLessons?.length > 0 &&
                                     classLessons.map((lesson) => (
-                                        <ClassLessonCard {...lesson}/>
+                                        <ClassLessonCard key={lesson.id} {...lesson}/>
                                     ))
                                 
                             }
                             <button
-                                // onClick={() => setModal(!modal)}
+                                onClick={() => setModal(!modal)}
                                 className="w-[200px] h-[140px] outline-none active:outline-main px-[52px] py-[35px] border shadow rounded-[8px]
                                     flex items-center justify-center flex-col text-main hover:shadow-lg duration-300">
                                 <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +121,7 @@ function AllLessonsCard({ id }: { id: number }) {
                         </div>
                     </div>
                 </div>
-                <div className="h-[50px] bg-white relative z-[100] border-t flex items-center px-4 justify-between">
+                <div className="h-[50px] bg-white relative border-t flex items-center px-4 justify-between">
                     <button className="bg-main px-4 py-1.5 text-sm text-white rounded">
                         Set Test/Exam
                     </button>
@@ -120,7 +142,11 @@ export default function ViewLesson() {
     const navigate = useNavigate();
     const [currentClass, setCurrentClass] = useState<number>(0);
 
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string}>();
+    const { state } = useLocation();
+    
+    // console.log("view lesson passed state: ",state);
+
     let newID = 0;
     if (id) {
         newID = Number.parseInt(id);
@@ -129,22 +155,34 @@ export default function ViewLesson() {
     }
 
     const dispatch = useDispatch();
-    const materials = useSelector((state: RootState) => state.library.materials);
+
+    // const materials = useSelector((state: RootState) => state.library.materials);
 
     useEffect(() => {
-        axiosInstance.get('/management/subjects/lessons/count')
-            .then(response => {
-                dispatch(setLibraryMaterials(response.data.data));
-                setCurrent(materials.find((item: TLibraryMaterials) => item.id === newID));
-            })
-            .catch(error => console.log(error));
+        // first get the classes
+        // then subjects 
+        // filter the lessons for the current subject
+        // 
+        setCurrent(state);
 
-        axiosInstance.get(`/library/lesson/check?subject_id=${newID}`)
+        axiosInstance.get('https://api.hellotioo.com/tio/classes')
             .then(response => {
-                dispatch(setLibraryLessons(response.data.data));
+                dispatch(setLibraryClass(response.data.data.reverse()));
+                setCurrentClass(response.data.data[0].id);
+                // console.log(currentClass);
+                axiosInstance.get('/management/subjects/lessons/count')
+                    .then(response => {
+                        dispatch(setLibraryMaterials(response.data.data));
+                        // setCurrent(materials.find((item: TLibraryMaterials) => item.id === newID));
+                        axiosInstance.get(`/library/lesson/check?subject_id=${newID}`)
+                            .then(response => {
+                                dispatch(setLibraryLessons(response.data.data));
+                            })
+                            .catch(error => console.log(error));
+                    })
+                    .catch(error => console.log(error));
             })
             .catch(error => console.log(error));
-        console.log("effect");
     }, [])
 
     return (

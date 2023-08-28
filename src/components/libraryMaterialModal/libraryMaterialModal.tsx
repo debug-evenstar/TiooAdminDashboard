@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import axiosInstance from "../../services/api";
 import { notify } from "../notification/notification";
-import { useDispatch } from "react-redux";
 import { setLibraryReload } from "../../redux/slices/library";
 
 
@@ -43,7 +43,12 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
 
   return (
     <>
-      <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-end">
+      <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center">
+        {
+          selection.length > 0?
+              <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
+              :<p></p>
+        }
         <div
           className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
                 cursor-pointer ${!active && "rotate-180"}`}

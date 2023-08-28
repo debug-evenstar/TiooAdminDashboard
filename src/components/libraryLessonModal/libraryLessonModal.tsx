@@ -91,7 +91,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const dispatch = useDispatch();
-
+    console.log(classId);
     // probably wanted to try something sha
     const [formData, setFormData] = useState<{ title: string, objective: string }>({
         title: '',

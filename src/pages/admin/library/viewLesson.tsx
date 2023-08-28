@@ -7,14 +7,25 @@ import axiosInstance from '../../../services/api';
 import { TLibraryClass, TLibraryLesson, TLibraryMaterials, setLibraryClass, setLibraryLessons, setLibraryMaterials } from '../../../redux/slices/library';
 import AddLibraryLesson from '../../../components/libraryLessonModal/libraryLessonModal';
 import Popup from 'reactjs-popup';
+import EditLibraryLesson from '../../../components/editLIbraryLessonModal/editLibraryLessonModal';
 
 function ClassLessonCard(lesson: TLibraryLesson) {
-    const [ active, setActive ] = useState<boolean>(false);
+    const [active, setActive] = useState<boolean>(false);
+    const [ modal, setModal ] = useState<boolean>(false);
+
     const ref = useRef<any>();
 
     const toggle = () => ref.current.toggle();
 
+    const editData = {
+        klass: lesson.ClassId,
+        age: lesson.age,
+        title: lesson.topic,
+        objective: lesson.objective
+    };
     return (
+        <>
+        <EditLibraryLesson {...{modal, setModal}} data={editData} id={lesson.SubjectId}/>
         <div className="w-[200px] hover:shadow-lg rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
             <div className="flex justify-between">
                 <h1 className="text-primary  text-lg font-[500]">{lesson.topic}</h1>
@@ -22,21 +33,21 @@ function ClassLessonCard(lesson: TLibraryLesson) {
                     <Popup
                         ref={ref}
                         open={active}
-                        position="bottom right"
+                        position="left center"
                         trigger={// hahaha
-                            <button className="outline-none" onClick={() => setActive(true)}>
+                            <button className="outline-none" onClick={() => { setActive(true) }}>
                             </button>
                         }>
                         <ul className="py-3 px-3 bg-white shadow rounded-[8px]">
-                            <li onClick={() => { toggle()}} className="py-2 rounded mb-1 px-4 bg-light cursor-pointer text-main text-sm">Edit price</li>
-                            <li onClick={() => { toggle()}} className="py-2 rounded px-4 bg-red-400 cursor-pointer text-white text-sm">Remove</li>
+                            <li onClick={() => { toggle(); setModal(true) }} className="py-2 rounded px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
+                            <li onClick={() => { toggle() }} className="py-2 rounded px-4 hover:bg-red-400 text-red-500 cursor-pointer hover:text-white text-sm">Remove</li>
                         </ul>
                     </Popup>
                     <button onClick={toggle} className="h-fit py-2 px-1 hover:bg-neutral-100 outline-none  rounded">
                         <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="#87909E"/>
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="#87909E"/>
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="#87909E"/>
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="#87909E" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="#87909E" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18C0.89543 18 0 17.1046 0 16Z" fill="#87909E" />
                         </svg>
                     </button>
                 </div>
@@ -44,20 +55,22 @@ function ClassLessonCard(lesson: TLibraryLesson) {
 
             <span className='text-gray-400 text-xs'>{lesson.files?.length} slides</span>
         </div>
+        </>
+
     );
 }
 
 
-function ClassCard({ active, onClick, name }: {active: boolean, onClick?: any, name: string }) {
+function ClassCard({ active, onClick, name }: { active: boolean, onClick?: any, name: string }) {
     return (
-        <div onClick={onClick} className={`cursor-pointer w-full rounded-[8px] shadow border px-2 py-3 ${active? "border-main bg-light":""}`}>
+        <div onClick={onClick} className={`cursor-pointer w-full rounded-[8px] shadow border px-2 py-3 ${active ? "border-main bg-light" : ""}`}>
             <h1 className="text-primary text-lg font-[500]">{name.replace('Level', 'Primary')}</h1>
             <hr className="my-3" />
             <h2 className='text-gray-400'>All Arms</h2>
         </div>
     );
 }
-function Classes({currentClass, setCurrentClass}:{currentClass: number, setCurrentClass: any}) {
+function Classes({ currentClass, setCurrentClass }: { currentClass: number, setCurrentClass: any }) {
     // const [ classes,setClasses ] = useState<any[]>([]);
     const classes = useSelector((state: RootState) => state.library.classes);
     // const dispatch = useDispatch();
@@ -80,7 +93,7 @@ function AllLessonsCard({ id }: { id: number }) {
     const [active, setActive] = useState<boolean>(false);
     const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
     const lessons = useSelector((state: RootState) => state.library.lessons);
-    const [ modal, setModal ] = useState<boolean>(false);
+    const [modal, setModal] = useState<boolean>(false);
     const [data, setData] = useState<any>();
 
     useEffect(() => {
@@ -92,7 +105,7 @@ function AllLessonsCard({ id }: { id: number }) {
 
     return (
         <>
-            <AddLibraryLesson {...{setModal, modal, id, data }}  variant />
+            <AddLibraryLesson {...{ setModal, modal, id, data }} variant />
             <div className="w-full rounded-[8px] shadow overflow-hidden">
                 <div className="px-4 h-[50px] bg-neutral-200 text-xl font-[500] text-primary rounded-t-[8px] flex items-center">
                     <h1>All Lessons</h1>
@@ -100,14 +113,14 @@ function AllLessonsCard({ id }: { id: number }) {
                 <div className={`px-4 duration-700 transition-[max-height]  ease-out ${active ? "max-h-[30rem]" : "max-h-0"}`}>
 
                     <div className="py-10">
-                        { classLessons?.length  > 0? null:<h2 className='mb-5 text-lg text-gray-400'>You haven't added any lesson</h2> }
+                        {classLessons?.length > 0 ? null : <h2 className='mb-5 text-lg text-gray-400'>You haven't added any lesson</h2>}
                         <div className={`flex flex-wrap space-x-3`}>
                             {
                                 classLessons?.length > 0 &&
-                                    classLessons.map((lesson) => (
-                                        <ClassLessonCard key={lesson.id} {...lesson}/>
-                                    ))
-                                
+                                classLessons.map((lesson) => (
+                                    <ClassLessonCard key={lesson.id} {...lesson} />
+                                ))
+
                             }
                             <button
                                 onClick={() => setModal(!modal)}
@@ -142,9 +155,9 @@ export default function ViewLesson() {
     const navigate = useNavigate();
     const [currentClass, setCurrentClass] = useState<number>(0);
 
-    const { id } = useParams<{ id: string}>();
+    const { id } = useParams<{ id: string }>();
     const { state } = useLocation();
-    
+
     // console.log("view lesson passed state: ",state);
 
     let newID = 0;
@@ -206,7 +219,7 @@ export default function ViewLesson() {
                     </div>
                     <div className="w-[30%] flex justify-end">
                         <div className="w-[14rem]">
-                            <Classes {...{currentClass,setCurrentClass}}/>
+                            <Classes {...{ currentClass, setCurrentClass }} />
                         </div>
                     </div>
                 </div>

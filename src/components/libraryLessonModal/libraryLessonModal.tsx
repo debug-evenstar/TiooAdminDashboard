@@ -81,7 +81,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
 const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 
-export default function AddLibraryLesson({ modal, setModal, id, variant, data }: { data?: any, variant?: boolean, modal: boolean, setModal: (state: boolean) => void, id: number }) {
+export default function AddLibraryLesson({ modal, setModal, subjectId, classId, variant, data }: { subjectId?: number, classId?: number,data?: any, variant?: boolean, modal: boolean, setModal: (state: boolean) => void, id: number }) {
 
     const [klass, setClass] = useState<number[]>([]);
     const [age, setAge] = useState<number[]>([]);
@@ -131,9 +131,6 @@ export default function AddLibraryLesson({ modal, setModal, id, variant, data }:
         if (!formData.title || formData.title.length == 0)
             newErrors.title = "Please Enter a valid title"
 
-        if (klass.length == 0)
-            newErrors.class = "Please select a class from the menu";
-
         if (age.length == 0)
             newErrors.age = "Please enter a valid age ";
 
@@ -148,12 +145,13 @@ export default function AddLibraryLesson({ modal, setModal, id, variant, data }:
     }
 
     const sendRequest = () => {
+        console.log("sending request");
         let payload = {
             topic: formData.title,
             class: klass[0],
             objective: formData.objective,
             age: age[0],
-            subject: id,
+            subject: subjectId,
             file: selectedFile
         }
         
@@ -165,7 +163,7 @@ export default function AddLibraryLesson({ modal, setModal, id, variant, data }:
         axiosInstance.post('/library/lesson', payload)
             .then(response => {
                 console.log(response.data.data);
-                notify.success("Created library lesson ");
+                notify.success("Added lesson successfuly");
                 dispatch(setLibraryReload());
                 setModal(false);
             })

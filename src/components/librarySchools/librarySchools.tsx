@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TLibraryMaterials, setLibraryMaterials } from "../../redux/slices/library";
 import { RootState } from "../../redux/store";
 
-type TLessonCardItem = {
+type TMaterialCardItem = {
   id: number,
   naming: string,
   description: string,
@@ -17,28 +17,28 @@ type TLessonCardItem = {
   lessonCount: number,
 }
 
-function LessonsCard({color,lessonProps}:{color: string, lessonProps: TLessonCardItem}) {
+function MaterialCard({color,materialProps}:{color: string, materialProps: TMaterialCardItem}) {
   const [modal, setModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const viewLessonButton = () => {
-    navigate(`view/${lessonProps.id}`,{state: lessonProps});    
+    navigate(`view/${materialProps.id}`,{state: materialProps});    
   }
 
   return (
     <>
-      <AddLibraryLesson {...{ modal, setModal }} id={lessonProps.id} />
+      <AddLibraryLesson {...{ modal, setModal }} id={materialProps.id} />
       {/* <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]"> */}
       <div className="w-[320px] mr-5 border min-h-[175px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
-          <h1 className="font-[500] text-lg">{lessonProps.naming}</h1>
-          <p className="mt-3 text-xs">{lessonProps.description}</p>
+          <h1 className="font-[500] text-lg">{materialProps.naming}</h1>
+          <p className="mt-3 text-xs">{materialProps.description}</p>
         </div>
         <div className="px-4 mb-2 mt">
           <span className="text-xs text-gray-400">Lessons uploaded</span><br />
-          <div className="text-xs mb-2 font-semibold">{lessonProps.lessonCount}</div>
+          <div className="text-xs mb-2 font-semibold">{materialProps.lessonCount}</div>
 
           <div className="w-full grid grid-cols-2 gap-x-4">
-            <button onClick={viewLessonButton} disabled={!(lessonProps.lessonCount)} className={`px-4 py-1.5 text-sm font-semibold rounded border outline-none ${lessonProps.lessonCount > 0 ? "border-main text-main" : "border-gray-400 text-gray-400"}`}>View Lesson</button>
+            <button onClick={viewLessonButton} disabled={!(materialProps.lessonCount)} className={`px-4 py-1.5 text-sm font-semibold rounded border outline-none ${materialProps.lessonCount > 0 ? "border-main text-main" : "border-gray-400 text-gray-400"}`}>View Lesson</button>
             <button onClick={() => setModal(true)} className="px-4 py-1.5 text-sm font-semibold duration-300 hover:bg-hover rounded border border-main bg-main text-white">Create Lesson</button>
           </div>
         </div>
@@ -83,8 +83,8 @@ export default function LibrarySchoolsCurricula() {
       <AddLibraryMaterial {...{ modal, setModal }} />
       <div className="grid grid-cols-3 gap-4 items-center">
         {
-          materials.map((lessonProps: TLibraryMaterials, index: number) => (
-            <LessonsCard key={index} lessonProps={lessonProps}  color={colors[index % colors.length]} />
+          materials.map((materialProps: TLibraryMaterials, index: number) => (
+            <MaterialCard key={index} materialProps={materialProps}  color={colors[index % colors.length]} />
           ))
         }
         <button

@@ -37,7 +37,6 @@ function App() {
             <Route path="students" element={<Students />}></Route>
             <Route path="library/view/:id" element={<ViewLesson/>}></Route>
             <Route path="library" element={<Library />}></Route>
-
             <Route path="settings" element={<Settings />}>
               <Route index path="pricing" element={<PricingTab />} />
               <Route path="userlevels" element={<UserLevels />} />

@@ -23,6 +23,7 @@ function ClassLessonCard(lesson: TLibraryLesson) {
         title: lesson.topic,
         objective: lesson.objective
     };
+
     return (
         <>
         <EditLibraryLesson {...{modal, setModal}} data={editData} id={lesson.SubjectId}/>
@@ -182,6 +183,7 @@ export default function ViewLesson() {
             .then(response => {
                 dispatch(setLibraryClass(response.data.data.reverse()));
                 setCurrentClass(response.data.data[0].id);
+                
                 // console.log(currentClass);
                 axiosInstance.get('/management/subjects/lessons/count')
                     .then(response => {

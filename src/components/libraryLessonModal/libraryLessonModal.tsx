@@ -91,7 +91,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const dispatch = useDispatch();
-    console.log(classId);
+
     // probably wanted to try something sha
     const [formData, setFormData] = useState<{ title: string, objective: string }>({
         title: '',
@@ -100,7 +100,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
     useEffect(() => {
         if (variant) {
-
+            console.log(classId);
         } else {
             axiosInstance.get('https://api.hellotioo.com/tio/classes')
                 .then((response) => {
@@ -145,12 +145,11 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
     }
 
     const sendRequest = () => {
-        console.log("sending request");
         let payload = {
             topic: formData.title,
-            class: klass[0],
+            class: klass,
             objective: formData.objective,
-            age: age[0],
+            age: age,
             subject: subjectId,
             file: selectedFile
         }
@@ -161,8 +160,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
 
         axiosInstance.post('/library/lesson', payload)
-            .then(response => {
-                console.log(response.data.data);
+            .then(() => {
                 notify.success("Added lesson successfuly");
                 dispatch(setLibraryReload());
                 setModal(false);
@@ -171,7 +169,6 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                 notify.error(error);
             })
             .finally(() => setLoading(false));
-        console.log(payload);
     }
 
     const handleSubmit = (e: FormEvent) => {

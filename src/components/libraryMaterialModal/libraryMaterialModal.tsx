@@ -154,7 +154,6 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
         console.log(error);
       })
       .finally(() => setLoading(false));
-    console.log(payload);
   }
 
   const handleSubmit = (e: FormEvent) => {
@@ -213,7 +212,7 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
                   <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
                   :
                   <span>
-                    Upload
+                    Create
                   </span>
               }
             </button>

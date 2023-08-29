@@ -28,7 +28,8 @@ function MaterialCard({color,materialProps}:{color: string, materialProps: TMate
     <>
       <AddLibraryLesson {...{ modal, setModal }} id={materialProps.id} />
       {/* <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]"> */}
-      <div className="w-[320px] mr-5 border min-h-[175px] flex flex-col justify-between rounded-[8px]">
+      {/* <div className="w-[320px] mr-5 border min-h-[175px] flex flex-col justify-between rounded-[8px]"> */}
+      <div className="w-full mr-5 border min-h-[175px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
           <h1 className="font-[500] text-lg">{materialProps.naming}</h1>
           <p className="mt-3 text-xs">{materialProps.description}</p>
@@ -66,7 +67,6 @@ export default function LibrarySchoolsCurricula() {
     "bg-[#330072]",
     "bg-[#4F46E5]",
   ];
-  console.log("Library Reload");
   useEffect(() => {
     axiosInstance.get('management/subjects/lessons/count')
       .then(response => {

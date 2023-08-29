@@ -1,4 +1,4 @@
-
+import './loader.css';
 function Load(){
     return (
         <div className="w-[5rem] h-[2rem] flex items-center space-x-1 justify-center">

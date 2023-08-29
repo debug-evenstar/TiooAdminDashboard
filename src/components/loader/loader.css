@@ -1,19 +1,20 @@
 @keyframes tick {
     0%  {
-        height: 20px;
+        height: 10px;
     } 
     50% {
         height: 110%;
     } 
     100%  {
-        height: 20px;
+        height: 10px;
     } 
 }
 
 .stick-head{
     height: 10px;
+    width: 4px !important;
     animation-name: tick;
-    animation-duration: 0.7s;
+    animation-duration: 0.6s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-delay: 0s;

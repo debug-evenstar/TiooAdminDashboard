@@ -67,6 +67,7 @@ export default function LibrarySchoolsCurricula() {
     "bg-[#330072]",
     "bg-[#4F46E5]",
   ];
+  
   useEffect(() => {
     axiosInstance.get('management/subjects/lessons/count')
       .then(response => {

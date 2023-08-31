@@ -69,7 +69,7 @@ export default function SchoolsChecklist({ selection, setSelection, onApply, cla
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value: string = e.target.value;
         setSearchInput(value);
-        const newList = schools.filter((item: TSchoolsProps) => item.school.name.toLowerCase().includes(value.toLocaleLowerCase()))
+        const newList = schools.filter((item: TSchoolsProps) => item.school.school_name.toLowerCase().includes(value.toLocaleLowerCase()))
         setList(newList);
     }
 
@@ -100,7 +100,7 @@ export default function SchoolsChecklist({ selection, setSelection, onApply, cla
                                     <div className="h-[40px] w-[40px] bg-light rounded-full"></div>
                                     <div>
                                         <h1 className='text-gray-900 text-sm'>
-                                            {school.name}
+                                            {school.school_name}
                                         </h1>
                                         <p className='text-sm text-gray-400'>{school.email}</p>
                                     </div>

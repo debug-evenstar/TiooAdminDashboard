@@ -1,12 +1,12 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import Header from '../../../components/header';
+import Popup from 'reactjs-popup';
 import { useDispatch, useSelector } from 'react-redux';
+import Header from '../../../components/header';
 import { RootState } from '../../../redux/store';
 import { useEffect, useRef, useState } from 'react';
 import axiosInstance from '../../../services/api';
 import { TLibraryClass, TLibraryLesson, TLibraryMaterials, setLibraryClass, setLibraryLessons, setLibraryMaterials } from '../../../redux/slices/library';
 import AddLibraryLesson from '../../../components/libraryLessonModal/libraryLessonModal';
-import Popup from 'reactjs-popup';
 import EditLibraryLesson from '../../../components/editLIbraryLessonModal/editLibraryLessonModal';
 
 function ClassLessonCard(lesson: TLibraryLesson) {

@@ -45,9 +45,9 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
     <>
       <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center">
         {
-          selection.length > 0?
-              <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
-              :<p></p>
+          selection.length > 0 ?
+            <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
+            : <p></p>
         }
         <div
           className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
@@ -141,7 +141,7 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
       naming: formData.name,
       class: klass,
       description: formData.description,
-      age: age,
+      ages: age,
     }
 
     axiosInstance.post('/library/subject', payload)

@@ -355,6 +355,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
     const nameCondition = () => {
         switch(type){
             case "Schools":
+                // console.log(data)
                 return data.school_name;
             case "Freelancers":
                 return data.school_name;
@@ -499,7 +500,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
                     newList = schools.filter((item: TSchoolsProps) => newSelection.includes(item.school.id))
                     return newList.map((item: TSchoolsProps) => ({
                         id: item.school.id,
-                        name: item.school.name,
+                        name: item.school.school_name,
                         price: { teacher: 0, student: 0 }
                     }));
 

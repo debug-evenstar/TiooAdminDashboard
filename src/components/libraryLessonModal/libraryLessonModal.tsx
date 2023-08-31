@@ -12,6 +12,7 @@ type classOptionProps = {
     type: string;
 }
 
+
 type TLibraryModalError = {
     title?: string;
     class?: string;
@@ -45,11 +46,11 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
         <>
             <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center">
                 {
-                selection.length > 0?
-                    <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
-                    :<p></p>
+                    selection.length > 0 ?
+                        <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
+                        : <p></p>
                 }
-                
+
                 <div
                     className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
                 cursor-pointer ${!active && "rotate-180"}`}
@@ -81,7 +82,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
 const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 
-export default function AddLibraryLesson({ modal, setModal, subjectId, classId, variant, data }: { subjectId?: number, classId?: number,data?: any, variant?: boolean, modal: boolean, setModal: (state: boolean) => void, id: number }) {
+export default function AddLibraryLesson({ modal, setModal, subjectId, classId, variant, data }: { subjectId?: number, classId?: number, data?: any, variant?: boolean, modal: boolean, setModal: (state: boolean) => void, id: number }) {
 
     const [klass, setClass] = useState<number[]>([]);
     const [age, setAge] = useState<number[]>([]);
@@ -106,8 +107,9 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                 .then((response) => {
                     setClassOptions(response.data.data);
                 })
-                .catch((error => console.log(error)))
-        }
+                .catch((error => console.log(error.response.message)));
+
+            }
     }, []);
 
 
@@ -116,7 +118,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let { name, value } = e.target;
         if (name == 'age') {
-            value = value.replace(/\D/g, '');
+            value = value.replace(/\D/g,'');
         }
         setFormData({
             ...formData,
@@ -149,13 +151,14 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
             topic: formData.title,
             class: klass,
             objective: formData.objective,
-            age: age,
+            age: age[0],
             subject: subjectId,
             file: selectedFile
         }
-        
-        if(variant){
+
+        if (variant) {
             payload['class'] = data.class;
+
         }
 
 
@@ -166,7 +169,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                 setModal(false);
             })
             .catch(error => {
-                notify.error(error);
+                notify.error(error.response.message);
             })
             .finally(() => setLoading(false));
     }
@@ -192,7 +195,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
                 </div>
                 <div onSubmit={handleSubmit}>
-                    <div className={`px-4 mt-4 ${variant? "h-auto mb-10":"h-[27.17rem]"} overflow-y-auto`}>
+                    <div className={`px-4 mt-4 ${variant ? "h-auto mb-10" : "h-[27.17rem]"} overflow-y-auto`}>
 
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Lesson title</label>
@@ -209,13 +212,11 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                                     </div>
                                 </>
                             )
-
                         }
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Age</label>
                             <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} />
-                            {/* <input type="text" name="age" value={formData.age} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" /> */}
-                            <p className="text-red-500 text-xs mt-1">{errors?.age}</p>
+                            <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
                         </div>
 
                         <div className="text-sm mb-3">
@@ -242,9 +243,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                                 loading ?
                                     <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
                                     :
-                                    <span>
-                                        Upload
-                                    </span>
+                                    <span>Upload</span>
                             }
                         </button>
                     </div>

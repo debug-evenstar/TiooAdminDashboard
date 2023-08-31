@@ -46,7 +46,7 @@ export default function Schools() {
     axiosInstance.get('/schools')
       .then(response => {
         const parsedList: IListProps[] = response.data.data.map((school: any) => ({
-          name: school.school.name,
+          name: school.school.school_name,
           email: school.school.email,
           subscription: school.school.status === 'active',
           id: school.school.id

@@ -14,6 +14,12 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
             setActive(false);
         }
     }
+
+    const logout = () => {
+        localStorage.clear();
+        window.location.assign('/login');
+    }
+
     useEffect(() => {
         document.addEventListener('click', handleClickOutside)
         return () => {document.removeEventListener('click', handleClickOutside)}
@@ -21,7 +27,7 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
 
     return active? (
         <ul className="absolute rounded-[8px] w-[12rem] border shadow bg-white mt-28 right-1">
-            <li className="hover:bg-light px-4 py-3 cursor-pointer">Logout</li>
+            <li onClick={logout} className="hover:bg-light px-4 py-3 cursor-pointer">Logout</li>
         </ul>
     ) : <></>;
 }
@@ -31,7 +37,7 @@ export default function Profile() {
     const [active, setActive] = useState<boolean>(false);
 
     useEffect(() => {
-
+        console.log(" I don mount profile");
     }, [])
 
     return (

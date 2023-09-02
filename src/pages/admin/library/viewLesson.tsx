@@ -27,7 +27,7 @@ function ClassLessonCard(lesson: TLibraryLesson) {
     return (
         <>
             <EditLibraryLesson {...{ modal, setModal }} data={editData} id={lesson.SubjectId} />
-            <div className="w-[200px] hover:shadow-lg rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
+            <div className="w-[200px] hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
                 <div className="flex justify-between">
                     <h1 className="text-primary  text-lg font-[500]">{lesson.topic}</h1>
                     <div className="flex items-center">
@@ -77,7 +77,9 @@ function Classes({ currentClass, setCurrentClass }: { currentClass: number, setC
     const classes = useSelector((state: RootState) => state.library.classes);
 
     // const dispatch = useDispatch();
+
     useEffect(() => {
+        // filter all the classes that are found in lessons
         const IDs = new Set();
         lessons.forEach((lesson: TLibraryLesson) => {
             if (lesson.ClassId) {
@@ -87,6 +89,8 @@ function Classes({ currentClass, setCurrentClass }: { currentClass: number, setC
         setClassSelection(
             classes.filter((classItem: TLibraryClass) => IDs.has(classItem.id))
         );
+        setCurrentClass(classSelection[0]?.id);
+
     }, [lessons]);
     return (
         <>
@@ -101,22 +105,24 @@ function Classes({ currentClass, setCurrentClass }: { currentClass: number, setC
     );
 }
 
-function AllLessonsCard({ id }: { id: number }) {
+function AllLessonsCard({ classId }: { classId: number }) {
     const [active, setActive] = useState<boolean>(false);
     const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
     const lessons = useSelector((state: RootState) => state.library.lessons);
+    const [subjectId, setSubjectId] = useState<number>(0);
     const [modal, setModal] = useState<boolean>(false);
     const [data, setData] = useState<any>();
 
     useEffect(() => {
-        const group = lessons.filter((item: any) => item.ClassId === id);
+        const group = lessons.filter((item: TLibraryLesson) => item.ClassId === classId);
         setClassLessons(group)
         setData(group);
-    }, [id]);
+        setSubjectId(lessons[0]?.SubjectId);
+    }, [classId,modal]);
 
     return (
         <>
-            <AddLibraryLesson {...{ setModal, modal, id, data }} variant />
+            <AddLibraryLesson {...{ setModal, modal, classId, subjectId, data }} variant />
             <div className="w-full rounded-[8px] shadow overflow-hidden">
                 <div className="px-4 h-[50px] bg-neutral-200 text-xl font-[500] text-primary rounded-t-[8px] flex items-center">
                     <h1>All Lessons</h1>
@@ -135,7 +141,7 @@ function AllLessonsCard({ id }: { id: number }) {
                             }
                             <button
                                 onClick={() => setModal(!modal)}
-                                className="w-[200px] h-[140px] outline-none active:outline-main px-[52px] py-[35px] border shadow rounded-[8px]
+                                className="w-[200px] h-[140px] mb-4 outline-none active:outline-main px-[52px] py-[35px] border shadow rounded-[8px]
                                     flex items-center justify-center flex-col text-main hover:shadow-lg duration-300">
                                 <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M24 8C32.822 8 40 15.178 40 24C40 32.822 32.822 40 24 40C15.178 40 8 32.822 8 24C8 15.178 15.178 8 24 8ZM24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4ZM34 22H26V14H22V22H14V26H22V34H26V26H34V22Z" fill="#4F46E5" />
@@ -192,7 +198,6 @@ export default function ViewLesson() {
         axiosInstance.get('https://api.hellotioo.com/tio/classes')
             .then(response => {
                 dispatch(setLibraryClass(response.data.data.reverse()));
-                setCurrentClass(response.data.data[0].id);
 
                 // console.log(currentClass);
                 axiosInstance.get('/management/subjects/lessons/count')
@@ -227,7 +232,7 @@ export default function ViewLesson() {
                 </div>
                 <div className="flex mt-7 justify-between pb-20">
                     <div className='w-[70%] h-screen'>
-                        <AllLessonsCard id={currentClass} />
+                        <AllLessonsCard classId={currentClass} />
                     </div>
                     <div className="w-[30%] flex justify-end">
                         <div className="w-[14rem]">

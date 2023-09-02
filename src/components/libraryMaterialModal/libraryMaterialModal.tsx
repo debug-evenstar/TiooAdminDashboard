@@ -25,7 +25,7 @@ type TOptionProps = {
   id: number, name: number | string,
 }
 
-function OptionsMenu({ selection, setSelection, options }: { selection: number[], setSelection: any, options: TOptionProps[] }) {
+function OptionsMenu({ selection, setSelection, options, variant }: { variant?: boolean, selection: number[], setSelection: any, options: TOptionProps[] }) {
   const [active, setActive] = useState(false);
 
 
@@ -45,7 +45,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
     <>
       <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center">
         {
-          selection.length > 0 ?
+          selection.length > 0 && !variant?
             <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
             : <p></p>
         }

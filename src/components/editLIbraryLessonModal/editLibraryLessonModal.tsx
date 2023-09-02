@@ -30,6 +30,7 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
         objective: '',
     });
 
+
     useEffect(() => {
         setClass([data.klass]);
         setAge([data.age]);
@@ -37,8 +38,7 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
             title: data.title,
             objective: data.objective
         })
-        console.log("from edit: ",age, klass);
-    }, [data]);
+    }, []);
 
 
 
@@ -69,7 +69,6 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
     }
 
     const sendRequest = () => {
-        return
         let payload = {
             topic: formData.title,
             class: klass[0],
@@ -107,7 +106,7 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
     }
 
     return (
-        <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
+        <div className={`fixed text-primary z-[90] bg-[#00000044] inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
             <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[550px]s h-auto w-[380px] mx-auto `}>
                 <div className="p-2 border-b px-4 flex items-center justify-between">
                     <h1>Edit Lesson </h1>

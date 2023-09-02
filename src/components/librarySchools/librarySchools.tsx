@@ -26,7 +26,7 @@ function MaterialCard({color,materialProps}:{color: string, materialProps: TMate
 
   return (
     <>
-      <AddLibraryLesson {...{ modal, setModal }} id={materialProps.id} />
+      <AddLibraryLesson {...{ modal, setModal }} subjectId={materialProps.id} />
       {/* <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]"> */}
       {/* <div className="w-[320px] mr-5 border min-h-[175px] flex flex-col justify-between rounded-[8px]"> */}
       <div className="w-full mr-5 border min-h-[175px] flex flex-col justify-between rounded-[8px]">

@@ -82,7 +82,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
 const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 
-export default function AddLibraryLesson({ modal, setModal, subjectId, classId, variant, data }: { subjectId?: number, classId?: number, data?: any, variant?: boolean, modal: boolean, setModal: (state: boolean) => void, id: number }) {
+export default function AddLibraryLesson({ modal, setModal, subjectId, classId, variant}: { subjectId?: number, classId?: number, variant?: boolean, modal: boolean, setModal: (state: boolean) => void }) {
 
     const [klass, setClass] = useState<number[]>([]);
     const [age, setAge] = useState<number[]>([]);
@@ -101,7 +101,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
     useEffect(() => {
         if (variant) {
-            console.log(classId);
+            // console.log(classId);
         } else {
             axiosInstance.get('https://api.hellotioo.com/tio/classes')
                 .then((response) => {
@@ -109,7 +109,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                 })
                 .catch((error => console.log(error.response.message)));
 
-            }
+        }
     }, []);
 
 
@@ -118,7 +118,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let { name, value } = e.target;
         if (name == 'age') {
-            value = value.replace(/\D/g,'');
+            value = value.replace(/\D/g, '');
         }
         setFormData({
             ...formData,
@@ -147,22 +147,34 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
     }
 
     const sendRequest = () => {
+
+        // let payload = new FormData();
+        // payload.append('topic',formData.title);
+        // payload.append('class',klass);
+        // payload.append('objective',formData.objective);
+        // payload.append('age',age);
+
         let payload = {
+            subject: subjectId,
             topic: formData.title,
-            class: klass,
+            class: klass[0],
             objective: formData.objective,
             age: age[0],
-            subject: subjectId,
             file: selectedFile
         }
 
         if (variant) {
-            payload['class'] = data.class;
-
+            if(classId){
+                payload['class'] = classId;
+            }
         }
 
 
-        axiosInstance.post('/library/lesson', payload)
+        axiosInstance.post('/library/lesson', payload, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
             .then(() => {
                 notify.success("Added lesson successfuly");
                 dispatch(setLibraryReload());
@@ -189,13 +201,13 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[550px]s h-auto w-[380px] mx-auto `}>
+            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[550px]s w-[380px] mx-auto `}>
                 <div className="p-2 border-b px-4 flex items-center justify-between">
                     <h1>Add Lesson </h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
                 </div>
                 <div onSubmit={handleSubmit}>
-                    <div className={`px-4 mt-4 ${variant ? "h-auto mb-10" : "h-[27.17rem]"} overflow-y-auto`}>
+                    <div className={`px-4 mt-4 h-[27.17rem] overflow-y-auto`}>
 
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Lesson title</label>

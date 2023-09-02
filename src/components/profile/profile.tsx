@@ -37,7 +37,7 @@ export default function Profile() {
     const [active, setActive] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log(" I don mount profile");
+        // console.log(" I don mount profile");
     }, [])
 
     return (

@@ -13,8 +13,7 @@ const LessonDisplay = () => {
   const [currentId, setCurrentId] = useState("");
   const [allSubject, setAllSubject] = useState<any[]>([]);
   const [changeSubjectId, setChangeSubjectId] = useState('')
-//   const userInfo = useSelector((state: any) => state.auth.userInformation);
-//   const config = configure(userInfo.token);
+
   const fetchClassLesson = async () => {
     // if (!userInfo.token) {
     //   config.headers.Authorization = "Bearer " + localStorage.getItem("token");

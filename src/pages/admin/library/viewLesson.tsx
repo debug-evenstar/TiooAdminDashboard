@@ -40,7 +40,7 @@ function ClassLessonCard(lesson: TLibraryLesson) {
                                 </button>
                             }>
                             <ul className="py-3 px-3 bg-white shadow rounded-[8px]">
-                                <li onClick={() => { toggle(); setModal(true) }} className="py-2 rounded px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
+                                <li onClick={() => { toggle(); setModal(true) }} className="py-2 rounded px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit Lesson</li>
                                 <li onClick={() => { toggle() }} className="py-2 rounded px-4 hover:bg-red-400 text-red-500 cursor-pointer hover:text-white text-sm">Remove</li>
                             </ul>
                         </Popup>

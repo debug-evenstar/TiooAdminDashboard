@@ -21,7 +21,7 @@ const tabs: TTab[] = [
 ];
 
 export default function HomeTabs() {
-    const [active, setActive] = useState(0)
+    const [active, setActive] = useState(0);
 
     return (
         <div>

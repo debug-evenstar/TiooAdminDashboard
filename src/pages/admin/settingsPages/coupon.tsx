@@ -63,7 +63,6 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
   const [status, _] = useState(data?.status || 'Active');
   const [users, setUsers] = useState<number[]>([]);
   const [errors, setErrors] = useState<TCouponError>();
-
   const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -100,6 +99,7 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
       const payload = { campaign, code, status, amount, users };
 
       if (data) {
+        // update
         console.log(users);
         axiosInstance.put('/coupon', { ...payload, id: data.id })
           .then(response => {
@@ -248,7 +248,7 @@ function CouponMenuBtn({ id, data }: { data: TCouponProps, id: number }) {
 
   return (
     <div ref={menuRef}>
-      {<CouponModal {...{ modal, setModal }} data={data} />}
+      <CouponModal {...{ modal, setModal }} data={data} />
       <button className="outline-none px-2" onClick={() => setMenuOpen(!menuOpen)}>
         <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2 10C2.55228 10 3 9.55228 3 9C3 8.44772 2.55228 8 2 8C1.44772 8 1 8.44772 1 9C1 9.55228 1.44772 10 2 10Z" stroke="#030036" strokeOpacity="0.74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

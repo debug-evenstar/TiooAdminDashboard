@@ -1,0 +1,56 @@
+import { Suspense,useState } from "react";
+import Header from "../../../components/header";
+
+import LibrarySchoolsCurricula from "../../../components/librarySchools/librarySchools";
+// import LibraryCoCurricula from "../../../components/libraryCocurricula/libraryCocurricula";
+// import LibraryGames from "../../../components/libraryGames/libraryGames";
+
+
+
+export default function Library() {
+  return (
+    <div>
+      <Header title="Library" />
+      <div className="mt-4 h-full w-full text-primary pl-10">
+        <LibraryTabs />
+      </div>
+    </div>
+  )
+}
+
+const tabs: any[] = [
+  { name: "Schools Curricular", component: <LibrarySchoolsCurricula /> },
+  // { name: "Co-curricula content", component: <LibraryCoCurricula /> },
+  // { name: "Games", component: <LibraryGames /> },
+  { name: "Co-curricula content", component: <></> },
+  { name: "Games", component: <></> },
+
+
+];
+
+function LibraryTabs() {
+  const [active, setActive] = useState(0);
+
+  return (
+    <div>
+      <ul className="border-b w-full flex space-x-4">
+        {
+          tabs.map((tab, key) => (
+            <li
+              key={key}
+              onClick={() => setActive(key)}
+              className={`py-2 pb-1 duration-300 rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6] font-[500]" : "text-gray-400 border-white"}`}>
+              {tab.name}
+            </li>
+          ))
+        }
+      </ul>
+      <div className="mt-14 text-gray-600 pr-10">
+        <Suspense fallback={<h1>Loading</h1>}>
+          {tabs.map((tab, key) => (active === key ? <div key={key}>{tab.component}</div> : null))}
+        </Suspense>
+      </div>
+
+    </div>
+  )
+}

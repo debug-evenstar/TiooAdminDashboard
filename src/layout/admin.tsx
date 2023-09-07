@@ -30,6 +30,7 @@ export default function AdminLayout() {
                 <Suspense fallback={<Loader />}>
                     <Outlet />
                 </Suspense>
+                {/* <Loader/> */}
             </div>
         </main>
     )

@@ -9,6 +9,7 @@ import freelanReducer from './slices/freelancer';
 import studentReducer from './slices/student';
 import pricingExceptionReducer from './slices/pricingException';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import libraryReducer from './slices/library';
 
 const store: ToolkitStore = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ const store: ToolkitStore = configureStore({
         freelancer: freelanReducer,
         student: studentReducer,
         pricingException: pricingExceptionReducer,
+        library: libraryReducer,
     }
 });
 

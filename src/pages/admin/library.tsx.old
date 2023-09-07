@@ -1,12 +1,10 @@
-import { ChangeEvent, FormEvent, MouseEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, Suspense, useRef, useState } from "react";
 import Header from "../../components/header"
-import SearchBar from "../../components/searchBar";
 import axiosInstance from "../../services/api";
+import LibrarySchoolsCurricula from "../../components/librarySchools/librarySchools";
+import LibraryCoCurricula from "../../components/libraryCocurricula/libraryCocurricula";
+import LibraryGames from "../../components/libraryGames/libraryGames";
 
-export type TCategoryCardProps = { title?: string, name?: string, value?: number };
-type TOptionProps = {
-  id: number, name: string,
-}
 
 
 // type TLessonError = {
@@ -15,13 +13,13 @@ type TOptionProps = {
 //   name?: string,
 //   description?: string,
 // }
+type TOptionProps = {
+  id: number, name: string,
+}
 
 function OptionsMenu({ selection, setSelection, options }: { selection: number, setSelection: any, options: TOptionProps[] }) {
   const [active, setActive] = useState(false);
 
-  // const handleCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
-
-  // }
 
   const handleClick = (e: MouseEvent<HTMLLIElement>) => {
     const value = e.currentTarget.getAttribute('data-value');
@@ -51,7 +49,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number, 
             {
               options.map((option, index) => (
                 <li key={index} onClick={handleClick} data-value={option.id} className="flex items-center mb-2 cursor-pointer space-x-3 shadow p-2">
-                  <input type="checkbox" checked={option.id === selection} className=" w-4 h-4 rounded-full outline-none" />
+                  <input type="radio" checked={option.id === selection} className=" w-4 h-4 rounded-full outline-none" />
                   <span>{option.name}</span>
                 </li>
               ))
@@ -77,12 +75,12 @@ const ageOptions = [
   { id: 4, name: "12 - 18" },
 ];
 
-function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
+export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
 
   const [formData, setFormData] = useState<{ name: string, description: string }>({
     name: '',
     description: '',
-  })
+  });
 
   const [klass, setClass] = useState<number>(1);
   const [age, setAge] = useState<number>(1);
@@ -176,111 +174,6 @@ function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: (state:
 
 
 
-
-
-
-
-
-
-
-function CategoryCard({ title, name, value }: TCategoryCardProps) {
-  return (
-    <div className="flex mb-5 flex-col justify-between hover:bg-light cursor-pointer w-full h-[140px] rounded-[8px] shadow border">
-      <div className="w-full p-3 h-[65%]">
-        <h1 className="w-[60%] text-lg">{title}</h1>
-      </div>
-      <div className="w-full relative border-t border-gray-300 flex items-center px-3 text-gray-400 justify-between h-[35%]">
-        <h2>{value} {name}</h2> <div className="w-2 h-2 rounded-full bg-main"></div>
-      </div>
-    </div>
-  );
-}
-
-function Categories() {
-  const categories: TCategoryCardProps[] = [
-    { title: "Student's Curricula", name: "Subjects", value: 52 },
-    { title: "Co-Curricula Content", name: "Subjects", value: 15 },
-    { title: "Games", name: "Games", value: 12 },
-  ];
-
-  return (
-    <div className="w-[22%] overflow-y-auto h-[calc(100vh_-_80px)] p-4 border-l">
-      <div className="py-2">
-        <h1 className="font-[400] text-primary">Categories</h1>
-      </div>
-      <div className="mt-4">
-        {
-          categories.map((catProps, index) => (
-            <CategoryCard key={index} {...catProps} />
-          ))
-        }
-      </div>
-    </div>
-
-  );
-}
-
-export type TLessonCardProps = { title: string, color?: string, description: string, date: string };
-
-function LessonsCard({ color, title, description, date }: TLessonCardProps) {
-  return (
-    // <div className="w-[260px] border h-[175px] flex flex-col justify-between rounded-[8px]">
-    <div className="w-full border h-[175px] flex flex-col justify-between rounded-[8px]">
-      <div className={`${color} h-[110px] p-3 text-left text-white rounded-t-[8px]`}>
-        <h1 className="font-[500] text-lg">{title}</h1>
-        <p className="mt-3 text-xs">{description}</p>
-      </div>
-      <span className="px-5 text-xs text-gray-400 py-3">
-        uploaded {date} ago
-      </span>
-    </div>
-  );
-}
-function AllLessons() {
-  const lessons: TLessonCardProps[] = [
-    { title: "Public Speaking", description: "Learn conversation skills and develop strong relationship with others", date: "5 days" },
-    { title: "Budgeting", description: "Learn money management skills and the value of money.", date: "10 days" },
-    { title: "Entrepreneurship", description: "Explore and discover personal strengths and areas for development", date: "two weeks" },
-  ];
-
-  const colors: string[] = [
-    'bg-[#AE1E56]',
-    'bg-[#86A94B]',
-    'bg-[#776DB4]',
-  ];
-
-  const [modal, setModal] = useState<boolean>(false);
-
-  return (
-    <div className="w-[78%] overflow-y-auto max-h-[calc(100vh_-_95px)] px-[24px]">
-      <AddLessonModal {...{ modal, setModal }} />
-      <div className="flex items-center justify-between py-7">
-        <h1 className="text-primary text-lg">All Lessons</h1>
-        <SearchBar className="w-[23rem] " name="search-lesson" placeholder="Search" variant="normal" />
-      </div>
-      <div className="grid gap-x-2 grid-cols-3">
-        {
-          lessons.map((lessonProp, index) => (
-            <LessonsCard key={index} {...lessonProp} color={colors[index]} />
-          ))
-        }
-      </div>
-      <div className="mt-5">
-        <button
-          onClick={() => setModal(!modal)}
-          className="w-[221px] h-[170px] px-[52px] py-[35px] border shadow rounded-[8px]
-            flex items-center justify-center flex-col text-main">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 8C32.822 8 40 15.178 40 24C40 32.822 32.822 40 24 40C15.178 40 8 32.822 8 24C8 15.178 15.178 8 24 8ZM24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4ZM34 22H26V14H22V22H14V26H22V34H26V26H34V22Z" fill="#4F46E5" />
-          </svg>
-          <p className="text-center font-[500]">Add a lesson material</p>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-
 function UploadFile() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -324,10 +217,42 @@ export default function Library() {
   return (
     <div>
       <Header title="Library" />
-      <div className="flex h-full overflow-y-auto  text-primary h-[calc(100vh_-_95px)]">
-        <AllLessons />
-        <Categories />
+      <div className="mt-4 h-full w-full text-primary pl-10">
+        <LibraryTabs/>
       </div>
     </div>
+  )
+}
+
+const tabs: any []= [
+  { name: "Schools Curricular", component: <LibrarySchoolsCurricula/> },
+  { name: "Co-curricula content", component: <LibraryCoCurricula/>},
+  { name: "Games", component: <LibraryGames/> },
+];
+
+function LibraryTabs() {
+  const [active, setActive] = useState(0);
+
+  return (
+      <div>
+          <ul className="border-b w-full flex space-x-4">
+              {
+                  tabs.map((tab, key) => (
+                      <li
+                          key={key}
+                          onClick={() => setActive(key)}
+                          className={`py-2 pb-1 duration-300 rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6] font-[500]" : "text-gray-400 border-white"}`}>
+                          {tab.name}
+                      </li>
+                  ))
+              }
+          </ul>
+          <div className="mt-14 text-gray-600 pr-10">
+              <Suspense fallback={<h1>Loading</h1>}>
+                  {tabs.map((tab, key) => (active === key ? <div key={key}>{tab.component}</div> : null))}
+              </Suspense>
+          </div>
+
+      </div>
   )
 }

@@ -1,11 +1,3 @@
-// import Freelancers from "./freelancers";
-// import Home from "./home";
-// import Library from "./library";
-// import Marketplace from "./marketplace";
-// import Schools from "./schools";
-// import Students from "./students";
-// import Teachers from "./teachers";
-// import Settings from "./settings";
 
 import { lazy } from "react"
 
@@ -17,6 +9,10 @@ const Students = lazy(() => import('./students'));
 const Schools = lazy(() => import('./schools'));
 const Marketplace = lazy(() => import('./marketplace'));
 const Settings = lazy(() => import('./settings'));
+const SchoolHome = lazy(() => import('./schoolDashboard/home'))
+const SchoolLessons = lazy(() => import('./schoolDashboard/lesson'))
+const LessonsDisplay = lazy(() => import('./schoolDashboard/lessonDisplay'))
+
 
 
 export {
@@ -27,5 +23,8 @@ export {
     Settings,
     Teachers,
     Freelancers,
-    Marketplace
+    Marketplace,
+    SchoolLessons,
+    LessonsDisplay,
+    SchoolHome
 }

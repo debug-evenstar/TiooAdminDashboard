@@ -1,6 +1,8 @@
 import Popup from 'reactjs-popup';
 import image from '../../assets/images/user.png';
 import { ReactNode } from 'react';
+import { useAppDispatch } from '../../redux/store';
+import { saveActiveSchId } from '../../redux/slices/schools';
 
 export type IListProps = {
     name: string;
@@ -10,7 +12,13 @@ export type IListProps = {
     id?: number;
 };
 
-export default function ListComponent({ menu, rows }: { menu: ReactNode, rows: IListProps[] }) {
+export default function ListComponent({ menu, rows, selectRow }: { menu: ReactNode, rows: IListProps[],  selectRow: (id:any) => void }) {
+    const dispatch = useAppDispatch()
+    const handleSelect = (id:any) => {
+        selectRow(id.id)
+        dispatch(saveActiveSchId(id.id))
+    }
+    
     return (
         <div className="w-full text-left mt-10 ">
             <div className="text-gray-600 px-3 flex justify-between font-bold">
@@ -37,13 +45,14 @@ export default function ListComponent({ menu, rows }: { menu: ReactNode, rows: I
                                         : <span className="text-red-600 font-semibold">Inactive</span>
                                 }
                             </div>
-                            <div className="w-[5rem] pl-3">
+                            <div className="w-[5rem] pl-3"  >
                                 <Popup
                                     trigger={
-                                        <h1 className="cursor-pointer text-xl font-bold rotate-[90deg] w-fit h-fit">...</h1>
+                                        <h1 className="cursor-pointer text-xl font-bold rotate-[90deg] w-fit h-fit" >...</h1>
                                     }
                                     position="bottom right"
                                     on="click"
+                                    onOpen={() => handleSelect(entry)}
                                 >
                                     {menu}
                                 </Popup>

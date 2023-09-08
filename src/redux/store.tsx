@@ -8,6 +8,7 @@ import schoolReducer from './slices/schools';
 import freelanReducer from './slices/freelancer';
 import studentReducer from './slices/student';
 import pricingExceptionReducer from './slices/pricingException';
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import libraryReducer from './slices/library';
 
 const store: ToolkitStore = configureStore({
@@ -27,6 +28,8 @@ const store: ToolkitStore = configureStore({
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default store;

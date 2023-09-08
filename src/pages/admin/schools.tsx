@@ -4,11 +4,11 @@ import Header from "../../components/header"
 import { IListProps } from "../../components/list/list";
 import PaginatedList from "../../components/paginatedList/paginatedList";
 import SearchBar from "../../components/searchBar"
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axiosInstance from "../../services/api";
-import { setSchools } from "../../redux/slices/schools";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { TSchoolsProps, setSchools } from "../../redux/slices/schools";
+import { useDispatch } from "react-redux";
+
 
 
 function SchoolContextMenu({ selectedId }: any): JSX.Element {
@@ -21,9 +21,9 @@ function SchoolContextMenu({ selectedId }: any): JSX.Element {
       <ul>
         {
           menuData.map((menu, index) => (
-            <NavLink to={menu.route} key={index}>
+            <Link to={menu.route} key={index}>
               <li className="cursor-pointer py-3 px-8 mr-2 hover:bg-light">{menu.name}</li>
-            </NavLink>
+            </Link>
           ))
         }
       </ul>
@@ -35,11 +35,11 @@ function SchoolContextMenu({ selectedId }: any): JSX.Element {
 
 export default function Schools() {
 
-  const rSchools = useSelector((state: RootState) => state.school);
-
   const [schools, setSchoolsState] = useState<IListProps[]>([]);
   const [rows, setRows] = useState<IListProps[]>([]);
   const [selectedRow, setSelectedRow] = useState('')
+
+  const dispatch = useDispatch()
 
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'
@@ -48,13 +48,12 @@ export default function Schools() {
   const getSelectedSchool = (id: string): void => {
     setSelectedRow(id)
   }
-  console.log(rSchools);
 
   useEffect(() => {
     axiosInstance.get('/schools')
       .then(response => {
-        setSchools(response.data.data);
-        const parsedList: IListProps[] = response.data.data.map((school: any) => ({
+        dispatch(setSchools(response.data.data))
+        const parsedList: IListProps[] = response.data.data.map((school: TSchoolsProps) => ({
           name: school.school.school_name,
           email: school.school.email,
           subscription: school.school.status === 'active',
@@ -66,7 +65,7 @@ export default function Schools() {
         setRows(parsedList);
       })
       .catch(error => console.log(error))
-  }, [rSchools]);
+  }, []);
 
 
 

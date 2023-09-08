@@ -71,7 +71,7 @@ export default function Schools() {
           <FilterPanel {...{ schools, setRows, panels }} />
         </div>
         <div>
-          <PaginatedList menu={<SchoolContextMenu/>} dataPerPage={5} data={rows} />
+          <PaginatedList menu={<SchoolContextMenu/>} dataPerPage={10} data={rows} />
         </div>
         <div className="py-20"></div>
       </div>

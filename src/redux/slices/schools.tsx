@@ -22,9 +22,15 @@ export type TSchoolsProps = {
     students: number,
     classes: number
 }
+interface activeProps {
+    id: string
+}
 
-const initialState: { schools: TSchoolsProps[] } = {
-    schools: []
+const initialState: { schools: TSchoolsProps[], activeSchool: activeProps } = {
+    schools: [],
+    activeSchool: {
+        id: ''
+    },
 };
 
 export const schoolSlice = createSlice({
@@ -37,6 +43,9 @@ export const schoolSlice = createSlice({
         addAdmin: (state, action: PayloadAction<TSchoolsProps>) => {
             state.schools = [...state.schools, action.payload];
         },
+        saveActiveSchId: (state, action: PayloadAction<string>) => {
+            state.activeSchool.id = action.payload;
+        },
         clearSchools: (state) => {
             state.schools = [];
         },
@@ -44,5 +53,5 @@ export const schoolSlice = createSlice({
     }
 })
 
-export const { addAdmin, setSchools, clearSchools } = schoolSlice.actions;
+export const { addAdmin, setSchools, clearSchools, saveActiveSchId } = schoolSlice.actions;
 export default schoolSlice.reducer;

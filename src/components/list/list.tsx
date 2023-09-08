@@ -12,13 +12,14 @@ export type IListProps = {
     id?: number;
 };
 
-export default function ListComponent({ menu, rows, selectRow }: { menu: ReactNode, rows: IListProps[],  selectRow: (id:any) => void }) {
+export default function ListComponent({ menu, rows, selectRow }: { menu: ReactNode, rows: IListProps[], selectRow: (id: any) => void }) {
     const dispatch = useAppDispatch()
-    const handleSelect = (id:any) => {
-        selectRow(id.id)
-        dispatch(saveActiveSchId(id.id))
+
+    const handleSelect = (entry: any) => {
+        selectRow(entry.id)
+        dispatch(saveActiveSchId(entry.id))
     }
-    
+
     return (
         <div className="w-full text-left mt-10 ">
             <div className="text-gray-600 px-3 flex justify-between font-bold">
@@ -29,7 +30,7 @@ export default function ListComponent({ menu, rows, selectRow }: { menu: ReactNo
             </div>
             <div className="w-full mt-3">
                 {
-                    rows.map((entry: IListProps, index: number) => (
+                    rows?.map((entry: IListProps, index: number) => (
                         <div key={index} className="text-gray-600 text-sm flex items-center justify-between py-3.5 px-3 rounded-[8px] my-5 bg-light shadow">
                             <div className="w-[19rem] flex items-center space-x-2">
                                 <div className="w-6 h-6 rounded-full overflow-hidden">

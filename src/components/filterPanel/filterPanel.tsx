@@ -25,10 +25,10 @@ export default function FilterPanel({ data, setRows, panels }: { data?: IListPro
         }
     }
     return (
-        <div className="rounded-[8px] bg-neutral-200 ">
+        <div className="rounded-[8px] bg-neutral-400 ">
             <ul className="flex py-1 px-[0.1rem] duration-300 text-gray-500 items-center space-x-2">
                 {
-                    panels.map((panel, index) => (
+                    panels?.map((panel, index) => (
                         <li onClick={() => { filterList(panel); setActive(index) }} key={index} className={`py-2 duration-300 cursor-pointer rounded-[8px] px-5 ${active === index ? "bg-white text-main " : null}`}>{panel}</li>
                     ))
                 }

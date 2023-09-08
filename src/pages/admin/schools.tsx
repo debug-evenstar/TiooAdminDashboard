@@ -6,11 +6,14 @@ import PaginatedList from "../../components/paginatedList/paginatedList";
 import SearchBar from "../../components/searchBar"
 import { NavLink } from "react-router-dom";
 import axiosInstance from "../../services/api";
+import { setSchools } from "../../redux/slices/schools";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 
-function SchoolContextMenu({selectedId}:any): JSX.Element {
+function SchoolContextMenu({ selectedId }: any): JSX.Element {
   const menuData: { route: string, name: string }[] = [
-    { route: '/students/profile', name: 'View School Profile' },
+    { route: `/schools/profile/${selectedId}`, name: 'View School Profile' },
     { route: `/schools/${selectedId}`, name: 'Enter School Dashboard' },
   ];
   return (
@@ -32,8 +35,9 @@ function SchoolContextMenu({selectedId}:any): JSX.Element {
 
 export default function Schools() {
 
+  const rSchools = useSelector((state: RootState) => state.school);
 
-  const [schools, setSchools] = useState<IListProps[]>([]);
+  const [schools, setSchoolsState] = useState<IListProps[]>([]);
   const [rows, setRows] = useState<IListProps[]>([]);
   const [selectedRow, setSelectedRow] = useState('')
 
@@ -41,25 +45,28 @@ export default function Schools() {
     'All', 'Recently Joined', 'Active'
   ];
 
-  const getSelectedSchool = (id:string):void => {
+  const getSelectedSchool = (id: string): void => {
     setSelectedRow(id)
   }
+  console.log(rSchools);
 
   useEffect(() => {
     axiosInstance.get('/schools')
       .then(response => {
+        setSchools(response.data.data);
         const parsedList: IListProps[] = response.data.data.map((school: any) => ({
           name: school.school.school_name,
           email: school.school.email,
           subscription: school.school.status === 'active',
           id: school.school.id
         }))
-        console.log(response.data.data);
-        setSchools(parsedList);
+        // console.log(response.data.data);
+        setSchoolsState(parsedList.reverse());
+        // parsed list already reversed here
         setRows(parsedList);
       })
       .catch(error => console.log(error))
-  }, []);
+  }, [rSchools]);
 
 
 
@@ -74,7 +81,7 @@ export default function Schools() {
           <FilterPanel {...{ schools, setRows, panels }} />
         </div>
         <div>
-          <PaginatedList menu={<SchoolContextMenu  selectedId={selectedRow}/>} dataPerPage={5} data={rows} selectRow={getSelectedSchool} />
+          <PaginatedList menu={<SchoolContextMenu selectedId={selectedRow} />} dataPerPage={10} data={rows} selectRow={getSelectedSchool} />
         </div>
         <div className="py-20"></div>
       </div>

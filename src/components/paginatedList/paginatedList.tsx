@@ -7,6 +7,7 @@ import './paginate.css'
 export default function PaginatedList({ menu, dataPerPage, data, selectRow }: { menu: ReactNode, data: IListProps[], dataPerPage: number, selectRow: (id:any) => void}) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
+
   const [itemOffset, setItemOffset] = useState(0);
 
   // calculate end offset for range(start, end)

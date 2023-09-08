@@ -38,9 +38,10 @@ export const schoolSlice = createSlice({
     initialState: initialState,
     reducers: {
         setSchools: (state, action: PayloadAction<TSchoolsProps[]>) => {
+            console.log("section ",action.payload);
             state.schools = action.payload;
         },
-        addAdmin: (state, action: PayloadAction<TSchoolsProps>) => {
+        addSchool: (state, action: PayloadAction<TSchoolsProps>) => {
             state.schools = [...state.schools, action.payload];
         },
         saveActiveSchId: (state, action: PayloadAction<string>) => {
@@ -53,5 +54,5 @@ export const schoolSlice = createSlice({
     }
 })
 
-export const { addAdmin, setSchools, clearSchools, saveActiveSchId } = schoolSlice.actions;
+export const { addSchool, setSchools, clearSchools, saveActiveSchId } = schoolSlice.actions;
 export default schoolSlice.reducer;

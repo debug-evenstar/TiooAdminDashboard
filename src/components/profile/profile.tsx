@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import userImage from './../../assets/images/user.png'
+// import userImage from './../../assets/images/user.png'
 import { useEffect, useRef, useState } from "react";
 
 
@@ -43,7 +43,10 @@ export default function Profile() {
     return (
         <>
             <div onClick={() => setActive(!active)} className="flex items-center cursor-pointer text-primary space-x-2">
-                <img className="w-[40px] h-[40px] rounded-full" src={userImage} alt="" />
+                {/* <img className="w-[40px] h-[40px] rounded-full" src={userImage} alt="" /> */}
+                <div className="w-[40px] h-[40px] text-xl rounded-full flex items-center justify-center text-white font-[500] bg-main">
+                    {user?.name?.[0]}
+                </div>
                 <div className="block">
                     <h1 className="text-md">{user.name}</h1>
                     <h2 className="text-xs mt-1 text-gray-400">{user.account_type}</h2>

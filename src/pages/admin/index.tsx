@@ -1,16 +1,19 @@
 
 import { lazy } from "react"
 
-const Freelancers = lazy(() => import('./freelancers'));
+import SchoolHome from './schoolDashboard/home';
+import SchoolLessons from './schoolDashboard/lesson';
+
 const Home = lazy(() => import('./home'));
-const Teachers = lazy(() => import('./teachers'));
-const Library = lazy(() => import('./library'));
-const Students = lazy(() => import('./students'));
 const Schools = lazy(() => import('./schools'));
-const Marketplace = lazy(() => import('./marketplace'));
+const Library = lazy(() => import('./library'));
+const Teachers = lazy(() => import('./teachers'));
+const Students = lazy(() => import('./students'));
 const Settings = lazy(() => import('./settings'));
-const SchoolHome = lazy(() => import('./schoolDashboard/home'))
-const SchoolLessons = lazy(() => import('./schoolDashboard/lesson'))
+const Marketplace = lazy(() => import('./marketplace'));
+const Freelancers = lazy(() => import('./freelancers'));
+// const SchoolHome = lazy(() => import('./schoolDashboard/home'))
+// const SchoolLessons = lazy(() => import('./schoolDashboard/lesson'))
 const LessonsDisplay = lazy(() => import('./schoolDashboard/lessonDisplay'))
 
 

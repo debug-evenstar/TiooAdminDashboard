@@ -51,7 +51,7 @@ export default function UserChecklist({ selection,onApply, className, setSelecti
             <div className="relative h-[276px] overflow-y-auto">
                 {
                     list.map(({ id, value }) => (
-                        <div key={id} className="hover:bg-neutral-100 px-4 flex items-center border-b py-3 space-x-3">
+                        <div key={id} className="hover:bg-gray-100 px-4 flex items-center border-b py-3 space-x-3">
                             <input type="checkbox" onChange={handleCheckChange} className="w-[18px] cursor-pointer h-[18px] outline-none border-0" value={id} />
                             <div className='flex items-center space-x-2'>
                                 <div className="h-[40px] w-[40px] bg-light rounded-full"></div>

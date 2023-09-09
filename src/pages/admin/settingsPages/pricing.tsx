@@ -307,15 +307,15 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
                 <div className="h-[44px] border-t px-3 flex items-center justify-between">
                     {
                         data.length > 1 ?
-                            <button disabled={!active} onClick={handleApplyAll} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                            <button disabled={!active} onClick={handleApplyAll} className={`${active ? "bg-main text-white" : "bg-gray-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
                                 Apply on all schools
                             </button>
                             :
-                            <button disabled={!active} onClick={() => notify.info("reset prices")} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                            <button disabled={!active} onClick={() => notify.info("reset prices")} className={`${active ? "bg-main text-white" : "bg-gray-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
                                 Reset prices
                             </button>
                     }
-                    <button disabled={!active && !loading} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-neutral-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
+                    <button disabled={!active && !loading} onClick={handleApply} className={`${active ? "bg-main text-white" : "bg-gray-100 text-gray-300"} cursor-pointer hover:bg-hover rounded-[8px] outline-none px-3 py-1.5 text-sm`}>
                         {
                             loading ?
                                 <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
@@ -388,12 +388,12 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
         <div className="mb-4">
 
             <AddExceptionModal edit data={editData} {...{ type, modal, setModal }} />
-            <div className="w-full p-3 px-4 rounded-[8px] bg-neutral-100 flex items-center justify-between">
+            <div className="w-full p-3 px-4 rounded-[8px] bg-gray-100 flex items-center justify-between">
                 <h1 className="text-gray-400">{nameCondition()}</h1>
                 <div className="flex items-center space-x-6">
 
                     <div className="flex items-center">
-                        <button className="outline-none px-2 hover:bg-neutral-200 rounded-lg py-2" onClick={() => { toggle() }}>
+                        <button className="outline-none px-2 hover:bg-gray-200 rounded-lg py-2" onClick={() => { toggle() }}>
                             <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="black" />
                                 <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="black" />
@@ -414,7 +414,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
                             </ul>
                         </Popup>
                     </div>
-                    <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none px-1 py-2 hover:bg-neutral-200 rounded-full`}>
+                    <button onClick={() => setActive(!active)} className={`${active ? "rotate-180 " : ""} duration-300 text-sm outline-none px-1 py-2 hover:bg-gray-200 rounded-full`}>
                         <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 1L7 7L13 1" stroke="#030036" strokeOpacity="0.74" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>

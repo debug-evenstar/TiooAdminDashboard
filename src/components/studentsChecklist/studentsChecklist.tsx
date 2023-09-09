@@ -94,7 +94,7 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
                 {
                     data.length > 0 ?
                         list.map(({ id, name, email }) => (
-                            <div data-value={id} onClick={handleOptionClick} key={id} className="hover:bg-neutral-100 px-4 flex items-center border-b py-3 space-x-3">
+                            <div data-value={id} onClick={handleOptionClick} key={id} className="hover:bg-gray-100 px-4 flex items-center border-b py-3 space-x-3">
                                 <input type="checkbox" onClick={() => null} checked={selection.includes(id)} className="w-[18px] cursor-pointer h-[18px] outline-none border-0" value={id} />
                                 <div className='flex items-center space-x-2'>
                                     <div className="h-[40px] w-[40px] bg-light rounded-full"></div>

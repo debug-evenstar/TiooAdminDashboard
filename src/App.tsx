@@ -40,7 +40,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           {/* school dashboard routes */}
           <Route element={<AdminLayoutExt />}>
-            <Route index path="schools/:id" element={<SchoolHome/>} />
+            <Route index path="schools/:id/home" element={<SchoolHome/>} />
             <Route index path="schools/:id/lesson" element={<SchoolLessons/>} />
             <Route index path="schools/:id/lesson/:lessonid/:activeid" element={<LessonsDisplay/>} />
           </Route>

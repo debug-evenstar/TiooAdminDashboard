@@ -94,7 +94,7 @@ export default function SchoolsChecklist({ selection, setSelection, onApply, cla
                 {
                     schools.length > 0 ?
                         list.map(({ school }) => (
-                            <div key={school.id} className="hover:bg-neutral-100 px-4 flex items-center border-b py-3 space-x-3">
+                            <div key={school.id} className="hover:bg-gray-100 px-4 flex items-center border-b py-3 space-x-3">
                                 <input type="checkbox" checked={selection.includes(school.id)} onChange={handleCheckChange} className="w-[18px] cursor-pointer h-[18px] outline-none border-0" value={school.id} />
                                 <div className='flex items-center space-x-2'>
                                     <div className="h-[40px] w-[40px] bg-light rounded-full"></div>

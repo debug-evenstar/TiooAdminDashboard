@@ -44,7 +44,7 @@ function ClassLessonCard(lesson: TLibraryLesson) {
                                 <li onClick={() => { toggle() }} className="py-2 rounded px-4 hover:bg-red-400 text-red-500 cursor-pointer hover:text-white text-sm">Remove</li>
                             </ul>
                         </Popup>
-                        <button onClick={toggle} className="h-fit py-2 px-1 hover:bg-neutral-100 outline-none  rounded">
+                        <button onClick={toggle} className="h-fit py-2 px-1 hover:bg-gray-100 outline-none  rounded">
                             <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11C0.89543 11 0 10.1046 0 9Z" fill="#87909E" />
                                 <path fillRule="evenodd" clipRule="evenodd" d="M0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2Z" fill="#87909E" />
@@ -124,7 +124,7 @@ function AllLessonsCard({ classId }: { classId: number }) {
         <>
             <AddLibraryLesson {...{ setModal, modal, classId, subjectId, data }} variant />
             <div className="w-full rounded-[8px] shadow overflow-hidden">
-                <div className="px-4 h-[50px] bg-neutral-200 text-xl font-[500] text-primary rounded-t-[8px] flex items-center">
+                <div className="px-4 h-[50px] bg-gray-200 text-xl font-[500] text-primary rounded-t-[8px] flex items-center">
                     <h1>All Lessons</h1>
                 </div>
                 <div className={`px-4 duration-700 transition-[max-height]  ease-out ${active ? "max-h-[30rem]" : "max-h-0"}`}>

@@ -25,7 +25,7 @@ export default function SchoolSidebar({ menus }: { menus?: TMenu[] }): JSX.Eleme
     const activeId = useAppSelector((state) => state.school.activeSchool.id)
     if (!menus) {
         menus = [
-            { route: `schools/${activeId}`, icon: HomeIcon, title: 'Home', path: '' },
+            { route: `schools/${activeId}/home`, icon: HomeIcon, title: 'Home', path: 'home' },
             // { route: '/schools', icon: SchoolIcon, title: 'Manage Schools' },
             // { route: '/freelancers', icon: UserIcon, title: 'Manage Freelancers' },
             // { route: '/teachers', icon: UserIcon, title: 'Manage Teachers' },
@@ -36,6 +36,7 @@ export default function SchoolSidebar({ menus }: { menus?: TMenu[] }): JSX.Eleme
 
     const location = useLocation();
     const locay = location.pathname.split("/")
+    // console.log(locay)
     console.log(locay[3]);
     
     const checkActive = (route: string,match=false) => {

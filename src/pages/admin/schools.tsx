@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 function SchoolContextMenu({ selectedId }: any): JSX.Element {
   const menuData: { route: string, name: string }[] = [
     { route: `/schools/profile/${selectedId}`, name: 'View School Profile' },
-    { route: `/schools/${selectedId}`, name: 'Enter School Dashboard' },
+    { route: `/schools/${selectedId}/home`, name: 'Enter School Dashboard' },
   ];
   return (
     <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-white w-fit rounded-[8px] shadow-lg`}>
@@ -60,8 +60,7 @@ export default function Schools() {
           id: school.school.id
         }))
         // console.log(response.data.data);
-        setSchoolsState(parsedList.reverse());
-        // parsed list already reversed here
+        setSchoolsState(parsedList);
         setRows(parsedList);
       })
       .catch(error => console.log(error))

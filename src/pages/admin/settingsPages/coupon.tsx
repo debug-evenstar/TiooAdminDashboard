@@ -261,7 +261,7 @@ function CouponMenuBtn({ id, data }: { data: TCouponProps, id: number }) {
         <ul className="bg-white py-4 rounded-[8px] absolute -ml-20 shadow">
           {
             couponMenu.map((menuName, index) => (
-              <li key={index} onClick={() => { setMenuOpen(false); handleMenuClick(menuName, id) }} className="py-2.5 cursor-pointer px-4 text-primary text-sm hover:bg-neutral-100 hover:text-main">{menuName}</li>
+              <li key={index} onClick={() => { setMenuOpen(false); handleMenuClick(menuName, id) }} className="py-2.5 cursor-pointer px-4 text-primary text-sm hover:bg-gray-100 hover:text-main">{menuName}</li>
             ))
           }
         </ul>
@@ -302,7 +302,7 @@ export default function CouponTab() {
       </div>
       <div className="mt-7 text-sm">
         <div className="w-full">
-          <div className="font-[400] px-2 py-2 font-[500] rounded-[8px] text-primary bg-neutral-100 flex items-center justify-between">
+          <div className="font-[400] px-2 py-2 font-[500] rounded-[8px] text-primary bg-gray-100 flex items-center justify-between">
             <div className="w-[10rem]">Campaign</div>
             <div className="w-[6rem]">Code</div>
             <div className="w-[7rem]">Status</div>
@@ -328,7 +328,7 @@ export default function CouponTab() {
                     <div className="w-[6rem] flex items-center justify-around">
                       <div className="flex items-center space-x-2">
                         <span className="w-4">{item.users}</span>
-                        <div className="bg-neutral-200 w-6 h-6 rounded-full"></div>
+                        <div className="bg-gray-200 w-6 h-6 rounded-full"></div>
                       </div>
                       <CouponMenuBtn id={item.id} data={item} />
                     </div>

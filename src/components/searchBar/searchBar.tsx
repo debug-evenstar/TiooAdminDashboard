@@ -4,7 +4,7 @@ import searchImage from '../../assets/images/search-md.png';
 
 interface ISearchBarProps {
     items?: any,
-    setRows: any,
+    setRows?: any,
     placeholder: string;
     name: string;
     className: string;

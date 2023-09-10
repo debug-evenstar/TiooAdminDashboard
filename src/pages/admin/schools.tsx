@@ -64,6 +64,7 @@ export default function Schools() {
     setSchoolsState(newData);
     setRows(newData);
     localStorage.setItem('schoolData', JSON.stringify(newData));
+    setLoading(false);
   }
 
   useEffect(() => {

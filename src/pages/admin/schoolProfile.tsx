@@ -1,9 +1,7 @@
-import { useDispatch, useSelector } from "react-redux"
 import Header from "../../components/header"
-import { RootState } from "../../redux/store"
 import { useEffect, useState } from "react";
-import { TSchoolsProps, setSchools } from "../../redux/slices/schools";
 import { useParams } from "react-router-dom";
+import axiosInstance from "../../services/api";
 
 const InfoField = ({name,value}: {name: string,value?: string | number}) => {
     return (
@@ -17,32 +15,17 @@ const InfoField = ({name,value}: {name: string,value?: string | number}) => {
 }
 
 export default function SchoolProfile() {
-    const [school, setLocalSchool] = useState<TSchoolsProps>();
+    const [school, setSchool] = useState<any>();
 
     const { id } = useParams<{ id: any }>()
-
-    const dispatch = useDispatch();
-
-    const schools = useSelector((state: RootState) => state.school.schools);
-
-    const persist = () => {
-        const data = localStorage.getItem('schools');
-        if (data) {
-            const s = JSON.parse(data);
-            if(s.length > 0){
-                const t = s.find((school: TSchoolsProps) => school.school.id == id);
-                setLocalSchool(t);
-                dispatch(setSchools(s))
-            }
-            else
-                window.location.assign('/schools');
-        } else {
-            localStorage.setItem('schools', JSON.stringify(schools));
-        }
-    }
+  
     useEffect(() => {
-        persist()
-        console.log(school);
+        axiosInstance.get('/management/schools/extra')
+            .then(response => {
+                setSchool(response.data.data.find(
+                    (item: any) => item.school.id == id
+                ))
+            })
     }, [])
 
     return (
@@ -74,13 +57,13 @@ export default function SchoolProfile() {
                     <h1 className="my-7 text-primary text-[1.5rem]">Additional Information</h1>
                     <div className="grid grid-cols-2 gap-x-10">
                         <InfoField name="School owner's name" value={school?.school.name} />
-                        <InfoField name="Gender" value={''} />
+                        <InfoField name="Gender" value={school?.school.gender} />
                         <InfoField name="Country" value={''} />
-                        <InfoField name="Website" value={''} />
+                        <InfoField name="Website" value={school?.school.website} />
                         <InfoField name="Current address" value={''} />
-                        <InfoField name="Date of establishment" value={''} />
-                        <InfoField name="School type" value={''} />
-                        <InfoField name="Ownership type" value={''} />
+                        <InfoField name="Date of establishment" value={school?.school.est_date} />
+                        <InfoField name="School type" value={school?.school.school_type} />
+                        <InfoField name="Ownership type" value={school?.school.ownership_type} />
                     </div>
                     <div className="mt-4 text-sm" >
                         <div className="mb-[1.4rem]">

@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
-import FilterPanel from "../../components/filterPanel"
-import Header from "../../components/header"
-import { IListProps } from "../../components/list/list";
-import PaginatedList from "../../components/paginatedList/paginatedList";
-import SearchBar from "../../components/searchBar"
 import { Link } from "react-router-dom";
-import axiosInstance from "../../services/api";
-import { TSchoolsProps, setSchools } from "../../redux/slices/schools";
 import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import Header from "../../components/header"
+import axiosInstance from "../../services/api";
+import SearchBar from "../../components/searchBar"
+import FilterPanel from "../../components/filterPanel"
+import { IListProps } from "../../components/list/list";
+import { TSchoolsProps, setSchools } from "../../redux/slices/schools";
+import PaginatedList from "../../components/paginatedList/paginatedList";
+import { Load } from "../../components/loader/loader";
 
 
 
 function SchoolContextMenu({ selectedId }: any): JSX.Element {
+  // custom school context menu for each school item
   const menuData: { route: string, name: string }[] = [
     { route: `/schools/profile/${selectedId}`, name: 'View School Profile' },
     { route: `/schools/${selectedId}/home`, name: 'Enter School Dashboard' },
   ];
   return (
-    <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-white w-fit rounded-[8px] shadow-lg`}>
+    <div className={`py-5 text-primary l-0 text-sm text-left z-[1000] border bg-white w-fit rounded-[8px] shadow-lg`}>
       <ul>
         {
           menuData.map((menu, index) => (
@@ -35,9 +37,16 @@ function SchoolContextMenu({ selectedId }: any): JSX.Element {
 
 export default function Schools() {
 
+  /**
+   *  Schools Page
+   *  List out the schools and show their status
+   *  @param void
+   */
+
   const [schools, setSchoolsState] = useState<IListProps[]>([]);
   const [rows, setRows] = useState<IListProps[]>([]);
   const [selectedRow, setSelectedRow] = useState('')
+  const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch()
 
@@ -49,7 +58,25 @@ export default function Schools() {
     setSelectedRow(id)
   }
 
+  // updates the schools states and persist storage
+  const updateSchoolsData = (newData: any) => {
+    console.log("updating data");
+    setSchoolsState(newData);
+    setRows(newData);
+    localStorage.setItem('schoolData', JSON.stringify(newData));
+  }
+
   useEffect(() => {
+
+    const storedSchoolsData = localStorage.getItem('schoolData');
+
+    if (storedSchoolsData) {
+      console.log("restoring data");
+      const parsedData = JSON.parse(storedSchoolsData);
+      setSchoolsState(parsedData);
+      setLoading(false);
+    }
+    
     axiosInstance.get('/schools')
       .then(response => {
         dispatch(setSchools(response.data.data))
@@ -60,8 +87,8 @@ export default function Schools() {
           id: school.school.id
         }))
         // console.log(response.data.data);
-        setSchoolsState(parsedList);
-        setRows(parsedList);
+        updateSchoolsData(parsedList);
+
       })
       .catch(error => console.log(error))
   }, []);
@@ -75,11 +102,22 @@ export default function Schools() {
       <Header title="Manage Schools" />
       <div className="mt-5 px-10">
         <div className="flex mt-11 items-center justify-between">
-          <SearchBar className="w-[24rem]" name="schools" placeholder="Search Schools" />
+          <SearchBar items={schools} setRows={setRows} className="w-[24rem]" name="schools" placeholder="Search Schools" />
           <FilterPanel {...{ schools, setRows, panels }} />
         </div>
         <div>
-          <PaginatedList menu={<SchoolContextMenu selectedId={selectedRow} />} dataPerPage={10} data={rows} selectRow={getSelectedSchool} />
+          {loading ?
+            <div className="w-full mt-40 flex justify-center ">
+              <Load/>
+            </div>
+            :
+            <PaginatedList
+              menu={<SchoolContextMenu selectedId={selectedRow} />}
+              dataPerPage={10}
+              data={rows}
+              selectRow={getSelectedSchool}
+            />
+          }
         </div>
         <div className="py-20"></div>
       </div>

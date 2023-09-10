@@ -1,5 +1,5 @@
 import './loader.css';
-function Load(){
+export function Load(){
     return (
         <div className="w-[5rem] h-[2rem] flex items-center space-x-1 justify-center">
             <div id="one" className="stick-head w-1.5 bg-main rounded bg-gray-200 animate-tick duration-300 "></div>

@@ -47,7 +47,7 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
                     <img className="" src={logo} alt="" />
                 </a>
             </div>
-            <div className='text-gray-500 px-2 mt-10 text-sm flex flex-col justify-between h-full'>
+            <div className='text-gray-700 px-2 mt-10 text-sm flex flex-col justify-between h-full'>
                 <ul className="h-fit">
                     {
                         menus.map((menu, key) => (

@@ -1,5 +1,5 @@
 import Popup from 'reactjs-popup';
-import image from '../../assets/images/user.png';
+// import image from '../../assets/images/user.png';
 import { ReactNode } from 'react';
 import { useAppDispatch } from '../../redux/store';
 import { saveActiveSchId } from '../../redux/slices/schools';
@@ -33,9 +33,10 @@ export default function ListComponent({ menu, rows, selectRow }: { menu: ReactNo
                     rows?.map((entry: IListProps, index: number) => (
                         <div key={index} className="text-gray-600 text-sm flex items-center justify-between py-3.5 px-3 rounded-[8px] my-5 bg-light shadow">
                             <div className="w-[19rem] flex items-center space-x-2">
-                                <div className="w-6 h-6 rounded-full overflow-hidden">
+                                <div className="w-6 h-6 flex items-center justify-center text-white font-bold rounded-full bg-main overflow-hidden">
                                     {/* <img src={entry.image} className="w-full h-full" alt="" /> */}
-                                    <img src={image} className="w-full h-full" alt="" />
+                                    {/* <img src={image} className="w-full h-full" alt="" /> */}
+                                    {entry?.name?.[0]}
                                 </div>
                                 <h1 className="font-bold">{entry.name}</h1>
                             </div>

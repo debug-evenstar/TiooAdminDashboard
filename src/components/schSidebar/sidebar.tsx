@@ -3,7 +3,7 @@ import {
     // HelpIcon,
     BookIcon,
     HomeIcon,
-    // UserIcon,
+    UserIcon,
     // UsersIcon,
     // SchoolIcon,
 } from '../../assets/icons/components/sidebar';
@@ -28,8 +28,9 @@ export default function SchoolSidebar({ menus }: { menus?: TMenu[] }): JSX.Eleme
             { route: `schools/${activeId}/home`, icon: HomeIcon, title: 'Home', path: 'home' },
             // { route: '/schools', icon: SchoolIcon, title: 'Manage Schools' },
             // { route: '/freelancers', icon: UserIcon, title: 'Manage Freelancers' },
-            // { route: '/teachers', icon: UserIcon, title: 'Manage Teachers' },
-            // { route: '/students', icon: UsersIcon, title: 'Manage Students' },
+            { route: `schools/${activeId}/subjects`, icon: BookIcon, title: 'Subjects', path:'subjects' },
+            { route: `schools/${activeId}/teachers`, icon: UserIcon, title: 'Teachers', path:'teachers' },
+            { route: `schools/${activeId}/students`, icon: UserIcon, title: 'Students', path: 'students' },
             { route: `schools/${activeId}/lesson`, icon: BookIcon, title: 'Lessons', path:'lesson' },
         ];
     }

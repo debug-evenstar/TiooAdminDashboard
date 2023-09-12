@@ -3,6 +3,9 @@ import { lazy } from "react"
 
 import SchoolHome from './schoolDashboard/home';
 import SchoolLessons from './schoolDashboard/lesson';
+import SchoolStudents from "./schoolDashboard/students";
+import SchoolTeachers from "./schoolDashboard/teachers";
+import SchoolSubjects from "./schoolDashboard/subjects";
 
 const Home = lazy(() => import('./home'));
 const Schools = lazy(() => import('./schools'));
@@ -29,5 +32,8 @@ export {
     Marketplace,
     SchoolLessons,
     LessonsDisplay,
-    SchoolHome
+    SchoolHome,
+    SchoolStudents,
+    SchoolTeachers,
+    SchoolSubjects
 }

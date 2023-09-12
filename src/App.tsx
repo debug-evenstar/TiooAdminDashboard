@@ -19,6 +19,9 @@ import {
   SchoolLessons,
   LessonsDisplay,
   SchoolHome,
+  SchoolStudents,
+  SchoolTeachers,
+  SchoolSubjects
 } from "./pages/admin";
 
 import StudentProfile from './pages/admin/studentProfile';
@@ -40,9 +43,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           {/* school dashboard routes */}
           <Route element={<AdminLayoutExt />}>
-            <Route index path="schools/:id/home" element={<SchoolHome/>} />
-            <Route index path="schools/:id/lesson" element={<SchoolLessons/>} />
-            <Route index path="schools/:id/lesson/:lessonid/:activeid" element={<LessonsDisplay/>} />
+            <Route index path="schools/:id/home" element={<SchoolHome />} />
+            <Route index path="schools/:id/students" element={<SchoolStudents />} />
+            <Route index path="schools/:id/lesson" element={<SchoolLessons />} />
+            <Route index path="schools/:id/teachers" element={<SchoolTeachers />} />
+            <Route index path="schools/:id/subjects" element={<SchoolSubjects />} />
+            <Route index path="schools/:id/lesson/:lessonid/:activeid" element={<LessonsDisplay />} />
           </Route>
           <Route element={<AdminLayout />}>
             <Route path="/" element={<Home />}></Route>
@@ -52,14 +58,14 @@ function App() {
             <Route path="students/profile" element={<StudentProfile />}></Route>
             <Route path="schools/profile/:id" element={<SchoolProfile />}></Route>
             <Route path="students" element={<Students />}></Route>
-            <Route path="library/view/:id" element={<ViewLesson/>}></Route>
+            <Route path="library/view/:id" element={<ViewLesson />}></Route>
             <Route path="library" element={<Library />}></Route>
             <Route path="settings" element={<Settings />}>
               <Route index path="pricing" element={<PricingTab />} />
               <Route path="userlevels" element={<UserLevels />} />
               <Route path="password" element={<h1>Password</h1>} />
               <Route path="coupon" element={<CouponTab />} />
-              <Route path="*" element={<Navigate to="pricing"></Navigate>}/>
+              <Route path="*" element={<Navigate to="pricing"></Navigate>} />
             </Route>
             <Route path="/marketplace" element={<Marketplace />}></Route>
             <Route path="*" element={<Navigate to="/"></Navigate>}></Route>

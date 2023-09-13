@@ -4,8 +4,13 @@ import FilterPanel from "../../components/filterPanel"
 import { IListProps } from "../../components/list/list"
 import PaginatedList from "../../components/paginatedList/paginatedList";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../../services/api";
+import { Load } from "../../components/loader/loader";
+import { TFreelancersProps, setFreelancers } from "../../redux/slices/freelancer";
 
 
 
@@ -30,38 +35,90 @@ function FreelancerContextMenu(): JSX.Element {
 }
 
 export default function Freelancers() {
+
+  /**
+   *  Freelancers Page Component
+   *  List out the freelancers and show their status
+   * 
+   *  First try to render the list using the freelancers located in the store.
+   *  When the updated freelancers are fetched from the api,
+   *  call the updateFreelancers fxn after dispatching an update to the freelancers reducer state
+   *  the updateFreelancers fxn receives a freelancers parameter
+   *  At the first instance of calling updateFreelancers: Pass in the inital Freelancers (RootState)
+   *  At the second instance: Pass in the freelancers response from the api (respone.data.data)
+   *  
+   */
+
+  const [freelancersData, setFreelancersData] = useState<IListProps[]>([]);
+  const [rows, setRows] = useState<IListProps[]>([]);
+  // const [selectedRow, setSelectedRow] = useState('')
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const dispatch = useDispatch();
+
+  const freelancers = useSelector((state: RootState) => state.freelancer.freelancers);
+
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'
   ];
 
+  // const getSelectedSchool = (id: string): void => {
+  //   setSelectedRow(id)
+  // }
+
+  if (freelancersData.length > 0 && loading) {
+    setLoading(false);
+  }
+
+  const updateFreelancers = (newFreelancers: any) => {
+    const parsedList: IListProps[] = newFreelancers.map((freelancer: TFreelancersProps) => ({
+      name: freelancer.freelancer.name,
+      email: freelancer.freelancer.email,
+      subscription: freelancer.freelancer.status === 'active',
+      id: freelancer.freelancer.id
+    }))
+
+    setFreelancersData(parsedList);
+    setRows(parsedList);
+  }
+  
+  useEffect(() => {
+    
+    updateFreelancers(freelancers);
+
+    axiosInstance.get('/freelancer')
+      .then(response => {
+        dispatch(setFreelancers(response.data.data))
+        updateFreelancers(response.data.data);
+      })
+      .catch(error => console.log(error))
+      .finally(() => setLoading(false));
+  }, []);
 
 
-  const data: IListProps[] = [
-    { name: "David Jones", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Chris Michael", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "Joshua Karl", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "HJohn Brandson", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "Brad Montiago", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Josh Smith", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "Michael Jordan", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Some Weird Name", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "And another Name", email: "Praiseike123@gmail.com", subscription: true },
-  ];
-
-  const [rows, setRows] = useState<IListProps[]>(data);
   return (
     <div>
       <Header title="Manage Freelancers" />
       <div className="mt-5 px-10">
         <div className="flex mt-11 items-center justify-between">
-          <SearchBar variant="normal" className="w-[24rem]" name="schools" placeholder="Search Freelancers" />
-          <FilterPanel {...{ data, setRows, panels }} />
+          <SearchBar items={freelancersData} setRows={setRows} className="w-[24rem]" name="freelancers" variant="" placeholder="Search Freelancers" />
+          <FilterPanel {...{ data: freelancersData, setRows, panels }} />
         </div>
         <div>
-          <PaginatedList menu={<FreelancerContextMenu />} dataPerPage={5} data={rows} selectRow={() => false}/>
+          {loading ?
+            <div className="w-full mt-40 flex justify-center ">
+              <Load />
+            </div>
+            :
+            <PaginatedList
+              menu={<FreelancerContextMenu  />}
+              dataPerPage={10}
+              data={rows}
+              selectRow={() => null}
+            />
+          }
         </div>
         <div className="py-20"></div>
       </div>
-    </div>
-  )
+    </div>)
 }

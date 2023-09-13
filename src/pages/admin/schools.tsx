@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Header from "../../components/header"
 import axiosInstance from "../../services/api";
@@ -9,6 +9,7 @@ import { IListProps } from "../../components/list/list";
 import { TSchoolsProps, setSchools } from "../../redux/slices/schools";
 import PaginatedList from "../../components/paginatedList/paginatedList";
 import { Load } from "../../components/loader/loader";
+import { RootState } from "../../redux/store";
 
 
 
@@ -38,17 +39,26 @@ function SchoolContextMenu({ selectedId }: any): JSX.Element {
 export default function Schools() {
 
   /**
-   *  Schools Page
+   *  Schools Page Component
    *  List out the schools and show their status
-   *  @param void
+   * 
+   *  First try to render the list using the schools located in the store.
+   *  When the updated schools are fetched from the api,
+   *  call the updateSchools fxn after dispatching an update to the schools reducer state
+   *  the updateSchools fxn receives a schools parameter
+   *  At the first instance of calling updateSchools: Pass in the inital Schools (RootState)
+   *  At the second instance: Pass in the schools response from the api (respone.data.data)
+   *  
    */
 
-  const [schools, setSchoolsState] = useState<IListProps[]>([]);
+  const [schoolsData, setSchoolsData] = useState<IListProps[]>([]);
   const [rows, setRows] = useState<IListProps[]>([]);
   const [selectedRow, setSelectedRow] = useState('')
   const [loading, setLoading] = useState<boolean>(true);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const schools = useSelector((state: RootState) => state.school.schools);
 
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'
@@ -58,44 +68,34 @@ export default function Schools() {
     setSelectedRow(id)
   }
 
-  // updates the schools states and persist storage
-  const updateSchoolsData = (newData: any) => {
-    console.log("updating data");
-    setSchoolsState(newData);
-    setRows(newData);
-    localStorage.setItem('schoolData', JSON.stringify(newData));
+  if (schoolsData.length > 0 && loading) {
     setLoading(false);
   }
 
+  const updateSchools = (newSchools: any) => {
+    const parsedList: IListProps[] = newSchools.map((school: TSchoolsProps) => ({
+      name: school.school.school_name,
+      email: school.school.email,
+      subscription: school.school.status === 'active',
+      id: school.school.id
+    }))
+
+    setSchoolsData(parsedList);
+    setRows(parsedList);
+  }
+  
   useEffect(() => {
-
-    const storedSchoolsData = localStorage.getItem('schoolData');
-
-    if (storedSchoolsData) {
-      console.log("restoring data");
-      const parsedData = JSON.parse(storedSchoolsData);
-      setSchoolsState(parsedData);
-      setLoading(false);
-    }
     
+    updateSchools(schools);
+
     axiosInstance.get('/schools')
       .then(response => {
         dispatch(setSchools(response.data.data))
-        const parsedList: IListProps[] = response.data.data.map((school: TSchoolsProps) => ({
-          name: school.school.school_name,
-          email: school.school.email,
-          subscription: school.school.status === 'active',
-          id: school.school.id
-        }))
-        // console.log(response.data.data);
-        updateSchoolsData(parsedList);
-
+        updateSchools(response.data.data);
       })
       .catch(error => console.log(error))
+      .finally(() => setLoading(false));
   }, []);
-
-
-
 
 
   return (
@@ -103,13 +103,13 @@ export default function Schools() {
       <Header title="Manage Schools" />
       <div className="mt-5 px-10">
         <div className="flex mt-11 items-center justify-between">
-          <SearchBar items={schools} setRows={setRows} className="w-[24rem]" name="schools" placeholder="Search Schools" />
-          <FilterPanel {...{ schools, setRows, panels }} />
+          <SearchBar items={schoolsData} setRows={setRows} className="w-[24rem]" name="schools" placeholder="Search Schools" />
+          <FilterPanel {...{ data: schoolsData, setRows, panels }} />
         </div>
         <div>
           {loading ?
             <div className="w-full mt-40 flex justify-center ">
-              <Load/>
+              <Load />
             </div>
             :
             <PaginatedList

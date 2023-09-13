@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { IListProps } from "../list/list";
 
-export default function FilterPanel({ schools, setRows, panels }: { schools?: IListProps[], setRows?: any, panels: string[] }) {
+export default function FilterPanel({ data, setRows, panels }: { data?: IListProps[], setRows?: any, panels: string[] }) {
 
     const [active, setActive] = useState(0);
 
     const filterList = (field: string) => {
-        let result = schools;
+        let result = data;
         switch (field) {
             case 'All':
-                result = schools?.filter(() => true);
+                result = data?.filter(() => true);
                 setRows(result)
                 break;
             case 'Recently Joined':
-                setRows(schools?.slice().reverse());
+                setRows(data?.slice().reverse());
                 break;
 
             case 'Active':
-                result = schools?.filter((item) => item.subscription);
+                result = data?.filter((item) => item.subscription);
                 setRows(result)
                 break;
             default:

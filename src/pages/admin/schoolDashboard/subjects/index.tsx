@@ -18,10 +18,10 @@ function SchoolSubjects() {
       .finally(() => setLoading(false));
   }
 
-   useEffect(() => {
-     setLoading(true);
-      getAllSubjects();
-   }, []);
+  useEffect(() => {
+    setLoading(true);
+    getAllSubjects();
+  }, []);
 
 
   const colors: string[] = [

@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export type TFreelancersProps = {
-
-
     freelancer: {
         id: number,
         name: string
@@ -31,10 +29,10 @@ export type TFreelancersProps = {
         count: number
     }
     
-    }
+}
 
 const initialState: { freelancers: TFreelancersProps[] } = {
-    freelancers: []
+    freelancers: [],
 };
 
 export const freelancerSlice = createSlice({

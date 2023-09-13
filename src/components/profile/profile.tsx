@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-// import userImage from './../../assets/images/user.png'
+import {
+    BiLogOut
+} from 'react-icons/bi';
+
 import { useEffect, useRef, useState } from "react";
 
 
@@ -26,9 +29,19 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
     }, []);
 
     return active? (
-        <ul className="absolute rounded-[8px] w-[12rem] border shadow bg-white mt-28 right-1">
-            <li onClick={logout} className="hover:bg-light px-4 py-3 cursor-pointer">Logout</li>
-        </ul>
+        <div className="absolute rounded-[8px] w-[12rem] border shadow bg-white mt-28 right-1" >
+            <div className="w-full text-gray-600 font-[700] p-3 pl-5 border-b">
+                Admin
+            </div>
+            <ul >
+                <li onClick={logout} className="hover:bg-light flex space-x-3 items-center  px-4 py-3 cursor-pointer">
+                    <span className="text-2xl pr-3 text-red-400">
+                        <BiLogOut/>
+                    </span>
+                    Logout
+                </li>
+            </ul>
+        </div>
     ) : <></>;
 }
 

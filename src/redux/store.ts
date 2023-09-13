@@ -5,7 +5,8 @@ import pricingReducer from './slices/pricing';
 import couponReducer from './slices/coupon';
 import adminReducer from './slices/admin';
 import schoolReducer from './slices/schools';
-import freelanReducer from './slices/freelancer';
+import teacherReducer from './slices/teachers';
+import freelanceReducer from './slices/freelancer';
 import studentReducer from './slices/student';
 import pricingExceptionReducer from './slices/pricingException';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -18,7 +19,8 @@ const store: ToolkitStore = configureStore({
         coupon: couponReducer,
         admin: adminReducer,
         school: schoolReducer,
-        freelancer: freelanReducer,
+        teacher: teacherReducer,
+        freelancer: freelanceReducer,
         student: studentReducer,
         pricingException: pricingExceptionReducer,
         library: libraryReducer,

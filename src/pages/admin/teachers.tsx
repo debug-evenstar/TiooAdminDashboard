@@ -3,8 +3,13 @@ import SearchBar from "../../components/searchBar"
 import FilterPanel from "../../components/filterPanel"
 import PaginatedList from "../../components/paginatedList/paginatedList";
 import { IListProps } from "../../components/list/list";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../../services/api";
+import { Load } from "../../components/loader/loader";
+import { TTeachersProps, setTeachers } from "../../redux/slices/teachers";
 
 function TeacherContextMenu(): JSX.Element {
   const menuData = [
@@ -28,41 +33,90 @@ function TeacherContextMenu(): JSX.Element {
 
 
 export default function Teachers() {
+  /**
+   *  Teachers Page Component
+   *  List out the teachers and show their status
+   * 
+   *  First try to render the list using the teachers located in the store.
+   *  When the updated teachers are fetched from the api,
+   *  call the updateTeachers fxn after dispatching an update to the teachers reducer state
+   *  the updateTeachers fxn receives a teachers parameter
+   *  At the first instance of calling updateTeachers: Pass in the inital Teachers (RootState)
+   *  At the second instance: Pass in the teachers response from the api (respone.data.data)
+   *  
+   */
+
+  const [teachersData, setTeachersData] = useState<IListProps[]>([]);
+  const [rows, setRows] = useState<IListProps[]>([]);
+  // const [selectedRow, setSelectedRow] = useState('')
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const dispatch = useDispatch();
+
+  const teachers = useSelector((state: RootState) => state.teacher.teachers);
+
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'
   ];
 
+  // const getSelectedSchool = (id: string): void => {
+  //   setSelectedRow(id)
+  // }
 
+  if (teachersData.length > 0 && loading) {
+    setLoading(false);
+  }
 
-  const data: IListProps[] = [
-    { name: "David Jones", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Chris Michael", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "Joshua Karl", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "John Brandson", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "Brad Montiago", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Josh Smith", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "Michael Jordan", email: "Praiseike123@gmail.com", subscription: true },
-    { name: "Some Weird Name", email: "Praiseike123@gmail.com", subscription: false },
-    { name: "And another Name", email: "Praiseike123@gmail.com", subscription: true },
-  ];
+  const updateTeachers = (newTeachers: any) => {
+    const parsedList: IListProps[] = newTeachers.map((teacher: TTeachersProps) => ({
+      name: teacher.name,
+      email: teacher.email,
+      subscription: teacher.status === 'registered',
+      id: teacher.Teacher.id
+    }))
 
+    setTeachersData(parsedList);
+    setRows(parsedList);
+  }
+  
+  useEffect(() => {
+    
+    updateTeachers(teachers);
 
+    console.log("getting teachers again");
+    axiosInstance.get('https://api.hellotioo.com/teacher/readall')
+      .then(response => {
+        dispatch(setTeachers(response.data.data))
+        updateTeachers(response.data.data);
+      })
+      .catch(error => console.log(error))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const [rows, setRows] = useState<IListProps[]>(data);
 
   return (
     <div>
       <Header title="Manage Teachers" />
       <div className="mt-5 px-10">
         <div className="flex mt-11 items-center justify-between">
-          <SearchBar variant="normal" className="w-[24rem]" name="schools" placeholder="Search Teachers" />
-          <FilterPanel {...{ data, setRows, panels }} />
+          <SearchBar items={teachersData} setRows={setRows} className="w-[24rem]" name="teachers" variant="" placeholder="Search Teachers" />
+          <FilterPanel {...{ data: teachersData, setRows, panels }} />
         </div>
         <div>
-          <PaginatedList menu={<TeacherContextMenu />} dataPerPage={5} data={rows} selectRow={() => false}/>
+          {loading ?
+            <div className="w-full mt-40 flex justify-center ">
+              <Load />
+            </div>
+            :
+            <PaginatedList
+              menu={<TeacherContextMenu  />}
+              dataPerPage={10}
+              data={rows}
+              selectRow={() => null}
+            />
+          }
         </div>
         <div className="py-20"></div>
       </div>
-    </div>
-  )
+    </div>)
 }

@@ -33,6 +33,8 @@ import Notification from './components/notification/notification';
 import ViewLesson from './pages/admin/library/viewLesson';
 import AdminLayoutExt from "./layout/school";
 import SchoolProfile from "./pages/admin/schoolProfile";
+import TeacherProfile from "./pages/admin/teacherProfile";
+import FreelancerProfile from "./pages/admin/freelancerProfile";
 
 function App() {
   return (
@@ -51,15 +53,22 @@ function App() {
             <Route index path="schools/:id/lesson/:lessonid/:activeid" element={<LessonsDisplay />} />
           </Route>
           <Route element={<AdminLayout />}>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="schools" element={<Schools />}></Route>
-            <Route path="freelancers" element={<Freelancers />}></Route>
-            <Route path="teachers" element={<Teachers />}></Route>
-            <Route path="students/profile" element={<StudentProfile />}></Route>
-            <Route path="schools/profile/:id" element={<SchoolProfile />}></Route>
-            <Route path="students" element={<Students />}></Route>
-            <Route path="library/view/:id" element={<ViewLesson />}></Route>
+            <Route path="/" element={<Home />} />
+            <Route path="freelancers" element={<Freelancers />} />
+            <Route path="freelancers/profile/:id" element={<FreelancerProfile />} />
+
+            <Route path="teachers" element={<Teachers />} />
+            <Route path="teachers/profile/:id" element={<TeacherProfile />} />
+
+            <Route path="schools" element={<Schools />} />
+            <Route path="schools/profile/:id" element={<SchoolProfile />} />
+
+            <Route path="students" element={<Students />} />
+            <Route path="students/profile/:id" element={<StudentProfile />} />
+
             <Route path="library" element={<Library />}></Route>
+            <Route path="library/view/:id" element={<ViewLesson />} />
+
             <Route path="settings" element={<Settings />}>
               <Route index path="pricing" element={<PricingTab />} />
               <Route path="userlevels" element={<UserLevels />} />
@@ -67,8 +76,8 @@ function App() {
               <Route path="coupon" element={<CouponTab />} />
               <Route path="*" element={<Navigate to="pricing"></Navigate>} />
             </Route>
-            <Route path="/marketplace" element={<Marketplace />}></Route>
-            <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="*" element={<Navigate to="/"></Navigate>} />
           </Route>
         </Routes>
       </Router>

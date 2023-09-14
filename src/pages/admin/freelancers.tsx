@@ -5,7 +5,7 @@ import { IListProps } from "../../components/list/list"
 import PaginatedList from "../../components/paginatedList/paginatedList";
 
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../services/api";
@@ -14,26 +14,25 @@ import { TFreelancersProps, setFreelancers } from "../../redux/slices/freelancer
 
 
 
-function FreelancerContextMenu(): JSX.Element {
-  const menuData = [
-    { route: '/students/profile', name: 'View Student Profile' },
-    { route: '/students/dashboard', name: 'View Student Profile' },
+function FreelancerContextMenu({selectedId}: any): JSX.Element {
+  const menuData: { route: string, name: string }[] = [
+    { route: `/freelancers/profile/${selectedId}`, name: 'View Freelancer Profile' },
+    // { route: `/students/${selectedId}/home`, name: 'Enter Student Dashboard' },
   ];
   return (
-    <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-white w-fit rounded-[8px] shadow-lg`}>
+    <div className={`py-5 text-primary l-0 text-sm text-left z-[1000] border bg-white w-fit rounded-[8px] shadow-lg`}>
       <ul>
         {
-          menuData.map((menu) => (
-            <NavLink to={menu.route}>
+          menuData.map((menu, index) => (
+            <Link to={menu.route} key={index}>
               <li className="cursor-pointer py-3 px-8 mr-2 hover:bg-light">{menu.name}</li>
-            </NavLink>
+            </Link>
           ))
         }
       </ul>
     </div>
   );
 }
-
 export default function Freelancers() {
 
   /**
@@ -51,7 +50,7 @@ export default function Freelancers() {
 
   const [freelancersData, setFreelancersData] = useState<IListProps[]>([]);
   const [rows, setRows] = useState<IListProps[]>([]);
-  // const [selectedRow, setSelectedRow] = useState('')
+  const [selectedRow, setSelectedRow] = useState('')
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
@@ -62,9 +61,9 @@ export default function Freelancers() {
     'All', 'Recently Joined', 'Active'
   ];
 
-  // const getSelectedSchool = (id: string): void => {
-  //   setSelectedRow(id)
-  // }
+  const getSelectedFreelancer = (id: string): void => {
+    setSelectedRow(id)
+  }
 
   if (freelancersData.length > 0 && loading) {
     setLoading(false);
@@ -111,14 +110,14 @@ export default function Freelancers() {
             </div>
             :
             <PaginatedList
-              menu={<FreelancerContextMenu  />}
+              menu={<FreelancerContextMenu  selectedId={selectedRow}/>}
               dataPerPage={10}
               data={rows}
-              selectRow={() => null}
+              selectRow={getSelectedFreelancer}
             />
           }
         </div>
-        <div className="py-20"></div>
+        <div className="py-20"></div> 
       </div>
     </div>)
 }

@@ -15,7 +15,7 @@ function StudentContextMenu({selectedId}: any): JSX.Element {
   // custom school context menu for each school item
   const menuData: { route: string, name: string }[] = [
     { route: `/students/profile/${selectedId}`, name: 'View Student Profile' },
-    { route: `/students/${selectedId}/home`, name: 'Enter Student Dashboard' },
+    // { route: `/students/${selectedId}/home`, name: 'Enter Student Dashboard' },
   ];
   return (
     <div className={`py-5 text-primary l-0 text-sm text-left z-[1000] border bg-white w-fit rounded-[8px] shadow-lg`}>
@@ -73,7 +73,7 @@ export default function Students() {
       name: student.name,
       email: student.email,
       subscription: student.status === 'registered',
-      id: student.Student.id
+      id: student.id
     }))
 
     setStudentsData(parsedList);

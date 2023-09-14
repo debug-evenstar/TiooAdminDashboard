@@ -11,10 +11,11 @@ import axiosInstance from "../../services/api";
 import { Load } from "../../components/loader/loader";
 import { TTeachersProps, setTeachers } from "../../redux/slices/teachers";
 
-function TeacherContextMenu(): JSX.Element {
-  const menuData = [
-    { route: '/teachers/profile', name: 'View Teacher Profile' },
-    { route: '/teachers/dashboard', name: 'Enter Teacher Dashboard' },
+function TeacherContextMenu({selectedId}: any): JSX.Element {
+
+  const menuData: { route: string, name: string }[] = [
+    { route: `/teachers/profile/${selectedId}`, name: 'View Teacher Profile' },
+    // { route: `/teachers/${selectedId}/home`, name: 'Enter Teacher Dashboard' },
   ];
   return (
     <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-white w-fit rounded-[8px] shadow-lg`}>
@@ -48,7 +49,7 @@ export default function Teachers() {
 
   const [teachersData, setTeachersData] = useState<IListProps[]>([]);
   const [rows, setRows] = useState<IListProps[]>([]);
-  // const [selectedRow, setSelectedRow] = useState('')
+  const [selectedRow, setSelectedRow] = useState('')
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
@@ -59,9 +60,9 @@ export default function Teachers() {
     'All', 'Recently Joined', 'Active'
   ];
 
-  // const getSelectedSchool = (id: string): void => {
-  //   setSelectedRow(id)
-  // }
+  const getSelectedTeacher = (id: string): void => {
+    setSelectedRow(id)
+  }
 
   if (teachersData.length > 0 && loading) {
     setLoading(false);
@@ -72,7 +73,7 @@ export default function Teachers() {
       name: teacher.name,
       email: teacher.email,
       subscription: teacher.status === 'registered',
-      id: teacher.Teacher.id
+      id: teacher.id
     }))
 
     setTeachersData(parsedList);
@@ -109,14 +110,15 @@ export default function Teachers() {
             </div>
             :
             <PaginatedList
-              menu={<TeacherContextMenu  />}
+              menu={<TeacherContextMenu  selectedId={selectedRow}/>}
               dataPerPage={10}
               data={rows}
-              selectRow={() => null}
+              selectRow={getSelectedTeacher}
             />
           }
         </div>
         <div className="py-20"></div>
       </div>
-    </div>)
+    </div>
+  );
 }

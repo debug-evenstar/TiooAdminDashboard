@@ -24,6 +24,7 @@ type TCheckListProps = {
     value: any;
 }
 
+
 function CheckList({ data, search, selection, setSelection }: { selection: number[], setSelection: (s: number[]) => void, search?: boolean, data: TCheckListProps[] }) {
 
     const [searchInput, setSearchInput] = useState<string>('');
@@ -107,7 +108,7 @@ function SingleOptionsMenu({ options, selection, setSelection }: { selection: nu
 }
 
 
-function OptionsMenu({ options, search = false, selection, setSelection }: { selection: number[], setSelection: (s: number[]) => void, search?: boolean, options: TCheckListProps[] }) {
+function OptionsMenu({ options, search = false, selection, setSelection }: { selection: number[], setSelection: (s: number[]) => void, search?: boolean, options: any }) {
     const [active, setActive] = useState(false);
 
     return (
@@ -129,16 +130,6 @@ function OptionsMenu({ options, search = false, selection, setSelection }: { sel
 }
 
 
-
-const accessOptions: TCheckListProps[] = [
-    { id: 1, value: "Manage Schools" },
-    { id: 2, value: "Manage Freelancers" },
-    { id: 3, value: "Manage Teachers" },
-    { id: 4, value: "Manage Students" },
-    { id: 5, value: "Manage Library" },
-    { id: 6, value: "Manage Marketplace" },
-];
-
 const statusOptions: TCheckListProps[] = [
     { id: 1, value: "Super Admin" },
     { id: 2, value: "Normal" },
@@ -153,7 +144,16 @@ type UserFormError = {
     permissions?: string;
 }
 
+type TAccessOptionsProps = {
+    id: number,
+    name: string;
+    code: string;
+    account: null | string;
+}
+
 function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
+
+    const [ accessOptions, setAccessOptions ] = useState<TCheckListProps[]>();
 
     const [fullname, setFullname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -165,6 +165,18 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
     const [loading, setLoading] = useState<boolean>(false);
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        axiosInstance.get('/permissions')
+            .then(response => {
+                setAccessOptions(
+                    response.data.data.map((item: TAccessOptionsProps) => ({
+                        value: item.name,
+                        id: item.id
+                    })
+                ))
+            });
+    },[]);
 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>, setter: (s: string) => void) => {

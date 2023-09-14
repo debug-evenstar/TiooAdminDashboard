@@ -4,32 +4,34 @@ import FilterPanel from "../../components/filterPanel"
 import { IListProps } from "../../components/list/list"
 import PaginatedList from "../../components/paginatedList/paginatedList";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { TStudentsProps, setStudents } from "../../redux/slices/student";
 import axiosInstance from "../../services/api";
 import { Load } from "../../components/loader/loader";
 
-function StudentContextMenu(): JSX.Element {
-  const menuData = [
-    { route: '/students/profile', name: 'View Student Profile' },
-    { route: '/students/dashboard', name: 'View Student Profile' },
+function StudentContextMenu({selectedId}: any): JSX.Element {
+  // custom school context menu for each school item
+  const menuData: { route: string, name: string }[] = [
+    { route: `/students/profile/${selectedId}`, name: 'View Student Profile' },
+    { route: `/students/${selectedId}/home`, name: 'Enter Student Dashboard' },
   ];
   return (
-    <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-white w-fit rounded-[8px] shadow-lg`}>
+    <div className={`py-5 text-primary l-0 text-sm text-left z-[1000] border bg-white w-fit rounded-[8px] shadow-lg`}>
       <ul>
         {
-          menuData.map((menu) => (
-            <NavLink to={menu.route}>
+          menuData.map((menu, index) => (
+            <Link to={menu.route} key={index}>
               <li className="cursor-pointer py-3 px-8 mr-2 hover:bg-light">{menu.name}</li>
-            </NavLink>
+            </Link>
           ))
         }
       </ul>
     </div>
   );
 }
+
 
 export default function Students() {
   /**
@@ -47,7 +49,7 @@ export default function Students() {
 
   const [studentsData, setStudentsData] = useState<IListProps[]>([]);
   const [rows, setRows] = useState<IListProps[]>([]);
-  // const [selectedRow, setSelectedRow] = useState('')
+  const [selectedRow, setSelectedRow] = useState('')
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
@@ -58,9 +60,9 @@ export default function Students() {
     'All', 'Recently Joined', 'Active'
   ];
 
-  // const getSelectedSchool = (id: string): void => {
-  //   setSelectedRow(id)
-  // }
+  const getSelectedStudent = (id: string): void => {
+    setSelectedRow(id)
+  }
 
   if (studentsData.length > 0 && loading) {
     setLoading(false);
@@ -108,10 +110,10 @@ export default function Students() {
             </div>
             :
             <PaginatedList
-              menu={<StudentContextMenu  />}
+              menu={<StudentContextMenu selectedId={selectedRow} />}
               dataPerPage={10}
               data={rows}
-              selectRow={() => null}
+              selectRow={getSelectedStudent}
             />
           }
         </div>

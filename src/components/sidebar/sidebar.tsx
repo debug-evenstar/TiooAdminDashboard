@@ -25,7 +25,7 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
     if (!menus) {
         menus = [
             // { route: '/', icon: HomeIcon, title: 'Home' },
-            { permission: 'manage_school', route: '/schools', icon: SchoolIcon, title: 'Manage Schools' },
+            { permission: 'manage_prax_school', route: '/schools', icon: SchoolIcon, title: 'Manage Schools' },
             { permission: 'manage_freelancer', route: '/freelancers', icon: UserIcon, title: 'Manage Freelancers' },
             { permission: 'manage_teacher', route: '/teachers', icon: UserIcon, title: 'Manage Teachers' },
             { permission: 'manage_students', route: '/students', icon: UsersIcon, title: 'Manage Students' },

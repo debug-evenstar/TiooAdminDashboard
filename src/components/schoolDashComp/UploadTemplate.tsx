@@ -4,7 +4,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
 import { uploadTemplate } from "../../services/api";
 import { toast } from "react-toastify";
-import { formatSize } from "../utils/format";
+import { formatSize } from "../../../public/utils/format";
 import { PrimaryButton } from "../button/button";
 
 interface Props {
@@ -27,22 +27,22 @@ const UploadTemplateForm: FC<Props> = ({ id, close }) => {
     const formData = new FormData();
     formData.append(`lesson_id`, id);
     for (let i = 0; i < files.length; i++) {
-        formData.append(`template`, files[i]);
-      }
+      formData.append(`template`, files[i]);
+    }
     await uploadTemplate(Number(id), formData).then((res: any) => {
       if (!res.error) {
         toast.success("Lesson added successfully");
         close()
         setloading(false);
-      }else{
+      } else {
         toast.error(res.data.message)
         setloading(false);
       }
     })
-    .catch((err) => {
+      .catch((err) => {
         toast.error(err?.data?.message)
         setloading(false);
-    })
+      })
   };
   return (
     <>

@@ -106,7 +106,7 @@ function Classes({ currentClass, setCurrentClass }: { currentClass: number, setC
 }
 
 function AllLessonsCard({ classId }: { classId: number }) {
-    const [active, setActive] = useState<boolean>(false);
+    const [active, setActive] = useState<boolean>(true);
     const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
     const lessons = useSelector((state: RootState) => state.library.lessons);
     const [subjectId, setSubjectId] = useState<number>(0);
@@ -118,7 +118,7 @@ function AllLessonsCard({ classId }: { classId: number }) {
         setClassLessons(group)
         setData(group);
         setSubjectId(lessons[0]?.SubjectId);
-    }, [classId,modal]);
+    }, [classId, modal]);
 
     return (
         <>

@@ -17,7 +17,6 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
             setActive(false);
         }
     }
-
     const logout = () => {
         localStorage.clear();
         window.location.assign('/login');
@@ -29,7 +28,7 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
     }, []);
 
     return active? (
-        <div className="absolute rounded-[8px] w-[12rem] border shadow bg-white mt-28 right-1" >
+        <div className="absolute rounded-[8px] w-[12rem] border shadow bg-white mt-36 right-1" >
             <div className="w-full text-gray-600 font-[700] p-3 pl-5 border-b">
                 Admin
             </div>
@@ -48,10 +47,6 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
 export default function Profile() {
     const user = useSelector((state: RootState) => state.user.user);
     const [active, setActive] = useState<boolean>(false);
-
-    useEffect(() => {
-        // console.log(" I don mount profile");
-    }, [])
 
     return (
         <>

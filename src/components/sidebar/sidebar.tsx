@@ -45,18 +45,19 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
             setPermissions(perm.authorization);
         }
     }, []);
+
     const hasCommonValues = (a: any, b: any) => {
-        // Create sets from the arrays
+
+        // check for common values
         const setA = new Set(a);
         const setB = new Set(b);
 
-        // Iterate over setA and check if any element exists in setB
         for (let value of setA) {
             if (setB.has(value)) {
-                return true; // Found a common value
+                return true;
             }
         }
-        return false; // No common values found
+        return false;
     }
 
     const checkActive = (route: string, match = false) => {

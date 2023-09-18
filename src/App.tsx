@@ -21,7 +21,7 @@ import {
   SchoolHome,
   SchoolStudents,
   SchoolTeachers,
-  SchoolSubjects
+  SchoolSubjects,
 } from "./pages/admin";
 
 import StudentProfile from './pages/admin/studentProfile';

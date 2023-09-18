@@ -9,6 +9,7 @@ import chevronImage from '../../../assets/icons/chevron-down.svg';
 import { TMenuProps } from "../../menu/menu";
 import Popup from "reactjs-popup";
 import { useState } from "react";
+import ExportCSVModal from "../../exportCSVModal/exportCSVModal";
 
 
 function DropDownButton({ className, values }: { className?: string, values: TMenuProps[] }) {
@@ -47,6 +48,7 @@ function DropDownButton({ className, values }: { className?: string, values: TMe
 }
 
 export default function WeeklyReport(): JSX.Element {
+    const [ modal, setModal ] = useState<boolean>(false);
     const reports = [
         { title: "Schools", icon: schoolImage, value: 11, percent: 5 },
         { title: "Freelancers", icon: freelancerImage, value: 9, percent: 2 },
@@ -69,25 +71,19 @@ export default function WeeklyReport(): JSX.Element {
         { id: 3, name: 'Monthly Report' }
     ];
 
+    const scrollMargin = 277 + 24;
+    const max = 400;
+
     const [units, setUnits] = useState(0);
 
-    const scrollLeft = () => {
-        if (units < 0){
-            setUnits((units) => units + (277 + 24));
-        }
-    }
-    const scrollRight = () => {
-        if (units >= -400)
-            setUnits((units) => units - (277 + 24));
-
-    }
     return (
         <>
+            <ExportCSVModal {...{modal, setModal}}/>
             <div className="mb-3 flex items-center justify-between">
                 <DropDownButton values={menuProps} />
                 <div className="flex items-center space-x-7">
-                    <Button>Export CSV</Button>
-                    <ScrollButton prevHandler={scrollLeft} nextHandler={scrollRight} />
+                    <Button handler={() => setModal(true)}>Export CSV</Button>
+                    <ScrollButton {...{max,units,setUnits,scrollMargin}} />
                 </div>
             </div>
             <div className="flex items-center overflow-hidden">

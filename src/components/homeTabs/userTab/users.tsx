@@ -4,7 +4,6 @@ import DoughnutChart from "./doughnutChart";
 import PieChart, { TPiechartDataProps } from "./pieChart";
 
 export default function Users() {
-
     const analyticsData: TUserAnalyticsProps = {
         Schools: 52,
         Teachers: 1000,
@@ -12,7 +11,6 @@ export default function Users() {
         Students: 1500,
         Freelancers: 30
     }
-
     const pieChartData: TPiechartDataProps[] = [
         { x: 'schools', y: 96 },
         { x: 'students', y: 43 },

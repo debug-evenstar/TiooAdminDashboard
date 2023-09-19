@@ -9,6 +9,7 @@ import { TLibraryMaterials, setLibraryMaterials, setLibraryReload } from "../../
 import { RootState } from "../../redux/store";
 import Popup from "reactjs-popup";
 import { notify } from "../notification/notification";
+import SelectClassModal from "../../pages/admin/library/components/selectClassModal";
 
 type TMaterialCardItem = {
   id: number,
@@ -25,10 +26,14 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<boolean>(false);
+  const [ classModal, setClassModal ] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const viewLessonButton = () => {
+    setClassModal(true);
+    return;
     navigate(`view/${materialProps.id}`, { state: materialProps });
   }
 
@@ -46,6 +51,8 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
     <>
       <AddLibraryLesson {...{ modal, setModal }} subjectId={materialProps.id} />
       <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{materialProps}} tabId={materialProps.tab}/>
+      <SelectClassModal modal={classModal} setModal={setClassModal} subjectId={1}/>
+
       <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
           <div className="flex justify-between relative">
@@ -90,7 +97,6 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
 }
 
 export default function LibraryTab({ tab }: any) {
-
 
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
   const materials = useSelector((state: RootState) => state.praise.library.materials);

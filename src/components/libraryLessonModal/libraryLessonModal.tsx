@@ -69,7 +69,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
                 </div>
             </div>
             {active &&
-                <div className="bg-white absolute p-4 border shadow w-[21.9rem] z-[50]">
+                <div className="bg-white relative p-4 border shadow w-[21.9rem] z-[50]">
                     <ul className="">
                         {
                             options.map((option, index) => (
@@ -120,9 +120,6 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
     //     }
     // }, []);
-
-
-
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let { name, value } = e.target;

@@ -19,7 +19,7 @@ interface Props {
   passId?: any;
 }
 const GeneratingLesson: FC<Props> = ({ id, close, passId }) => {
-  const userInfo = useSelector((state: any) => state.auth.userInformation);
+  const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
   const dispatch = useDispatch()
   const [isBusy, setIsBusy] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -28,8 +28,8 @@ const GeneratingLesson: FC<Props> = ({ id, close, passId }) => {
   const [lessonGroups, setLessonGroups] = useState<any>();
   const navigate = useNavigate();
   const config = configure(userInfo.token);
-  const lesson = useSelector((state: any) => state.lesson.generateData);
-  const classes = useSelector((state: any) => state.lesson.lessonGroup);
+  const lesson = useSelector((state: any) => state.gods.lesson.generateData);
+  const classes = useSelector((state: any) => state.gods.lesson.lessonGroup);
   const navToLesson = () => {
     navigate(`/lessons/note/${lessonId}`);
   };

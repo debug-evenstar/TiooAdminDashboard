@@ -54,7 +54,7 @@ export default function Teachers() {
 
   const dispatch = useDispatch();
 
-  const teachers = useSelector((state: RootState) => state.teacher.teachers);
+  const teachers = useSelector((state: RootState) => state.praise.teacher.teachers);
 
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'

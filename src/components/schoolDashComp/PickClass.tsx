@@ -10,7 +10,7 @@ interface Props {
   close: () => void;
 }
 const PickClass: FC<Props> = ({ id, close }) => {
-  const activeId = useAppSelector((state: any) => state.school.activeSchool.id);
+  const activeId = useAppSelector((state: any) => state.praise.school.activeSchool.id);
   const [parsedClass, setParsedClass] = useState<any>([]);
   const [selectedClass, setSelectedClass] = useState("");
   const navigate = useNavigate()

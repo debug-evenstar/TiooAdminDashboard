@@ -32,7 +32,7 @@ export type TSchoolsChecklistProps = {
 export default function SchoolsChecklist({ selection, setSelection, onApply, className, close }: { className?: string, onApply: () => void, selection: number[], setSelection: any, close: (state: boolean) => void }) {
 
     const dispatch = useDispatch();
-    const schools = useSelector((state: RootState) => state.school.schools);
+    const schools = useSelector((state: RootState) => state.praise.school.schools);
 
     const [searchInput, setSearchInput] = useState<string>('');
 

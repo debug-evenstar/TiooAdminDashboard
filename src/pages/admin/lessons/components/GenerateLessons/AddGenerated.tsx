@@ -23,7 +23,7 @@ const [objectives, setObjectives] = useState('')
   const [getTerm, setGetTerm] = useState<any[]>();
   const [term, setTerm] = useState<number>();
   const schoolInfo = useSelector(
-    (state: any) => state.school.schoolManagementInfo
+    (state: any) => state.gods.school.schoolManagementInfo
   );
     // lesson duration
   const [mins, setMins] = useState<number>(15)

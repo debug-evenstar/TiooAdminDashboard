@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import Tabs from "../../../../components/Tabs";
 import UploadLessonIndex from "./UploadLesson";
 import GenerateLessons from "./GenerateLessons";

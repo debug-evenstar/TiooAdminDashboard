@@ -8,7 +8,7 @@ interface Props {
   id: any;
 }
 const ThirdUpload: FC<Props> = ({ id }) => {
-  const subjectId = useSelector((state: any) => state.lesson.uploadClass.id);
+  const subjectId = useSelector((state: any) => state.gods.lesson.uploadClass.id);
   const navigate = useNavigate();
   const navToLesson = () => {
     navigate(`/lessons/${id}/${subjectId}`);

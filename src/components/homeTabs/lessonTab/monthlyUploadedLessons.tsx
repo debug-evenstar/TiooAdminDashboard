@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ExportMenuBtn from "../../exportMenuBtn/exportMenuBtn";
 import { TMenuProps } from "../../menu/menu";
 import ScrollButton from "../../scrollButtons/scrollButtons";
@@ -54,17 +55,22 @@ export default function MonthlyUploadedLessons() {
         { id: 1, name: 'Lessons Uncompleted' },
     ];
 
+    const [units,setUnits] = useState<number>(0)
+    const scrollMargin = 320 + 24;
+    const max = 600;
+
+
     return (
         <div className="mt-12">
             <div className="flex items-center justify-between">
                 <h1 className="text-[24px]">Monthly Uploaded Lessons</h1>
                 <div className="flex items-center space-x-6">
                     <ExportMenuBtn entries={exportMenuEntries}>Export CSV</ExportMenuBtn>
-                    <ScrollButton />
+                    <ScrollButton max={max} scrollMargin={scrollMargin} {...{units, setUnits}} />
                 </div>
             </div>
             <div className="flex items-center py-2 w-full overflow-hidden">
-                <div className="flex mt-4 space-x-5 justify-between">
+                <div className="flex mt-4 space-x-5 duration-300 justify-between"  style={{ transform: `translateX(${units}px)` }}>
                     {
                         data.map((props, index) => (
                             <LessonCard key={index} {...props} gradient={gradients[index]} />

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import axiosInstance from "../../services/api";
 import { notify } from "../notification/notification";
 import { setLibraryReload } from "../../redux/slices/library";
+import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 
 
 type classOptionProps = {
@@ -18,12 +19,27 @@ type TLibraryModalError = {
   age?: string;
   description?: string;
   file?: string;
+  category?: string;
 }
 
 
 type TOptionProps = {
   id: number, name: number | string,
 }
+const categoryOptions = [
+  {id: 1, name: 'Mathematics'},
+  {id: 2, name: 'English'},
+  {id: 3, name: 'Basic Science'},
+  {id: 4, name: 'Quantitative Reasoning'},
+  {id: 5, name: 'Verbal Reasoning'},
+  {id: 6, name: 'CRK'},
+  {id: 7, name: 'History'},
+  {id: 8, name: 'Civic Education'},
+  {id: 9, name: 'Security'},
+  {id: 10, name: 'Business Studies'},
+  {id: 11, name: 'Visual Arts'},
+  {id: 12, name: 'Geography'},
+]
 
 function OptionsMenu({ selection, setSelection, options, variant }: { variant?: boolean, selection: number[], setSelection: any, options: TOptionProps[] }) {
   const [active, setActive] = useState(false);
@@ -41,12 +57,16 @@ function OptionsMenu({ selection, setSelection, options, variant }: { variant?: 
     }
   }
 
+  const min = Math.min(...selection);
+  const minName = options?.find((i: any) => i.id == min)?.name;
+  const max = Math.max(...selection);
+  const maxName = options?.find((i: any) => i.id == max)?.name;
   return (
     <>
       <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center">
         {
           selection.length > 0 && !variant?
-            <p className="text-xs">{Math.min(...selection) + ' - ' + Math.max(...selection)}</p>
+            <p className="text-xs">{minName + ' - ' + maxName}</p>
             : <p></p>
         }
         <div
@@ -80,9 +100,10 @@ function OptionsMenu({ selection, setSelection, options, variant }: { variant?: 
 const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 
-export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
+export default function AddLibaryMaterial({materialProps, tabId, modal, setModal }: { materialProps?: any,tabId: number, modal: boolean, setModal: (state: boolean) => void }) {
 
   const [klass, setClass] = useState<number[]>([]);
+  const [category, setCategory ] = useState<number>(0);
   const [age, setAge] = useState<number[]>([]);
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -96,6 +117,21 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
   });
 
   useEffect(() => {
+
+    if(materialProps){
+      console.log(materialProps);
+      setFormData({
+        name: materialProps.naming,
+        description: materialProps.description,
+      })
+      
+      setAge(materialProps.ages);
+      // setClass(materialProps.class);
+      // setCategory(materialProps.category);
+    }
+    
+
+
     axiosInstance.get('https://api.hellotioo.com/tio/classes')
       .then((response) => {
         setClassOptions(response.data.data);
@@ -117,8 +153,6 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
     })
   }
 
-
-
   const validate = () => {
     const newErrors: TLibraryModalError = {};
     if (!formData.name || formData.name.length == 0)
@@ -129,6 +163,9 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
 
     if (age.length == 0)
       newErrors.age = "Please enter a valid age ";
+
+    if(category == 0)
+      newErrors.category = "Please select a category";
 
     if (formData.description == '')
       newErrors.description = "Please fill in a description";
@@ -142,6 +179,7 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
       class: klass,
       description: formData.description,
       ages: age,
+      tab: tabId
     }
 
     axiosInstance.post('/library/subject', payload)
@@ -170,10 +208,10 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
   }
 
   return (
-    <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
+    <div className={`fixed text-primary z-[1000] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
       <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[517px] w-[380px] mx-auto `}>
         <div className="p-2 border-b px-4 flex items-center justify-between">
-          <h1>Add Lesson Material</h1>
+          <h1>{materialProps? 'Update':'Add'} Lesson Material</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
         </div>
         <div onSubmit={handleSubmit}>
@@ -188,6 +226,11 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
               <label htmlFor="" className="text-sm">Class</label>
               <OptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, name: item.naming }))} setSelection={setClass} />
               <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
+            </div>
+            <div className="text-sm mb-3">
+              <label htmlFor="" className="text-sm">Category</label>
+              <SingleOptionsMenu selection={category} options={categoryOptions.map((item) => ({ id: item.id, value: item.name }))} setSelection={setCategory} />
+              <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
             </div>
 
             <div className="text-sm mb-3">
@@ -212,7 +255,7 @@ export default function AddLibaryMaterial({ modal, setModal }: { modal: boolean,
                   <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
                   :
                   <span>
-                    Create
+                    { materialProps? 'Update': 'Create'}
                   </span>
               }
             </button>

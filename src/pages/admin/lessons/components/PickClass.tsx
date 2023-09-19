@@ -4,16 +4,17 @@ import { PrimaryButton } from "../../../../components/Buttons";
 import { configure } from "../../../../services/config";
 import { useSelector } from "react-redux";
 import { getAllSubjectsClass, getLessonClass } from "../../../../services/authServices";
-import { RadioSelect } from "../../../../components/RadioSelectField";
+// import { RadioSelect } from "../../../../components/RadioSelectField";
 import { useNavigate } from "react-router-dom";
 import CenterModal from "../../../../components/CenterModal";
 import DiscardWarning from "../../../../components/DiscardWarning";
+// import axiosInstance from "../../../../services/api";
 interface Props {
   id: number;
   close: () => void;
 }
 const PickClass: FC<Props> = ({ id, close }) => {
-  const userInfo = useSelector((state: any) => state.auth.userInformation);
+  const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
   const config = configure(userInfo.token);
   const [parsedClass, setParsedClass] = useState<any>([]);
   const [selectedClass, setSelectedClass] = useState("");
@@ -22,6 +23,7 @@ const PickClass: FC<Props> = ({ id, close }) => {
     try {
       // const val = await getAllSubjectsClass(id, config);
       const val = await getLessonClass(id, config)
+      // const val = await axiosInstance.get('')
       setParsedClass(val.data.data);
     } catch (error: any) {}
   };

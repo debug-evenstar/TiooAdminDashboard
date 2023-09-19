@@ -73,8 +73,8 @@ function ClassCard({ active, onClick, name }: { active: boolean, onClick?: any, 
 }
 function Classes({ currentClass, setCurrentClass }: { currentClass: number, setCurrentClass: any }) {
     const [classSelection, setClassSelection] = useState<TLibraryClass[]>([]);
-    const lessons = useSelector((state: RootState) => state.library.lessons);
-    const classes = useSelector((state: RootState) => state.library.classes);
+    const lessons = useSelector((state: RootState) => state.praise.library.lessons);
+    const classes = useSelector((state: RootState) => state.praise.library.classes);
 
     // const dispatch = useDispatch();
 
@@ -108,7 +108,7 @@ function Classes({ currentClass, setCurrentClass }: { currentClass: number, setC
 function AllLessonsCard({ classId }: { classId: number }) {
     const [active, setActive] = useState<boolean>(true);
     const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
-    const lessons = useSelector((state: RootState) => state.library.lessons);
+    const lessons = useSelector((state: RootState) => state.praise.library.lessons);
     const [subjectId, setSubjectId] = useState<number>(0);
     const [modal, setModal] = useState<boolean>(false);
     const [data, setData] = useState<any>();

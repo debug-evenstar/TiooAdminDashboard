@@ -35,6 +35,9 @@ import AdminLayoutExt from "./layout/school";
 import SchoolProfile from "./pages/admin/schoolProfile";
 import TeacherProfile from "./pages/admin/teacherProfile";
 import FreelancerProfile from "./pages/admin/freelancerProfile";
+import Lessons from './pages/admin/lessons/index';
+import { ROUTES } from './global/routes';
+import UploadedLesson from "./pages/admin/lessons/uploaded-lessons";
 
 function App() {
   return (
@@ -66,8 +69,16 @@ function App() {
             <Route path="students" element={<Students />} />
             <Route path="students/profile/:id" element={<StudentProfile />} />
 
-            <Route path="library" element={<Library />}></Route>
-            <Route path="library/view/:id" element={<ViewLesson />} />
+
+
+
+            <Route path="library">
+              <Route path="/library" element={<Library />}/>
+             <Route path={'/library/'+ROUTES.LESSONS} element={<Lessons />} />
+             <Route path={'/library/'+ROUTES.UPLOADED_LESSONS} element={<UploadedLesson />} />
+       
+            {/* <Route path="library/view/:id" element={<ViewLesson />} /> */}
+            </Route>
 
             <Route path="settings" element={<Settings />}>
               <Route index path="pricing" element={<PricingTab />} />

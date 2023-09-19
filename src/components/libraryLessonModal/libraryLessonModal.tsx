@@ -4,6 +4,7 @@ import UploadFile from "../updateFile/uploadFile";
 import { notify } from "../notification/notification";
 import { useDispatch } from "react-redux";
 import { setLibraryReload } from "../../redux/slices/library";
+import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 
 
 // type classOptionProps = {
@@ -20,6 +21,7 @@ type TLibraryModalError = {
     age?: string;
     objective?: string;
     file?: string;
+    chapter?: string;
 }
 
 
@@ -85,8 +87,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number[]
 }
 
 const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
-
-
+const chapterOptions = [...Array(20)].map(((_, index) => ({ id: index + 1, value: (index + 1).toString() })));
 
 
 export default function AddLibraryLesson({ modal, setModal, subjectId, classId, variant}: { subjectId?: number, classId?: number, variant?: boolean, modal: boolean, setModal: (state: boolean) => void }) {
@@ -96,6 +97,7 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
     const [errors, setErrors] = useState<TLibraryModalError>({});
     const [loading, setLoading] = useState<boolean>(false);
     // const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
+    const [chapter, setChapter ] = useState<number>(0);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const dispatch = useDispatch();
@@ -148,7 +150,9 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
         if (!selectedFile)
             newErrors.file = "please select a file";
-
+        if (chapter == 0){
+            newErrors.chapter = "please select a chapter";
+        }
 
         return newErrors;
     }
@@ -221,18 +225,18 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                             <input type="text" name="title" value={formData.title} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
                             <p className="text-red-500 text-xs mt-1">{errors?.title}</p>
                         </div>
-                        {/* {
+                        {
                             !variant && (
                                 <>
                                     <div className="text-sm mb-3">
-                                        <label htmlFor="" className="text-sm">Category</label>
+                                        <label htmlFor="" className="text-sm">Chapter</label>
                                         
-                                        <OptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, name: item.naming }))} setSelection={setClass} />
-                                        <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
+                                        <SingleOptionsMenu selection={chapter} options={chapterOptions} setSelection={setChapter} />
+                                        <p className="text-red-500 text-xs mt-1">{errors?.chapter}</p>
                                     </div>
                                 </>
                             )
-                        } */}
+                        }
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Age</label>
                             <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} />

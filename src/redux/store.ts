@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import userReducer from './slices/user';
 import pricingReducer from './slices/pricing';
@@ -12,19 +12,33 @@ import pricingExceptionReducer from './slices/pricingException';
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import libraryReducer from './slices/library';
 
+import authSlice from "../store/authSlice";
+import classSlice from "../store/classSlice";
+import schoolSlice from "../store/schoolSlice";
+import lessonSlice from "../store/lessonSlice";
+
+
 const store: ToolkitStore = configureStore({
-    reducer: {
-        user: userReducer,
-        pricing: pricingReducer,
-        coupon: couponReducer,
-        admin: adminReducer,
-        school: schoolReducer,
-        teacher: teacherReducer,
-        freelancer: freelanceReducer,
-        student: studentReducer,
-        pricingException: pricingExceptionReducer,
-        library: libraryReducer,
-    }
+    reducer: combineReducers({
+        praise: combineReducers({
+            user: userReducer,
+            pricing: pricingReducer,
+            coupon: couponReducer,
+            admin: adminReducer,
+            school: schoolReducer,
+            teacher: teacherReducer,
+            freelancer: freelanceReducer,
+            student: studentReducer,
+            pricingException: pricingExceptionReducer,
+            library: libraryReducer,
+        }),
+        gods: combineReducers( {
+            auth: authSlice.reducer,
+            class: classSlice.reducer,
+            school: schoolSlice.reducer,
+            lesson: lessonSlice.reducer
+        })
+    })
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -21,8 +21,8 @@ interface Props {
   generate: any
 }
 const FirstGenerate: FC<Props> = ({ id, generate }) => {
-  const userInfo = useSelector((state: any) => state.auth.userInformation);
-  const schoolInfo = useSelector((state: any) => state.school.schoolManagementInfo);
+  const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
+  const schoolInfo = useSelector((state: any) => state.gods.school.schoolManagementInfo);
   const [getTerm, setGetTerm] = useState<any[]>()
   const [objectives, setObjectives] = useState('')
   const [addObjectives, setAddObjectives] = useState('')

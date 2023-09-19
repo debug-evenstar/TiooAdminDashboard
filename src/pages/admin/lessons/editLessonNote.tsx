@@ -22,8 +22,8 @@ const EditLessonNote = () => {
   const [lesson, setLesson] = useState<any>()
   const [currentVal, setCurrentVal] = useState('')
   const [fullLoading, setFullLoading] = useState(false)
-  const backLesson = useSelector((state:any) => state.lesson.generatedNote.past)
-  const forwardLesson = useSelector((state:any) => state.lesson.generatedNote.forward)
+  const backLesson = useSelector((state:any) => state.gods.lesson.generatedNote.past)
+  const forwardLesson = useSelector((state:any) => state.gods.lesson.generatedNote.forward)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const fetchLessonNote = (id:any) => {

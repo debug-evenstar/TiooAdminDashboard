@@ -13,8 +13,8 @@ interface Props {
     next: () => void
 }
 const FirstUploadForm:FC<Props> = ({id, next}) => {
-  const classInfo = useSelector((state: any) => state.class.classInformation);
-  const userInfo = useSelector((state: any) => state.auth.userInformation);
+  // const classInfo = useSelector((state: any) => state.class.classInformation);
+  const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
   const dispatch = useDispatch()
   const [selectedClass, setSelectedClass] = useState('')
   const [classArms, setClassArms] = useState<any>([]);

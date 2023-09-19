@@ -40,10 +40,10 @@
 
 const exportOptions: any = [
     {id: 0, name: 'Schools'},
-    {id: 0, name: 'Freelancers'},
-    {id: 0, name: 'Teachers'},
-    {id: 0, name: 'Students'},
-    {id: 0, name: 'Hybrid'},
+    {id: 1, name: 'Freelancers'},
+    {id: 2, name: 'Teachers'},
+    {id: 3, name: 'Students'},
+    {id: 4, name: 'Hybrid'},
 ];
 
 export default function ExportCSVModal({ modal, setModal }: { modal?: boolean, setModal?: any }) {

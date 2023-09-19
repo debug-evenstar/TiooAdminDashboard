@@ -7,6 +7,7 @@ export type TLibraryMaterials = {
     library: boolean,
     SchoolManagementId: number,
     lessonCount: number,
+    tab: number;
 }
 
 export type TLibraryLesson = {

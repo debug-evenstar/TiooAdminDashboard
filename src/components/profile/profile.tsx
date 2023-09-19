@@ -45,7 +45,7 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
 }
 
 export default function Profile() {
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.praise.user.user);
     const [active, setActive] = useState<boolean>(false);
 
     return (

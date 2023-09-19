@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAdminReload, setAdmins } from "../../../redux/slices/admin";
 import { RootState } from "../../../redux/store";
 import { notify } from "../../../components/notification/notification";
+import SingleOptionsMenu from "../../../components/singleOptionsMenu/singleOptionsMenu";
 
 
 
@@ -73,39 +74,6 @@ function CheckList({ data, search, selection, setSelection }: { selection: numbe
     );
 }
 
-function SingleOptionsMenu({ options, selection, setSelection }: { selection: number, setSelection: (s: number) => void, options: TCheckListProps[] }) {
-    const [active, setActive] = useState(false);
-
-    const handleSelection = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = Number.parseInt(e.target.value);
-        setSelection(value);
-    }
-
-    return (
-        <>
-            <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-full px-3 py-2 border flex justify-end">
-                <div
-                    className={`text-xs duration-300  w-4 h-4 flex items-center justify-center
-                cursor-pointer ${!active ? "rotate-180" : ""}`}
-                >
-                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" clipRule="evenodd" d="M13.7071 7.70711C13.3166 8.09763 12.6834 8.09763 12.2929 7.70711L7 2.41421L1.70711 7.70711C1.31658 8.09763 0.683417 8.09763 0.292893 7.70711C-0.0976315 7.31658 -0.0976316 6.68342 0.292893 6.29289L6.29289 0.292894C6.68342 -0.0976303 7.31658 -0.0976304 7.70711 0.292894L13.7071 6.29289C14.0976 6.68342 14.0976 7.31658 13.7071 7.70711Z" fill="#030036" fillOpacity="0.74" />
-                    </svg>
-
-                </div>
-            </div>
-            {
-                active &&
-                options.map(({ id, value }: TCheckListProps) => (
-                    <li key={id} className="my-2 rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
-                        <input className="outline-none cursor-pointer" checked={selection === id} onChange={handleSelection} type="checkbox" value={id} />
-                        <span className="text-gray-500">{value}</span>
-                    </li>
-                ))
-            }
-        </>
-    );
-}
 
 
 function OptionsMenu({ options, search = false, selection, setSelection }: { selection: number[], setSelection: (s: number[]) => void, search?: boolean, options: any }) {
@@ -153,12 +121,12 @@ type TAccessOptionsProps = {
 
 function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: boolean) => void }) {
 
-    const [ accessOptions, setAccessOptions ] = useState<TCheckListProps[]>();
+    const [accessOptions, setAccessOptions] = useState<TCheckListProps[]>();
 
     const [fullname, setFullname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [role, setRole] = useState<number>(1);
-    const [position,setPosition] = useState<string>('');
+    const [position, setPosition] = useState<string>('');
     const [permissions, setPermissions] = useState<number[]>([]);
     const [errors, setErrors] = useState<UserFormError>({});
 
@@ -174,9 +142,9 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
                         value: item.name,
                         id: item.id
                     })
-                ))
+                    ))
             });
-    },[]);
+    }, []);
 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>, setter: (s: string) => void) => {
@@ -206,7 +174,7 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
         const payload = {
             name: fullname,
             role: statusOptions.map((item) => {
-                if(item.id === role)
+                if (item.id === role)
                     return item.value;
             })[0],
             position: role,
@@ -357,7 +325,7 @@ function UserAccordion({ data }: { data: TUserLevel }) {
                     <img className="w-[48px] h-[48px]" src={studentImage} alt="" />
                     <div className="flex flex-col space-y-1 justify-between">
                         <h1 className="text-primary text-sm font-[500]">{data.fullname}</h1>
-                        <p className="text-gray-400 text-xs">{data.email}</p>
+                        <p className="text-gray-500 text-xs">{data.email}</p>
                     </div>
                 </div>
                 <h1 className="text-primary w-[15rem] ">{data.role}</h1>
@@ -377,11 +345,11 @@ function UserAccordion({ data }: { data: TUserLevel }) {
                 <div className="border-t pt-4 mt-3 ml-16 text-sm duration-300 flex justify-between items-end">
                     <div className="">
                         <div className="mb-2">
-                            <span className="text-gray-400">Position: </span>
+                            <span className="text-gray-500">Position: </span>
                             <span className="text-primary">{data.role}</span>
                         </div>
                         <div className="mb-2 w-[20rem] flex space-x-2">
-                            <div className="text-gray-400">Permission: </div>
+                            <div className="text-gray-500">Permission: </div>
                             <div className="flex flex-col text-sm text-primary">
                                 {data.permissions.map((name, index) => (
                                     <span key={index}>{name}</span>
@@ -413,8 +381,8 @@ function UserAccordion({ data }: { data: TUserLevel }) {
 export default function UserLevels() {
     const [modal, setModal] = useState<boolean>(false);
 
-    const admins = useSelector((state: RootState) => state.admin.users);
-    const reload = useSelector((state: RootState) => state.admin.reload);
+    const admins = useSelector((state: RootState) => state.praise.admin.users);
+    const reload = useSelector((state: RootState) => state.praise.admin.reload);
     const dispatch = useDispatch();
     const toggleModal = () => setModal(!modal);
 

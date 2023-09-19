@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import DashLayout from "../../../layouts/DashLayout";
+import { useState, useEffect } from "react";
 import ChapterContainer from "./components/LessonComp/ChapterContainer";
 import LessonClasses from "./components/LessonComp/LessonClasses";
 import { useSelector } from "react-redux";
@@ -8,6 +7,7 @@ import { getSubjectLesson } from "../../../services/authServices";
 import { alertActions } from "../../../components/alertActions";
 import { useParams } from "react-router-dom";
 import { getSubjectWithLessonCount } from "../../../api";
+import Header from "../../../components/header";
 
 const UploadedLesson = () => {
   const { id, classid } = useParams();
@@ -19,7 +19,7 @@ const UploadedLesson = () => {
   const [currentId, setCurrentId] = useState("");
   const [allSubject, setAllSubject] = useState<any[]>([]);
   const [changeSubjectId, setChangeSubjectId] = useState('')
-  const userInfo = useSelector((state: any) => state.auth.userInformation);
+  const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
   const config = configure(userInfo.token);
   const fetchClassLesson = async () => {
     if (!userInfo.token) {
@@ -106,8 +106,8 @@ const UploadedLesson = () => {
 
   return (
     <>
-      <DashLayout title="Lessons">
-        <div className="w-full">
+      <Header title="Library lesson"/>
+        <div className="w-full px-12">
           <div className="w-full flex items-start justify-start flex-col">
             <div
               className={`flex items-start justify-start flex-col mt-[20px] w-full`}
@@ -149,7 +149,6 @@ const UploadedLesson = () => {
             </div>
           </div>
         </div>
-      </DashLayout>
     </>
   );
 };

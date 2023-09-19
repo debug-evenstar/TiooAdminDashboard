@@ -14,7 +14,7 @@ import { TFreelancersProps, setFreelancers } from "../../redux/slices/freelancer
 
 
 
-function FreelancerContextMenu({selectedId}: any): JSX.Element {
+function FreelancerContextMenu({ selectedId }: any): JSX.Element {
   const menuData: { route: string, name: string }[] = [
     { route: `/freelancers/profile/${selectedId}`, name: 'View Freelancer Profile' },
     // { route: `/students/${selectedId}/home`, name: 'Enter Student Dashboard' },
@@ -55,7 +55,7 @@ export default function Freelancers() {
 
   const dispatch = useDispatch();
 
-  const freelancers = useSelector((state: RootState) => state.freelancer.freelancers);
+  const freelancers = useSelector((state: RootState) => state.praise.freelancer.freelancers);
 
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'
@@ -80,9 +80,9 @@ export default function Freelancers() {
     setFreelancersData(parsedList);
     setRows(parsedList);
   }
-  
+
   useEffect(() => {
-    
+
     updateFreelancers(freelancers);
 
     axiosInstance.get('/freelancer')
@@ -110,14 +110,14 @@ export default function Freelancers() {
             </div>
             :
             <PaginatedList
-              menu={<FreelancerContextMenu  selectedId={selectedRow}/>}
+              menu={<FreelancerContextMenu selectedId={selectedRow} />}
               dataPerPage={10}
               data={rows}
               selectRow={getSelectedFreelancer}
             />
           }
         </div>
-        <div className="py-20"></div> 
+        <div className="py-20"></div>
       </div>
     </div>)
 }

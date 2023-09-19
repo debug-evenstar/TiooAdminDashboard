@@ -77,6 +77,7 @@ export const pricingSlice = createSlice({
         },
 
         clearPricing: (state) => {
+            // state = initialState;
             state.schools = initialState.schools;
             state.freelancers = initialState.freelancers;
             state.students = initialState.students;

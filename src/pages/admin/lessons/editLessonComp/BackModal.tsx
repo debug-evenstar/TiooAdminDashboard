@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../components/Buttons";
+import { PrimaryButton } from "../components/Buttons";
 
 interface Props{
     close: () => void

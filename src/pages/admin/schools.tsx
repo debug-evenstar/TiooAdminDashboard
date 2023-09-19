@@ -58,7 +58,7 @@ export default function Schools() {
 
   const dispatch = useDispatch();
 
-  const schools = useSelector((state: RootState) => state.school.schools);
+  const schools = useSelector((state: RootState) => state.praise.school.schools);
 
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'
@@ -83,9 +83,9 @@ export default function Schools() {
     setSchoolsData(parsedList);
     setRows(parsedList);
   }
-  
+
   useEffect(() => {
-    
+
     updateSchools(schools);
 
     axiosInstance.get('/schools')

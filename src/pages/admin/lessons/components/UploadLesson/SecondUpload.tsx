@@ -20,10 +20,10 @@ interface Props {
     next: () => void;
 }
 const SecondUploadForm: FC<Props> = ({ id, next }) => {
-    const userInfo = useSelector((state: any) => state.auth.userInformation);
-    const classInfo = useSelector((state: any) => state.lesson.uploadClass);
+    const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
+    const classInfo = useSelector((state: any) => state.gods.lesson.uploadClass);
     const schoolInfo = useSelector(
-        (state: any) => state.school.schoolManagementInfo
+        (state: any) => state.gods.school.schoolManagementInfo
     );
     const dispatch = useDispatch();
     const [loading, setloading] = useState(false);

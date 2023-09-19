@@ -11,7 +11,7 @@ import { TStudentsProps, setStudents } from "../../redux/slices/student";
 import axiosInstance from "../../services/api";
 import { Load } from "../../components/loader/loader";
 
-function StudentContextMenu({selectedId}: any): JSX.Element {
+function StudentContextMenu({ selectedId }: any): JSX.Element {
   // custom school context menu for each school item
   const menuData: { route: string, name: string }[] = [
     { route: `/students/profile/${selectedId}`, name: 'View Student Profile' },
@@ -54,7 +54,7 @@ export default function Students() {
 
   const dispatch = useDispatch();
 
-  const students = useSelector((state: RootState) => state.student.students);
+  const students = useSelector((state: RootState) => state.praise.student.students);
 
   const panels: string[] = [
     'All', 'Recently Joined', 'Active'
@@ -79,9 +79,9 @@ export default function Students() {
     setStudentsData(parsedList);
     setRows(parsedList);
   }
-  
+
   useEffect(() => {
-    
+
     updateStudents(students);
 
     console.log("getting students again");

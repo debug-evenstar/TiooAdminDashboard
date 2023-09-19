@@ -1,9 +1,8 @@
-import { Suspense,useState } from "react";
+import { Suspense, useState } from "react";
 import Header from "../../../components/header";
 
-import LibrarySchoolsCurricula from "../../../components/librarySchools/librarySchools";
-// import LibraryCoCurricula from "../../../components/libraryCocurricula/libraryCocurricula";
-// import LibraryGames from "../../../components/libraryGames/libraryGames";
+
+import LibraryTab from "../../../components/libraryTab/libraryTab";
 
 
 
@@ -19,13 +18,9 @@ export default function Library() {
 }
 
 const tabs: any[] = [
-  { name: "Schools Curricular", component: <LibrarySchoolsCurricula /> },
-  // { name: "Co-curricula content", component: <LibraryCoCurricula /> },
-  // { name: "Games", component: <LibraryGames /> },
-  { name: "Co-curricula content", component: <></> },
-  { name: "Games", component: <></> },
-
-
+  { name: "Schools Curricular", tabId: 0 },
+  { name: "Co-curricula content", tabId: 1 },
+  { name: "Games", tabId: 2 },
 ];
 
 function LibraryTabs() {
@@ -47,7 +42,9 @@ function LibraryTabs() {
       </ul>
       <div className="mt-14 text-gray-600 pr-10">
         <Suspense fallback={<h1>Loading</h1>}>
-          {tabs.map((tab, key) => (active === key ? <div key={key}>{tab.component}</div> : null))}
+          {tabs.map((tab: any, key) => (active === key ? <div key={key}>
+            <LibraryTab tab={tab} />
+          </div> : null))}
         </Suspense>
       </div>
 

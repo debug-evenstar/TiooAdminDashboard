@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import DashLayout from "../../../layouts/DashLayout";
 import LessonCard from "./components/LessonCard";
 import CenterModal from "../../../components/CenterModal";
@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { getSubjectWithLessonCount, getSubjects } from "../../../api";
 import ThirdUpload from "./components/UploadLesson/ThirdUpload";
 import GeneratingLesson from "./components/GenerateLessons/Generating";
+import Header from "../../../components/header";
 
 function Lessons() {
   // eslint-disable-next-line
@@ -16,7 +17,7 @@ function Lessons() {
    // eslint-disable-next-line
    const [loading, setLoading] = useState(false);
    const [item, setItem] = useState<any>();
-   const schoolManagement = useSelector((state: any) => state.school.schoolManagementInfo);
+   const schoolManagement = useSelector((state: any) => state.gods.school.schoolManagementInfo);
 
   const getAllSubjects = () => {
     // getSubjects(schoolManagement?.schoolManagementId)
@@ -57,15 +58,16 @@ const colors: string[] = [
   return (
     <>
         <div className="w-full mx-auto">
-          <div className="w-full flex items-start justify-start flex-col mt-[20px]">
+          <Header title="Library"/>
+          <div className="w-full flex items-start justify-start flex-col mt-[20px] px-6">
             <h3 className="font-inter font-medium text-[#030036] opacity-70 text-[22px]">
               Subjects
             </h3>
 
             <div className="mt-[32px] w-full grid grid-cols-3 gap-[24px]">
               {allsubject.map((item: any, index) => {
-                const colorIndex = index % colors.length;
-                const color = colors[colorIndex];
+                const colorIndex: number = index % colors.length;
+                const color: string = colors[colorIndex];
 
                 return (
                   <LessonCard

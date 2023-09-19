@@ -11,7 +11,7 @@ interface Props {
 }
 const DisplayText: FC<Props> = ({ data, lesson, getValue }) => {
   const [value, setValue] = useState("");
-  const val = useSelector((state: any) => state.lesson.generatedNote.current);
+  const val = useSelector((state: any) => state.gods.lesson.generatedNote.current);
   const [stop, setStop] = useState(false)
   useEffect(() => {
     if (val) {

@@ -10,7 +10,7 @@ const authSlice = createSlice({
     schoolid: "",
     token: "",
   },
-  
+
   reducers: {
     savetoken(state, action) {
       const data = action.payload;
@@ -28,7 +28,7 @@ const authSlice = createSlice({
     },
     saveSchoolInfo(state, action) {
       const data = action.payload;
-      state.schoolInformation = data;
+      state.praise.schoolInformation = data;
     },
     savecustomSchoolInfo(state, action) {
       const data = action.payload;

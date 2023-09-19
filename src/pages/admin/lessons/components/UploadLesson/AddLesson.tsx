@@ -17,9 +17,9 @@ interface Props {
   close: () => void;
 }
 const AddLessonUploadForm: FC<Props> = ({ id, next, close }) => {
-  const userInfo = useSelector((state: any) => state.auth.userInformation);
+  const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
   const schoolInfo = useSelector(
-    (state: any) => state.school.schoolManagementInfo
+    (state: any) => state.gods.school.schoolManagementInfo
   );
   const dispatch = useDispatch();
   const [loading, setloading] = useState(false);

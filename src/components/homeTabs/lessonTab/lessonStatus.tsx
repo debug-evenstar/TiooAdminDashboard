@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Button from "../../button/button";
 import ScrollButton from "../../scrollButtons/scrollButtons";
 
@@ -32,6 +33,9 @@ export default function LessonStatus({status,data}: {status: string,data: TLesso
         'bg-[#AE1E56]',
     ];
 
+    const [units,setUnits] = useState<number>(0)
+    const scrollMargin = 320 + 24;
+    const max = 600
 
     return (
         <div className="mt-10">
@@ -39,14 +43,15 @@ export default function LessonStatus({status,data}: {status: string,data: TLesso
                 <h1 className="text-[24px]">{status} Lessons</h1>
                 <div className="flex items-center space-x-6">
                     <Button>Export CSV</Button>
-                    <ScrollButton />
+                    <ScrollButton max={max} scrollMargin={scrollMargin} {...{units, setUnits}} />
+
                 </div>
             </div>
             <div className="flex items-center py-2 w-full overflow-hidden">
-                <div className="flex mt-4 w-fit space-x-7 justify-between">
+            <div className="flex mt-4 space-x-5 duration-300 justify-between"  style={{ transform: `translateX(${units}px)` }}>
                     {
                         data.map((props, index) => (
-                            <LessonCard key={index} color={colors[index]}{...props} />
+                            <LessonCard key={index} color={colors[index]} {...props} />
                         ))
                     }
                 </div>

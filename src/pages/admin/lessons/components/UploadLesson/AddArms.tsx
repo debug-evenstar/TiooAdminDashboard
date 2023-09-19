@@ -17,7 +17,7 @@ const EditLessonArms:FC<Props> = ({item, close, refetch}) => {
   
     const [isBusy, setIsBusy] = useState(false)
     const prev = item[0].ClassArms.map((item:any) => (item.id))
-    const userInfo = useSelector((state: any) => state.auth.userInformation);
+    const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
   const config = configure(userInfo.token);
   const [parsedClass, setParsedClass] = useState<any>([]);
   const [selectedClass, setSelectedClass] = useState<any[]>(prev);

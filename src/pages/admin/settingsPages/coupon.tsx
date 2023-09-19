@@ -274,8 +274,8 @@ function CouponMenuBtn({ id, data }: { data: TCouponProps, id: number }) {
 export default function CouponTab() {
   const [modal, setModal] = useState<boolean>(false);
 
-  const coupons = useSelector((state: RootState) => state.coupon.coupons);
-  const couponReload = useSelector((state: RootState) => state.coupon.reload);
+  const coupons = useSelector((state: RootState) => state.praise.coupon.coupons);
+  const couponReload = useSelector((state: RootState) => state.praise.coupon.reload);
 
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -337,10 +337,10 @@ export default function CouponTab() {
                 :
                 <div className="w-full h-[20rem] flex items-center justify-center">
                   {
-                    loading?
+                    loading ?
                       <div className="w-7 h-7 rounded-full border-[.2rem] border-gray-200 border-r-main animate-spin"></div>
                       :
-                      <span className="text-gray-400">No coupons available</span>
+                      <span className="text-gray-500">No coupons available</span>
                   }
                 </div>
             }

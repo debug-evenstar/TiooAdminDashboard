@@ -27,10 +27,10 @@ export function PricingSchoolsComponent() {
 
     const dispatch = useDispatch();
 
-    const teachers = useSelector((state: RootState) => state.pricing.schools.teachers);
-    const students = useSelector((state: RootState) => state.pricing.schools.students);
-    const schools = useSelector((state: RootState) => state.pricing.schools)
-    const total = useSelector((state: RootState) => state.pricing.schools.total);
+    const teachers = useSelector((state: RootState) => state.praise.pricing.schools.teachers);
+    const students = useSelector((state: RootState) => state.praise.pricing.schools.students);
+    const schools = useSelector((state: RootState) => state.praise.pricing.schools)
+    const total = useSelector((state: RootState) => state.praise.pricing.schools.total);
 
     const handleTeachers = (data: PriceState) => {
         dispatch(setSchoolsTeachers(data));
@@ -134,11 +134,11 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
     useEffect(() => {
         if (data.length > 0) {
             setPrices(data);
-            if(edit){
-                updatePrices(data[0]?.price.student,'student');
-                updatePrices(data[0]?.price.teacher,'teacher');
-                if(type != "Schools")
-                    updatePrices(data[0]?.price.student,'price');
+            if (edit) {
+                updatePrices(data[0]?.price.student, 'student');
+                updatePrices(data[0]?.price.teacher, 'teacher');
+                if (type != "Schools")
+                    updatePrices(data[0]?.price.student, 'price');
                 setActive(true);
             }
             setCurrent(data[0]);
@@ -286,17 +286,17 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
                             prices && current && (
                                 type === "Schools" ?
                                     <div className="mt-4">
-                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Teachers</label>
+                                        <label htmlFor="" className="text-xs text-gray-500 mb-4">Teachers</label>
                                         <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
-                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Students</label>
+                                        <label htmlFor="" className="text-xs text-gray-500 mb-4">Students</label>
                                         <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
-                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Total</label>
+                                        <label htmlFor="" className="text-xs text-gray-500 mb-4">Total</label>
                                         <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
 
                                     </div>
                                     :
                                     <div className="mt-4">
-                                        <label htmlFor="" className="text-xs text-gray-400 mb-4">Set Price</label>
+                                        <label htmlFor="" className="text-xs text-gray-500 mb-4">Set Price</label>
                                         <NairaInput className="py-1.5" name="price" value={getCurrentPrice().student.toLocaleString()} handler={handler} />
                                     </div>
                             )
@@ -353,7 +353,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
 
     const nameCondition = () => {
-        switch(type){
+        switch (type) {
             case "Schools":
                 // console.log(data)
                 return data.school_name;
@@ -389,7 +389,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
             <AddExceptionModal edit data={editData} {...{ type, modal, setModal }} />
             <div className="w-full p-3 px-4 rounded-[8px] bg-gray-100 flex items-center justify-between">
-                <h1 className="text-gray-400">{nameCondition()}</h1>
+                <h1 className="text-gray-500">{nameCondition()}</h1>
                 <div className="flex items-center space-x-6">
 
                     <div className="flex items-center">
@@ -424,15 +424,15 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
             {
                 active && data &&
                 <div className="p-4 flex items-center justify-between">
-                    <div className="text-gray-400">
+                    <div className="text-gray-500">
                         <h1>For Teachers</h1>
                         <h2 className="text-xl mt-2 text-primary">₦ {data.teachers_price.toLocaleString()}</h2>
                     </div>
-                    <div className="text-gray-400">
+                    <div className="text-gray-500">
                         <h1>For Students</h1>
                         <h2 className="text-xl mt-2 text-primary">₦ {data.student_price.toLocaleString()}</h2>
                     </div>
-                    <div className="text-gray-400">
+                    <div className="text-gray-500">
                         <h1>Total</h1>
                         <h2 className="text-xl mt-2 text-primary">₦ {(data.student_price + data.teachers_price).toLocaleString()}</h2>
                     </div>
@@ -444,9 +444,9 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
 
 function ExceptionsList({ type }: { type: string }) {
 
-    const studentsException = useSelector((state: RootState) => state.pricingException.students);
-    const schoolsException = useSelector((state: RootState) => state.pricingException.schools);
-    const freelancersException = useSelector((state: RootState) => state.pricingException.freelancers);
+    const studentsException = useSelector((state: RootState) => state.praise.pricingException.students);
+    const schoolsException = useSelector((state: RootState) => state.praise.pricingException.schools);
+    const freelancersException = useSelector((state: RootState) => state.praise.pricingException.freelancers);
 
     const condition = () => {
         switch (type) {
@@ -478,9 +478,9 @@ function ExceptionsList({ type }: { type: string }) {
 
 export function ExceptionsComponent({ type }: { type: string }) {
 
-    const schools = useSelector((state: RootState) => state.school.schools);
-    const freelancers = useSelector((state: RootState) => state.freelancer.freelancers);
-    const students = useSelector((state: RootState) => state.student.students);
+    const schools = useSelector((state: RootState) => state.praise.school.schools);
+    const freelancers = useSelector((state: RootState) => state.praise.freelancer.freelancers);
+    const students = useSelector((state: RootState) => state.praise.student.students);
 
     const [active, setActive] = useState(false);
     const [selection, setSelection] = useState<number[]>([]);
@@ -577,7 +577,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
 function StudentsTabComponent() {
     const [edit, setEdit] = useState(false);
 
-    const students = useSelector((state: RootState) => state.pricing.students);
+    const students = useSelector((state: RootState) => state.praise.pricing.students);
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
@@ -633,7 +633,7 @@ function StudentsTabComponent() {
 function FreelancersTabComponent() {
     const [edit, setEdit] = useState(false);
 
-    const freelancers = useSelector((state: RootState) => state.pricing.freelancers);
+    const freelancers = useSelector((state: RootState) => state.praise.pricing.freelancers);
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
@@ -695,7 +695,7 @@ const tabs: { name: string, component: JSX.Element }[] = [
 
 export default function PricingTab() {
 
-    const pricingReload = useSelector((state: RootState) => state.pricing.reload);
+    const pricingReload = useSelector((state: RootState) => state.praise.pricing.reload);
 
     const [active, setActive] = useState<number>(0)
 
@@ -772,7 +772,7 @@ export default function PricingTab() {
                         <li
                             key={key}
                             onClick={() => setActive(key)}
-                            className={`py-2 pb-3 duration-300 text-sm rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6] font-[500]" : "text-gray-400 border-white"}`}>
+                            className={`py-2 pb-3 duration-300 text-sm rounded-t hover:text-gray-500 hover:bg-[#5A51E618] cursor-pointer px-4  border-b-2 ${(key == active) ? " text-[#5A51E6] border-[#5A51E6] font-[500]" : "text-gray-500 border-white"}`}>
                             {tab.name}
                         </li>
                     ))

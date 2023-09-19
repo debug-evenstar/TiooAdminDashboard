@@ -19,12 +19,12 @@ interface Props{
 }
 const EditLessonHeader:FC<Props> = ({lesson, back, next, prev}) => {
   const { toggleModal, modalRef, isOpen } = useDisclosure();
-  const backLesson = useSelector((state:any) => state.lesson.generatedNote.past)
-  const current = useSelector((state:any) => state.lesson.generatedNote.current)
-  const forwardLesson = useSelector((state:any) => state.lesson.generatedNote.forward)
+  const backLesson = useSelector((state:any) => state.gods.lesson.generatedNote.past)
+  const current = useSelector((state:any) => state.gods.lesson.generatedNote.current)
+  const forwardLesson = useSelector((state:any) => state.gods.lesson.generatedNote.forward)
 
   const schoolname = useSelector(
-    (state: any) => state.auth.userInformation.school
+    (state: any) => state.gods.auth.userInformation.school
   );
   const truncateString = (str: string, maxLength: number) => {
     if (str.length <= maxLength) {

@@ -67,7 +67,8 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                 </Button>
               </MenuHandler>
               <MenuList>
-                {items.admin_status !== "Locked" && (items.published > 0 ? (
+                {/* {true && (items.published > 0 ? ( */}
+                {items.status !== "Locked" && (items.published > 0 ? (
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 5)}
@@ -84,7 +85,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     Publish Lesson
                   </MenuItem>
                 ))}
-                {
+                {/* {
                   items.admin_status !== "Locked" &&
                   <MenuItem
                   className="flex gap-x-2 items-center"
@@ -93,7 +94,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                   <BsCalendarPlusFill />
                   Set Timeline
                 </MenuItem>
-                }
+                } */}
                 {
                   items.status === "Locked" ? (
                     <MenuItem

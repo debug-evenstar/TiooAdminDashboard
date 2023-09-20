@@ -65,5 +65,6 @@ export const GET_SUBJECT_CLASSES = `${BASE_URL}subjects/classes/read/`
 export const DELETE_TEACHER = `${BASE_URL}teacher/unassignsubject`
 export const CREATE_LESSON = `${BASE_URL}lesson/create`
 export const GET_LESSONS = `${BASE_URL}lesson/subjectlessons`
+// export const NEW_GET_LESSONS = `${BASE_URL}lesson/check`
 export const NEW_GET_LESSONS = `${BASE_URL}lesson/check`
 export const GET_LESSONS_CLASS = `${BASE_URL}lesson/groups`

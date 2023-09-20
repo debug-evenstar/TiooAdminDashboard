@@ -13,7 +13,7 @@ export const assignClassesToSubject = () => `subjects/classes/add`;
 export const removeClassesFromSubject = () => `class/remove/subject`;
 export const classArmStudents = (id) => `class/arms/students/${id}`
 export const classArmSubjects = (id) => `class/arms/${id}/subjects`
-export const SubjectWithLessonCount = () => `/subjects/lessons/count`
+export const SubjectWithLessonCount = () => `/admin/management/subjects/lessons/count`
 export const UpdateLessonTime = (id) => `/lesson/${id}`
 export const AddLessons = (id) => `lesson/groups/${id}/add`
 export const AddLessonsArms = (id) => `lesson/groups/${id}/editarms`

@@ -23,15 +23,22 @@ const TopicContainer:FC<Props> = ({lesson, refetch, naming}) => {
     setActiveTab(tabId);
     setItem(item);
   };
+
+  const style = !!lesson.length
+            ? "grid grid-cols-3 lg:gap-12 lg:gap-y-8"
+            : "flex flex-col"
   return (
     <>
-      <div className="grid grid-cols-3 lg:gap-12 lg:gap-y-8">
-        {
-            lesson && lesson.map((item:any, i:number) => (
-                <TopicItem items={item} index={i} name={naming} refetch={refetch}/>
+      <div className={style}>
+        { !!lesson.length? 
+            lesson.map((item:any, i:number) => (
+                <TopicItem key={i} items={item} index={i} name={naming} refetch={refetch}/>
             ))
+            : 
+            <div className="text-primary text-lg mb-5">You haven't uploaded any lesson</div>
         }
-        <div className="p-5 rounded-[8px] h-[130px] shadow grid place-content-center hover:scale-105 duration-100 cursor-pointer" onClick={() => toggleTab(lesson[0].GroupId, 1)}>
+        <div 
+          className={`${!lesson.length && "w-[180px]"} p-5 rounded-[8px] h-[130px] shadow grid place-content-center hover:scale-105 duration-100 cursor-pointer`} onClick={() => toggleTab(lesson[0]?.GroupId, 1)}>
           <div className="text-center text-[#4F46E5]">
             <AiOutlinePlusCircle className="text-2xl mx-auto" />
             <p className="font-medium text-[17px] mt-2">Add Lesson</p>

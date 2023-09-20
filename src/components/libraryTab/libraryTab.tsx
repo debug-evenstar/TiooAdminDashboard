@@ -10,6 +10,8 @@ import { RootState } from "../../redux/store";
 import Popup from "reactjs-popup";
 import { notify } from "../notification/notification";
 import SelectClassModal from "../../pages/admin/library/components/selectClassModal";
+import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
+import axios from "axios";
 
 type TMaterialCardItem = {
   id: number,
@@ -20,25 +22,38 @@ type TMaterialCardItem = {
   SchoolManagementId: number,
   lessonCount: number,
   tab: number;
+  library_status?: string | null;
 }
 
 function MaterialCard({ color, materialProps }: { color: string, materialProps: TMaterialCardItem }) {
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<boolean>(false);
-  const [ classModal, setClassModal ] = useState<boolean>(false);
+  const [classModal, setClassModal] = useState<boolean>(false);
+  // const [ status, setStatus ] = useState<boolean | null>(materialProps.library_status);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const viewLessonButton = () => {
     setClassModal(true);
-    return;
-    navigate(`view/${materialProps.id}`, { state: materialProps });
+    // navigate(`view/${materialProps.id}`, { state: materialProps });
+  }
+
+  const toggleStatus = () => {
+    // const status = !!materialProps.library_status;
+    axiosInstance.post('/librarysubject/status/'+materialProps.id)
+      .then(response => {
+        dispatch(setLibraryReload());
+        // console.log(response.data.data)
+        notify.success(`${materialProps.library_status == 'published' ? "Retracted":"Published"} Library Material`)
+      })
+      .catch(error => console.log(error))
+    setActive(false)
   }
 
   const deleteMaterial = () => {
-    axiosInstance.delete('/library/' + materialProps.id)
+    axiosInstance.delete('/library/'+materialProps.id)
       .then(() => {
         dispatch(setLibraryReload());
         notify.success("deleted library material")
@@ -50,8 +65,8 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
   return (
     <>
       <AddLibraryLesson {...{ modal, setModal }} subjectId={materialProps.id} />
-      <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{materialProps}} tabId={materialProps.tab}/>
-      <SelectClassModal modal={classModal} setModal={setClassModal} subjectId={1}/>
+      <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{ materialProps }} tabId={materialProps.tab} />
+      <SelectClassModal modal={classModal} setModal={setClassModal} materialProps={materialProps} />
 
       <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
@@ -67,13 +82,29 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
               position="left top"
 
             >
-              <div className="w-[5.5rem] outline-none text-gray-400 bg-white overflow-hidden shadow rounded-[8px]">
-                <button onClick={() => setEditModal(true) }className="px-3 py-2 hover:bg-light w-full border-b  text-gray-500 space-x-1 text-sm flex items-center">
-                  <FaEdit />
+              <div className="w-fit relative px-2 py-2 outline-none text-gray-400 bg-white overflow-hidden shadow rounded-[8px]">
+                <button onClick={() => setEditModal(true)} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
+                  {/* <FaEdit /> */}
+                  <BsPen/>
                   <span>Edit</span>
                 </button>
-                <button onClick={deleteMaterial} className="px-3 py-2 hover:bg-light w-full border-b  text-gray-500 space-x-1 text-sm flex items-center justify-between">
-                  <FaTrash />
+
+                <button onClick={toggleStatus} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
+                  { materialProps.library_status == null || materialProps.library_status == 'unpublished'?
+                        <>
+                        <BsDownload className="rotate-180 text-lg" />
+                        <span>Publish</span>
+                        </>
+                      : 
+                      <>
+                        <BsDownload className="text-lg" />
+                        <span>Retract</span>
+                      </>
+
+                  }
+                </button>
+                <button onClick={deleteMaterial} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] space-x-2 text-gray-500 hover:text-white hover:bg-[#ff6666] text-sm flex items-center">
+                  <BsTrash />
                   <span>Delete</span>
                 </button>
               </div>
@@ -133,7 +164,7 @@ export default function LibraryTab({ tab }: any) {
       <div className="grid grid-cols-3  sm:md:lg:gap-2 items-center">
         {
           materials.map((materialProps: TLibraryMaterials, index: number) => {
-            if(tab.tabId == materialProps.tab)
+            if (tab.tabId == materialProps.tab)
               return <MaterialCard key={index} materialProps={materialProps} color={colors[index % colors.length]} />
           })
         }

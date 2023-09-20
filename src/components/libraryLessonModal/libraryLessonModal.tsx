@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import axiosInstance from "../../services/api";
 import UploadFile from "../updateFile/uploadFile";
 import { notify } from "../notification/notification";
@@ -7,12 +7,12 @@ import { setLibraryReload } from "../../redux/slices/library";
 import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 
 
-// type classOptionProps = {
-//     SchoolManagementId: number;
-//     id: number;
-//     naming: string;
-//     type: string;
-// }
+type classOptionProps = {
+    SchoolManagementId: number;
+    id: number;
+    naming: string;
+    type: string;
+}
 
 
 type TLibraryModalError = {
@@ -92,11 +92,11 @@ const chapterOptions = [...Array(20)].map(((_, index) => ({ id: index + 1, value
 
 export default function AddLibraryLesson({ modal, setModal, subjectId, classId, variant}: { subjectId?: number, classId?: number, variant?: boolean, modal: boolean, setModal: (state: boolean) => void }) {
 
-    // const [klass, setClass] = useState<number[]>([]);
+    const [klass, setClass] = useState<number>(0);
     const [age, setAge] = useState<number[]>([]);
     const [errors, setErrors] = useState<TLibraryModalError>({});
     const [loading, setLoading] = useState<boolean>(false);
-    // const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
+    const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
     const [chapter, setChapter ] = useState<number>(0);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -108,18 +108,13 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
         objective: '',
     });
 
-    // useEffect(() => {
-    //     if (variant) {
-    //         // console.log(classId);
-    //     } else {
-    //         axiosInstance.get('https://api.hellotioo.com/tio/classes')
-    //             .then((response) => {
-    //                 setClassOptions(response.data.data);
-    //             })
-    //             .catch((error => console.log(error.response.message)));
-
-    //     }
-    // }, []);
+    useEffect(() => {
+        axiosInstance.get('https://api.hellotioo.com/lesson/subjectlessons/'+subjectId)
+            .then((response) => {
+                setClassOptions(response.data.data.classes);
+            })
+            .catch((error => console.log(error.response.message)));
+    }, []);
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let { name, value } = e.target;
@@ -142,6 +137,9 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
         if (age.length == 0)
             newErrors.age = "Please enter a valid age ";
 
+        if (klass == 0)
+            newErrors.class = "Please select a class";
+
         if (formData.objective == '')
             newErrors.objective = "Please fill in an objective";
 
@@ -156,29 +154,31 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
     const sendRequest = () => {
 
-        // let payload = new FormData();
-        // payload.append('topic',formData.title);
-        // payload.append('class',klass);
-        // payload.append('objective',formData.objective);
-        // payload.append('age',age);
+        let payload = new FormData();
+        payload.append('title',formData.title);
+        payload.append('class',String(klass));
+        payload.append('objective',formData.objective);
+        payload.append('age',String(age[0]));
+        payload.append('template',selectedFile as Blob, selectedFile?.name);
+        payload.append('subject',String(subjectId));
 
-        let payload = {
-            subject: subjectId,
-            topic: formData.title,
-            // class: klass[0],
-            objective: formData.objective,
-            age: age[0],
-            file: selectedFile
-        }
+        // let payload = {
+        //     subject: subjectId,
+        //     topic: formData.title,
+        //     class: klass[0],
+        //     objective: formData.objective,
+        //     age: age[0],
+        //     template: selectedFile
+        // }
 
-        if (variant) {
-            if(classId){
-                // payload['class'] = classId;
-            }
-        }
+        // if (variant) {
+        //     if(classId){
+        //         payload['class'] = classId;
+        //     }
+        // }
 
 
-        axiosInstance.post('/library/lesson', payload, {
+        axiosInstance.post('/librarylesson/template', payload, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -209,13 +209,13 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[550px]s w-[380px] mx-auto `}>
+            <div className={`${modal ? "translate-y-[1rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 w-[380px] mx-auto `}>
                 <div className="p-2 border-b px-4 flex items-center justify-between">
                     <h1>Add Lesson </h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
                 </div>
                 <div onSubmit={handleSubmit}>
-                    <div className={`px-4 mt-4 h-[27.17rem] overflow-y-auto`}>
+                    <div className={`px-4 mt-4 h-[29.17rem] overflow-y-auto`}>
 
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Lesson title</label>
@@ -224,14 +224,21 @@ export default function AddLibraryLesson({ modal, setModal, subjectId, classId, 
                         </div>
                         {
                             !variant && (
-                                <>
-                                    <div className="text-sm mb-3">
-                                        <label htmlFor="" className="text-sm">Chapter</label>
-                                        
-                                        <SingleOptionsMenu selection={chapter} options={chapterOptions} setSelection={setChapter} />
-                                        <p className="text-red-500 text-xs mt-1">{errors?.chapter}</p>
-                                    </div>
-                                </>
+                            <div>
+                                <div className="text-sm mb-3">
+                                    <label htmlFor="" className="text-sm">Chapter</label>
+                                    
+                                    <SingleOptionsMenu selection={chapter} options={chapterOptions} setSelection={setChapter} />
+                                    <p className="text-red-500 text-xs mt-1">{errors?.chapter}</p>
+                                </div>
+
+                                <div className="text-sm mb-3">
+                                    <label htmlFor="" className="text-sm">Class</label>
+                                    <SingleOptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, value: item.naming }))} setSelection={setClass} />
+                                    <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
+                                </div>
+                            </div>
+
                             )
                         }
                         <div className="text-sm mb-3">

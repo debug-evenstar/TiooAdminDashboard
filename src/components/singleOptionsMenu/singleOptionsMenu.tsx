@@ -30,7 +30,7 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
                 {
                     options.map(({ id, value }: any) => (
                         <li key={id} onClick={() => {setCurrentValue(value); setSelection(id)}} className="my-2 cursor-pointer rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
-                        <input className="outline-none cursor-pointer" checked={selection === id} onChange={(e) => handleSelection(e,value)} type="checkbox" value={id} />
+                        <input className="outline-none cursor-pointer" checked={selection === id} onChange={(e) => handleSelection(e,value)} type="radio" readOnly value={id} />
                         <span className="text-gray-500">{value}</span>
                     </li>
                 ))

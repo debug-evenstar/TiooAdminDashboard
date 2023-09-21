@@ -30,7 +30,7 @@ import PricingTab from './pages/admin/settingsPages/pricing';
 import UserLevels from './pages/admin/settingsPages/userLevels';
 import CouponTab from './pages/admin/settingsPages/coupon';
 import Notification from './components/notification/notification';
-import ViewLesson from './pages/admin/library/viewLesson';
+// import ViewLesson from './pages/admin/library/viewLesson.old';
 import AdminLayoutExt from "./layout/school";
 import SchoolProfile from "./pages/admin/schoolProfile";
 import TeacherProfile from "./pages/admin/teacherProfile";

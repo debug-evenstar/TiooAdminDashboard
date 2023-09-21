@@ -107,7 +107,7 @@ const UploadedLesson = () => {
     setLess(data.filter((where: any) => where.id == filterId))
     // console.log(data);
     const currentLesson = data.find((where: any) => where.ClassId == filterId)
-    if(currentLesson){
+    if (currentLesson) {
       setActiveClass(String(currentLesson.id));
       setLess([currentLesson])
     }
@@ -133,15 +133,15 @@ const UploadedLesson = () => {
     setCurrentId(e.target.value);
     // console.log("switch target value",e.target.value);
     axiosInstance.get('/library/lesson/check?subject_id=' + e.target.value)
-    .then(response => {
-      // console.log("setting data to ",response?.data?.data);
-      setData(response?.data?.data);
-      setChangeSubjectId(response?.data?.data[0]?.id);
-      setCurrentId(e.target.value)
-      filterLesson(response?.data?.data[0].id);
-    })
-    .catch(error => console.log(error))
-    .finally(() => setLoading(false));
+      .then(response => {
+        // console.log("setting data to ",response?.data?.data);
+        setData(response?.data?.data);
+        setChangeSubjectId(response?.data?.data[0]?.id);
+        setCurrentId(e.target.value)
+        filterLesson(response?.data?.data[0].id);
+      })
+      .catch(error => console.log(error))
+      .finally(() => setLoading(false));
   }
 
 
@@ -166,7 +166,7 @@ const UploadedLesson = () => {
   //   }
   // };
 
-    // console.log("all subjects",allSubject[0]);
+  // console.log("all subjects",allSubject[0]);
   return (
     <>
       <Header variant title="" />

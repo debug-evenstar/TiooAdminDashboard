@@ -49,6 +49,8 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
     setActive(false);
     setActiveTab(0);
   };
+
+  // console.log(items);
   return (
     <>
       <div
@@ -68,7 +70,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
               </MenuHandler>
               <MenuList>
                 {/* {true && (items.published > 0 ? ( */}
-                {items.status !== "Locked" && (items.published > 0 ? (
+                {items.library_status == "published" ? 
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 5)}
@@ -76,7 +78,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     <BsDownload className="text-lg" />
                     Retract Lesson
                   </MenuItem>
-                ) : (
+                 : 
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 1)}
@@ -84,7 +86,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     <BsDownload className="rotate-180 text-lg" />
                     Publish Lesson
                   </MenuItem>
-                ))}
+                }
                 {/* {
                   items.admin_status !== "Locked" &&
                   <MenuItem
@@ -95,7 +97,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                   Set Timeline
                 </MenuItem>
                 } */}
-                {
+                {/* {
                   items.status === "Locked" ? (
                     <MenuItem
                       className="flex gap-x-2 items-center"
@@ -113,7 +115,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                       Lock Lesson
                     </MenuItem>
                   )
-                }
+                } */}
                 <MenuItem
                   className="flex gap-x-2 items-center bg-red-400 text-white"
                   onClick={() => openModal(items, 3)}

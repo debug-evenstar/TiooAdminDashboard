@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 
 type TLibraryModalError = {
+    age?: string;
+    file?: string;
     title?: string;
     class?: string;
-    age?: string;
-    objective?: string;
-    file?: string;
     chapter?: string;
+    objective?: string;
 }
 
 
@@ -27,7 +27,7 @@ export default function SelectClassModal({ modal, setModal, materialProps,}: { m
     const [ classId, setClassId ] = useState<number>(0)
 
     const handleSubmit = () => {
-        navigate(`/library/lessons/${materialProps?.id}/${classId}`)
+        navigate(`/library/lessons/${materialProps?.id}/${classId}`, { state: {material: materialProps}})
     }
   
 

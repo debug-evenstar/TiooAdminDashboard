@@ -18,10 +18,10 @@ const AddLessonModal:FC<Props> = ({id, next, close, generate}) => {
           title: <p>Upload Lessons</p>,
           content:  <AddLessonUploadForm id={id} next={next} close={close}/>,
         },
-        {
-          title: <p>Generate Lessons</p>,
-          content: <AddGenerated id={id}  generate={generate}/>,
-        },
+        // {
+        //   title: <p>Generate Lessons</p>,
+        //   content: <AddGenerated id={id}  generate={generate}/>,
+        // },
       ]
   return (
     <>

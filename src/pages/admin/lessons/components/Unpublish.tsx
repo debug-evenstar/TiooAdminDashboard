@@ -4,35 +4,53 @@ import { IoMdClose } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";
 import { updateTimeline } from "../../../../api";
 import { alertActions } from "../../../../components/alertActions";
+import axiosInstance from "../../../../services/api";
+import { notify } from "../../../../components/notification/notification";
 
 interface Props {
   close: () => void;
   name: string;
   item: any;
-  refetch: (val:any, filter:any) => void;
+  refetch: (val: any, filter: any) => void;
 }
 const UnPublishLesson: FC<Props> = ({ close, item, name, refetch }) => {
   const [isBusy, setIsBusy] = useState(false)
-  const UnpublishLesson = async() => {
-    const payload = {
-      published: 0
-    }
-    await updateTimeline(payload, item.id)
-    .then((res:any) => {
-      if(!res.error){
-      alertActions.success(res.message)
-      setIsBusy(false)
-      refetch(item.SubjectId, item.GroupId)
-      close()
-      }else{
-        alertActions.error(res.message)
-        setIsBusy(false)
-      }
-    })
-    .catch((err) => {
-      setIsBusy(false)
-      console.log(err);
-    })
+  // const UnpublishLesson = async() => {
+  //   const payload = {
+  //     published: 0
+  //   }
+  //   await updateTimeline(payload, item.id)
+  //   .then((res:any) => {
+  //     if(!res.error){
+  //     alertActions.success(res.message)
+  //     setIsBusy(false)
+  //     refetch(item.SubjectId, item.GroupId)
+  //     close()
+  //     }else{
+  //       alertActions.error(res.message)
+  //       setIsBusy(false)
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     setIsBusy(false)
+  //     console.log(err);
+  //   })
+  // }
+
+
+
+  const UnpublishLesson = () => {
+    setIsBusy(true)
+    axiosInstance.post('/librarylesson/status/' + item.id)
+      .then(response => {
+        if (response.data.data.library_status == 'unpublished'){
+          refetch(item.SubjectId, item.id);
+          notify.success("Retracted library lesson");
+        }
+        close()
+      })
+      .catch(error => console.log(error))
+      .finally(() => setIsBusy(false));
   }
   return (
     <>
@@ -45,12 +63,12 @@ const UnPublishLesson: FC<Props> = ({ close, item, name, refetch }) => {
         <div className="text-center">
           <BsDownload className="text-xl mx-auto" />
           <p className="mt-5">
-            You’re about to retract this lesson <span>{item.topic}</span> for <span>{name}</span>
+            You're about to retract this lesson <span>{item.topic}</span> from <span>Library</span>
           </p>
         </div>
       </div>
       <div className="p-[24px]">
-        <PrimaryButton text={isBusy? "Retracting..." : "Retract"} variant="dash" onClick={UnpublishLesson} />
+        <PrimaryButton text={isBusy ? "Retracting..." : "Retract"} variant="dash" onClick={UnpublishLesson} />
       </div>
     </>
   );

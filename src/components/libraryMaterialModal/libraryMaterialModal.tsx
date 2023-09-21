@@ -179,7 +179,8 @@ export default function AddLibaryMaterial({materialProps, tabId, modal, setModal
       class: klass,
       description: formData.description,
       ages: age,
-      tab: tabId
+      tab: tabId,
+      subject_category: category
     }
 
     axiosInstance.post('/library/subject', payload)

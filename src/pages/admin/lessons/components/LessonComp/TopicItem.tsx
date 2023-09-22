@@ -92,12 +92,12 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                 {
                   items.status !== "Locked" &&
                   <MenuItem
-                  className="flex gap-x-2 items-center"
-                  onClick={() => openModal(items, 2)}
-                >
-                  <BsCalendarPlusFill />
-                  Set Timeline
-                </MenuItem>
+                    className="flex gap-x-2 items-center"
+                    onClick={() => openModal(items, 2)}
+                  >
+                    <BsCalendarPlusFill />
+                    Set Timeline
+                  </MenuItem>
                 }
                 {
                   items.status === "Locked" ? (

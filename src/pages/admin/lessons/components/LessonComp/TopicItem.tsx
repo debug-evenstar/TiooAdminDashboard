@@ -7,7 +7,7 @@ import {
   MenuList,
 } from "@material-tailwind/react";
 import {
-  BsCalendarPlusFill,
+  // BsCalendarPlusFill,
   BsDownload,
   BsThreeDotsVertical,
 } from "react-icons/bs";
@@ -19,14 +19,14 @@ import MainLessonModal from "./MainLesson";
 import UnPublishLesson from "../Unpublish";
 import UnavailableLesson from "../UnavailableLesson";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { MdLockOpen, MdLockOutline } from "react-icons/md";
+// import { MdLockOpen, MdLockOutline } from "react-icons/md";
 import ChangeStatus from "../ChangeStatus";
 
 interface Props {
   index: number;
   items: any;
   name: string;
-  refetch: (val:any, filter:any) => void;
+  refetch: (val: any, filter: any) => void;
 }
 const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
   const [active, setActive] = useState(false);
@@ -55,7 +55,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
     <>
       <div
         className="p-5 rounded-[8px] h-[130px] shadow grid content-between hover:scale-105 duration-100 cursor-pointer"
-        onClick={items.admin_status === 'Locked'? () => openModal(items, 6) : () => openModal(items, 4)}
+        onClick={items.admin_status === 'Locked' ? () => openModal(items, 4) : () => openModal(items, 4)}
       >
         <div className="flex justify-between">
           <p className="font-semibold text-[17px] text-[#030036BD]">
@@ -70,7 +70,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
               </MenuHandler>
               <MenuList>
                 {/* {true && (items.published > 0 ? ( */}
-                {items.library_status == "published" ? 
+                {items.library_status == "published" ?
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 5)}
@@ -78,7 +78,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     <BsDownload className="text-lg" />
                     Retract Lesson
                   </MenuItem>
-                 : 
+                  :
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 1)}
@@ -144,17 +144,17 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
         ) : activeTab === 2 ? (
           <ChooseTimelineModal close={() => setActive(false)} item={item} refetch={refetch} />
         ) : activeTab === 3 ? (
-          <DeleteLessonModal close={() => setActive(false)} item={item}  refetch={refetch}/>
+          <DeleteLessonModal close={() => setActive(false)} item={item} refetch={refetch} />
         ) : activeTab === 5 ? (
           <UnPublishLesson close={() => setActive(false)}
-          refetch={refetch}
-          item={item}
-          name={name} />
+            refetch={refetch}
+            item={item}
+            name={name} />
         ) : activeTab === 6 ? (
           <UnavailableLesson close={() => setActive(false)}
-          item={item}/>
-        ) : activeTab === 7 ? (<ChangeStatus close={() => setActive(false)} item={item}  refetch={refetch} status={lessonStatus}/>) : 
-        <></>}
+            item={item} />
+        ) : activeTab === 7 ? (<ChangeStatus close={() => setActive(false)} item={item} refetch={refetch} status={lessonStatus} />) :
+          <></>}
       </CenterModal>
       <CenterModal
         isOpen={activeTab === 4}

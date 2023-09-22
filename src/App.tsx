@@ -57,29 +57,36 @@ function App() {
           </Route>
           <Route element={<AdminLayout />}>
             <Route path="/" element={<Home />} />
+
+            {/* Manage Freelancers */}
             <Route path="freelancers" element={<Freelancers />} />
             <Route path="freelancers/profile/:id" element={<FreelancerProfile />} />
 
+            {/* Manage Teachers */}
             <Route path="teachers" element={<Teachers />} />
             <Route path="teachers/profile/:id" element={<TeacherProfile />} />
 
+            {/* Manage Schools */}
             <Route path="schools" element={<Schools />} />
             <Route path="schools/profile/:id" element={<SchoolProfile />} />
 
+            {/* Manage Students */}
             <Route path="students" element={<Students />} />
             <Route path="students/profile/:id" element={<StudentProfile />} />
 
 
 
-
+            {/* Library */}
             <Route path="library">
-              <Route path="/library" element={<Library />}/>
-             <Route path={'/library/'+ROUTES.LESSONS} element={<Lessons />} />
-             <Route path={'/library/'+ROUTES.UPLOADED_LESSONS} element={<UploadedLesson />} />
-       
-            {/* <Route path="library/view/:id" element={<ViewLesson />} /> */}
+              <Route path="/library" element={<Library />} />
+              <Route path="/library/lesson/editLesson/:id" />
+              <Route path={'/library/' + ROUTES.LESSONS} element={<Lessons />} />
+              <Route path={'/library/' + ROUTES.UPLOADED_LESSONS} element={<UploadedLesson />} />
+
+              {/* <Route path="library/view/:id" element={<ViewLesson />} /> */}
             </Route>
 
+            {/* Settings */}
             <Route path="settings" element={<Settings />}>
               <Route index path="pricing" element={<PricingTab />} />
               <Route path="userlevels" element={<UserLevels />} />

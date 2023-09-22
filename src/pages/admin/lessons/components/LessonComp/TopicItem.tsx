@@ -7,6 +7,7 @@ import {
   MenuList,
 } from "@material-tailwind/react";
 import {
+  BsCalendarPlusFill,
   // BsCalendarPlusFill,
   BsDownload,
   BsThreeDotsVertical,
@@ -21,6 +22,7 @@ import UnavailableLesson from "../UnavailableLesson";
 import { RiDeleteBin5Line } from "react-icons/ri";
 // import { MdLockOpen, MdLockOutline } from "react-icons/md";
 import ChangeStatus from "../ChangeStatus";
+import { MdLockOpen, MdLockOutline } from "react-icons/md";
 
 interface Props {
   index: number;
@@ -87,8 +89,8 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     Publish Lesson
                   </MenuItem>
                 }
-                {/* {
-                  items.admin_status !== "Locked" &&
+                {
+                  items.status !== "Locked" &&
                   <MenuItem
                   className="flex gap-x-2 items-center"
                   onClick={() => openModal(items, 2)}
@@ -96,8 +98,8 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                   <BsCalendarPlusFill />
                   Set Timeline
                 </MenuItem>
-                } */}
-                {/* {
+                }
+                {
                   items.status === "Locked" ? (
                     <MenuItem
                       className="flex gap-x-2 items-center"
@@ -115,7 +117,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                       Lock Lesson
                     </MenuItem>
                   )
-                } */}
+                }
                 <MenuItem
                   className="flex gap-x-2 items-center bg-red-400 text-white"
                   onClick={() => openModal(items, 3)}

@@ -104,13 +104,14 @@ const UploadedLesson = () => {
 
   useEffect(() => {
     // filterLesson(Number(filterId));
-    setLess(data.filter((where: any) => where.id == filterId))
+    // setLess(data.filter((where: any) => where.id == filterId))
     // console.log(data);
-    const currentLesson = data.find((where: any) => where.ClassId == filterId)
-    if (currentLesson) {
-      setActiveClass(String(currentLesson.id));
-      setLess([currentLesson])
-    }
+    // const currentLesson = data.find((where: any) => where.ClassId == filterId)
+    // if (currentLesson) {
+    //   setActiveClass(String(currentLesson.id));
+    //   setLess([currentLesson])
+    // }
+    setLess(data);
     // console.log("filtering lesson",filterId,data,less);
   }, [data]);
 
@@ -121,9 +122,10 @@ const UploadedLesson = () => {
 
   const filterLesson = async (arm: any) => {
     setActiveClass(String(arm));
-    const lesson = [...data];
-    const filtered = lesson.filter((where: any) => where.id == arm);
-    setLess(filtered);
+    // const lesson = [...data];
+    // const filtered = lesson.filter((where: any) => where.id == arm);
+    // setLess(filtered);
+    setLess(data);
     // console.log(filtered,arm);
   };
 
@@ -201,13 +203,13 @@ const UploadedLesson = () => {
           </div>
           <div className="w-3/12 px-8 relative">
             <div className="sticky w-full top-[200px] left-0">
-              {data && (
+              {/* {data && (
                 <LessonClasses
                   item={data}
                   filter={filterLesson}
                   activeClass={activeClass}
                 />
-              )}
+              )} */}
             </div>
           </div>
         </div>

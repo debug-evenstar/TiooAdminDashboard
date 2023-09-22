@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   const { toggleModal, modalRef, isOpen } = useDisclosure();
   const navigate = useNavigate();
 
-  const schoolname = useSelector((state: any) => state.auth.userInformation.school);
+  const schoolname = useSelector((state: any) => state.auth?.userInformation?.school);
   
   const truncateString = (str: string, maxLength: number) => {
     if (str.length <= maxLength) {

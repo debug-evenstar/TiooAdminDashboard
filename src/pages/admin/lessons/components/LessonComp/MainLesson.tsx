@@ -8,7 +8,7 @@ interface Props {
 }
 const MainLessonModal: FC<Props> = ({ close, item }) => {
   console.log(item);
-
+  
   const navigate = useNavigate()
   const options = [
     {
@@ -27,7 +27,7 @@ const MainLessonModal: FC<Props> = ({ close, item }) => {
     {
       name: "Slides",
       desc: "Gamified lesson slides for students.",
-      route: `/library/lesson/editLesson/${item.id}`
+      route: `/library/lesson/editSlides/${item.id}`
     }
   ]
   const manageNavigation = (item: any) => {
@@ -41,7 +41,7 @@ const MainLessonModal: FC<Props> = ({ close, item }) => {
     <>
       <div className="flex w-full items-center justify-between border-b-[1px] py-4 px-[24px]">
         <p className="font-semibold text-lg">
-          Noun: Concrete and Abstract
+         {item.topic}
         </p>
         <div className="cursor-pointer" onClick={close}>
           <IoMdClose className="text-[22px] text-[#545454]" />

@@ -171,7 +171,7 @@ const UploadedLesson = () => {
   // console.log("all subjects",allSubject[0]);
   return (
     <>
-      <Header variant title="" />
+      <Header title="" />
       <div className="w-full px-12">
         <div className="w-full flex items-start justify-start flex-col">
           <div

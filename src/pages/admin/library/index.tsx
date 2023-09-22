@@ -18,8 +18,8 @@ export default function Library() {
 }
 
 const tabs: any[] = [
-  { name: "Schools Curricular", tabId: 0 },
-  { name: "Co-curricula content", tabId: 1 },
+  { name: "Textbooks", tabId: 0 },
+  { name: "Extra-curricula", tabId: 1 },
   { name: "Games", tabId: 2 },
 ];
 

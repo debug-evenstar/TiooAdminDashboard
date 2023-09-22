@@ -11,6 +11,7 @@ import Popup from "reactjs-popup";
 import { notify } from "../../../../components/notification/notification";
 import SelectClassModal from "../../../../pages/admin/library/components/selectClassModal";
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
+import DeleteMaterialModal from "./deleteMaterialModal";
 
 
 type TMaterialCardItem = {
@@ -29,14 +30,14 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<boolean>(false);
-  const [classModal, setClassModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   // const [ status, setStatus ] = useState<boolean | null>(materialProps.library_status);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const viewLessonButton = () => {
-    setClassModal(true);
+    setDeleteModal(true);
     // navigate(`view/${materialProps.id}`, { state: materialProps });
   }
 
@@ -52,22 +53,14 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
     setActive(false)
   }
 
-  const deleteMaterial = () => {
-    axiosInstance.delete('/library/'+materialProps.id)
-      .then(() => {
-        dispatch(setLibraryReload());
-        notify.success("deleted library material")
-      })
-      .catch(error => console.log(error));
-    setActive(false);
-  }
+
 
   return (
     <>
       <AddLibraryLesson {...{ modal, setModal }} subjectId={materialProps.id} />
       <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{ materialProps }} tabId={materialProps.tab} />
-      <SelectClassModal modal={classModal} setModal={setClassModal} materialProps={materialProps} />
-
+      {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} /> */}
+      <DeleteMaterialModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps}/>
       <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
           <div className="flex justify-between relative">
@@ -90,7 +83,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
                 </button>
 
                 <button onClick={toggleStatus} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
-                  { materialProps.library_status == null || materialProps.library_status == 'unpublished'?
+                  { materialProps.library_status !== 'published'?
                       <>
                         <BsDownload className="rotate-180 text-lg" />
                         <span>Publish</span>
@@ -102,7 +95,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
                       </>
                   }
                 </button>
-                <button onClick={deleteMaterial} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] space-x-2 text-gray-500 hover:text-white hover:bg-[#ff6666] text-sm flex items-center">
+                <button onClick={() => { setDeleteModal(true); setActive(false) }} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] space-x-2 text-gray-500 hover:text-white hover:bg-[#ff6666] text-sm flex items-center">
                   <BsTrash />
                   <span>Delete</span>
                 </button>

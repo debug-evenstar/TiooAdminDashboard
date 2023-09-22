@@ -146,8 +146,12 @@ export default function AddLibraryLesson({ modal, setModal, lesson, subjectId }:
         if (formData.objective == '')
             newErrors.objective = "Please fill in an objective";
 
+        if (chapter == 0)
+            newErrors.chapter = "Please select a chapter";
+
         if (!selectedFile)
             newErrors.file = "please select a file";
+
         if (chapter == 0) {
             newErrors.chapter = "please select a chapter";
         }
@@ -164,6 +168,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, subjectId }:
         payload.append('age', lesson?.age || String(age[0]));
         payload.append('template', selectedFile as Blob, selectedFile?.name);
         payload.append('subject', lesson?.SubjectId || String(subjectId));
+        payload.append('chapter',String(chapter));
 
 
         axiosInstance.post('/librarylesson/template', payload, {

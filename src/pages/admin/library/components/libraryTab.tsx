@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../../services/api";
+import axiosInstance from "../../../../services/api";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import AddLibraryMaterial from "../libraryMaterialModal/libraryMaterialModal";
-import AddLibraryLesson from "../libraryLessonModal/libraryLessonModal";
+import AddLibraryMaterial from "../../../../components/libraryMaterialModal/libraryMaterialModal";
+import AddLibraryLesson from "../../../../components/libraryLessonModal/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { TLibraryMaterials, setLibraryMaterials, setLibraryReload } from "../../redux/slices/library";
-import { RootState } from "../../redux/store";
+import { TLibraryMaterials, setLibraryMaterials, setLibraryReload } from "../../../../redux/slices/library";
+import { RootState } from "../../../../redux/store";
 import Popup from "reactjs-popup";
-import { notify } from "../notification/notification";
-import SelectClassModal from "../../pages/admin/library/components/selectClassModal";
+import { notify } from "../../../../components/notification/notification";
+import SelectClassModal from "../../../../pages/admin/library/components/selectClassModal";
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
-import axios from "axios";
+
 
 type TMaterialCardItem = {
   id: number,
@@ -45,7 +45,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
     axiosInstance.post('/librarysubject/status/'+materialProps.id)
       .then(response => {
         dispatch(setLibraryReload());
-        // console.log(response.data.data)
+        materialProps.library_status == 'published' ? 'unpuplished':'published';
         notify.success(`${materialProps.library_status == 'published' ? "Retracted":"Published"} Library Material`)
       })
       .catch(error => console.log(error))
@@ -91,16 +91,15 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
 
                 <button onClick={toggleStatus} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
                   { materialProps.library_status == null || materialProps.library_status == 'unpublished'?
-                        <>
+                      <>
                         <BsDownload className="rotate-180 text-lg" />
                         <span>Publish</span>
-                        </>
+                      </>
                       : 
                       <>
                         <BsDownload className="text-lg" />
                         <span>Retract</span>
                       </>
-
                   }
                 </button>
                 <button onClick={deleteMaterial} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] space-x-2 text-gray-500 hover:text-white hover:bg-[#ff6666] text-sm flex items-center">

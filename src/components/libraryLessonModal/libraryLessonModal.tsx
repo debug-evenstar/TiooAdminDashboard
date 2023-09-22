@@ -163,7 +163,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, subjectId }:
         payload.append('objective', formData.objective);
         payload.append('age', lesson?.age || String(age[0]));
         payload.append('template', selectedFile as Blob, selectedFile?.name);
-        payload.append('subject', lesson.SubjectId || String(subjectId));
+        payload.append('subject', lesson?.SubjectId || String(subjectId));
 
 
         axiosInstance.post('/librarylesson/template', payload, {
@@ -191,6 +191,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, subjectId }:
             sendRequest();
         } else {
             setErrors(newErrors);
+            console.log(errors);
             setLoading(false);
         }
     }

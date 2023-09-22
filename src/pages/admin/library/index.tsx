@@ -2,7 +2,7 @@ import { Suspense, useState } from "react";
 import Header from "../../../components/header";
 
 
-import LibraryTab from "../../../components/libraryTab/libraryTab";
+import LibraryTab from "./components/libraryTab";
 
 
 

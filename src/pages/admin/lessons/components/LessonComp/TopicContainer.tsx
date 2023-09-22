@@ -37,7 +37,7 @@ const TopicContainer: FC<Props> = ({ lesson, refetch, naming }) => {
   return (
     <>
       {/* <AddLessonModal variant material={material} /> */}
-      <AddLibraryLesson lesson={lesson[0]} {...{modal, setModal}} />
+      <AddLibraryLesson materialProps={material} lesson={lesson[0]} {...{modal, setModal}} />
       <div className={style}>
         {!!lesson.length ?
           lesson.map((item: any, i: number) => (

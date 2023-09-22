@@ -72,7 +72,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
               </MenuHandler>
               <MenuList>
                 {/* {true && (items.published > 0 ? ( */}
-                {items.library_status == "published" ?
+                {items.published ?
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 5)}
@@ -90,7 +90,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                   </MenuItem>
                 }
                 {
-                  items.status !== "Locked" &&
+                  items.library_status !== "Locked" &&
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 2)}
@@ -100,7 +100,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                   </MenuItem>
                 }
                 {
-                  items.status === "Locked" ? (
+                  items.library_status === "Locked" ? (
                     <MenuItem
                       className="flex gap-x-2 items-center"
                       onClick={() => openStatusModal(items, 7, "Unlocked")}

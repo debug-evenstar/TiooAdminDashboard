@@ -14,7 +14,7 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
     return (
         <>
             <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-full px-3 py-2 border flex justify-between">
-                <span>{currentValue}</span>
+                <span>{ options.find((i: any) => i.id == selection)?.value }</span>
                 <div
 
                     className={`text-xs duration-300  w-4 h-4 flex items-center justify-center

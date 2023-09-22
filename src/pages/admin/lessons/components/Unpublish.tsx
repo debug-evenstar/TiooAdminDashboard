@@ -41,9 +41,9 @@ const UnPublishLesson: FC<Props> = ({ close, item, name, refetch }) => {
 
   const UnpublishLesson = () => {
     setIsBusy(true)
-    axiosInstance.post('/librarylesson/status/' + item.id)
+    axiosInstance.post('/publish/librarylesson/' + item.id)
       .then(response => {
-        if (response.data.data.library_status == 'unpublished'){
+        if (response.data.data.published == 0){
           refetch(item.SubjectId, item.id);
           notify.success("Retracted library lesson");
         }

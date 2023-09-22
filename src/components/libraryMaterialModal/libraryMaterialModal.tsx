@@ -27,18 +27,18 @@ type TOptionProps = {
   id: number, name: number | string,
 }
 const categoryOptions = [
-  {id: 1, name: 'Mathematics'},
-  {id: 2, name: 'English'},
-  {id: 3, name: 'Basic Science'},
-  {id: 4, name: 'Quantitative Reasoning'},
-  {id: 5, name: 'Verbal Reasoning'},
-  {id: 6, name: 'CRK'},
-  {id: 7, name: 'History'},
-  {id: 8, name: 'Civic Education'},
-  {id: 9, name: 'Security'},
-  {id: 10, name: 'Business Studies'},
-  {id: 11, name: 'Visual Arts'},
-  {id: 12, name: 'Geography'},
+  { id: 1, name: 'Mathematics' },
+  { id: 2, name: 'English' },
+  { id: 3, name: 'Basic Science' },
+  { id: 4, name: 'Quantitative Reasoning' },
+  { id: 5, name: 'Verbal Reasoning' },
+  { id: 6, name: 'CRK' },
+  { id: 7, name: 'History' },
+  { id: 8, name: 'Civic Education' },
+  { id: 9, name: 'Security' },
+  { id: 10, name: 'Business Studies' },
+  { id: 11, name: 'Visual Arts' },
+  { id: 12, name: 'Geography' },
 ]
 
 function OptionsMenu({ selection, setSelection, options, variant }: { variant?: boolean, selection: number[], setSelection: any, options: TOptionProps[] }) {
@@ -65,7 +65,7 @@ function OptionsMenu({ selection, setSelection, options, variant }: { variant?: 
     <>
       <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center">
         {
-          selection.length > 0 && !variant?
+          selection.length > 0 && !variant ?
             <p className="text-xs">{minName + ' - ' + maxName}</p>
             : <p></p>
         }
@@ -100,10 +100,10 @@ function OptionsMenu({ selection, setSelection, options, variant }: { variant?: 
 const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 
-export default function AddLibaryMaterial({materialProps, tabId, modal, setModal }: { materialProps?: any,tabId: number, modal: boolean, setModal: (state: boolean) => void }) {
+export default function AddLibaryMaterial({ materialProps, tabId, modal, setModal }: { materialProps?: any, tabId: number, modal: boolean, setModal: (state: boolean) => void }) {
 
   const [klass, setClass] = useState<number[]>([]);
-  const [category, setCategory ] = useState<number>(0);
+  const [category, setCategory] = useState<number>(0);
   const [age, setAge] = useState<number[]>([]);
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -118,18 +118,24 @@ export default function AddLibaryMaterial({materialProps, tabId, modal, setModal
 
   useEffect(() => {
 
-    if(materialProps){
+    if (materialProps) {
       console.log(materialProps);
       setFormData({
         name: materialProps.naming,
         description: materialProps.description,
       })
-      
+
+      const classes = materialProps?.classes.map((item: any) => ({ id: item.id, name: item.naming }))
+      const ids = classes.map((i: any) => i.id);
+
+      const category = materialProps.subject_category;
+      setClass(ids);
+      setCategory(category);
       setAge(materialProps.ages);
       // setClass(materialProps.class);
       // setCategory(materialProps.category);
     }
-    
+
 
 
     axiosInstance.get('https://api.hellotioo.com/tio/classes')
@@ -164,7 +170,7 @@ export default function AddLibaryMaterial({materialProps, tabId, modal, setModal
     if (age.length == 0)
       newErrors.age = "Please enter a valid age ";
 
-    if(category == 0)
+    if (category == 0)
       newErrors.category = "Please select a category";
 
     if (formData.description == '')
@@ -212,7 +218,7 @@ export default function AddLibaryMaterial({materialProps, tabId, modal, setModal
     <div className={`fixed text-primary z-[1000] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
       <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[517px] w-[380px] mx-auto `}>
         <div className="p-2 border-b px-4 flex items-center justify-between">
-          <h1>{materialProps? 'Update':'Add'} Lesson Material</h1>
+          <h1>{materialProps ? 'Update' : 'Add'} Lesson Material</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
         </div>
         <div onSubmit={handleSubmit}>
@@ -256,7 +262,7 @@ export default function AddLibaryMaterial({materialProps, tabId, modal, setModal
                   <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
                   :
                   <span>
-                    { materialProps? 'Update': 'Create'}
+                    {materialProps ? 'Update' : 'Create'}
                   </span>
               }
             </button>

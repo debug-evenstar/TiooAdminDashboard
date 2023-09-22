@@ -85,6 +85,7 @@ const EditSlides = () => {
 
   return (
     <div>
+      {!studyData && <p>Loading...</p>}
       {studyData && <Editorial
         data={lessonData}
         changeFile={changeFile}

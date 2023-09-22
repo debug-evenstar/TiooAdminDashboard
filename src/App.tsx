@@ -38,6 +38,7 @@ import FreelancerProfile from "./pages/admin/freelancerProfile";
 import Lessons from './pages/admin/lessons/index';
 import { ROUTES } from './global/routes';
 import UploadedLesson from "./pages/admin/lessons/uploaded-lessons";
+import EditSlides from "./pages/admin/library/components/editSlides";
 
 function App() {
   return (
@@ -79,7 +80,6 @@ function App() {
             {/* Library */}
             <Route path="library">
               <Route path="/library" element={<Library />} />
-              <Route path="/library/lesson/editSlides/:id" />
               <Route path={'/library/' + ROUTES.LESSONS} element={<Lessons />} />
               <Route path={'/library/' + ROUTES.UPLOADED_LESSONS} element={<UploadedLesson />} />
 
@@ -97,6 +97,7 @@ function App() {
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="*" element={<Navigate to="/"></Navigate>} />
           </Route>
+          <Route path="/library/lesson/editSlides/:id" element={<EditSlides />} />
         </Routes>
       </Router>
     </>

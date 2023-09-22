@@ -79,7 +79,7 @@ function App() {
             {/* Library */}
             <Route path="library">
               <Route path="/library" element={<Library />} />
-              <Route path="/library/lesson/editLesson/:id" />
+              <Route path="/library/lesson/editSlides/:id" />
               <Route path={'/library/' + ROUTES.LESSONS} element={<Lessons />} />
               <Route path={'/library/' + ROUTES.UPLOADED_LESSONS} element={<UploadedLesson />} />
 

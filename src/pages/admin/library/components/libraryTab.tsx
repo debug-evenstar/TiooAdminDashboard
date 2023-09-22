@@ -24,6 +24,7 @@ type TMaterialCardItem = {
   lessonCount: number,
   tab: number;
   library_status?: string | null;
+  classes?: any;
 }
 
 function MaterialCard({ color, materialProps }: { color: string, materialProps: TMaterialCardItem }) {
@@ -37,8 +38,8 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
   const dispatch = useDispatch();
 
   const viewLessonButton = () => {
-    setDeleteModal(true);
-    // navigate(`view/${materialProps.id}`, { state: materialProps });
+    // setDeleteModal(true);
+    navigate(`/library/lessons/${materialProps?.id}/${materialProps?.classes[0]?.id}`, { state: {material: materialProps}})
   }
 
   const toggleStatus = () => {

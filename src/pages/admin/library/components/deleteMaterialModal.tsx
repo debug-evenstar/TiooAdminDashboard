@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { setLibraryReload } from "../../../../redux/slices/library";
 import { notify } from "../../../../components/notification/notification";
 import { useDispatch } from "react-redux";
-import { RiAlarmWarningLine, RiErrorWarningLine, RiFileWarningLine } from "react-icons/ri";
 import { AiOutlineWarning } from "react-icons/ai";
 
 
@@ -26,24 +25,25 @@ type TOptionProps = {
 
 const prompts = [
     { text: "Are you sure you want to delete this textbook?", color: "bg-main shadow-main" },
-    { text: "Deleting this textbook is an irreversible process Delete?", color: "bg-red-400 shadow-red-500/50 focus:shadow-red-500/50" },
+    { text: "Deleting this textbook is an irreversible process. Are you sure?", color: "bg-red-400 shadow-red-500/50 focus:shadow-red-500/50" },
 ];
 
 
 export default function DeleteMaterialModal({ modal, setModal, materialProps, }: { materialProps?: any, modal: boolean, setModal: (state: boolean) => void }) {
     const [index, setIndex] = useState<number>(0);
-
-    const navigate = useNavigate();
+    const [loading, setLoading ] = useState(false);
+    // const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const deleteMaterial = () => {
+        setLoading(true);
         axiosInstance.delete('/library/' + materialProps.id)
             .then(() => {
                 dispatch(setLibraryReload());
                 notify.success("deleted library material")
             })
-            .catch(error => console.log(error));
-        setModal(false);
+            .catch(error => console.log(error))
+            .finally(() => { setModal(false); setLoading(false)});
     }
 
     const close = () => {
@@ -53,7 +53,7 @@ export default function DeleteMaterialModal({ modal, setModal, materialProps, }:
     const handleSubmit = () => {
         // navigate(`/library/lessons/${materialProps?.id}/${classId}`, { state: { material: materialProps } })
         if (index == 1) {
-            alert("deleted material");
+            deleteMaterial();
         } else {
             setIndex(index => index + 1)
         }
@@ -70,7 +70,7 @@ export default function DeleteMaterialModal({ modal, setModal, materialProps, }:
                 <div onSubmit={handleSubmit}>
                     <div className={`px-4 mt-4 h-[10rem] overflow-y-auto flex flex-col space-y-3 justify-center items-center text-center font-[500] text-[1.1rem]`}>
                         <span className="text-4xl">
-                            <AiOutlineWarning/>
+                            <AiOutlineWarning />
                         </span>
                         <h1>
                             {prompts[index]?.text}
@@ -80,7 +80,7 @@ export default function DeleteMaterialModal({ modal, setModal, materialProps, }:
                         <button onClick={handleSubmit}
                             className={`outline-none focus:shadow-lg outline-none w-full text-sm text-center py-2 
                                 shadow-md rounded text-white font-[500] ${prompts[index]?.color}`}>
-                            <span>Delete</span>
+                            <span>{loading? "Deleting...":"Delete"}</span>
                         </button>
                     </div>
                 </div>

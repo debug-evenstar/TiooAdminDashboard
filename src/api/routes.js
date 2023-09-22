@@ -31,3 +31,9 @@ export const studentInviteUrl = () => `student/invite`
 
 /* -------------------------------- TEACHERS -------------------------------- */
 export const fetchSchoolTeachers = (id) => `school/teachers/${id}`;
+
+// lessons
+export const getLessons = (id) => `lesson/check?subject_id=${id}`
+export const lessonTemplate = (id) => `lesson/${id}/template`
+export const saveFile = (id) => `open/lesson/templateimage/${id}`
+export const editSlideInfo = (id) => `lesson/template/${id}`

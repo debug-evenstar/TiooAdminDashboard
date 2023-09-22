@@ -27,7 +27,7 @@ const MainLessonModal: FC<Props> = ({ close, item }) => {
     {
       name: "Slides",
       desc: "Gamified lesson slides for students.",
-      route: `/library/lesson/editLesson/${item.id}`
+      route: `/library/lesson/editSlides/${item.id}`
     }
   ]
   const manageNavigation = (item: any) => {

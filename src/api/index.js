@@ -13,6 +13,7 @@ import {
   classArmStudents,
   classArmSubjects,
   deleteLesson,
+  editSlideInfo,
   fetchClassArmsByClassId,
   fetchSchoolProfile,
   fetchSchoolTeachers,
@@ -20,9 +21,12 @@ import {
   getClassLevels,
   getClassTerms,
   getGenerated,
+  getLessons,
   inviteBulkStudentsUrl,
+  lessonTemplate,
   promptGenerated,
   removeClassesFromSubject,
+  saveFile,
   studentInviteUrl,
 } from "./routes";
 
@@ -96,3 +100,12 @@ export const inviteStudents = async (data) =>
 /* -------------------------------- TEACHERS -------------------------------- */
 export const getSchoolTeachers = async (id) =>
   Request.get(fetchSchoolTeachers(id));
+
+  // library
+  export const fetchLessons = async (id) => Request.get(getLessons(id));
+  export const fetchTemplate = async (id) => Request.get(lessonTemplate(id));
+  export const uploadFile = async (items, id) =>
+  Request.put(saveFile(id), items);
+
+export const editSlide = async (items, id) =>
+  Request.put(editSlideInfo(id), items);

@@ -2,8 +2,6 @@ import React, { FC, useState } from "react";
 import { PrimaryButton } from "../../../../components/Buttons";
 import { IoMdClose } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";
-import { updateTimeline } from "../../../../api";
-import { alertActions } from "../../../../components/alertActions";
 import axiosInstance from "../../../../services/api";
 import { notify } from "../../../../components/notification/notification";
 
@@ -41,7 +39,7 @@ const PublishLesson: FC<Props> = ({ close, item, name, refetch }) => {
 
   const publishLesson = () => {
     setIsBusy(true)
-    axiosInstance.post('/publish/librarylesson/' + item.id)
+    axiosInstance.post('/librarylesson/status/' + item.id)
       .then(response => {
         if (response.data.data.published == 1) {
           refetch(item.SubjectId, item.id);

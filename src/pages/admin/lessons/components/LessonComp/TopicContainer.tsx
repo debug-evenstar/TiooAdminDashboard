@@ -22,7 +22,7 @@ const TopicContainer: FC<Props> = ({ lesson, refetch, naming }) => {
   const [modal, setModal ] = useState<boolean>(false)
 
   const location = useLocation();
-  // const { material } = location.state;
+  const { material } = location.state;
 
   const toggleTab = (item: any, tabId: number): void => {
     setActive(true);

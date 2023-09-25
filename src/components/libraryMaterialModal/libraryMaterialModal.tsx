@@ -119,7 +119,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
   useEffect(() => {
 
     if (materialProps) {
-      console.log(materialProps);
+      // console.log(materialProps);
       setFormData({
         name: materialProps.naming,
         description: materialProps.description,

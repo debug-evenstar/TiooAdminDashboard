@@ -91,7 +91,7 @@ const AllClass: React.FC<AllClassProps> = ({
       setIsOpen(!isOpen);
     };
     return (
-      <div className="w-full rounded-[6px] overflow-hidden border-t-[4px] bg-white hover:bg-[#E6E6FA] hover:bg-opacity-40 border-yellow-500 shadow-md">
+      <div className="w-full rounded-[6px] overflow-hidden border-t-[4px] bg-[#fff] hover:bg-[#E6E6FA] hover:bg-opacity-40 border-yellow-500 shadow-md">
         <div className="flex items-center justify-between px-[16px] pt-[16px] pb-[23px]">
           <h3 className="font-inter font-medium text-[#030036] opacity-70 text-[18px]">
             {classitems.naming}
@@ -110,7 +110,7 @@ const AllClass: React.FC<AllClassProps> = ({
             </div>
             {isOpen && (
               <div
-                className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${isOpen ? "block" : "hidden"
+                className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-[#fff] border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${isOpen ? "block" : "hidden"
                   }`}
               >
                 <div className="w-full divide-y-1 divide-gray-100 cursor-pointer">

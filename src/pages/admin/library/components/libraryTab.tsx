@@ -39,16 +39,16 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
 
   const viewLessonButton = () => {
     // setDeleteModal(true);
-    navigate(`/library/lessons/${materialProps?.id}/${materialProps?.classes[0]?.id}`, { state: {material: materialProps}})
+    navigate(`/library/lessons/${materialProps?.id}/${materialProps?.classes[0]?.id}`, { state: { material: materialProps } })
   }
 
   const toggleStatus = () => {
     // const status = !!materialProps.library_status;
-    axiosInstance.post('/librarysubject/status/'+materialProps.id)
+    axiosInstance.post('/librarysubject/status/' + materialProps.id)
       .then(response => {
         dispatch(setLibraryReload());
-        materialProps.library_status == 'published' ? 'unpuplished':'published';
-        notify.success(`${materialProps.library_status == 'published' ? "Retracted":"Published"} Library Material`)
+        materialProps.library_status == 'published' ? 'unpuplished' : 'published';
+        notify.success(`${materialProps.library_status == 'published' ? "Retracted" : "Published"} Library Material`)
       })
       .catch(error => console.log(error))
     setActive(false)
@@ -61,7 +61,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
       <AddLibraryLesson {...{ modal, setModal, materialProps }} />
       <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{ materialProps }} tabId={materialProps.tab} />
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} /> */}
-      <DeleteMaterialModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps}/>
+      <DeleteMaterialModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} />
       <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>
           <div className="flex justify-between relative">
@@ -76,24 +76,24 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
               position="left top"
 
             >
-              <div className="w-fit relative px-2 py-2 outline-none text-gray-400 bg-white overflow-hidden shadow rounded-[8px]">
+              <div className="w-fit relative px-2 py-2 outline-none text-gray-400 bg-[#fff] overflow-hidden shadow rounded-[8px]">
                 <button onClick={() => setEditModal(true)} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
                   {/* <FaEdit /> */}
-                  <BsPen/>
+                  <BsPen />
                   <span>Edit</span>
                 </button>
 
                 <button onClick={toggleStatus} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
-                  { materialProps.library_status !== 'published'?
-                      <>
-                        <BsDownload className="rotate-180 text-lg" />
-                        <span>Publish</span>
-                      </>
-                      : 
-                      <>
-                        <BsDownload className="text-lg" />
-                        <span>Retract</span>
-                      </>
+                  {materialProps.library_status !== 'published' ?
+                    <>
+                      <BsDownload className="rotate-180 text-lg" />
+                      <span>Publish</span>
+                    </>
+                    :
+                    <>
+                      <BsDownload className="text-lg" />
+                      <span>Retract</span>
+                    </>
                   }
                 </button>
                 <button onClick={() => { setDeleteModal(true); setActive(false) }} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] space-x-2 text-gray-500 hover:text-white hover:bg-[#ff6666] text-sm flex items-center">
@@ -154,7 +154,7 @@ export default function LibraryTab({ tab }: any) {
     <div className="w-full overflow-y-auto">
       <AddLibraryMaterial tabId={tab.tabId} {...{ modal, setModal }} />
       {/* <AddLibraryMaterial tabId={tab.tabId} {...{ modal, setModal }} /> */}
-      <div className="grid grid-cols-3  sm:md:lg:gap-2 items-center">
+      <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
         {
           materials.map((materialProps: TLibraryMaterials, index: number) => {
             if (tab.tabId == materialProps.tab)

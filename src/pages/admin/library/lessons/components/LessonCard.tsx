@@ -58,7 +58,7 @@ const LessonCard: React.FC<LessonCardProps> = ({
           </div>
           <p className="text-white leading-[18px] text-[12px]">{item.description}</p>
         </div>
-        <div className="bg-white w-full py-2 px-4 flex items-center justify-between">
+        <div className="bg-[#fff] w-full py-2 px-4 flex items-center justify-between">
           <div
             className="flex items-start justify-start flex-col hover:rounded-[4px] hover:bg-opacity-40 hover:bg-gray-200 p-2 w-full cursor-pointer"
             onClick={() => false}

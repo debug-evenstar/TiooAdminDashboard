@@ -138,7 +138,7 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
 
   return (
     <div className={`fixed text-primary z-[90] bg-[#00000044] transition inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-      <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[500px] w-[380px] mx-auto `}>
+      <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} z-[100] bg-[#fff] rounded duration-1000 h-[500px] w-[380px] mx-auto `}>
         <div className="p-2 border-b px-4 flex items-center justify-between">
           <h1>Apply Coupon</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
@@ -258,7 +258,7 @@ function CouponMenuBtn({ id, data }: { data: TCouponProps, id: number }) {
       </button>
       {
         menuOpen &&
-        <ul className="bg-white py-4 rounded-[8px] absolute -ml-20 shadow">
+        <ul className="bg-[#fff] py-4 rounded-[8px] absolute -ml-20 shadow">
           {
             couponMenu.map((menuName, index) => (
               <li key={index} onClick={() => { setMenuOpen(false); handleMenuClick(menuName, id) }} className="py-2.5 cursor-pointer px-4 text-primary text-sm hover:bg-gray-100 hover:text-main">{menuName}</li>

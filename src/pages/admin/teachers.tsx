@@ -11,14 +11,14 @@ import axiosInstance from "../../services/api";
 import { Load } from "../../components/loader/loader";
 import { TTeachersProps, setTeachers } from "../../redux/slices/teachers";
 
-function TeacherContextMenu({selectedId}: any): JSX.Element {
+function TeacherContextMenu({ selectedId }: any): JSX.Element {
 
   const menuData: { route: string, name: string }[] = [
     { route: `/teachers/profile/${selectedId}`, name: 'View Teacher Profile' },
     // { route: `/teachers/${selectedId}/home`, name: 'Enter Teacher Dashboard' },
   ];
   return (
-    <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-white w-fit rounded-[8px] shadow-lg`}>
+    <div className={`py-5 text-[#030036] l-0 text-sm text-left z-[10000] border bg-[#fff] w-fit rounded-[8px] shadow-lg`}>
       <ul>
         {
           menuData.map((menu) => (
@@ -79,9 +79,9 @@ export default function Teachers() {
     setTeachersData(parsedList);
     setRows(parsedList);
   }
-  
+
   useEffect(() => {
-    
+
     updateTeachers(teachers);
 
     console.log("getting teachers again");
@@ -110,7 +110,7 @@ export default function Teachers() {
             </div>
             :
             <PaginatedList
-              menu={<TeacherContextMenu  selectedId={selectedRow}/>}
+              menu={<TeacherContextMenu selectedId={selectedRow} />}
               dataPerPage={10}
               data={rows}
               selectRow={getSelectedTeacher}

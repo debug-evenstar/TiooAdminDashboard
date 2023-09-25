@@ -65,7 +65,7 @@ const PickClass: FC<Props> = ({ id, close }) => {
             ))
           }
         </div>
-        <div className="p-[24px] border-t bg-white">
+        <div className="p-[24px] border-t bg-[#fff]">
           <PrimaryButton text={"View"} variant="dash" onClick={gotoLesson} invalid={!selectedClass} />
         </div>
       </div>

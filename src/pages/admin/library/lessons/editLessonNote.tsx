@@ -113,7 +113,7 @@ const EditLessonNote = () => {
   return (
     <>
       <div>
-        <div className='absolute left-0 top-0 bg-white w-full'>
+        <div className='absolute left-0 top-0 bg-[#fff] w-full'>
           <EditLessonHeader back={showBackModal} next={displayForward} prev={displayPrevious} lesson={lesson} />
         </div>
         <div className='flex h-screen pt-[90px]'>

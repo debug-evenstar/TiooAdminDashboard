@@ -19,21 +19,21 @@ type TOptionProps = {
 }
 
 
-export default function SelectClassModal({ modal, setModal, materialProps,}: { materialProps?: any, modal: boolean, setModal: (state: boolean) => void }) {
+export default function SelectClassModal({ modal, setModal, materialProps, }: { materialProps?: any, modal: boolean, setModal: (state: boolean) => void }) {
 
 
     const navigate = useNavigate();
     // const [ classes, setClasses ] = useState<any>([]);
-    const [ classId, setClassId ] = useState<number>(0)
+    const [classId, setClassId] = useState<number>(0)
 
     const handleSubmit = () => {
-        navigate(`/library/lessons/${materialProps?.id}/${classId}`, { state: {material: materialProps}})
+        navigate(`/library/lessons/${materialProps?.id}/${classId}`, { state: { material: materialProps } })
     }
-  
+
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-300 w-[380px] mx-auto `}>
+            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-[#fff] rounded duration-300 w-[380px] mx-auto `}>
                 <div className="p-2 border-b px-4 flex items-center justify-between">
                     <h1>Select Class</h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
@@ -50,9 +50,9 @@ export default function SelectClassModal({ modal, setModal, materialProps,}: { m
                         }
                     </div>
                     <div className="px-4 w-full h-[4rem] mt-[2px] flex border-t items-center">
-                        <button disabled={classId == 0} onClick={handleSubmit} 
+                        <button disabled={classId == 0} onClick={handleSubmit}
                             className={`bg-main outline-none focus:shadow-lg outline-none w-full text-sm text-center py-2 
-                                shadow-md shadow-main rounded text-white font-[500] ${classId == 0? 'bg-gray-400':''}`}>
+                                shadow-md shadow-main rounded text-white font-[500] ${classId == 0 ? 'bg-gray-400' : ''}`}>
                             <span>View</span>
                         </button>
                     </div>

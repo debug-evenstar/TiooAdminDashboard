@@ -37,17 +37,17 @@ const ClassCard: React.FC<ClassCardProps> = ({
   }
 
   const displayedItems = expanded
-    ? item?.ClassArms
-    : item?.ClassArms?.slice(0, 3);
+    ? item?.arms
+    : item?.arms?.slice(0, 3);
 
   const handleInvite = () => {
-    if (!item?.ClassArms?.length) {
+    if (!item?.arms?.length) {
       toast.info('Please add a class arm to invite a student')
     } else create()
   }
   return (
     <div
-      className={`rounded-[6px] border-t-[4px]  w-full bg-white  hover:bg-opacity-40  ${color} shadow-md flex flex-col`}
+      className={`rounded-[6px] border-t-[4px]  w-full bg-[#fff]  hover:bg-opacity-40  ${color} shadow-md flex flex-col`}
     >
       <div>
         <div className="flex items-center justify-start p-[16px]">
@@ -81,7 +81,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
             })}
           </div>
         </div>
-        {item?.ClassArms?.length > 3 && (
+        {item?.arms?.length > 3 && (
           <button
             onClick={handleToggleExpand}
             className="text-[#4F46E5] text-[14px] pb-1 px-[20px]"
@@ -108,13 +108,13 @@ const ClassCard: React.FC<ClassCardProps> = ({
         <button
           disabled={true}
           className="flex items-center cursor-pointer px-[16px] py-[12px]"
-          // onClick={teacher ? () => false : handleInvite}
+        // onClick={teacher ? () => false : handleInvite}
         >
           <AiOutlinePlusCircle size={20} className="text-[#aaa] " />
           <h3
             className={`${teacher && "opacity-40"
               } text-[#aaa] text-base font-medium pl-2`}
-            >
+          >
             Invite Student
           </h3>
         </button>

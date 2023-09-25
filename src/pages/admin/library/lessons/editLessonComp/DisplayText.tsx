@@ -31,7 +31,7 @@ const DisplayText: FC<Props> = ({ data, lesson, getValue }) => {
 
   return (
     <>
-      <div className="bg-white min-h-[500px] p-8 rounded-[4px] edit-shade">
+      <div className="bg-[#fff] min-h-[500px] p-8 rounded-[4px] edit-shade">
         {stop && (
           <ReactQuill
             theme="bubble"

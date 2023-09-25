@@ -63,7 +63,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
 
   return (
     <div
-      className={`rounded-[6px] border-t-[4px]  w-full bg-white hover:bg-[#E6E6FA] hover:bg-opacity-40  ${color} shadow-md flex flex-col`}
+      className={`rounded-[6px] border-t-[4px]  w-full bg-[#fff] hover:bg-[#E6E6FA] hover:bg-opacity-40  ${color} shadow-md flex flex-col`}
     >
       <div className="flex items-center justify-between p-[16px]">
         <h3 className="font-inter font-medium text-[#030036] opacity-70 text-[18px]">
@@ -87,7 +87,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
           )}
           {isOpen && (
             <div
-              className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${isOpen ? "block" : "hidden"
+              className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-[#fff] border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${isOpen ? "block" : "hidden"
                 }`}
             >
               <div className="w-full divide-y-1 divide-gray-100 cursor-pointer">

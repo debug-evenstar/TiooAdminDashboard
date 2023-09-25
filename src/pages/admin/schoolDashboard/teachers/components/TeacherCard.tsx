@@ -28,14 +28,14 @@ const TeacherCard: React.FC<TeacherCardProps> = ({
         >
           {initials}
         </div>
-        
+
       </div>
       <div className="pt-2 pb-5 border-b border-gray-200">
         <h3 className="font-medium text-[#030036] opacity-70">
           {teacher.name}
         </h3>
       </div>
-      <div className="bg-white w-full grid grid-cols-2 gap-2 pt-2">
+      <div className="bg-[#fff] w-full grid grid-cols-2 gap-2 pt-2">
         <div
           className="flex items-start justify-start flex-col hover:rounded-[4px] hover:bg-opacity-40 hover:bg-gray-200 p-2 cursor-pointer"
 

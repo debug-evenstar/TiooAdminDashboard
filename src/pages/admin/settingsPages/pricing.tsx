@@ -259,7 +259,7 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
     return (
         <div className={`fixed inset-0 z-[99] h-screen w-screen bg-[#00000044] duration-300 ${modal ? "" : "-translate-y-full"}`}>
 
-            <div className={`${modal ? "translate-y-[8rem]" : "translate-y-0"}  duration-1000 flex flex flex-col justify-between mx-auto w-[40%] h-auto bg-white rounded`}>
+            <div className={`${modal ? "translate-y-[8rem]" : "translate-y-0"}  duration-1000 flex flex flex-col justify-between mx-auto w-[40%] h-auto bg-[#fff] rounded`}>
                 <div className="flex items-center justify-between py-2 px-4 border-b">
                     <h1>Set Price</h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
@@ -408,7 +408,7 @@ function ExceptionAccordion({ data, type }: { data: any, type: string }) {
                                 <button className="outline-none" onClick={() => { setOptionActive(true) }}>
                                 </button>
                             }>
-                            <ul className="py-3 bg-white shadow rounded-[8px]">
+                            <ul className="py-3 bg-[#fff] shadow rounded-[8px]">
                                 <li onClick={() => { toggle(); editException() }} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit price</li>
                                 <li onClick={() => { toggle(); removeException() }} className="py-2 px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Remove</li>
                             </ul>
@@ -545,7 +545,7 @@ export function ExceptionsComponent({ type }: { type: string }) {
                 <h1 className="font-[500] text-primary">Exceptions</h1>
                 <div className="text-sm outline-none cursor-pointer items-end flex flex-col">
                     <button
-                        className="bg-white w-fit rounded px-3 py-2 border  text-primary cursor-pointer bg-white outline-none flex justify-between space-x-10 items-center"
+                        className="bg-[#fff] w-fit rounded px-3 py-2 border  text-primary cursor-pointer bg-[#fff] outline-none flex justify-between space-x-10 items-center"
                         onClick={(e) => { setActive(!active); e.preventDefault() }}>
                         <span>Add {type}</span>
                         <svg width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg">

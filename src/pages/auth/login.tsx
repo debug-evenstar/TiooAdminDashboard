@@ -21,7 +21,7 @@ export default function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [errors, setErrors] = useState<LoginError>({});
-    const [ active, setActive ] = useState(false);
+    const [active, setActive] = useState(false);
 
     const handleLogin = async (data: { email: string, password: string }) => {
         setActive(true);
@@ -31,7 +31,7 @@ export default function Login() {
             localStorage.setItem('token', token);
             let profile = response.data.profile;
             profile = JSON.stringify(profile);
-            localStorage.setItem('profile',profile);
+            localStorage.setItem('profile', profile);
             dispatch(update(profile))
             navigate('/')
         } catch (e) {
@@ -70,13 +70,13 @@ export default function Login() {
 
     return (
         <div className="flex items-center justify-between h-screen w-full overflow-hidden">
-            <div className="hidden sm:md:block w-1/2 bg-main h-screen">
+            <div className="sm:md:lg:block w-[50%] bg-main h-screen">
                 <div className='px-16'>
                     <img src={tioo} className=" " alt="" />
                 </div>
                 <img className="w-[20rem] mx-auto mt-8" src={illustration} alt="" />
             </div>
-            <div className="w-full sm:md:w-1/2 h-screen px-4 sm:md:px-10 py-5 pt-24">
+            <div className="sm:md:w-1/2 h-screen px-4 sm:md:px-10 py-5 pt-24">
                 <h1 className="text-primary text-xl font-[500]">Welcome back!</h1>
                 <form action="" onSubmit={handleSubmit} noValidate className="mt-16 w-full sm:md:w-[85%]">
                     <div className="mb-4">
@@ -99,7 +99,7 @@ export default function Login() {
                     </div>
 
                     <button className="w-full text-center shadow-xl outline-none hover:bg-hover shadow-light py-3 rounded-[8px] text-white font-[500] bg-main mt-10 text-sm">
-                        { !active ? <span>Log In</span>: <div className="border-2 border-gray-400 border-r-gray-200 w-6 h-6 rounded-full mx-auto animate-spin"></div> }
+                        {!active ? <span>Log In</span> : <div className="border-2 border-gray-400 border-r-gray-200 w-6 h-6 rounded-full mx-auto animate-spin"></div>}
                     </button>
                 </form>
             </div>

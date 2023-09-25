@@ -35,9 +35,9 @@ import AdminLayoutExt from "./layout/school";
 import SchoolProfile from "./pages/admin/schoolProfile";
 import TeacherProfile from "./pages/admin/teacherProfile";
 import FreelancerProfile from "./pages/admin/freelancerProfile";
-import Lessons from './pages/admin/lessons/index';
+import Lessons from './pages/admin/library/lessons/index';
 import { ROUTES } from './global/routes';
-import UploadedLesson from "./pages/admin/lessons/uploaded-lessons";
+import UploadedLesson from "./pages/admin/library/lessons/uploaded-lessons";
 import EditSlides from "./pages/admin/library/components/editSlides";
 
 function App() {

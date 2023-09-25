@@ -58,7 +58,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
 
   return (
     <>
-      <AddLibraryLesson {...{ modal, setModal }} subjectId={materialProps.id} />
+      <AddLibraryLesson {...{ modal, setModal, materialProps }} />
       <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{ materialProps }} tabId={materialProps.tab} />
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} /> */}
       <DeleteMaterialModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps}/>

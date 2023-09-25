@@ -1,31 +1,41 @@
 import React, { useState, useRef } from "react";
+import { FiEdit } from "react-icons/fi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { HiDotsVertical } from "react-icons/hi";
 import { RiDeleteBin5Line, RiEdit2Line } from "react-icons/ri";
-
+import { userInfo } from "os";
+import { useSelector } from "react-redux";
 interface ClassCardProps {
   color: string;
   item: any;
-
+  edit: () => void;
+  del: () => void;
+  create: () => void;
+  viewClasses: () => void;
+  inviteStudent: () => void;
+  teacherView: () => void;
 }
 const ClassCard: React.FC<ClassCardProps> = ({
   color,
   item,
+  edit,
+  create,
+  viewClasses,
+  del,
+  inviteStudent,
+  teacherView
 }) => {
   const [expanded, setExpanded] = useState(false);
-  // const capitalizeFirstLetter = (str: string) => {
-  //   if (!str) {
-  //     return "";
-  //   }
-  //   return str?.charAt(0)?.toUpperCase() + str.slice(1);
-  // };
-  const profile = localStorage.getItem('profile') || '{}';
-  const userProfile = JSON.parse(profile)
-  const user = userProfile.account_type
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) {
+      return "";
+    }
+    return str?.charAt(0)?.toUpperCase() + str.slice(1);
+  };
+  const user = useSelector((state: any) => state.gods.auth.userInformation.account_type);
+  const account = useSelector((state: any) => state.gods.auth.userInformation);
 
-  const account = userProfile;
-
-  // const naming = capitalizeFirstLetter(item.naming);
+  const naming = capitalizeFirstLetter(item.naming);
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
@@ -59,12 +69,12 @@ const ClassCard: React.FC<ClassCardProps> = ({
         <h3 className="font-inter font-medium text-[#030036] opacity-70 text-[18px]">
           {item.naming}
         </h3>
-        <div className="cursor-pointer" >
-          {/* <FiEdit size={20} className="text-[#87909E]" /> */}
+        {/* <div className="cursor-pointer" onClick={edit}>
+          <FiEdit size={20} className="text-[#87909E]" />
           <HiDotsVertical className="text-white text-[20px]" />
-        </div>
+        </div> */}
         <div className="relative" ref={dropdownRef}>
-          {(user.toLowerCase() === "school" || user.toLowerCase() === "freelancer") && (
+          {(user?.toLowerCase() === "school" || user?.toLowerCase() === "freelancer") && (
             <div
               className="cursor-pointer"
               onClick={(e) => {
@@ -77,9 +87,8 @@ const ClassCard: React.FC<ClassCardProps> = ({
           )}
           {isOpen && (
             <div
-              className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${
-                isOpen ? "block" : "hidden"
-              }`}
+              className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${isOpen ? "block" : "hidden"
+                }`}
             >
               <div className="w-full divide-y-1 divide-gray-100 cursor-pointer">
                 <div
@@ -87,6 +96,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
                   onClick={(e) => {
                     e.preventDefault();
                     toggleDropdown();
+                    edit();
                   }}
                 >
                   <RiEdit2Line size={20} className="mr-2 text-[#87909E]" />
@@ -102,6 +112,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
                   onClick={(e) => {
                     e.preventDefault();
                     toggleDropdown();
+                    del();
                   }}
                 >
                   <RiDeleteBin5Line size={20} className="mr-2 text-[#87909E]" />
@@ -118,11 +129,10 @@ const ClassCard: React.FC<ClassCardProps> = ({
       <div>
         <div className="flex flex-col items-start justify-start p-[16px]">
           <div
-            className={`py-[22px] grid grid-cols-3 w-full gap-2 pt-[30px] cursor-pointer ${
-              expanded ? "" : "h-[90px]"
-            }`}
+            className={`py-[22px] grid grid-cols-3 w-full gap-2 pt-[30px] cursor-pointer ${expanded ? "" : "h-[90px]"
+              }`}
           >
-            {displayedItems.map((item: any,index: number) => {
+            {displayedItems?.map((item: any, index: number) => {
               const truncateString = (str: string, maxLength: number) => {
                 if (str.length <= maxLength) {
                   return str;
@@ -135,8 +145,9 @@ const ClassCard: React.FC<ClassCardProps> = ({
                   key={index}
                   title={item.naming}
                   className="px-1 w-full py-1 max-h-[38px] rounded-[25px] border-[1.5px] border-black border-opacity-20 flex items-center justify-center text-[15px] font-normal font-inter text-[#030036] opacity-50"
+                  onClick={viewClasses}
                 >
-                 
+
                   {truncateString(item.naming, 8)}
                 </div>
               );
@@ -156,7 +167,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
         {(user === "school" || user === "freelancer") && (
           <div
             className="flex items-center cursor-pointer px-[16px] py-[12px]"
-
+            onClick={create}
           >
             <AiOutlinePlusCircle size={20} className="text-[#4F46E5] " />
             <h3 className="text-[#4F46E5] text-base font-medium pl-2">
@@ -167,12 +178,14 @@ const ClassCard: React.FC<ClassCardProps> = ({
         {user === "teacher" && (
           <div
             className="flex items-center cursor-pointer px-[16px] py-[12px]"
+            onClick={
+              account.teacher_type === "subject" ? undefined : inviteStudent
+            }
           >
             <AiOutlinePlusCircle size={20} className="text-[#4F46E5] " />
             <h3
-              className={`${
-                account.teacher_type === "subject" && "opacity-40"
-              } text-[#4F46E5] text-base font-medium pl-2`}
+              className={`${account.teacher_type === "subject" && "opacity-40"
+                } text-[#4F46E5] text-base font-medium pl-2`}
             >
               Invite Student
             </h3>

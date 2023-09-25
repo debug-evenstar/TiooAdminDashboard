@@ -17,7 +17,7 @@ const SchoolLessons = () => {
             console.log(error);
           setLoading(false);
         });
-      }
+    }
     
        useEffect(() => {
          setLoading(true);

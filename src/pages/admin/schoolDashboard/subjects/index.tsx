@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import SubjectCard from "./components/SubjectCard";
 
 import { useParams } from "react-router-dom";
-import axiosInstance from "../../../../services/api";
+import axiosInstance, { getSchoolSubjects } from "../../../../services/api";
 
 
 function SchoolSubjects() {
@@ -11,16 +11,28 @@ function SchoolSubjects() {
 
   const { id } = useParams();
 
-  const getAllSubjects = () => {
-    axiosInstance.get('https://api.hellotioo.com/subjects/school/read/'+id)
-      .then(response => setSchoolSubjects(response.data.data))
-      .catch(error => console.log(error))
-      .finally(() => setLoading(false));
+  // const getAllSubjects = () => {
+  //   axiosInstance.get('https://api.hellotioo.com/subjects/school/read/'+id)
+  //     .then(response => setSchoolSubjects(response.data.data))
+  //     .catch(error => console.log(error))
+  //     .finally(() => setLoading(false));
+  // }
+  const getAllSubjects = (id:any) => {
+    getSchoolSubjects(id)
+    .then((response) => {
+      setLoading(false);
+      setSchoolSubjects(response?.data.data);
+      // setSubjects(response?.data?.data);
+    })
+    .catch((error) => {
+        console.log(error);
+      setLoading(false);
+    });
   }
 
   useEffect(() => {
     setLoading(true);
-    getAllSubjects();
+    getAllSubjects(Number(id));
   }, []);
 
 

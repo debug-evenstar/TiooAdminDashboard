@@ -4,7 +4,7 @@ export default function Toast({ message, type, onClose }: { message: string; typ
     const [visible, setVisible] = useState<boolean>(true);
     const [hidden, setHidden] = useState<boolean>(false);
     useEffect(() => {
-        let vtimer = 0, htimer = 0;
+        let vtimer: any = 0, htimer:any = 0;
         vtimer = setTimeout(() => {
             htimer = setTimeout(() => {
                 setVisible(false);

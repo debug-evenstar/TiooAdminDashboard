@@ -24,10 +24,10 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
 
     useEffect(() => {
         document.addEventListener('click', handleClickOutside)
-        return () => {document.removeEventListener('click', handleClickOutside)}
+        return () => { document.removeEventListener('click', handleClickOutside) }
     }, []);
 
-    return active? (
+    return active ? (
         <div className="absolute rounded-[8px] w-[12rem] border shadow bg-white mt-36 right-1" >
             <div className="w-full text-gray-600 font-[700] p-3 pl-5 border-b">
                 Admin
@@ -35,7 +35,7 @@ const DropDown = ({ active, setActive }: { active: boolean, setActive: any }) =>
             <ul >
                 <li onClick={logout} className="hover:bg-light flex space-x-3 items-center  px-4 py-3 cursor-pointer">
                     <span className="text-2xl pr-3 text-red-400">
-                        <BiLogOut/>
+                        <BiLogOut />
                     </span>
                     Logout
                 </li>
@@ -48,6 +48,7 @@ export default function Profile() {
     const user = useSelector((state: RootState) => state.praise.user.user);
     const [active, setActive] = useState<boolean>(false);
 
+
     return (
         <>
             <div onClick={() => setActive(!active)} className="flex items-center cursor-pointer text-primary space-x-2">
@@ -59,7 +60,7 @@ export default function Profile() {
                     <h1 className="text-md">{user.name}</h1>
                     <h2 className="text-xs mt-1 text-gray-400">{user.account_type}</h2>
                 </div>
-                <DropDown {...{active,setActive}}/>
+                <DropDown {...{ active, setActive }} />
             </div>
         </>
     );

@@ -26,6 +26,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.46.2",
     "react-icons": "^4.10.1",
     "react-loader-spinner": "^5.4.5",
     "react-paginate": "^8.2.0",

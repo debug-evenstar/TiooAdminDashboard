@@ -93,7 +93,7 @@ const chapterOptions = [...Array(20)].map(((_, index) => ({ id: index + 1, value
 export default function AddLibraryLesson({ modal, setModal, lesson, materialProps }: { materialProps?: any, subjectId?: number, lesson?: any, modal: boolean, setModal: (state: boolean) => void }) {
 
     const classIDs = materialProps?.classes.map((item: any) => ({ id: item.id, name: item.naming }))
-    console.log(classIDs)
+    console.log(materialProps)
     const [klass, setClass] = useState<number[]>(classIDs.map((i:any) => i.id));
     const [age, setAge] = useState<number[]>([]);
     const [errors, setErrors] = useState<TLibraryModalError>({});
@@ -172,7 +172,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, materialProp
         payload.append('objective', formData.objective);
         payload.append('age', lesson?.age || String(age[0]));
         payload.append('template', selectedFile as Blob, selectedFile?.name);
-        payload.append('subject', lesson?.SubjectId || String(materialProps?.subjectId));
+        payload.append('subject', lesson?.SubjectId || String(materialProps?.id));
         payload.append('chapter', String(chapter));
 
 

@@ -39,7 +39,7 @@ function ClassLessonCard(lesson: TLibraryLesson) {
                                 <button className="outline-none" onClick={() => { setActive(true) }}>
                                 </button>
                             }>
-                            <ul className="py-3 px-3 bg-white shadow rounded-[8px]">
+                            <ul className="py-3 px-3 bg-[#fff] shadow rounded-[8px]">
                                 <li onClick={() => { toggle(); setModal(true) }} className="py-2 rounded px-4 hover:bg-light cursor-pointer hover:text-main text-primary text-sm">Edit Lesson</li>
                                 <li onClick={() => { toggle() }} className="py-2 rounded px-4 hover:bg-red-400 text-red-500 cursor-pointer hover:text-white text-sm">Remove</li>
                             </ul>
@@ -151,7 +151,7 @@ function AllLessonsCard({ classId }: { classId: number }) {
                         </div>
                     </div>
                 </div>
-                <div className="h-[50px] bg-white relative border-t flex items-center px-4 justify-between">
+                <div className="h-[50px] bg-[#fff] relative border-t flex items-center px-4 justify-between">
                     <button className="bg-main px-4 py-1.5 text-sm text-white rounded">
                         Set Test/Exam
                     </button>

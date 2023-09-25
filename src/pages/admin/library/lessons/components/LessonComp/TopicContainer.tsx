@@ -33,11 +33,10 @@ const TopicContainer: FC<Props> = ({ lesson, refetch, naming }) => {
   const style = !!lesson.length
     ? "grid grid-cols-3 lg:gap-12 lg:gap-y-8"
     : "flex flex-col"
-  console.log(lesson);
   return (
     <>
       {/* <AddLessonModal variant material={material} /> */}
-      <AddLibraryLesson materialProps={material} lesson={lesson[0]} {...{ modal, setModal }} />
+      <AddLibraryLesson materialProps={material} refetch={refetch} lesson={lesson[0]} {...{ modal, setModal }} />
       <div className={style}>
         {!!lesson.length ?
           lesson.map((item: any, i: number) => (

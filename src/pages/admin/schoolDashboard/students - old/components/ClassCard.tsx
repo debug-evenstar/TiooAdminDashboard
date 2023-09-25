@@ -53,7 +53,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
 
   return (
     <div
-      className={`rounded-[6px] border-t-[4px]  w-full bg-white hover:bg-[#E6E6FA] hover:bg-opacity-40  ${color} shadow-md flex flex-col`}
+      className={`rounded-[6px] border-t-[4px]  w-full bg-[#fff] hover:bg-[#E6E6FA] hover:bg-opacity-40  ${color} shadow-md flex flex-col`}
     >
       <div className="flex items-center justify-between p-[16px]">
         <h3 className="font-inter font-medium text-[#030036] opacity-70 text-[18px]">
@@ -77,9 +77,8 @@ const ClassCard: React.FC<ClassCardProps> = ({
           )}
           {isOpen && (
             <div
-              className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${
-                isOpen ? "block" : "hidden"
-              }`}
+              className={`absolute right-[-3px] w-[120px] mt-3 origin-top-right bg-[#fff] border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${isOpen ? "block" : "hidden"
+                }`}
             >
               <div className="w-full divide-y-1 divide-gray-100 cursor-pointer">
                 <div
@@ -118,11 +117,10 @@ const ClassCard: React.FC<ClassCardProps> = ({
       <div>
         <div className="flex flex-col items-start justify-start p-[16px]">
           <div
-            className={`py-[22px] grid grid-cols-3 w-full gap-2 pt-[30px] cursor-pointer ${
-              expanded ? "" : "h-[90px]"
-            }`}
+            className={`py-[22px] grid grid-cols-3 w-full gap-2 pt-[30px] cursor-pointer ${expanded ? "" : "h-[90px]"
+              }`}
           >
-            {displayedItems.map((item: any,index: number) => {
+            {displayedItems.map((item: any, index: number) => {
               const truncateString = (str: string, maxLength: number) => {
                 if (str.length <= maxLength) {
                   return str;
@@ -136,7 +134,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
                   title={item.naming}
                   className="px-1 w-full py-1 max-h-[38px] rounded-[25px] border-[1.5px] border-black border-opacity-20 flex items-center justify-center text-[15px] font-normal font-inter text-[#030036] opacity-50"
                 >
-                 
+
                   {truncateString(item.naming, 8)}
                 </div>
               );
@@ -170,9 +168,8 @@ const ClassCard: React.FC<ClassCardProps> = ({
           >
             <AiOutlinePlusCircle size={20} className="text-[#4F46E5] " />
             <h3
-              className={`${
-                account.teacher_type === "subject" && "opacity-40"
-              } text-[#4F46E5] text-base font-medium pl-2`}
+              className={`${account.teacher_type === "subject" && "opacity-40"
+                } text-[#4F46E5] text-base font-medium pl-2`}
             >
               Invite Student
             </h3>

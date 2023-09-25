@@ -18,7 +18,7 @@ function StudentContextMenu({ selectedId }: any): JSX.Element {
     // { route: `/students/${selectedId}/home`, name: 'Enter Student Dashboard' },
   ];
   return (
-    <div className={`py-5 text-primary l-0 text-sm text-left z-[1000] border bg-white w-fit rounded-[8px] shadow-lg`}>
+    <div className={`py-5 text-primary l-0 text-sm text-left z-[1000] border bg-[#fff] w-fit rounded-[8px] shadow-lg`}>
       <ul>
         {
           menuData.map((menu, index) => (

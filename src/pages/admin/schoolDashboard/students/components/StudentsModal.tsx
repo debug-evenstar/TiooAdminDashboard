@@ -157,7 +157,7 @@ const StudentsModal: React.FC<StudentsModalProps> = ({ close, item, arm, showDel
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="focus:outline-none ml-2 text-base bg-white w-full"
+                  className="focus:outline-none ml-2 text-base bg-[#fff] w-full"
                   value={searchQuery}
                   onChange={handleSearchChange}
                 />

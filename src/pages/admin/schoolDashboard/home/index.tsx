@@ -40,7 +40,7 @@ function Home() {
   const [allclass, setallclass] = useState([]);
   const [loading, setloading] = useState(false);
   const [nchange, setchange] = useState(1);
-  
+
   const dispatch = useDispatch();
   const userInfo = useSelector((state: any) => state.gods.auth.userInformation);
   const classInfo = useSelector((state: any) => state.gods.class.classInformation);
@@ -122,7 +122,7 @@ function Home() {
   };
 
   useEffect(() => {
-    setallclass(classInfo);
+    // setallclass(classInfo);
     setloading(true);
     if (userInfo.account_type === "teacher") {
       fetchTeacherClass();
@@ -175,7 +175,7 @@ function Home() {
             </h3>
             {userInfo.account_type === "school" && (
               <div
-                className="rounded-[8px] bg-white   flex items-center justify-center flex-col cursor-pointer  "
+                className="rounded-[8px] bg-[#fff]   flex items-center justify-center flex-col cursor-pointer  "
                 onClick={() => {
                   toggleTab(item, 7);
                 }}

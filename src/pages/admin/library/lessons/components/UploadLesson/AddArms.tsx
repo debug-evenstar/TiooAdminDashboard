@@ -84,7 +84,7 @@ const EditLessonArms: FC<Props> = ({ item, close, refetch }) => {
           ))
         }
       </div>
-      <div className="p-[24px] border-t bg-white">
+      <div className="p-[24px] border-t bg-[#fff]">
         <PrimaryButton text={"Edit"} variant="dash" onClick={EditClassArms} />
       </div>
     </>

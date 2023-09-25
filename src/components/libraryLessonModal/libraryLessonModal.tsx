@@ -90,11 +90,11 @@ const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, n
 const chapterOptions = [...Array(20)].map(((_, index) => ({ id: index + 1, value: (index + 1).toString() })));
 
 
-export default function AddLibraryLesson({ modal, setModal, lesson, materialProps }: { materialProps?: any, subjectId?: number, lesson?: any, modal: boolean, setModal: (state: boolean) => void }) {
+export default function AddLibraryLesson({ modal, setModal, lesson, refetch, materialProps }: { materialProps?: any, subjectId?: number, lesson?: any, refetch?: any, modal: boolean, setModal: any }) {
 
     const classIDs = materialProps?.classes.map((item: any) => ({ id: item.id, name: item.naming }))
-    console.log(classIDs)
-    const [klass, setClass] = useState<number[]>(classIDs.map((i:any) => i.id));
+    // console.log(classIDs)
+    const [klass, setClass] = useState<number[]>(classIDs.map((i: any) => i.id));
     const [age, setAge] = useState<number[]>([]);
     const [errors, setErrors] = useState<TLibraryModalError>({});
     const [loading, setLoading] = useState<boolean>(false);
@@ -113,7 +113,6 @@ export default function AddLibraryLesson({ modal, setModal, lesson, materialProp
     useEffect(() => {
         const id = lesson?.SubjectId || materialProps?.subjectId;
         if (id) {
-
             axiosInstance.get('https://api.hellotioo.com/lesson/subjectlessons/' + id)
                 .then((response) => {
                     setClassOptions(response.data.data.classes);
@@ -141,7 +140,6 @@ export default function AddLibraryLesson({ modal, setModal, lesson, materialProp
             newErrors.title = "Please Enter a valid title"
 
         if (!lesson) {
-
             if (age.length == 0)
                 newErrors.age = "Please enter a valid age ";
 
@@ -165,14 +163,14 @@ export default function AddLibraryLesson({ modal, setModal, lesson, materialProp
     }
 
     const sendRequest = () => {
-        console.log(lesson);
+        // console.log(lesson);
         let payload = new FormData();
         payload.append('title', formData.title);
         payload.append('class', lesson?.ClassId || String(klass[0]));
         payload.append('objective', formData.objective);
         payload.append('age', lesson?.age || String(age[0]));
         payload.append('template', selectedFile as Blob, selectedFile?.name);
-        payload.append('subject', lesson?.SubjectId || String(materialProps?.subjectId));
+        payload.append('subject', String(materialProps?.id));
         payload.append('chapter', String(chapter));
 
 
@@ -182,12 +180,16 @@ export default function AddLibraryLesson({ modal, setModal, lesson, materialProp
             }
         })
             .then(() => {
-                notify.success("Added lesson successfuly");
                 dispatch(setLibraryReload());
+                if (lesson) {
+                    console.log("refetching");
+                    refetch(materialProps.id, lesson?.GroupId);
+                }
                 setModal(false);
+                notify.success("Added lesson successfuly");
             })
             .catch(error => {
-                notify.error(error.response.message);
+                notify.error(error?.response?.message);
             })
             .finally(() => setLoading(false));
     }

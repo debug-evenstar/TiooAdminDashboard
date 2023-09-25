@@ -211,7 +211,7 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] transition inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-            <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[500px] w-[380px] mx-auto `}>
+            <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} z-[100] bg-[#fff] rounded duration-1000 h-[500px] w-[380px] mx-auto `}>
                 <div className="p-2 border-b px-4 flex items-center justify-between">
                     <h1>Add Users</h1>
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
@@ -283,7 +283,7 @@ function DeleteUserModal({ modal, setModal, id }: { modal: boolean, setModal: (s
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] transition inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-            <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} justify-between flex flex-col z-[100] bg-white rounded duration-1000 h-[300px] w-[300px] mx-auto `}>
+            <div className={`${modal ? "translate-y-[5rem]" : "translate-y-0"} justify-between flex flex-col z-[100] bg-[#fff] rounded duration-1000 h-[300px] w-[300px] mx-auto `}>
                 <div className="flex justify-end py-2 px-4 border-b">
                     <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
                 </div>

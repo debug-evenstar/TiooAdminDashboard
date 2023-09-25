@@ -31,7 +31,7 @@ const prompts = [
 
 export default function DeleteMaterialModal({ modal, setModal, materialProps, }: { materialProps?: any, modal: boolean, setModal: (state: boolean) => void }) {
     const [index, setIndex] = useState<number>(0);
-    const [loading, setLoading ] = useState(false);
+    const [loading, setLoading] = useState(false);
     // const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ export default function DeleteMaterialModal({ modal, setModal, materialProps, }:
                 notify.success("deleted library material")
             })
             .catch(error => console.log(error))
-            .finally(() => { setModal(false); setLoading(false)});
+            .finally(() => { setModal(false); setLoading(false) });
     }
 
     const close = () => {
@@ -62,7 +62,7 @@ export default function DeleteMaterialModal({ modal, setModal, materialProps, }:
 
     return (
         <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-300 w-[380px] mx-auto `}>
+            <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-[#fff] rounded duration-300 w-[380px] mx-auto `}>
                 <div className="p-2 border-b px-4 flex items-center justify-between">
                     <h1 className="font-[500]">Delete Textbook</h1>
                     <button className="text-2xl" onClick={() => close()}>&times;</button>
@@ -80,7 +80,7 @@ export default function DeleteMaterialModal({ modal, setModal, materialProps, }:
                         <button onClick={handleSubmit}
                             className={`outline-none focus:shadow-lg outline-none w-full text-sm text-center py-2 
                                 shadow-md rounded text-white font-[500] ${prompts[index]?.color}`}>
-                            <span>{loading? "Deleting...":"Delete"}</span>
+                            <span>{loading ? "Deleting..." : "Delete"}</span>
                         </button>
                     </div>
                 </div>

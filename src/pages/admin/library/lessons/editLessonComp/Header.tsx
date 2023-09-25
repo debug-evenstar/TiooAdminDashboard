@@ -92,7 +92,7 @@ const EditLessonHeader: FC<Props> = ({ lesson, back, next, prev }) => {
           {isOpen && (
             <span
               ref={modalRef}
-              className="block absolute top-[70px] z-10 right-0 bg-white w-[230px] border border-imperial_blue rounded-[8px] shadow-md divide-y divide-gray-100"
+              className="block absolute top-[70px] z-10 right-0 bg-[#fff] w-[230px] border border-imperial_blue rounded-[8px] shadow-md divide-y divide-gray-100"
             >
               <div className="w-full divide-y-2 divide-gray-100 cursor-pointer">
                 <div

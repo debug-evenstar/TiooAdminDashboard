@@ -44,7 +44,7 @@ function OptionsMenu({ selection, setSelection, options }: { selection: number, 
         </div>
       </div>
       {active &&
-        <div className="absolute bg-white p-4 shadow w-[21.9rem] z-[50]">
+        <div className="absolute bg-[#fff] p-4 shadow w-[21.9rem] z-[50]">
           <ul className="">
             {
               options.map((option, index) => (
@@ -117,7 +117,7 @@ export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: 
 
   return (
     <div className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
-      <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[530px] w-[380px] mx-auto `}>
+      <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-[#fff] rounded duration-1000 h-[530px] w-[380px] mx-auto `}>
         <div className="p-2 border-b px-4 flex items-center justify-between">
           <h1>Add Lesson Material</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>

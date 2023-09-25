@@ -31,7 +31,7 @@ const MainLessonModal: FC<Props> = ({ close, item }) => {
     }
   ]
   const manageNavigation = (item: any) => {
-    console.log(item);
+    // console.log(item);
 
     if (item.route) {
       navigate(item.route)

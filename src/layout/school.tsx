@@ -19,7 +19,6 @@ export default function AdminLayoutExt() {
     console.log("location",location);
     useEffect(() => {
         const profile = localStorage.getItem('profile');
-        
         if (profile) {
             dispatch(update(JSON.parse(profile)));
         } else {

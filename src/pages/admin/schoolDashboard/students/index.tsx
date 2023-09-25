@@ -6,7 +6,7 @@ import InviteStudents from "./components/InviteStudents";
 import StudentsModal from "./components/StudentsModal";
 import { configure } from "../../../../services/config";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getclassWithArms } from "../../../../services/authServices";
 import { alertActions } from "../../../../components/alertActions";
 import { classActions } from "../../../../store/classSlice";
@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../../../../store/authSlice";
 import LoadingCompo from "../../../../components/loadingCompo";
 import DeleteModal from "../../../../components/deleteModal";
+import axiosInstance from "../../../../services/api";
 
 function SchoolStudents() {
   const [active, setActive] = useState(false);
@@ -28,9 +29,13 @@ function SchoolStudents() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { id } = useParams();
+
+
+
   const config = configure(userInfo.token);
   useEffect(() => {
-    setallclass(classInfo);
+    // setallclass(classInfo);
     setloading(true);
     if (!userInfo.token) {
       config.headers.Authorization = "Bearer " + localStorage.getItem("token");
@@ -40,25 +45,35 @@ function SchoolStudents() {
       navigate("/login");
       return;
     }
-
+    
+    const getclassWithArms = (id: number) => {
+      return axiosInstance.get(`/school/dashboard/home?school_id=${id}`)
+    }
     const fetchClass = async () => {
-      try {
-        //get class with arms
-        const val = await getclassWithArms(config);
-        val == "Network Error" &&
-          alertActions.error("Please check Internet connection");
+      const val = await getclassWithArms(Number(id));
+      setloading(false);
+      console.log(val.data.data);
+      setallclass(val?.data?.data);
 
-        setallclass(val?.data?.data);
-        setloading(false);
-        dispatch(classActions.saveclassInfo(val?.data?.data));
-        // dispatch(authActions.savetoken(localStorage.getItem("token")));
-      } catch (error: any) {
-        setloading(false);
-        if (error?.response?.data?.message == "Unauthorized") {
-          navigate("/login");
-        }
-      }
-    };
+    }
+    // const fetchClass = async () => {
+    //   try {
+    //     //get class with arms
+    //     const val = await getclassWithArms(config);
+    //     val == "Network Error" &&
+    //       alertActions.error("Please check Internet connection");
+
+    //     setallclass(val?.data?.data);
+    //     setloading(false);
+    //     dispatch(classActions.saveclassInfo(val?.data?.data));
+    //     // dispatch(authActions.savetoken(localStorage.getItem("token")));
+    //   } catch (error: any) {
+    //     setloading(false);
+    //     if (error?.response?.data?.message == "Unauthorized") {
+    //       navigate("/login");
+    //     }
+    //   }
+    // };
     fetchClass();
   }, []);
 

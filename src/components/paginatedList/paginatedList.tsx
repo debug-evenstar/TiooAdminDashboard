@@ -4,7 +4,8 @@ import ListComponent, { IListProps } from '../list/list';
 
 import './paginate.css'
 
-export default function PaginatedList({ menu, dataPerPage, data, selectRow }: { menu: ReactNode, data: IListProps[], dataPerPage: number, selectRow: (id:any) => void}) {
+export default function PaginatedList({ menu, page, dataPerPage, data, selectRow }:
+  { menu: ReactNode, data: IListProps[], page?: number, dataPerPage: number, selectRow: (id: any) => void }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
 
@@ -38,6 +39,7 @@ export default function PaginatedList({ menu, dataPerPage, data, selectRow }: { 
         disabledLinkClassName='disabled-li'
         previousLinkClassName='prev-li'
         breakLabel="..."
+        forcePage={page? page: 0}
         nextLabel="next"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}

@@ -55,6 +55,7 @@ export default function Schools() {
   const [rows, setRows] = useState<IListProps[]>([]);
   const [selectedRow, setSelectedRow] = useState('')
   const [loading, setLoading] = useState<boolean>(true);
+  const [page, setPage] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -115,6 +116,7 @@ export default function Schools() {
             <PaginatedList
               menu={<SchoolContextMenu selectedId={selectedRow} />}
               dataPerPage={10}
+              page={page - 1}
               data={rows}
               selectRow={getSelectedSchool}
             />

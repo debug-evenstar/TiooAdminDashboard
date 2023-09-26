@@ -123,10 +123,15 @@ const StudentsModal: React.FC<StudentsModalProps> = ({ close, item, arm, showDel
             <h3 className="text-[14px] font-medium text-[#87909E] pt-1">
               {data.Account.phone}
             </h3>
-            <div
+            {/* <div
               className="underline text-[12px] text-[#4F46E5] font-medium cursor-pointer pt-3"
               onClick={() => deleteStudentbyid(data?.Account.id)}
             // onClick={showDelete? () => showDelete(3) : () => false}
+            >
+              Remove student
+            </div> */}
+            <div
+              className="line-through text-[12px] text-[#aaa] font-medium cursor-pointer pt-3"
             >
               Remove student
             </div>

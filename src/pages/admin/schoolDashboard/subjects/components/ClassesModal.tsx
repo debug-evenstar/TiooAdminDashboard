@@ -76,7 +76,7 @@ const ClassesModal: React.FC<ClassesModalProps> = ({
             {ClassArmsFilter(item.item.id)}
           </p>
         </div>
-        {!teacher && (
+        {/* {!teacher && (
           <div
             className="cursor-pointer"
             onClick={() => removeClass(item.item.id)}
@@ -86,7 +86,7 @@ const ClassesModal: React.FC<ClassesModalProps> = ({
               className=" text-[#030036] opacity-70"
             />
           </div>
-        )}
+        )} */}
       </div>
     );
   };
@@ -111,7 +111,7 @@ const ClassesModal: React.FC<ClassesModalProps> = ({
         )}
         {/* <ClassItem /> */}
       </div>
-      {!teacher && (
+      {/* {!teacher && (
         <div className="p-[24px]">
           <PrimaryButton
             text="Add Another Class"
@@ -119,7 +119,7 @@ const ClassesModal: React.FC<ClassesModalProps> = ({
             onClick={addNewClass}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -68,11 +68,11 @@ const TeachersModal: React.FC<TeachersModalProps> = ({
             {item.name}
           </h3>
         </div>
-        {
+        {/* {
           !teacher && <div className="cursor-pointer">
             <RiDeleteBin5Line size={20} className=" text-[#030036] opacity-70" onClick={() => deleteTeacher(item.id)} />
           </div>
-        }
+        } */}
       </div>
     );
   };
@@ -98,13 +98,13 @@ const TeachersModal: React.FC<TeachersModalProps> = ({
           </h3>
         )}
       </div>
-      {!teacher && <div className="p-[24px]">
+      {/* {!teacher && <div className="p-[24px]">
         <PrimaryButton
           text="Add Another Teacher"
           variant="dash"
           onClick={assignTeachers}
         />
-      </div>}
+      </div>} */}
     </div>
   );
 };

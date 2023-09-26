@@ -68,7 +68,7 @@ function App() {
             <Route path="teachers/profile/:id" element={<TeacherProfile />} />
 
             {/* Manage Schools */}
-            <Route path="schools" element={<Schools />} />
+            <Route path="schools/:page?" element={<Schools />} />
             <Route path="schools/profile/:id" element={<SchoolProfile />} />
 
             {/* Manage Students */}

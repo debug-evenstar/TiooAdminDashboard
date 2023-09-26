@@ -105,7 +105,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
             {subject}
           </h3>
           <div className="relative" ref={dropdownRef}>
-            {!teacher && (
+            {/* {!teacher && (
               <div
                 onClick={(e) => {
                   e.preventDefault();
@@ -115,7 +115,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
               >
                 <HiDotsVertical className="text-white text-[20px]" />
               </div>
-            )}
+            )} */}
             {isOpen && (
               <div
                 className={`absolute right-[-8px] w-[120px] mt-3 origin-top-right bg-[#fff] border border-gray-200 divide-y divide-gray-100 rounded-[8px] shadow-lg py-1 z-50 ${isOpen ? "block" : "hidden"
@@ -132,7 +132,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
                   >
                     <RiEdit2Line size={20} className="mr-2 text-[#87909E]" />
                     <span className="text-[#030036] opacity-90 text-[14px]">
-                      {" "}
+
                       Edit
                     </span>
                   </div>
@@ -151,7 +151,6 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
                       className="mr-2 text-[#87909E]"
                     />
                     <span className="text-[#030036] opacity-90 text-[14px]">
-                      {" "}
                       Delete
                     </span>
                   </div>

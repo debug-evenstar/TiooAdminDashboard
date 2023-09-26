@@ -60,7 +60,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
             className={`py-[22px] grid grid-cols-3 w-full gap-2 pt-[30px] cursor-pointer ${expanded ? "" : "h-[90px]"
               }`}
           >
-            {displayedItems?.map((item: any) => {
+            {displayedItems?.map((item: any, index: number) => {
               const truncateString = (str: string, maxLength: number) => {
                 if (str.length <= maxLength) {
                   return str;
@@ -71,7 +71,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
               return (
                 <div
                   title={item.naming}
-                  key={item.id}
+                  key={index}
                   className="px-1 w-full py-1 max-h-[38px] rounded-[25px] border-[1.5px] border-black border-opacity-20 flex items-center justify-center text-[15px] hover:bg-[#E6E6FA] font-normal font-inter text-[#030036] opacity-50"
                   onClick={() => openView(item.naming)}
                 >

@@ -3,11 +3,18 @@ import ReactPaginate from 'react-paginate';
 import ListComponent, { IListProps } from '../list/list';
 
 import './paginate.css'
+import { RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPage } from '../../redux/slices/paginator';
 
-export default function PaginatedList({ menu, page, dataPerPage, data, selectRow }:
-  { menu: ReactNode, data: IListProps[], page?: number, dataPerPage: number, selectRow: (id: any) => void }) {
+export default function PaginatedList({ menu, dataPerPage, data, selectRow }:
+  { menu: ReactNode, data: IListProps[], dataPerPage: number, selectRow: (id: any) => void }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
+
+  // get current page from state;
+  const page = useSelector((state: RootState) => state.praise.paginator.page);
+  const dispatch = useDispatch();
 
   const [itemOffset, setItemOffset] = useState(0);
 
@@ -21,12 +28,14 @@ export default function PaginatedList({ menu, page, dataPerPage, data, selectRow
   const pageCount = Math.ceil(data.length / dataPerPage);
 
   // page change onclick handler
-  const handlePageClick = (event: any) => {
+  const handlePageClick = ({ selected }: any) => {
     // get new offset
-    const newOffset = (event.selected * dataPerPage) % data.length;
+    dispatch(setPage(selected))
+    const newOffset = (selected * dataPerPage) % data.length;
     // set starting offset to the new offset
     setItemOffset(newOffset);
   };
+
 
   return (
     <>
@@ -39,7 +48,7 @@ export default function PaginatedList({ menu, page, dataPerPage, data, selectRow
         disabledLinkClassName='disabled-li'
         previousLinkClassName='prev-li'
         breakLabel="..."
-        forcePage={page? page: 0}
+        forcePage={page ? page : 0}
         nextLabel="next"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}

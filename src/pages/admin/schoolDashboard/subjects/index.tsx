@@ -130,6 +130,7 @@ function Subjects() {
 
                 return (
                   <SubjectCard
+                    key={index}
                     item={item}
                     subject={item.naming}
                     desc={item.description}

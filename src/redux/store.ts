@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from './slices/user';
 import pricingReducer from './slices/pricing';
 import couponReducer from './slices/coupon';
@@ -9,14 +10,14 @@ import teacherReducer from './slices/teachers';
 import freelanceReducer from './slices/freelancer';
 import studentReducer from './slices/student';
 import pricingExceptionReducer from './slices/pricingException';
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import libraryReducer from './slices/library';
+import paginatorReducer from "./slices/paginator";
+
 
 import authSlice from "../store/authSlice";
 import classSlice from "../store/classSlice";
 import schoolSlice from "../store/schoolSlice";
 import lessonSlice from "../store/lessonSlice";
-
 
 const store: ToolkitStore = configureStore({
     reducer: combineReducers({
@@ -31,6 +32,7 @@ const store: ToolkitStore = configureStore({
             student: studentReducer,
             pricingException: pricingExceptionReducer,
             library: libraryReducer,
+            paginator: paginatorReducer,
         }),
         gods: combineReducers( {
             auth: authSlice.reducer,

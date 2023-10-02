@@ -23,6 +23,8 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 // import { MdLockOpen, MdLockOutline } from "react-icons/md";
 import ChangeStatus from "../ChangeStatus";
 import { MdLockOpen, MdLockOutline } from "react-icons/md";
+import { FiPenTool } from "react-icons/fi";
+import EditLibraryLesson from "../../../../../../components/editLIbraryLessonModal/editLibraryLessonModal";
 
 interface Props {
   index: number;
@@ -35,6 +37,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [item, setItem] = useState("");
   const [lessonStatus, setLessonStatus] = useState('')
+  const [editModal, setEditModal] = useState<boolean>(false);
 
   const openModal = (item: any, tabId: number): void => {
     setActive(true);
@@ -52,16 +55,20 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
     setActiveTab(0);
   };
 
-  // console.log(items);
   return (
     <>
+      {editModal && <EditLibraryLesson id={items.id} data={items} modal={editModal} setModal={setEditModal} />}
       <div
         className="p-5 rounded-[8px] h-[130px] shadow grid content-between hover:scale-105 duration-100 cursor-pointer"
         onClick={items.admin_status === 'Locked' ? () => openModal(items, 4) : () => openModal(items, 4)}
       >
         <div className="flex justify-between">
           <p className="font-semibold text-[17px] text-[#030036BD]">
-            {items.topic}
+            {
+              items.topic.length > 25
+                ? items.topic.slice(0, 25) + '...'
+                : items.topic
+            }
           </p>
           <div onClick={(e: any) => e.stopPropagation()}>
             <Menu placement="bottom-end">
@@ -71,6 +78,13 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                 </Button>
               </MenuHandler>
               <MenuList>
+                <MenuItem
+                  className="flex gap-x-2 items-center"
+                  onClick={() => setEditModal(true)}
+                >
+                  <FiPenTool />
+                  Edit
+                </MenuItem>
                 {/* {true && (items.published > 0 ? ( */}
                 {items.published ?
                   <MenuItem

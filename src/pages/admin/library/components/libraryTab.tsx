@@ -51,7 +51,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
         notify.success(`${materialProps.library_status == 'published' ? "Retracted" : "Published"} Library Material`)
       })
       .catch(error => console.log(error))
-    setActive(false)
+      .finally(() => setActive(false));
   }
 
 

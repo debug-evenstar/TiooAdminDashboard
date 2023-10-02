@@ -56,8 +56,12 @@ const TopicItem: FC<Props> = ({ items, refetch }) => {
         onClick={items.admin_status === 'Locked'? () => openModal(items, 6) : () => openModal("hello", 4)}
       >
         <div className="flex justify-between">
-          <p className="font-semibold text-[17px] text-[#030036BD]">
-            {items.topic}
+          <p className="font-semibold text-[17px] text-[#030036BD]" title={items.topic}>
+            {
+              items.topic.length > 25
+                ? items.topic.slice(0,25)+'...'
+                : items.topic
+            }
           </p>
           <div onClick={(e: any) => e.stopPropagation()}>
             <Menu placement="bottom">

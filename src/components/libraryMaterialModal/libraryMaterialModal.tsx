@@ -234,11 +234,14 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
               <OptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, name: item.naming }))} setSelection={setClass} />
               <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
             </div>
-            <div className="text-sm mb-3">
-              <label htmlFor="" className="text-sm">Category</label>
-              <SingleOptionsMenu selection={category} options={categoryOptions.map((item) => ({ id: item.id, value: item.name }))} setSelection={setCategory} />
-              <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
-            </div>
+            {
+              tabId === 0 &&
+              <div className="text-sm mb-3">
+                <label htmlFor="" className="text-sm">Category</label>
+                <SingleOptionsMenu selection={category} options={categoryOptions.map((item) => ({ id: item.id, value: item.name }))} setSelection={setCategory} />
+                <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
+              </div>
+            }
 
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Age</label>

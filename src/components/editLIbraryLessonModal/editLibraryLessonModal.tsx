@@ -16,7 +16,7 @@ type TLibraryModalError = {
 
 
 export default function EditLibraryLesson({ modal, setModal, id, data }: { data: any, modal: boolean, setModal: (state: boolean) => void, id: number }) {
-    const [klass, setClass] = useState<number[]>([]);
+    const [klass, setClass] = useState<number>(data?.Class?.id);
     const [age, setAge] = useState<number[]>([]);
     const [errors, setErrors] = useState<TLibraryModalError>({});
     const [loading, setLoading] = useState<boolean>(false);
@@ -32,11 +32,11 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
 
 
     useEffect(() => {
-        setClass([data.klass]);
+        setClass(data?.Class?.id);
         setAge([data.age]);
         setFormData({
-            title: data.title,
-            objective: data.objective
+            title: data.topic,
+            objective: JSON.parse(data.objective)
         })
     }, []);
 
@@ -71,17 +71,17 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
     const sendRequest = () => {
         let payload = {
             topic: formData.title,
-            class: klass[0],
+            class: klass,
             objective: formData.objective,
             age: age[0],
-            subject: id,
+            // subject: id,
             file: selectedFile
         }
 
-        axiosInstance.post('/library/lesson', payload)
+        axiosInstance.put('/library/lesson', payload)
             .then(response => {
                 console.log(response.data.data);
-                notify.success("Created library lesson ");
+                notify.success("updated library lesson ");
                 dispatch(setLibraryReload());
                 setModal(false);
             })
@@ -146,7 +146,7 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
                                     <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
                                     :
                                     <span>
-                                        Upload
+                                        Update
                                     </span>
                             }
                         </button>

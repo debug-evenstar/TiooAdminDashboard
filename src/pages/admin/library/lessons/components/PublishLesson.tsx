@@ -39,7 +39,7 @@ const PublishLesson: FC<Props> = ({ close, item, name, refetch }) => {
 
   const publishLesson = () => {
     setIsBusy(true)
-    axiosInstance.post('/librarylesson/status/' + item.id)
+    axiosInstance.post('/publish/librarylesson/' + item.id)
       .then(response => {
         if (response.data.data.published == 1) {
           refetch(item.SubjectId, item.id);

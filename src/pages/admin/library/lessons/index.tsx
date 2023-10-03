@@ -58,7 +58,7 @@ function Lessons() {
   return (
     <>
       <div className="w-full mx-auto">
-        <Header title="Library" />
+        <Header title="Library" variant={true} />
         <div className="w-full flex items-start justify-start flex-col mt-[20px] px-6">
           <h3 className="font-inter font-medium text-[#030036] opacity-70 text-[22px]">
             Subjects

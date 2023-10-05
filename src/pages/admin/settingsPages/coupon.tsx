@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { setCouponReload, setCoupons } from "../../../redux/slices/coupon";
 import { notify } from "../../../components/notification/notification";
+import WhiteSpinner from '../../../components/whiteSpinner/spinner';
 
 export type TCouponProps = {
   id: number;
@@ -171,7 +172,7 @@ function CouponModal({ modal, setModal, data }: { modal: boolean, data?: TCoupon
             <button onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
               {
                 loading ?
-                  <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
+                  <WhiteSpinner/>
                   :
                   <span>
                     {data ? 'Update' : 'Apply'}

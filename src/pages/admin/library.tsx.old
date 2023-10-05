@@ -4,6 +4,7 @@ import axiosInstance from "../../services/api";
 import LibrarySchoolsCurricula from "../../components/librarySchools/librarySchools";
 import LibraryCoCurricula from "../../components/libraryCocurricula/libraryCocurricula";
 import LibraryGames from "../../components/libraryGames/libraryGames";
+import WhiteSpinner from '../../components/whiteSpinner/spinner';
 
 
 
@@ -156,7 +157,7 @@ export function AddLessonModal({ modal, setModal }: { modal: boolean, setModal: 
             <button onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
               {
                 loading ?
-                  <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
+                  <WhiteSpinner/>
                   :
                   <span>
                     Upload

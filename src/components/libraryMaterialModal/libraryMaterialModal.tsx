@@ -4,6 +4,7 @@ import axiosInstance from "../../services/api";
 import { notify } from "../notification/notification";
 import { setLibraryReload } from "../../redux/slices/library";
 import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
+import WhiteSpinner from '../../components/whiteSpinner/spinner';
 
 
 type classOptionProps = {
@@ -262,7 +263,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
             <button disabled={loading} onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
               {
                 loading ?
-                  <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
+                  <WhiteSpinner/>
                   :
                   <span>
                     {materialProps ? 'Update' : 'Create'}

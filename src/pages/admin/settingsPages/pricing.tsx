@@ -17,7 +17,7 @@ import { TStudentsProps } from "../../../redux/slices/student";
 import { setExceptionReload, setFreelancersException, setSchoolsException, setStudentsException } from "../../../redux/slices/pricingException";
 import { notify } from "../../../components/notification/notification";
 
-
+import WhiteSpinner from '../../../components/whiteSpinner/spinner';
 
 
 export function PricingSchoolsComponent() {
@@ -88,7 +88,7 @@ export function PricingSchoolsComponent() {
                     {edit ?
                         "Save"
                         : loading ?
-                            <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                            <WhiteSpinner/>
                             : "Edit pricing"
                     }
                 </button>

@@ -57,7 +57,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
 
   return (
     <>
-      {editModal && <EditLibraryLesson id={items.id} data={items} modal={editModal} setModal={setEditModal} />}
+      {editModal && <EditLibraryLesson id={items.id} refetch={refetch} data={items} modal={editModal} setModal={setEditModal} />}
       <div
         className="p-5 rounded-[8px] h-[130px] shadow grid content-between hover:scale-105 duration-100 cursor-pointer"
         onClick={items.admin_status === 'Locked' ? () => openModal(items, 4) : () => openModal(items, 4)}

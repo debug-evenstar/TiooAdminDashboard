@@ -4,6 +4,7 @@ import UploadFile from "../updateFile/uploadFile";
 import { notify } from "../notification/notification";
 import { useDispatch } from "react-redux";
 import { setLibraryReload } from "../../redux/slices/library";
+import WhiteSpinner from '../../components/whiteSpinner/spinner';
 
 
 type TLibraryModalError = {
@@ -15,7 +16,7 @@ type TLibraryModalError = {
 }
 
 
-export default function EditLibraryLesson({ modal, setModal, id, data }: { data: any, modal: boolean, setModal: (state: boolean) => void, id: number }) {
+export default function EditLibraryLesson({ modal, setModal, id, data, refetch }: { data: any, modal: boolean, setModal: any,refetch: any, id: number }) {
     const [klass, setClass] = useState<number>(data?.Class?.id);
     const [age, setAge] = useState<number[]>([]);
     const [errors, setErrors] = useState<TLibraryModalError>({});
@@ -64,32 +65,33 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
         if (formData.objective == '')
             newErrors.objective = "Please fill in an objective";
 
-
+        if (selectedFile === null)
+            newErrors.file = "Please select a template";
         return newErrors;
     }
 
     const sendRequest = () => {
-        let payload = {
-            topic: formData.title,
-            class: klass,
-            objective: formData.objective,
-            age: age[0],
-            // subject: id,
-            file: selectedFile
-        }
+        const formdata = new FormData();
+        formdata.append('topic',formData.title);
+        formdata.append('objective',formData.objective);
+        formdata.append('lesson',String(data.id));
+        formdata.append('template', selectedFile as Blob, selectedFile?.name);
 
-        axiosInstance.put('/library/lesson', payload)
+        axiosInstance.put('/updatelibrarylesson/template', formdata,{
+            headers:{
+                'Content-Type': 'multipart/form-data'   
+            }
+        })
             .then(response => {
-                console.log(response.data.data);
                 notify.success("updated library lesson ");
-                dispatch(setLibraryReload());
+                // dispatch(setLibraryReload());
+                refetch(data.SubjectId);
                 setModal(false);
             })
             .catch(error => {
                 notify.error(error);
             })
             .finally(() => setLoading(false));
-        console.log(payload);
     }
 
     const handleSubmit = (e: FormEvent) => {
@@ -143,7 +145,7 @@ export default function EditLibraryLesson({ modal, setModal, id, data }: { data:
                         <button disabled={loading} onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
                             {
                                 loading ?
-                                    <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
+                                    <WhiteSpinner/>
                                     :
                                     <span>
                                         Update

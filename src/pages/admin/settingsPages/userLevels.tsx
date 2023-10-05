@@ -8,7 +8,7 @@ import { setAdminReload, setAdmins } from "../../../redux/slices/admin";
 import { RootState } from "../../../redux/store";
 import { notify } from "../../../components/notification/notification";
 import SingleOptionsMenu from "../../../components/singleOptionsMenu/singleOptionsMenu";
-
+import WhiteSpinner from '../../../components/whiteSpinner/spinner';
 
 
 type TUserLevel = {
@@ -250,7 +250,7 @@ function AddUserModal({ modal, setModal }: { modal: boolean, setModal: (state: b
                     <button onClick={handleSubmit} className="bg-main outline-none hover:bg-hover w-full text-sm text-center py-1.5 rounded text-white font-[500]">
                         {
                             loading ?
-                                <div className="w-6 h-6 mx-auto rounded-full border-2 border-gray-400 border-r-gray-100 animate-spin"></div>
+                                <WhiteSpinner/>
                                 :
                                 <span>Invite</span>
                         }

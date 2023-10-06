@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef } from "react";
 
-export default function MultiFileUpload({ accept, text, files, setSelectedFiles }: { accept?: string, text?: string, setSelectedFile: any }) {
+export default function MultiFileUpload({ accept, text, files, setSelectedFiles }: { accept?: string, text?: string, files: File[], setSelectedFiles: any }) {
 
     const fileRef = useRef<HTMLInputElement | null>(null);
   

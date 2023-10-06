@@ -24,6 +24,7 @@ type TLibraryModalError = {
     objective?: string;
     file?: string;
     chapter?: string;
+    cover?: string;
 }
 
 
@@ -150,6 +151,9 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
         }
         if (formData.objective == '')
             newErrors.objective = "Please fill in an objective";
+        
+        if (coverPhoto == null)
+            newErrors.cover="please select a cover image";
 
         if (chapter == 0)
             newErrors.chapter = "Please select a chapter";
@@ -254,7 +258,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
                         <div className="text-sm mb-3">
                           <label htmlFor="" className="text-sm">Cover photo</label>
                             <RawFileInput setSelection={setCoverPhoto}/>
-                          <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
+                          <p className="text-red-500 text-xs mt-1">{errors?.cover}</p>
                         </div>
 
                         <div className="text-sm mb-3">

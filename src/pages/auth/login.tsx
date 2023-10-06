@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { update } from '../../redux/slices/user';
 import { useDispatch } from 'react-redux';
+import WhiteSpinner from '../../components/whiteSpinner/spinner';
 
 interface LoginError {
     email?: string;
@@ -99,7 +100,7 @@ export default function Login() {
                     </div>
 
                     <button className="w-full text-center shadow-xl outline-none hover:bg-hover shadow-light py-3 rounded-[8px] text-white font-[500] bg-main mt-10 text-sm">
-                        {!active ? <span>Log In</span> : <div className="border-2 border-gray-400 border-r-gray-200 w-6 h-6 rounded-full mx-auto animate-spin"></div>}
+                        {!active ? <span>Log In</span> : <WhiteSpinner/>}
                     </button>
                 </form>
             </div>

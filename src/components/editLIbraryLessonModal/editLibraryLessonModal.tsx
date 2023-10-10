@@ -129,7 +129,7 @@ export default function EditLibraryLesson({ modal, setModal, id, data, refetch }
                             <p className="text-red-500 text-xs mt-1">{errors?.objective}</p>
                         </div>
                         <div className="flex flex-col">
-                            <UploadFile {...{ selectedFile, setSelectedFile }} />
+                            <UploadFile text="Upload File"  {...{ selectedFile, setSelectedFile }} />
                             <p className="text-red-500 text-xs mt-1">{errors?.file}</p>
                             {selectedFile &&
                                 <div className="text-main flex items-center space-x-2">

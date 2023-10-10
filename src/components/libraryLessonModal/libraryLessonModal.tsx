@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { setLibraryReload } from "../../redux/slices/library";
 import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 import WhiteSpinner from '../../components/whiteSpinner/spinner';
-import RawFileInput from '../../components/rawFileInput/rawFileInput';
 import MultiFileUpload from '../../components/multiFileUpload/multiFileUpload';
 
 type classOptionProps = {
@@ -103,7 +102,6 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
     const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
     const [chapter, setChapter] = useState<number>(0);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
     const [ PNGFiles, setPNGFiles ] = useState<File[]>([]);
     const dispatch = useDispatch();
 
@@ -152,9 +150,6 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
         if (formData.objective == '')
             newErrors.objective = "Please fill in an objective";
         
-        if (coverPhoto == null)
-            newErrors.cover="please select a cover image";
-
         if (chapter == 0)
             newErrors.chapter = "Please select a chapter";
 
@@ -176,7 +171,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
         payload.append('template', selectedFile as Blob, selectedFile?.name);
         payload.append('subject', String(materialProps?.id));
         payload.append('chapter', String(chapter));
-        payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+
         PNGFiles.forEach((PNGFile: File) => {
             payload.append('preview',PNGFile as Blob, PNGFile?.name);
         });
@@ -243,7 +238,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
                         </div>
 
 
-                        {!lesson && <>
+                        {!lesson && <div className="w-full">
                             <div className="text-sm mb-3">
                                 <label htmlFor="" className="text-sm">Class</label>
                                 {/* <SingleOptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, value: item.naming }))} setSelection={setClass} /> */}
@@ -256,14 +251,8 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
                                 <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} />
                                 <p className="text-red-500 text-xs mt-1">{errors?.age}</p>
                             </div>
-                        </>
-                        }
-                        <div className="text-sm mb-3">
-                          <label htmlFor="" className="text-sm">Cover photo</label>
-                            <RawFileInput setSelection={setCoverPhoto}/>
-                          <p className="text-red-500 text-xs mt-1">{errors?.cover}</p>
                         </div>
-
+                        }
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Lesson Objective</label>
                             <textarea rows={3} style={{ resize: "none" }} name="objective" value={formData.objective} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
@@ -306,7 +295,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
                                     <div className="flex items-center space-x-1">
                                         <span className="">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12.15 15.75H5.19853C4.74417 15.75 4.51699 15.75 4.41179 15.6602C4.32051 15.5822 4.27207 15.4652 4.28149 15.3456C4.29234 15.2077 4.45298 15.047 4.77426 14.7257L11.1515 8.34853C11.4485 8.05152 11.597 7.90301 11.7682 7.84737C11.9189 7.79842 12.0811 7.79842 12.2318 7.84737C12.403 7.90301 12.5515 8.05152 12.8485 8.34853L15.75 11.25V12.15M12.15 15.75C13.4101 15.75 14.0402 15.75 14.5215 15.5048C14.9448 15.289 15.289 14.9448 15.5048 14.5215C15.75 14.0402 15.75 13.4101 15.75 12.15M12.15 15.75H5.85C4.58988 15.75 3.95982 15.75 3.47852 15.5048C3.05516 15.289 2.71095 14.9448 2.49524 14.5215C2.25 14.0402 2.25 13.4101 2.25 12.15V5.85C2.25 4.58988 2.25 3.95982 2.49524 3.47852C2.71095 3.05516 3.05516 2.71095 3.47852 2.49524C3.95982 2.25 4.58988 2.25 5.85 2.25H12.15C13.4101 2.25 14.0402 2.25 14.5215 2.49524C14.9448 2.71095 15.289 3.05516 15.5048 3.47852C15.75 3.95982 15.75 4.58988 15.75 5.85V12.15M7.875 6.375C7.875 7.20343 7.20343 7.875 6.375 7.875C5.54657 7.875 4.875 7.20343 4.875 6.375C4.875 5.54657 5.54657 4.875 6.375 4.875C7.20343 4.875 7.875 5.54657 7.875 6.375Z" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
+                                                <path d="M12.15 15.75H5.19853C4.74417 15.75 4.51699 15.75 4.41179 15.6602C4.32051 15.5822 4.27207 15.4652 4.28149 15.3456C4.29234 15.2077 4.45298 15.047 4.77426 14.7257L11.1515 8.34853C11.4485 8.05152 11.597 7.90301 11.7682 7.84737C11.9189 7.79842 12.0811 7.79842 12.2318 7.84737C12.403 7.90301 12.5515 8.05152 12.8485 8.34853L15.75 11.25V12.15M12.15 15.75C13.4101 15.75 14.0402 15.75 14.5215 15.5048C14.9448 15.289 15.289 14.9448 15.5048 14.5215C15.75 14.0402 15.75 13.4101 15.75 12.15M12.15 15.75H5.85C4.58988 15.75 3.95982 15.75 3.47852 15.5048C3.05516 15.289 2.71095 14.9448 2.49524 14.5215C2.25 14.0402 2.25 13.4101 2.25 12.15V5.85C2.25 4.58988 2.25 3.95982 2.49524 3.47852C2.71095 3.05516 3.05516 2.71095 3.47852 2.49524C3.95982 2.25 4.58988 2.25 5.85 2.25H12.15C13.4101 2.25 14.0402 2.25 14.5215 2.49524C14.9448 2.71095 15.289 3.05516 15.5048 3.47852C15.75 3.95982 15.75 4.58988 15.75 5.85V12.15M7.875 6.375C7.875 7.20343 7.20343 7.875 6.375 7.875C5.54657 7.875 4.875 7.20343 4.875 6.375C4.875 5.54657 5.54657 4.875 6.375 4.875C7.20343 4.875 7.875 5.54657 7.875 6.375Z" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                             </svg>
                                         </span>
                                         <span>{pngFile?.name?.length >40? pngFile.name.slice(0,40)+'...': pngFile.name} </span>

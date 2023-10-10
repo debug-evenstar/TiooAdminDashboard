@@ -5,7 +5,7 @@ import { notify } from "../notification/notification";
 import { setLibraryReload } from "../../redux/slices/library";
 import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 import WhiteSpinner from '../../components/whiteSpinner/spinner';
-
+import RawFileInput from '../../components/rawFileInput/rawFileInput';
 
 type classOptionProps = {
   SchoolManagementId: number;
@@ -21,6 +21,7 @@ type TLibraryModalError = {
   description?: string;
   file?: string;
   category?: string;
+  cover?: string;
 }
 
 
@@ -109,6 +110,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
+  const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
 
   const dispatch = useDispatch();
   // probably wanted to try something sha
@@ -171,7 +173,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
     if (age.length == 0)
       newErrors.age = "Please enter a valid age ";
 
-    if (category == 0)
+    if (category == 0 && tabId === 0 )
       newErrors.category = "Please select a category";
 
     if (formData.description == '')
@@ -181,16 +183,37 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
   }
 
   const sendRequest = () => {
-    const payload = {
-      naming: formData.name,
-      class: klass,
-      description: formData.description,
-      ages: age,
-      tab: tabId,
-      subject_category: category
-    }
+    // const payload = {
+    //   naming: formData.name,
+    //   class: klass,
+    //   description: formData.description,
+    //   ages: age,
+    //   tab: tabId,
+    //   subject_category: category,
+    //   cover: coverPhoto
+    // }
 
-    axiosInstance.post('/library/subject', payload)
+    const payload = new FormData();
+    payload.append('naming', formData.name);
+    payload.append('description',formData.description);
+    payload.append('tab',String(tabId));
+    payload.append('subject_category',String(category));
+    payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    payload.append('ages',JSON.stringify(age));
+
+
+    // age.forEach((age: number) => {
+    //   payload.append('ages',age);
+    // })
+    klass.forEach((c: number) => {
+      payload.append('class',c);
+    })
+        // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    axiosInstance.post('/library/subject', payload, {
+      headers:{
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then(() => {
         notify.success("Added new lesson material");
         dispatch(setLibraryReload());
@@ -219,7 +242,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
     <div className={`fixed text-primary z-[1000] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
       <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[517px] w-[380px] mx-auto `}>
         <div className="p-2 border-b px-4 flex items-center justify-between">
-          <h1>{materialProps ? 'Update' : 'Add'} Lesson Material</h1>
+          <h1>{materialProps ? 'Update' : 'Add'} Textbook</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
         </div>
         <div onSubmit={handleSubmit}>
@@ -243,6 +266,12 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
                 <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
               </div>
             }
+            <div className="text-sm mb-3">
+              <label htmlFor="" className="text-sm">Cover photo</label>
+                <RawFileInput setSelection={setCoverPhoto}/>
+              <p className="text-red-500 text-xs mt-1">{errors?.cover}</p>
+            </div>
+
 
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Age</label>

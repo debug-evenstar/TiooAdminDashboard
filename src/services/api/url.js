@@ -1,4 +1,4 @@
-const env = await import.meta.env;
+const env = import.meta.env;
 export const BASE_URL = (env.VITE_API_KEY);
 export const SIGNIN_URL = `${BASE_URL}account/read`;
 export const SIGNUP_URL = `${BASE_URL}account/signup`;

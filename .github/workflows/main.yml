@@ -1,7 +1,7 @@
-name: Build & Deploy
+name: Build & Deploy Production
 on:
   push:
-    branches: [staging]
+    branches: [main]
 
 jobs:
   deploy:
@@ -10,13 +10,13 @@ jobs:
       - name: Deploy Sentinel
         uses: appleboy/ssh-action@v0.1.2
         with:
-          host: ${{secrets.STAGING_SSH_HOST}} # IP address of the server you wish to ssh into
-          key: ${{secrets.STAGING_SSH_KEY}} # Private or public key of the server
-          username: ${{secrets.STAGING_USERNAME}} # User of the server you want to ssh into
+          host: ${{secrets.PRODUCTION_SSH_HOST}} # IP address of the server you wish to ssh into
+          key: ${{secrets.PRODUCTION_SSH_KEY}} # Private or public key of the server
+          username: ${{secrets.PRODUCTION_USERNAME}} # User of the server you want to ssh into
      
           script: |
-            cd "${{secrets.ADMIN_WORK_TREE}}"
-            git --work-tree="${{secrets.ADMIN_WORK_TREE}}" --git-dir="${{secrets.ADMIN_GIT_DIR}}" add .
-            git --work-tree="${{secrets.ADMIN_WORK_TREE}}" --git-dir="${{secrets.ADMIN_GIT_DIR}}" reset --hard
-            git --work-tree="${{secrets.ADMIN_WORK_TREE}}" --git-dir="${{secrets.ADMIN_GIT_DIR}}" pull origin staging
+            cd "${{secrets.PRODUCTION_WORK_TREE}}"
+            git --work-tree="${{secrets.PRODUCTION_WORK_TREE}}" --git-dir="${{secrets.PRODUCTION_GIT_DIR}}" add .
+            git --work-tree="${{secrets.PRODUCTION_WORK_TREE}}" --git-dir="${{secrets.PRODUCTION_GIT_DIR}}" reset --hard
+            git --work-tree="${{secrets.PRODUCTION_WORK_TREE}}" --git-dir="${{secrets.PRODUCTION_GIT_DIR}}" pull origin staging
             echo 'Deployment successful to server'

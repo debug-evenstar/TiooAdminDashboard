@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import { RootState } from "../../../redux/store";
-import { PriceState, reloadPricing, setFreelancers, setSchoolsID, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
+import { PriceState, reloadPricing, setFreelancers, setSchoolsID, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal,setStudentsDollar, setStudents } from "../../../redux/slices/pricing";
 import axiosInstance from "../../../services/api";
 import SchoolsChecklist from "../../../components/schoolsChecklist/schoolsChecklist";
 import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
@@ -581,8 +581,11 @@ function StudentsTabComponent() {
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
-    const handleStudents = (data: PriceState) => {
-        dispatch(setStudents(data));
+    const handleStudents = (type: string,data: PriceState) => {
+        if(type !== "dollar")
+            dispatch(setStudents(data));
+        else
+            dispatch(setStudentsDollar(data));
     }
     const handleSubmit = () => {
         if (edit) {
@@ -623,7 +626,8 @@ function StudentsTabComponent() {
                 </button>
 
             </div>
-            <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
+            <PricingInput state={students} setState={handleStudents} currency="naira" name="students" readOnly={!edit} />
+            <PricingInput state={students} setState={handleStudents} currency="dollar" name="studentsDollar" readOnly={!edit} />
             <ExceptionsComponent type="Students" />
         </>
     );

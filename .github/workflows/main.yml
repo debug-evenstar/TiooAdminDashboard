@@ -18,5 +18,5 @@ jobs:
             cd "${{secrets.PRODUCTION_WORK_TREE}}"
             git --work-tree="${{secrets.PRODUCTION_WORK_TREE}}" --git-dir="${{secrets.PRODUCTION_GIT_DIR}}" add .
             git --work-tree="${{secrets.PRODUCTION_WORK_TREE}}" --git-dir="${{secrets.PRODUCTION_GIT_DIR}}" reset --hard
-            git --work-tree="${{secrets.PRODUCTION_WORK_TREE}}" --git-dir="${{secrets.PRODUCTION_GIT_DIR}}" pull origin staging
+            git --work-tree="${{secrets.PRODUCTION_WORK_TREE}}" --git-dir="${{secrets.PRODUCTION_GIT_DIR}}" pull origin main
             echo 'Deployment successful to server'

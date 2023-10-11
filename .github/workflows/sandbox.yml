@@ -18,5 +18,5 @@ jobs:
             cd "${{secrets.SANDBOX_WORK_TREE}}"
             git --work-tree="${{secrets.SANDBOX_WORK_TREE}}" --git-dir="${{secrets.SANDBOX_GIT_DIR}}" add .
             git --work-tree="${{secrets.SANDBOX_WORK_TREE}}" --git-dir="${{secrets.SANDBOX_GIT_DIR}}" reset --hard
-            git --work-tree="${{secrets.SANDBOX_WORK_TREE}}" --git-dir="${{secrets.SANDBOX_GIT_DIR}}" pull origin staging
+            git --work-tree="${{secrets.SANDBOX_WORK_TREE}}" --git-dir="${{secrets.SANDBOX_GIT_DIR}}" pull origin sandbox
             echo 'Deployment successful to server'

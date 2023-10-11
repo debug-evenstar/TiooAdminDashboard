@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TStudentsProps, setStudents } from "../../redux/slices/student";
 import axiosInstance from "../../services/api";
 import { Load } from "../../components/loader/loader";
+import { BASE_URL } from "../../services/url";
 
 function StudentContextMenu({ selectedId }: any): JSX.Element {
   // custom school context menu for each school item
@@ -83,9 +84,7 @@ export default function Students() {
   useEffect(() => {
 
     updateStudents(students);
-
-    console.log("getting students again");
-    axiosInstance.get('https://api.hellotioo.com/students/readall')
+    axiosInstance.get(`${BASE_URL}students/readall`)
       .then(response => {
         dispatch(setStudents(response.data.data))
         updateStudents(response.data.data);

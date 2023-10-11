@@ -2,6 +2,7 @@ import Header from "../../components/header"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../services/api";
+import { BASE_URL } from "../../services/url";
 
 const InfoField = ({name,value}: {name: string,value?: string | number}) => {
     return (
@@ -20,7 +21,7 @@ export default function TeacherProfile() {
     const { id } = useParams<{ id: any }>()
   
     useEffect(() => {
-        axiosInstance.get('https://api.hellotioo.com/teacher/readall')
+        axiosInstance.get(`${BASE_URL}teacher/readall`)
             .then(response => {
                 setTeacher(response.data.data.find(
                     (item: any) => item.id == id

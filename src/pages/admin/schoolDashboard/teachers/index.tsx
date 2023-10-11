@@ -4,6 +4,7 @@ import TeacherCard from "./components/TeacherCard";
 
 import axiosInstance from "../../../../services/api";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../../../../services/url";
 
 
 function SchoolTeachers() {
@@ -19,7 +20,7 @@ function SchoolTeachers() {
 
   useEffect(() => {
     setloading(true);
-    axiosInstance.get('https://api.hellotioo.com/teacher/readall')
+    axiosInstance.get(`${BASE_URL}teacher/readall`)
       .then(response => setTeachers(response.data.data))
       .catch(error => console.log(error))
       .finally(() => setloading(false));

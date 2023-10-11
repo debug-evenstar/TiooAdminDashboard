@@ -5,6 +5,7 @@ import { notify } from "../notification/notification";
 import { setLibraryReload } from "../../redux/slices/library";
 import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 import WhiteSpinner from '../../components/whiteSpinner/spinner';
+import { BASE_URL } from "../../services/url";
 
 
 type classOptionProps = {
@@ -139,7 +140,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
 
 
 
-    axiosInstance.get('https://api.hellotioo.com/tio/classes')
+    axiosInstance.get(`${BASE_URL}tio/classes`)
       .then((response) => {
         setClassOptions(response.data.data);
       })

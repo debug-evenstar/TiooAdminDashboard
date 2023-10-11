@@ -8,6 +8,7 @@ import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 import WhiteSpinner from '../../components/whiteSpinner/spinner';
 import RawFileInput from '../../components/rawFileInput/rawFileInput';
 import MultiFileUpload from '../../components/multiFileUpload/multiFileUpload';
+import { BASE_URL } from "../../services/url";
 
 type classOptionProps = {
     SchoolManagementId: number;
@@ -116,7 +117,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
     useEffect(() => {
         const id = lesson?.SubjectId || materialProps?.subjectId;
         if (id) {
-            axiosInstance.get('https://api.hellotioo.com/lesson/subjectlessons/' + id)
+            axiosInstance.get(`${BASE_URL}lesson/subjectlessons/` + id)
                 .then((response) => {
                     setClassOptions(response.data.data.classes);
                 })

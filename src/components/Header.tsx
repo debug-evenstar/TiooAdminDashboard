@@ -8,6 +8,7 @@ import NameAvatar from "./NameAvatar";
 
 interface HeaderProps {
   title?: string;
+  variant?: any
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
@@ -25,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
   const handlelogout = () => {
     localStorage.clear();
-    window.location.assign("https://hellotioo.com/login");
+    navigate('/');
   };
 
   return (

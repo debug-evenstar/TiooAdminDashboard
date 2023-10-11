@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../services/api";
 import { Load } from "../../components/loader/loader";
 import { TTeachersProps, setTeachers } from "../../redux/slices/teachers";
+import { BASE_URL } from "../../services/url";
 
 function TeacherContextMenu({ selectedId }: any): JSX.Element {
 
@@ -85,7 +86,7 @@ export default function Teachers() {
     updateTeachers(teachers);
 
     console.log("getting teachers again");
-    axiosInstance.get('https://api.hellotioo.com/teacher/readall')
+    axiosInstance.get(`${BASE_URL}teacher/readall`)
       .then(response => {
         dispatch(setTeachers(response.data.data))
         updateTeachers(response.data.data);

@@ -11,12 +11,6 @@ function SchoolSubjects() {
 
   const { id } = useParams();
 
-  // const getAllSubjects = () => {
-  //   axiosInstance.get('https://api.hellotioo.com/subjects/school/read/'+id)
-  //     .then(response => setSchoolSubjects(response.data.data))
-  //     .catch(error => console.log(error))
-  //     .finally(() => setLoading(false));
-  // }
   const getAllSubjects = (id:any) => {
     getSchoolSubjects(id)
     .then((response) => {

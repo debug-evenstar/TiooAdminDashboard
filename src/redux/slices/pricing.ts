@@ -13,6 +13,30 @@ export interface PriceState {
 const initialState = {
     schools: {
         id: 0,
+        currency: "NGN",
+        teachers: {
+            value: 0,
+            quarter: 0,
+            half: 0,
+            year: 0,
+        },
+        students: {
+            value: 0,
+            quarter: 0,
+            half: 0,
+            year: 0,
+        },
+        total: {
+            value: 0,
+            quarter: 0,
+            half: 0,
+            year: 0,
+        }
+    },
+
+    schools_dollar: {
+        id: 0,
+        currency: "USD",
         teachers: {
             value: 0,
             quarter: 0,

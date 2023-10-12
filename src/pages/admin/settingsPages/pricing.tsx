@@ -32,6 +32,7 @@ export function PricingSchoolsComponent() {
     const schools = useSelector((state: RootState) => state.praise.pricing.schools)
     const total = useSelector((state: RootState) => state.praise.pricing.schools.total);
 
+
     const handleTeachers = (data: PriceState) => {
         dispatch(setSchoolsTeachers(data));
     }
@@ -62,6 +63,7 @@ export function PricingSchoolsComponent() {
                 id: schools.id,
                 teachers_price: teachers.value,
                 student_price: students.value,
+                currency: "NGN",
                 accounts: null,
                 tab: "schools",
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
@@ -88,7 +90,7 @@ export function PricingSchoolsComponent() {
                     {edit ?
                         "Save"
                         : loading ?
-                            <WhiteSpinner/>
+                            <WhiteSpinner />
                             : "Edit pricing"
                     }
                 </button>
@@ -237,7 +239,7 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
     }
 
     const handler = (e: ChangeEvent<HTMLInputElement>, type?: string) => {
-        console.log(price, teacher, student);
+        // console.log(price, teacher, student);
         let temp: string = e.target.value.replace('/\Dg', '');
         temp = temp.replaceAll(',', '');
         if (temp === '') temp = '0';
@@ -594,6 +596,7 @@ function StudentsTabComponent() {
                 id: students.id,
                 teachers_price: 0.0,
                 student_price: students.value,
+                currency: "USD",
                 accounts: null,
                 tab: "students",
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
@@ -620,7 +623,7 @@ function StudentsTabComponent() {
                     {edit ?
                         "Save"
                         : loading ?
-                            <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                            <WhiteSpinner />
                             : "Edit pricing"
                     }
                 </button>
@@ -706,31 +709,33 @@ export default function PricingTab() {
     const dispatch = useDispatch();
 
     const parseResponseData = (data: any) => {
-        const schools = {
-            id: data.schools?.id,
-            teachers: {
-                id: 0,
-                value: data.schools.teachers_price,
-                quarter: data.schools.teachers_breakdown.quater,
-                half: data.schools.teachers_breakdown.half,
-                year: data.schools.teachers_breakdown.yearly,
-            },
-            students: {
-                id: 0,
-                value: data.schools?.student_price,
-                quarter: data.schools?.students_breakdown.quater,
-                half: data.schools?.students_breakdown.half,
-                year: data.schools?.students_breakdown.yearly,
-            }
-        }
+        // const schools = [{
+        //     id: data.schools?.id,
+        //     currency: data.sc
+        //     teachers: {
+        //         id: 0,
+        //         value: data.schools[0]?.teachers_price,
+        //         quarter: data.schools[0]?.teachers_breakdown.quater,
+        //         half: data.schools[0]?.teachers_breakdown.half,
+        //         year: data.schools[0]?.teachers_breakdown.yearly,
+        //     },
+        //     students: {
+        //         id: 0,
+        //         value: data.schools[0]?.student_price,
+        //         quarter: data.schools[0]?.students_breakdown.quater,
+        //         half: data.schools[0]?.students_breakdown.half,
+        //         year: data.schools[0]?.students_breakdown.yearly,
+        //     }
+        // }]
+        const schools = data.schools;
 
-        const freelancers = {
-            id: data.freelancers?.id,
-            value: data.freelancers?.student_price,
-            quarter: data.freelancers?.students_breakdown.quater,
-            half: data.freelancers?.students_breakdown.half,
-            year: data.freelancers?.students_breakdown.yearly,
-        }
+        // const freelancers = {
+        //     id: data.freelancers?.id,
+        //     value: data.freelancers?.student_price,
+        //     quarter: data.freelancers?.students_breakdown.quater,
+        //     half: data.freelancers?.students_breakdown.half,
+        //     year: data.freelancers?.students_breakdown.yearly,
+        // }
 
         const students = {
             id: data.students?.id,
@@ -744,18 +749,21 @@ export default function PricingTab() {
         const freelancersException = data.exceptionedFreelancers;
         const studentsException = data.exceptionedIndependentsStudents;
 
-        return { schools, freelancers, students, studentsException, schoolsException, freelancersException };
+        return { schools, students, studentsException, schoolsException, freelancersException };
+        // return { schools, freelancers, students, studentsException, schoolsException, freelancersException };
     }
 
     useEffect(() => {
         axiosInstance.get('/settings/pricing')
             .then(response => {
+                console.log(response.data.data);
                 const parsed = parseResponseData(response.data.data);
+                console.log(parsed);
                 // dispatching general pricing
                 dispatch(setSchoolsID(parsed.schools.id));
-                dispatch(setSchoolsStudents(parsed.schools.students));
-                dispatch(setSchoolsTeachers(parsed.schools.teachers));
-                dispatch(setFreelancers(parsed.freelancers));
+                // dispatch(setSchoolsStudents(parsed.schools.students));
+                // dispatch(setSchoolsTeachers(parsed.schools.teachers));
+                // dispatch(setFreelancers(parsed.freelancers));
                 dispatch(setStudents(parsed.students));
                 // window.parsed = parsed;
 

@@ -46,6 +46,14 @@ const initialState = {
         half: 0,
         year: 0,
     },
+    studentsDollar: {
+        id: 0,
+        value: 0,
+        quarter: 0,
+        half: 0,
+        year: 0,
+    },
+
     reload: false,
 }
 
@@ -72,6 +80,10 @@ export const pricingSlice = createSlice({
             state.students = action.payload;
         },
 
+        setStudentsDollar: (state, action: PayloadAction<PriceState>) => {
+            state.studentsDollar = action.payload;
+        },
+
         reloadPricing: (state) => {
             state.reload = !state.reload;
         },
@@ -85,5 +97,5 @@ export const pricingSlice = createSlice({
     }
 })
 
-export const { setSchoolsStudents,reloadPricing,setSchoolsID, setSchoolsTeachers,clearPricing, setSchoolsTotal, setFreelancers, setStudents } = pricingSlice.actions;
+export const { setSchoolsStudents,reloadPricing,setSchoolsID, setSchoolsTeachers,clearPricing, setSchoolsTotal, setFreelancers, setStudents, setStudentsDollar } = pricingSlice.actions;
 export default pricingSlice.reducer;

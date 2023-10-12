@@ -33,6 +33,12 @@ export function PricingSchoolsComponent() {
     const total = useSelector((state: RootState) => state.praise.pricing.schools.total);
 
 
+    const teachers_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar.teachers);
+    const students_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar.students);
+    const schools_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar)
+    const total_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar.total);
+
+
     const handleTeachers = (data: PriceState) => {
         dispatch(setSchoolsTeachers(data));
     }
@@ -96,6 +102,7 @@ export function PricingSchoolsComponent() {
                 </button>
             </div>
             <PricingInput currency="naira" state={teachers} setState={handleTeachers} name="teachers" readOnly={!edit} />
+            <PricingInput currency="dollar" state={schools_dollar} setState={handleTeachers} name="teachers" readOnly={!edit} />
             <PricingInput currency="naira" state={students} setState={handleStudents} name="students" readOnly={!edit} />
             <PricingInput currency="naira" state={total} setState={() => null} name="total" readOnly={true} />
             <ExceptionsComponent type="Schools" />

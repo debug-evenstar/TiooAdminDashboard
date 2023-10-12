@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import { RootState } from "../../../redux/store";
-import { PriceState, reloadPricing, setFreelancers, setSchoolsID, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal,setStudentsDollar, setStudents } from "../../../redux/slices/pricing";
+import { PriceState, reloadPricing, setFreelancers, setSchoolsID, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudentsDollar, setStudents } from "../../../redux/slices/pricing";
 import axiosInstance from "../../../services/api";
 import SchoolsChecklist from "../../../components/schoolsChecklist/schoolsChecklist";
 import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
@@ -88,14 +88,14 @@ export function PricingSchoolsComponent() {
                     {edit ?
                         "Save"
                         : loading ?
-                            <WhiteSpinner/>
+                            <WhiteSpinner />
                             : "Edit pricing"
                     }
                 </button>
             </div>
-            <PricingInput state={teachers} setState={handleTeachers} name="teachers" readOnly={!edit} />
-            <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
-            <PricingInput state={total} setState={() => null} name="total" readOnly={true} />
+            <PricingInput currency="naira" state={teachers} setState={handleTeachers} name="teachers" readOnly={!edit} />
+            <PricingInput currency="naira" state={students} setState={handleStudents} name="students" readOnly={!edit} />
+            <PricingInput currency="naira" state={total} setState={() => null} name="total" readOnly={true} />
             <ExceptionsComponent type="Schools" />
         </>
     );
@@ -287,17 +287,17 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
                                 type === "Schools" ?
                                     <div className="mt-4">
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Teachers</label>
-                                        <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
+                                        <NairaInput currency="naira" className="py-1.5 mb-2" name="price" value={getCurrentPrice().teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Students</label>
-                                        <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
+                                        <NairaInput currency="naira" className="py-1.5 mb-2" name="price" value={getCurrentPrice().student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Total</label>
-                                        <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
+                                        <NairaInput currency="naira" className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
 
                                     </div>
                                     :
                                     <div className="mt-4">
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Set Price</label>
-                                        <NairaInput className="py-1.5" name="price" value={getCurrentPrice().student.toLocaleString()} handler={handler} />
+                                        <NairaInput currency="naira" className="py-1.5" name="price" value={getCurrentPrice().student.toLocaleString()} handler={handler} />
                                     </div>
                             )
 
@@ -581,8 +581,8 @@ function StudentsTabComponent() {
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
-    const handleStudents = (type: string,data: PriceState) => {
-        if(type !== "dollar")
+    const handleStudents = (type: string, data: PriceState) => {
+        if (type !== "dollar")
             dispatch(setStudents(data));
         else
             dispatch(setStudentsDollar(data));
@@ -683,7 +683,7 @@ function FreelancersTabComponent() {
                 </button>
 
             </div>
-            <PricingInput state={freelancers} setState={handleFreelancers} name="freelancers" readOnly={!edit} />
+            <PricingInput currency="naira" state={freelancers} setState={handleFreelancers} name="freelancers" readOnly={!edit} />
             <ExceptionsComponent type="Freelancers" />
         </>
     );

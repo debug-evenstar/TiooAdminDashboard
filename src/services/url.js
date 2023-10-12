@@ -1,4 +1,4 @@
-export const BASE_URL = process.env.VITE_API_KEY;
+export const BASE_URL = import.meta.env.VITE_API_KEY;
 export const SIGNIN_URL = `${BASE_URL}account/read`;
 export const SIGNUP_URL = `${BASE_URL}account/signup`;
 export const NEW_OTP_URL = `${BASE_URL}new/account/send_otp`;

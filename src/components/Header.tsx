@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
   const handlelogout = () => {
     localStorage.clear();
-    navigate('/');
+    window.location.assign("https://hellotioo.com/login");
   };
 
   return (

@@ -13,6 +13,30 @@ export interface PriceState {
 const initialState = {
     schools: {
         id: 0,
+        currency: "NGN",
+        teachers: {
+            value: 0,
+            quarter: 0,
+            half: 0,
+            year: 0,
+        },
+        students: {
+            value: 0,
+            quarter: 0,
+            half: 0,
+            year: 0,
+        },
+        total: {
+            value: 0,
+            quarter: 0,
+            half: 0,
+            year: 0,
+        }
+    },
+
+    schools_dollar: {
+        id: 0,
+        currency: "USD",
         teachers: {
             value: 0,
             quarter: 0,
@@ -46,6 +70,14 @@ const initialState = {
         half: 0,
         year: 0,
     },
+    studentsDollar: {
+        id: 0,
+        value: 0,
+        quarter: 0,
+        half: 0,
+        year: 0,
+    },
+
     reload: false,
 }
 
@@ -72,6 +104,22 @@ export const pricingSlice = createSlice({
             state.students = action.payload;
         },
 
+        setSchoolsTeachersDollar: (state, action: PayloadAction<PriceState>) => {
+            state.schools_dollar.teachers = action.payload;
+        },
+        setSchoolsStudentsDollar: (state, action: PayloadAction<PriceState>) => {
+            state.schools_dollar.students = action.payload;
+        },
+        setSchoolsIDDollar: (state, action: PayloadAction<number>) => {
+            state.schools_dollar.id = action.payload;
+        },
+        setSchoolsTotalDollar: (state, action: PayloadAction<PriceState>) => {
+            state.schools_dollar.total = action.payload;
+        },
+        setStudentsDollar: (state, action: PayloadAction<PriceState>) => {
+            state.studentsDollar = action.payload;
+        },
+
         reloadPricing: (state) => {
             state.reload = !state.reload;
         },
@@ -85,5 +133,19 @@ export const pricingSlice = createSlice({
     }
 })
 
-export const { setSchoolsStudents,reloadPricing,setSchoolsID, setSchoolsTeachers,clearPricing, setSchoolsTotal, setFreelancers, setStudents } = pricingSlice.actions;
+export const { 
+    setSchoolsStudents,
+    reloadPricing,
+    setSchoolsID,
+    setSchoolsTeachers,
+    clearPricing,
+    setSchoolsTotal,
+    setFreelancers,
+    setStudents,
+    setSchoolsTeachersDollar,
+    setSchoolsStudentsDollar,
+    setSchoolsIDDollar,
+    setSchoolsTotalDollar,
+    setStudentsDollar ,
+} = pricingSlice.actions;
 export default pricingSlice.reducer;

@@ -3,8 +3,8 @@ type TInputProps = { className?: string; currency: string, value?: string; handl
 export default function NairaInput({ name, currency, className, value, handler, readonly = false, type = "text", placeholder }: TInputProps) {
     return (
         <div
-            className={`flex border-gray-200 flex items-center outline-none border rounded text-gray-400 ${readonly? 'bg-gray-100 border-0':''} ${className}`}>
-            <span className="pl-4 pr-1 ">{currency === "naira"? '₦':'$'}</span>
+            className={`flex border-zinc-200 flex items-center outline-none border rounded text-gray-500 ${readonly ? 'bg-gray-100 text-gray-400 border-0' : 'text-gray-400'} ${className}`}>
+            <span className="pl-4 pr-1 ">{currency === "naira" ? '₦' : '$'}</span>
             <input
                 name={name}
                 className={`outline-none bg-transparent w-full `}

@@ -15,10 +15,10 @@ export default function PricingInput({ name, currency, state, setState, readOnly
         if (isNaN(result))
             result = 0;
 
-        setState(currency, {
+        setState({
             ...state,
             [type]: result,
-        })
+        }, currency)
     }
 
 

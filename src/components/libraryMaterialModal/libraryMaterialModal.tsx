@@ -43,6 +43,7 @@ const categoryOptions = [
   { id: 10, name: 'Business Studies' },
   { id: 11, name: 'Visual Arts' },
   { id: 12, name: 'Geography' },
+  { id: 13, name: 'Others' },
 ]
 
 function OptionsMenu({ selection, setSelection, options, variant }: { variant?: boolean, selection: number[], setSelection: any, options: TOptionProps[] }) {
@@ -112,7 +113,6 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
   const [loading, setLoading] = useState<boolean>(false);
   const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
   const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
-
   const dispatch = useDispatch();
   // probably wanted to try something sha
   const [formData, setFormData] = useState<{ name: string, description: string }>({
@@ -134,7 +134,8 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
         classes = JSON.parse(materialProps.classes);
       } else {
         classes = materialProps.classes;
-      }
+      } console.log(materialProps);
+
       // classes = classes.map((item: any) => ({ id: item.id, name: item.naming }))
       const ids = classes.map((i: any) => i.id);
       //console.log("ids" ,ids);
@@ -183,14 +184,11 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
     if (ages.length == 0)
       newErrors.ages = "Please enter a valid ages ";
 
-    if (coverPhoto === null)
-      newErrors.cover = "Please select a cover photo";
+    // if (coverPhoto === null)
+    //   newErrors.cover = "Please select a cover photo";
 
 
     if (category == 0 && tabId === 0)
-      newErrors.category = "Please select a category";
-
-    if (category == 0)
       newErrors.category = "Please select a category";
 
     if (formData.description == '')
@@ -219,7 +217,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
     // payload.append('ages',JSON.stringify(ages));
     payload.append('class', JSON.stringify(classes));
     ages.forEach((age: number) => {
-      payload.append('ages', String(age));
+      payload.append('ages', age as unknown as string);
     })
 
     // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
@@ -259,30 +257,30 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
           <h1>{materialProps ? 'Update' : 'Add'} Textbook</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
         </div >
-    <div onSubmit={handleSubmit}>
-      <div className=" px-4 mt-4 h-[25rem] overflow-y-auto">
+        <div onSubmit={handleSubmit}>
+          <div className=" px-4 mt-4 h-[25rem] overflow-y-auto">
 
-        <div className="text-sm mb-3">
-          <label htmlFor="" className="text-sm">Name</label>
-          <input type="text" name="name" value={formData.name} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
-          <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
-        </div>
-        <div className="text-sm mb-3">
-          <label htmlFor="" className="text-sm">Class</label>
-          <OptionsMenu selection={classes} options={classOptions.map((item: any) => ({ id: item.id, name: item.naming }))} setSelection={setClasses} />
-          <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
-        </div>
-        {
-          tabId === 0 &&
-          <div className="text-sm mb-3">
-            <label htmlFor="" className="text-sm">Category</label>
-            <SingleOptionsMenu selection={category} options={categoryOptions.map((item) => ({ id: item.id, value: item.name }))} setSelection={setCategory} />
-            <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
-          </div>
-        }
+            <div className="text-sm mb-3">
+              <label htmlFor="" className="text-sm">Name</label>
+              <input type="text" name="name" value={formData.name} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" />
+              <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
+            </div>
+            <div className="text-sm mb-3">
+              <label htmlFor="" className="text-sm">Class</label>
+              <OptionsMenu selection={classes} options={classOptions.map((item: any) => ({ id: item.id, name: item.naming }))} setSelection={setClasses} />
+              <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
+            </div>
+            {
+              tabId === 0 &&
+              <div className="text-sm mb-3">
+                <label htmlFor="" className="text-sm">Category</label>
+                <SingleOptionsMenu selection={category} options={categoryOptions.map((item) => ({ id: item.id, value: item.name }))} setSelection={setCategory} />
+                <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
+              </div>
+            }
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Cover photo</label>
-                <RawFileInput setSelection={setCoverPhoto}/>
+              <RawFileInput setSelection={setCoverPhoto} />
               <p className="text-red-500 text-xs mt-1">{errors?.cover}</p>
             </div>
 
@@ -302,18 +300,18 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
             </div>
 
           </div >
-    <div className="px-4 w-full h-[3rem] mt-[2px] flex border-t items-center">
-      <button disabled={loading} onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
-        {
-          loading ?
-            <WhiteSpinner />
-            :
-            <span>
-              {materialProps ? 'Update' : 'Create'}
-            </span>
-        }
-      </button>
-    </div>
+          <div className="px-4 w-full h-[3rem] mt-[2px] flex border-t items-center">
+            <button disabled={loading} onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
+              {
+                loading ?
+                  <WhiteSpinner />
+                  :
+                  <span>
+                    {materialProps ? 'Update' : 'Create'}
+                  </span>
+              }
+            </button>
+          </div>
         </div >
       </div >
     </div >

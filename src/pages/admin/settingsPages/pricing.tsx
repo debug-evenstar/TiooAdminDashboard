@@ -38,7 +38,6 @@ export function PricingSchoolsComponent() {
     const schools_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar)
     const total_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar.total);
 
-
     const handleTeachers = (data: PriceState, type: string) => {
         console.log("something", type);
         type === "dollar" ? dispatch(setSchoolsTeachersDollar(data)) : dispatch(setSchoolsTeachers(data));
@@ -62,7 +61,7 @@ export function PricingSchoolsComponent() {
         dispatch(setSchoolsTotal(total));
 
         const total_dollar: PriceState = {
-            id: schools.id,
+            id: schools_dollar.id,
             value: students_dollar['value'] + teachers_dollar['value'],
             quarter: students_dollar['quarter'] + teachers_dollar['quarter'],
             half: students_dollar['half'] + teachers_dollar['half'],
@@ -77,7 +76,7 @@ export function PricingSchoolsComponent() {
         if (edit) {
             setLoading(true);
             const payload = {
-                id: 1,
+                id: schools.id,
                 teachers_price: teachers.value,
                 student_price: students.value,
                 currency: "NGN",
@@ -86,6 +85,18 @@ export function PricingSchoolsComponent() {
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
                 teachers_breakdown: { quater: teachers.quarter, half: teachers.half, yearly: teachers.year }
             }
+
+            const payload_dollar = {
+                id: schools_dollar.id,
+                teachers_price: teachers_dollar.value,
+                student_price: students_dollar.value,
+                currency: "USD",
+                accounts: null,
+                tab: "schools",
+                students_breakdown: { quater: students_dollar.quarter, half: students_dollar.half, yearly: students_dollar.year },
+                teachers_breakdown: { quater: teachers_dollar.quarter, half: teachers_dollar.half, yearly: teachers_dollar.year }
+            }
+
             axiosInstance.put('/settings/pricing', payload)
                 .then(response => {
                     dispatch(reloadPricing());
@@ -95,17 +106,7 @@ export function PricingSchoolsComponent() {
                 .catch(() => notify.error("failed to save pricing"))
                 .finally(() => setLoading(false));
 
-            const payload_dollar = {
-                id: 49,
-                teachers_price: teachers_dollar.value,
-                student_price: students_dollar.value,
-                currency: "USD",
-                accounts: null,
-                tab: "schools",
-                students_breakdown: { quater: students_dollar.quarter, half: students_dollar.half, yearly: students_dollar.year },
-                teachers_breakdown: { quater: teachers_dollar.quarter, half: teachers_dollar.half, yearly: teachers_dollar.year }
-            }
-            console.log(payload_dollar);
+
             axiosInstance.put('/settings/pricing', payload_dollar)
                 .then(response => {
                     dispatch(reloadPricing());
@@ -133,7 +134,7 @@ export function PricingSchoolsComponent() {
                         }
                     </button>
                     {edit &&
-                        <button className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { e.preventDefault(); setEdit(false) }}>
+                        <button disabled={!loading} className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { e.preventDefault(); setEdit(false) }}>
                             Cancel
                         </button>
                     }
@@ -758,7 +759,7 @@ export default function PricingTab() {
 
     const parseResponseData = (data: any) => {
         const schools = {
-            id: data.schools[1]?.id,
+            id: data.schools[0]?.id,
             currency: data.schools[0]?.currency,
             teachers: {
                 id: 0,
@@ -823,7 +824,7 @@ export default function PricingTab() {
             .then(response => {
                 // console.log(response.data.data);
                 const parsed = parseResponseData(response.data.data);
-                console.log("parsed", parsed);
+                // console.log("parsed", parsed);
                 // dispatching general pricing
                 dispatch(setSchoolsID(parsed.schools.id));
                 dispatch(setSchoolsStudents(parsed.schools.students));

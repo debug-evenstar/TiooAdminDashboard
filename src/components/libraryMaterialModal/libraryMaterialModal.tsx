@@ -151,7 +151,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
 
 
 
-    axiosInstance.get(`${BASE_URL}tio/classes`)
+    axiosInstance.get(`${BASE_URL}/tio/classes`)
       .then((response) => {
         // console.log(response.data.data);
         setClassOptions(response.data.data);
@@ -198,7 +198,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
   }
 
   const sendRequest = () => {
-    // const payload = {
+    // const payload =ass {
     //   naming: formData.name,
     //   class: classes,
     //   description: formData.description,
@@ -213,7 +213,11 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
     payload.append('description', formData.description);
     payload.append('tab', String(tabId));
     payload.append('subject_category', String(category));
-    payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    if (coverPhoto) {
+      payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    } else {
+      payload.append('cover', JSON.stringify(null));
+    }
     // payload.append('ages',JSON.stringify(ages));
     payload.append('class', JSON.stringify(classes));
     ages.forEach((age: number) => {

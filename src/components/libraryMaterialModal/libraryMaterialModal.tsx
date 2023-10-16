@@ -5,10 +5,12 @@ import { notify } from "../notification/notification";
 import { setLibraryReload } from "../../redux/slices/library";
 import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
 import WhiteSpinner from '../../components/whiteSpinner/spinner';
+import { BASE_URL } from "../../services/url";
 
+import RawFileInput from '../../components/rawFileInput/rawFileInput';
 
 type classOptionProps = {
-  SchoolManagementId: number;
+  SchoolManagesmentId: number;
   id: number;
   naming: string;
   type: string;
@@ -17,10 +19,11 @@ type classOptionProps = {
 type TLibraryModalError = {
   name?: string;
   class?: string;
-  age?: string;
+  ages?: string;
   description?: string;
   file?: string;
   category?: string;
+  cover?: string;
 }
 
 
@@ -40,11 +43,11 @@ const categoryOptions = [
   { id: 10, name: 'Business Studies' },
   { id: 11, name: 'Visual Arts' },
   { id: 12, name: 'Geography' },
+  { id: 13, name: 'Others' },
 ]
 
 function OptionsMenu({ selection, setSelection, options, variant }: { variant?: boolean, selection: number[], setSelection: any, options: TOptionProps[] }) {
   const [active, setActive] = useState(false);
-
 
   const handleClick = (e: MouseEvent<HTMLLIElement>) => {
     const value = e.currentTarget.getAttribute('data-value');
@@ -98,18 +101,18 @@ function OptionsMenu({ selection, setSelection, options, variant }: { variant?: 
   );
 }
 
-const ageOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
+const agesOptions = [...Array(18 - 5 + 1)].map(((_, index) => ({ id: index + 5, name: index + 5 })));
 
 
 export default function AddLibaryMaterial({ materialProps, tabId, modal, setModal }: { materialProps?: any, tabId: number, modal: boolean, setModal: (state: boolean) => void }) {
 
-  const [klass, setClass] = useState<number[]>([]);
+  const [classes, setClasses] = useState<number[]>([]);
   const [category, setCategory] = useState<number>(0);
-  const [age, setAge] = useState<number[]>([]);
+  const [ages, setAge] = useState<number[]>([]);
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
-
+  const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
   const dispatch = useDispatch();
   // probably wanted to try something sha
   const [formData, setFormData] = useState<{ name: string, description: string }>({
@@ -126,21 +129,31 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
         description: materialProps.description,
       })
 
-      const classes = materialProps?.classes.map((item: any) => ({ id: item.id, name: item.naming }))
-      const ids = classes.map((i: any) => i.id);
+      let classes = null;
+      if (typeof materialProps.classes === 'string') {
+        classes = JSON.parse(materialProps.classes);
+      } else {
+        classes = materialProps.classes;
+      } console.log(materialProps);
 
+      // classes = classes.map((item: any) => ({ id: item.id, name: item.naming }))
+      const ids = classes.map((i: any) => i.id);
+      //console.log("ids" ,ids);
       const category = materialProps.subject_category;
-      setClass(ids);
+      setClasses(ids);
+      console.log("mat", materialProps.classes)
       setCategory(category);
       setAge(materialProps.ages);
-      // setClass(materialProps.class);
+      // console.log(materialProps);
+      // setClasses(materialProps.class);
       // setCategory(materialProps.category);
     }
 
 
 
-    axiosInstance.get('https://api.hellotioo.com/tio/classes')
+    axiosInstance.get(`${BASE_URL}tio/classes`)
       .then((response) => {
+        // console.log(response.data.data);
         setClassOptions(response.data.data);
       })
       .catch((error => console.log(error)))
@@ -151,7 +164,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     let { name, value } = e.target;
-    if (name == 'age') {
+    if (name == 'ages') {
       value = value.replace(/\D/g, '');
     }
     setFormData({
@@ -165,13 +178,17 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
     if (!formData.name || formData.name.length == 0)
       newErrors.name = "Please Enter a valid title"
 
-    if (klass.length == 0)
+    if (classes.length == 0)
       newErrors.class = "Please select a class from the menu";
 
-    if (age.length == 0)
-      newErrors.age = "Please enter a valid age ";
+    if (ages.length == 0)
+      newErrors.ages = "Please enter a valid ages ";
 
-    if (category == 0)
+    // if (coverPhoto === null)
+    //   newErrors.cover = "Please select a cover photo";
+
+
+    if (category == 0 && tabId === 0)
       newErrors.category = "Please select a category";
 
     if (formData.description == '')
@@ -181,16 +198,34 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
   }
 
   const sendRequest = () => {
-    const payload = {
-      naming: formData.name,
-      class: klass,
-      description: formData.description,
-      ages: age,
-      tab: tabId,
-      subject_category: category
-    }
+    // const payload = {
+    //   naming: formData.name,
+    //   class: classes,
+    //   description: formData.description,
+    //   ages: ages,
+    //   tab: tabId,
+    //   subject_category: category,
+    //   cover: coverPhoto
+    // }
 
-    axiosInstance.post('/library/subject', payload)
+    const payload = new FormData();
+    payload.append('naming', formData.name);
+    payload.append('description', formData.description);
+    payload.append('tab', String(tabId));
+    payload.append('subject_category', String(category));
+    payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    // payload.append('ages',JSON.stringify(ages));
+    payload.append('class', JSON.stringify(classes));
+    ages.forEach((age: number) => {
+      payload.append('ages', age as unknown as string);
+    })
+
+    // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    axiosInstance.post('/library/subject', payload, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then(() => {
         notify.success("Added new lesson material");
         dispatch(setLibraryReload());
@@ -219,9 +254,9 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
     <div className={`fixed text-primary z-[1000] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${modal ? "" : "-translate-y-full"}`}>
       <div className={`${modal ? "translate-y-[3rem]" : "translate-y-0"} z-[100] bg-white rounded duration-1000 h-[517px] w-[380px] mx-auto `}>
         <div className="p-2 border-b px-4 flex items-center justify-between">
-          <h1>{materialProps ? 'Update' : 'Add'} Lesson Material</h1>
+          <h1>{materialProps ? 'Update' : 'Add'} Textbook</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>&times;</button>
-        </div>
+        </div >
         <div onSubmit={handleSubmit}>
           <div className=" px-4 mt-4 h-[25rem] overflow-y-auto">
 
@@ -232,7 +267,7 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
             </div>
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Class</label>
-              <OptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, name: item.naming }))} setSelection={setClass} />
+              <OptionsMenu selection={classes} options={classOptions.map((item: any) => ({ id: item.id, name: item.naming }))} setSelection={setClasses} />
               <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
             </div>
             {
@@ -243,12 +278,18 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
                 <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
               </div>
             }
+            <div className="text-sm mb-3">
+              <label htmlFor="" className="text-sm">Cover photo</label>
+              <RawFileInput setSelection={setCoverPhoto} />
+              <p className="text-red-500 text-xs mt-1">{errors?.cover}</p>
+            </div>
+
 
             <div className="text-sm mb-3">
               <label htmlFor="" className="text-sm">Age</label>
-              <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} />
-              {/* <input type="text" name="age" value={formData.age} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" /> */}
-              <p className="text-red-500 text-xs mt-1">{errors?.age}</p>
+              <OptionsMenu selection={ages} options={agesOptions} setSelection={setAge} />
+              {/* <input type="text" name="ages" value={formData.ages} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" /> */}
+              <p className="text-red-500 text-xs mt-1">{errors?.ages}</p>
             </div>
 
 
@@ -258,12 +299,12 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
               <p className="text-red-500 text-xs mt-1">{errors?.description}</p>
             </div>
 
-          </div>
+          </div >
           <div className="px-4 w-full h-[3rem] mt-[2px] flex border-t items-center">
             <button disabled={loading} onClick={handleSubmit} className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]">
               {
                 loading ?
-                  <WhiteSpinner/>
+                  <WhiteSpinner />
                   :
                   <span>
                     {materialProps ? 'Update' : 'Create'}
@@ -271,8 +312,8 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
               }
             </button>
           </div>
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
   );
 }

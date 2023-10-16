@@ -8,6 +8,7 @@ import NameAvatar from "./NameAvatar";
 
 interface HeaderProps {
   title?: string;
+  variant?: any
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {

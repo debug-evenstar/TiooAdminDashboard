@@ -4,6 +4,7 @@ import axiosInstance from '../../services/api';
 import { useDispatch } from 'react-redux';
 import { setStudents } from '../../redux/slices/student';
 import { notify } from '../notification/notification';
+import { BASE_URL } from '../../services/url';
 
 
 
@@ -38,7 +39,7 @@ export default function StudentsChecklist({ selection, setSelection, onApply, cl
     }, [data]);
 
     useEffect(() => {
-        axiosInstance.get('https://api.hellotioo.com/students/readall')
+        axiosInstance.get(`${BASE_URL}/students/readall`)
             .then(response => {
                 setData(response.data.data);
                 dispatch(setStudents(response.data.data));

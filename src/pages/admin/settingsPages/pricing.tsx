@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PricingInput from "../../../components/pricingInput/pricingInput";
 import NairaInput from "../../../components/nairaInput/nairaInput";
 import { RootState } from "../../../redux/store";
-import { PriceState, reloadPricing, setFreelancers, setSchoolsID, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudents } from "../../../redux/slices/pricing";
+import { PriceState, reloadPricing, setFreelancers, setSchoolsID, setSchoolsStudents, setSchoolsTeachers, setSchoolsTotal, setStudentsDollar, setStudents, setSchoolsTeachersDollar, setSchoolsStudentsDollar, setSchoolsTotalDollar, setSchoolsIDDollar } from "../../../redux/slices/pricing";
 import axiosInstance from "../../../services/api";
 import SchoolsChecklist from "../../../components/schoolsChecklist/schoolsChecklist";
 import StudentsChecklist from "../../../components/studentsChecklist/studentsChecklist";
@@ -32,12 +32,21 @@ export function PricingSchoolsComponent() {
     const schools = useSelector((state: RootState) => state.praise.pricing.schools)
     const total = useSelector((state: RootState) => state.praise.pricing.schools.total);
 
-    const handleTeachers = (data: PriceState) => {
-        dispatch(setSchoolsTeachers(data));
+
+    const teachers_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar.teachers);
+    const students_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar.students);
+    const schools_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar)
+    const total_dollar = useSelector((state: RootState) => state.praise.pricing.schools_dollar.total);
+
+
+    const handleTeachers = (data: PriceState, type: string) => {
+        console.log("something", type);
+        type === "dollar" ? dispatch(setSchoolsTeachersDollar(data)) : dispatch(setSchoolsTeachers(data));
     }
 
-    const handleStudents = (data: PriceState) => {
-        dispatch(setSchoolsStudents(data));
+    const handleStudents = (data: PriceState, type: string) => {
+        console.log(type);
+        type === "dollar" ? dispatch(setSchoolsStudentsDollar(data)) : dispatch(setSchoolsStudents(data));
     }
 
     // fetch prices
@@ -52,16 +61,26 @@ export function PricingSchoolsComponent() {
         }
         dispatch(setSchoolsTotal(total));
 
-    }, [students, teachers]);
+        const total_dollar: PriceState = {
+            id: schools.id,
+            value: students_dollar['value'] + teachers_dollar['value'],
+            quarter: students_dollar['quarter'] + teachers_dollar['quarter'],
+            half: students_dollar['half'] + teachers_dollar['half'],
+            year: students_dollar['year'] + teachers_dollar['year']
+        }
+        dispatch(setSchoolsTotalDollar(total_dollar));
+
+    }, [students, teachers, students_dollar, teachers_dollar]);
 
 
     const handleSubmit = () => {
         if (edit) {
             setLoading(true);
             const payload = {
-                id: schools.id,
+                id: 1,
                 teachers_price: teachers.value,
                 student_price: students.value,
+                currency: "NGN",
                 accounts: null,
                 tab: "schools",
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
@@ -70,10 +89,30 @@ export function PricingSchoolsComponent() {
             axiosInstance.put('/settings/pricing', payload)
                 .then(response => {
                     dispatch(reloadPricing());
-                    notify.success("updated schools pricing")
+                    notify.success("updated naira schools pricing")
                     console.log(response.data.data)
                 })
                 .catch(() => notify.error("failed to save pricing"))
+                .finally(() => setLoading(false));
+
+            const payload_dollar = {
+                id: 49,
+                teachers_price: teachers_dollar.value,
+                student_price: students_dollar.value,
+                currency: "USD",
+                accounts: null,
+                tab: "schools",
+                students_breakdown: { quater: students_dollar.quarter, half: students_dollar.half, yearly: students_dollar.year },
+                teachers_breakdown: { quater: teachers_dollar.quarter, half: teachers_dollar.half, yearly: teachers_dollar.year }
+            }
+            console.log(payload_dollar);
+            axiosInstance.put('/settings/pricing', payload_dollar)
+                .then(response => {
+                    dispatch(reloadPricing());
+                    notify.success("updated dollar schools naira pricing")
+                    console.log(response.data.data)
+                })
+                .catch(() => notify.error("failed to save dollar pricing"))
                 .finally(() => setLoading(false));
 
         }
@@ -84,18 +123,29 @@ export function PricingSchoolsComponent() {
         <>
             <div className="flex items-center justify-between">
                 <h1 className="font-[500] text-lg text-primary">General Pricing</h1>
-                <button className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { handleSubmit(); e.preventDefault(); setEdit(!edit) }}>
-                    {edit ?
-                        "Save"
-                        : loading ?
-                            <WhiteSpinner/>
-                            : "Edit pricing"
+                <div className="flex items-center space-x-4">
+                    <button className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { e.preventDefault(); handleSubmit(); setEdit(!edit) }}>
+                        {edit ?
+                            "Save"
+                            : loading ?
+                                <WhiteSpinner />
+                                : "Edit pricing"
+                        }
+                    </button>
+                    {edit &&
+                        <button className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { e.preventDefault(); setEdit(false) }}>
+                            Cancel
+                        </button>
                     }
-                </button>
+                </div>
+
             </div>
-            <PricingInput state={teachers} setState={handleTeachers} name="teachers" readOnly={!edit} />
-            <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
-            <PricingInput state={total} setState={() => null} name="total" readOnly={true} />
+            <PricingInput currency="naira" state={teachers} setState={handleTeachers} name="teachers" readOnly={!edit} />
+            <PricingInput currency="dollar" state={teachers_dollar} setState={handleTeachers} name="teachers" readOnly={!edit} />
+            <PricingInput currency="naira" state={students} setState={handleStudents} name="students" readOnly={!edit} />
+            <PricingInput currency="dollar" state={students_dollar} setState={handleStudents} name="students" readOnly={!edit} />
+            <PricingInput currency="naira" state={total} setState={() => null} name="total" readOnly={true} />
+            <PricingInput currency="dollar" state={total_dollar} setState={() => null} name="total" readOnly={true} />
             <ExceptionsComponent type="Schools" />
         </>
     );
@@ -164,7 +214,7 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
 
     const sendRequst = async (payload: TExceptionPayload) => {
         let response = null;
-        console.log(payload);
+
         try {
             if (edit)
                 response = await axiosInstance.put('/settings/pricing', payload)
@@ -237,7 +287,7 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
     }
 
     const handler = (e: ChangeEvent<HTMLInputElement>, type?: string) => {
-        console.log(price, teacher, student);
+        // console.log(price, teacher, student);
         let temp: string = e.target.value.replace('/\Dg', '');
         temp = temp.replaceAll(',', '');
         if (temp === '') temp = '0';
@@ -287,17 +337,17 @@ function AddExceptionModal({ edit = false, type, data, modal, setModal }: { edit
                                 type === "Schools" ?
                                     <div className="mt-4">
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Teachers</label>
-                                        <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
+                                        <NairaInput currency="naira" className="py-1.5 mb-2" name="price" value={getCurrentPrice().teacher.toLocaleString()} handler={(e: any) => handler(e, 'teacher')} />
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Students</label>
-                                        <NairaInput className="py-1.5 mb-2" name="price" value={getCurrentPrice().student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
+                                        <NairaInput currency="naira" className="py-1.5 mb-2" name="price" value={getCurrentPrice().student.toLocaleString()} handler={(e: any) => handler(e, 'student')} />
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Total</label>
-                                        <NairaInput className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
+                                        <NairaInput currency="naira" className="py-1.5 mb-2" readonly={true} name="price" value={total.toLocaleString()} handler={handler} />
 
                                     </div>
                                     :
                                     <div className="mt-4">
                                         <label htmlFor="" className="text-xs text-gray-500 mb-4">Set Price</label>
-                                        <NairaInput className="py-1.5" name="price" value={getCurrentPrice().student.toLocaleString()} handler={handler} />
+                                        <NairaInput currency="naira" className="py-1.5" name="price" value={getCurrentPrice().student.toLocaleString()} handler={handler} />
                                     </div>
                             )
 
@@ -581,8 +631,11 @@ function StudentsTabComponent() {
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
-    const handleStudents = (data: PriceState) => {
-        dispatch(setStudents(data));
+    const handleStudents = (type: string, data: PriceState) => {
+        if (type !== "dollar")
+            dispatch(setStudents(data));
+        else
+            dispatch(setStudentsDollar(data));
     }
     const handleSubmit = () => {
         if (edit) {
@@ -591,6 +644,7 @@ function StudentsTabComponent() {
                 id: students.id,
                 teachers_price: 0.0,
                 student_price: students.value,
+                currency: "USD",
                 accounts: null,
                 tab: "students",
                 students_breakdown: { quater: students.quarter, half: students.half, yearly: students.year },
@@ -617,13 +671,14 @@ function StudentsTabComponent() {
                     {edit ?
                         "Save"
                         : loading ?
-                            <div className="mx-auto w-5 h-5 border-2 rounded-full border-gray-400 border-r-white animate-spin"></div>
+                            <WhiteSpinner />
                             : "Edit pricing"
                     }
                 </button>
 
             </div>
-            <PricingInput state={students} setState={handleStudents} name="students" readOnly={!edit} />
+            <PricingInput state={students} setState={handleStudents} currency="naira" name="students" readOnly={!edit} />
+            <PricingInput state={students} setState={handleStudents} currency="dollar" name="studentsDollar" readOnly={!edit} />
             <ExceptionsComponent type="Students" />
         </>
     );
@@ -679,7 +734,7 @@ function FreelancersTabComponent() {
                 </button>
 
             </div>
-            <PricingInput state={freelancers} setState={handleFreelancers} name="freelancers" readOnly={!edit} />
+            <PricingInput currency="naira" state={freelancers} setState={handleFreelancers} name="freelancers" readOnly={!edit} />
             <ExceptionsComponent type="Freelancers" />
         </>
     );
@@ -703,30 +758,49 @@ export default function PricingTab() {
 
     const parseResponseData = (data: any) => {
         const schools = {
-            id: data.schools?.id,
+            id: data.schools[1]?.id,
+            currency: data.schools[0]?.currency,
             teachers: {
                 id: 0,
-                value: data.schools.teachers_price,
-                quarter: data.schools.teachers_breakdown.quater,
-                half: data.schools.teachers_breakdown.half,
-                year: data.schools.teachers_breakdown.yearly,
+                value: data.schools[0]?.teachers_price,
+                quarter: data.schools[0]?.teachers_breakdown.quater,
+                half: data.schools[0]?.teachers_breakdown.half,
+                year: data.schools[0]?.teachers_breakdown.yearly,
             },
             students: {
                 id: 0,
-                value: data.schools?.student_price,
-                quarter: data.schools?.students_breakdown.quater,
-                half: data.schools?.students_breakdown.half,
-                year: data.schools?.students_breakdown.yearly,
+                value: data.schools[0]?.student_price,
+                quarter: data.schools[0]?.students_breakdown.quater,
+                half: data.schools[0]?.students_breakdown.half,
+                year: data.schools[0]?.students_breakdown.yearly,
+            }
+        };
+
+        const schools_dollar = {
+            id: data.schools[1]?.id,
+            currency: data.schools[1]?.currency,
+            teachers: {
+                id: 0,
+                value: data.schools[1]?.teachers_price,
+                quarter: data.schools[1]?.teachers_breakdown.quater,
+                half: data.schools[1]?.teachers_breakdown.half,
+                year: data.schools[1]?.teachers_breakdown.yearly,
+            },
+            students: {
+                id: 0,
+                value: data.schools[1]?.student_price,
+                quarter: data.schools[1]?.students_breakdown.quater,
+                half: data.schools[1]?.students_breakdown.half,
+                year: data.schools[1]?.students_breakdown.yearly,
             }
         }
-
-        const freelancers = {
-            id: data.freelancers?.id,
-            value: data.freelancers?.student_price,
-            quarter: data.freelancers?.students_breakdown.quater,
-            half: data.freelancers?.students_breakdown.half,
-            year: data.freelancers?.students_breakdown.yearly,
-        }
+        // const freelancers = {
+        //     id: data.freelancers?.id,
+        //     value: data.freelancers?.student_price,
+        //     quarter: data.freelancers?.students_breakdown.quater,
+        //     half: data.freelancers?.students_breakdown.half,
+        //     year: data.freelancers?.students_breakdown.yearly,
+        // }
 
         const students = {
             id: data.students?.id,
@@ -740,19 +814,28 @@ export default function PricingTab() {
         const freelancersException = data.exceptionedFreelancers;
         const studentsException = data.exceptionedIndependentsStudents;
 
-        return { schools, freelancers, students, studentsException, schoolsException, freelancersException };
+        // return { schools, students, studentsException, schoolsException, freelancersException };
+        return { schools, schools_dollar, students, studentsException, schoolsException, freelancersException };
     }
 
     useEffect(() => {
         axiosInstance.get('/settings/pricing')
             .then(response => {
+                // console.log(response.data.data);
                 const parsed = parseResponseData(response.data.data);
+                console.log("parsed", parsed);
                 // dispatching general pricing
                 dispatch(setSchoolsID(parsed.schools.id));
                 dispatch(setSchoolsStudents(parsed.schools.students));
                 dispatch(setSchoolsTeachers(parsed.schools.teachers));
-                dispatch(setFreelancers(parsed.freelancers));
-                dispatch(setStudents(parsed.students));
+
+                dispatch(setSchoolsIDDollar(parsed.schools_dollar.id));
+                dispatch(setSchoolsStudentsDollar(parsed.schools_dollar.students));
+                dispatch(setSchoolsTeachersDollar(parsed.schools_dollar.teachers));
+
+
+                // dispatch(setFreelancers(parsed.freelancers));
+                // dispatch(setStudents(parsed.students));
                 // window.parsed = parsed;
 
                 // dispatching exceptions

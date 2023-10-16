@@ -13,6 +13,7 @@ import {
 } from "../../../../../services/authServices";
 import { getSubjectClasses } from "../../../../../api";
 import axiosInstance from "../../../../../services/api";
+import { BASE_URL } from "../../../../../services/url";
 
 interface SubjectCardProps {
   del?: any;
@@ -68,7 +69,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
   const fetchsubjectTeachers = async () => {
     try {
       // const val = await getAllSubjectsTeachers(item.id, config);
-      const val = await axiosInstance.get('https://api.hellotioo.com/subjects/teachers/read/' + item.id)
+      const val = await axiosInstance.get(`${BASE_URL}subjects/teachers/read/${item.id}`)
       setallsubjTeachers(val.data.data.teachers);
       // dispatch(schoolActions.saveSubjectTeacher(val.data.data.teachers));
     } catch (error: any) { }

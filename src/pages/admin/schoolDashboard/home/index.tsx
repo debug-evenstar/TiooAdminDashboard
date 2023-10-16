@@ -30,6 +30,7 @@ import TeacherClassTab from "./components/TeacherClassTab";
 import TeacherInviteStudent from "./components/TeacherInvite";
 import LoadingCompo from "../../../../components/loadingCompo";
 import axiosInstance from "../../../../services/api";
+import { BASE_URL } from "../../../../services/url";
 
 function Home() {
   const [active, setActive] = useState(false);
@@ -76,7 +77,7 @@ function Home() {
       //   config
       // );
 
-      const schoolTeachers = await axiosInstance.get('https://api.hellotioo.com/school/teachers/' + Number(id));
+      const schoolTeachers = await axiosInstance.get(`${BASE_URL}school/teachers/${Number(id)}`);
 
       //save classes, schoolinfo and teachers info into local storage
       const SchoolManagement = {

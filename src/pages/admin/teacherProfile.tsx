@@ -21,7 +21,7 @@ export default function TeacherProfile() {
     const { id } = useParams<{ id: any }>()
   
     useEffect(() => {
-        axiosInstance.get(`${BASE_URL}teacher/readall`)
+        axiosInstance.get(`${BASE_URL}/teacher/readall`)
             .then(response => {
                 setTeacher(response.data.data.find(
                     (item: any) => item.id == id

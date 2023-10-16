@@ -86,7 +86,7 @@ export default function Teachers() {
     updateTeachers(teachers);
 
     console.log("getting teachers again");
-    axiosInstance.get(`${BASE_URL}teacher/readall`)
+    axiosInstance.get(`${BASE_URL}/teacher/readall`)
       .then(response => {
         dispatch(setTeachers(response.data.data))
         updateTeachers(response.data.data);

@@ -20,7 +20,7 @@ function SchoolTeachers() {
 
   useEffect(() => {
     setloading(true);
-    axiosInstance.get(`${BASE_URL}teacher/readall`)
+    axiosInstance.get(`${BASE_URL}/teacher/readall`)
       .then(response => setTeachers(response.data.data))
       .catch(error => console.log(error))
       .finally(() => setloading(false));

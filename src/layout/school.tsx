@@ -16,7 +16,6 @@ export default function AdminLayoutExt() {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    console.log("location",location);
     useEffect(() => {
         const profile = localStorage.getItem('profile');
         if (profile) {

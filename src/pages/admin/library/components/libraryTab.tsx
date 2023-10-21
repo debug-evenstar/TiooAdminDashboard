@@ -12,6 +12,7 @@ import { notify } from "../../../../components/notification/notification";
 import SelectClassModal from "../../../../pages/admin/library/components/selectClassModal";
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
 import DeleteMaterialModal from "./deleteMaterialModal";
+import EditLibraryMaterial from "../../../../components/editLibraryMaterialModal/editLibraryMaterialModal";
 
 
 type TMaterialCardItem = {
@@ -27,7 +28,7 @@ type TMaterialCardItem = {
   classes?: any;
 }
 
-function MaterialCard({ color, materialProps }: { color: string, materialProps: TMaterialCardItem }) {
+function MaterialCard({ color, openEditModal, materialProps }: { color: string, openEditModal: any, materialProps: TMaterialCardItem }) {
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [editModal, setEditModal] = useState<boolean>(false);
@@ -59,7 +60,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
   return (
     <>
       <AddLibraryLesson {...{ modal, setModal, materialProps }} />
-      <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{ materialProps }} tabId={materialProps.tab} />
+      {/* <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{ materialProps }} tabId={materialProps.tab} /> */}
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} /> */}
       <DeleteMaterialModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} />
       <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
@@ -77,7 +78,7 @@ function MaterialCard({ color, materialProps }: { color: string, materialProps: 
 
             >
               <div className="w-fit relative px-2 py-2 outline-none text-gray-400 bg-[#fff] overflow-hidden shadow rounded-[8px]">
-                <button onClick={() => setEditModal(true)} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
+                <button onClick={() => openEditModal(materialProps)} className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center">
                   {/* <FaEdit /> */}
                   <BsPen />
                   <span>Edit</span>
@@ -125,6 +126,8 @@ export default function LibraryTab({ tab }: any) {
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
   const materials = useSelector((state: RootState) => state.praise.library.materials);
   const reload = useSelector((state: RootState) => state.praise.library.reload);
+  const [editModal, setEditModal] = useState(false);
+  const [currentMaterial, setCurrentMaterial] = useState<TLibraryMaterials | null>();
 
   const dispatch = useDispatch();
 
@@ -148,17 +151,26 @@ export default function LibraryTab({ tab }: any) {
   }, [reload]);
 
 
+  const openEditModal = (material: any) => {
+    setEditModal(true);
+    setCurrentMaterial(material);
+  }
+
+  const closeEditModal = () => {
+    setEditModal(false);
+    setCurrentMaterial(null);
+  }
   const [modal, setModal] = useState<boolean>(false);
 
   return (
     <div className="w-full overflow-y-auto">
       <AddLibraryMaterial tabId={tab.tabId} {...{ modal, setModal }} />
-      {/* <AddLibraryMaterial tabId={tab.tabId} {...{ modal, setModal }} /> */}
+      <EditLibraryMaterial closeModal={closeEditModal} materialProps={currentMaterial} modal={editModal} />
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
         {
           materials.map((materialProps: TLibraryMaterials, index: number) => {
             if (tab.tabId == materialProps.tab)
-              return <MaterialCard key={index} materialProps={materialProps} color={colors[index % colors.length]} />
+              return <MaterialCard key={index} openEditModal={openEditModal} materialProps={materialProps} color={colors[index % colors.length]} />
           })
         }
         <button

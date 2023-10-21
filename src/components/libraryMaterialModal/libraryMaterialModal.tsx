@@ -123,7 +123,6 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
   useEffect(() => {
 
     if (materialProps) {
-      // console.log(materialProps);
       setFormData({
         name: materialProps.naming,
         description: materialProps.description,
@@ -134,19 +133,13 @@ export default function AddLibaryMaterial({ materialProps, tabId, modal, setModa
         classes = JSON.parse(materialProps.classes);
       } else {
         classes = materialProps.classes;
-      } console.log(materialProps);
+      }
 
-      // classes = classes.map((item: any) => ({ id: item.id, name: item.naming }))
       const ids = classes.map((i: any) => i.id);
-      //console.log("ids" ,ids);
       const category = materialProps.subject_category;
       setClasses(ids);
-      console.log("mat", materialProps.classes)
       setCategory(category);
       setAge(materialProps.ages);
-      // console.log(materialProps);
-      // setClasses(materialProps.class);
-      // setCategory(materialProps.category);
     }
 
 

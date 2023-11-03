@@ -27,14 +27,14 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
   // const { id } = useParams();
 
   useEffect(() => {
-    axiosInstance.get(`${BASE_URL}subjects/classes/read/${item.id}`)
+    axiosInstance.get(`${BASE_URL}/subjects/classes/read/${item.id}`)
       .then(response => setallsubjclass(response.data.data))
       .catch(error => console.log(error));
-    axiosInstance.get(`${BASE_URL}subjects/teachers/read/${item.id}`)
+    axiosInstance.get(`${BASE_URL}/subjects/teachers/read/${item.id}`)
       .then(response => setallsubjTeachers(response.data.data))
       .catch(error => console.log(error));
 
-    axiosInstance.get(`${BASE_URL}subjects/lessons/${item.id}`)
+    axiosInstance.get(`${BASE_URL}/subjects/lessons/${item.id}`)
       .then(response => {
         console.log(response.data.data);
         setLessons(response.data.data)

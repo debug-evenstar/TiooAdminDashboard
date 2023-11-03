@@ -22,7 +22,7 @@ export default function StudentProfile() {
     const { id } = useParams<{ id: any }>()
   
     useEffect(() => {
-        axiosInstance.get(`${BASE_URL}students/readall`)
+        axiosInstance.get(`${BASE_URL}/students/readall`)
             .then(response => {
                 setStudent(response.data.data.find(
                     (item: any) => item.id == id

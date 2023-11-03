@@ -84,7 +84,7 @@ export default function Students() {
   useEffect(() => {
 
     updateStudents(students);
-    axiosInstance.get(`${BASE_URL}students/readall`)
+    axiosInstance.get(`${BASE_URL}/students/readall`)
       .then(response => {
         dispatch(setStudents(response.data.data))
         updateStudents(response.data.data);

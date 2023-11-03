@@ -77,7 +77,7 @@ function Home() {
       //   config
       // );
 
-      const schoolTeachers = await axiosInstance.get(`${BASE_URL}school/teachers/${Number(id)}`);
+      const schoolTeachers = await axiosInstance.get(`${BASE_URL}/school/teachers/${Number(id)}`);
 
       //save classes, schoolinfo and teachers info into local storage
       const SchoolManagement = {

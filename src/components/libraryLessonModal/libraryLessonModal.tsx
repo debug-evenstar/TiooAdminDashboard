@@ -115,7 +115,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
     useEffect(() => {
         const id = lesson?.SubjectId || materialProps?.subjectId;
         if (id) {
-            axiosInstance.get(`${BASE_URL}lesson/subjectlessons/` + id)
+            axiosInstance.get(`${BASE_URL}/lesson/subjectlessons/` + id)
                 .then((response) => {
                     setClassOptions(response.data.data.classes);
                 })
@@ -178,7 +178,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
         })
             .then(() => {
                 dispatch(setLibraryReload());
-                if (lesson) {
+                if (materialProps && refetch) {
                     refetch(materialProps.id, lesson?.GroupId);
                 }
                 setModal(false);
@@ -254,7 +254,7 @@ export default function AddLibraryLesson({ modal, setModal, lesson, refetch, mat
                         <div className="flex flex-col">
                             <div className="flex items-center space-x-6">
                                 <UploadFile text="Upload File" {...{ selectedFile, setSelectedFile }} />
-                                <MultiFileUpload text="Upload PNG" accept=".png" files={PNGFiles} setSelectedFiles={setPNGFiles} />
+                                <MultiFileUpload text="Upload PNG" accept=".png,.jpeg,.jpg" files={PNGFiles} setSelectedFiles={setPNGFiles} />
                             </div>
 
                             <p className="text-red-500 text-xs mt-1">{errors?.file}</p>

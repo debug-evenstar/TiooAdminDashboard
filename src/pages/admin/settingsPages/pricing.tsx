@@ -134,7 +134,7 @@ export function PricingSchoolsComponent() {
                         }
                     </button>
                     {edit &&
-                        <button disabled={!loading} className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { e.preventDefault(); setEdit(false) }}>
+                        <button disabled={loading} className="duration-1000 transition-all outline-none font-[400] text-white rounded-[8px] bg-main px-5 py-2.5 font-[500] text-sm" onClick={(e) => { e.preventDefault(); setEdit(false) }}>
                             Cancel
                         </button>
                     }

@@ -9,7 +9,6 @@ const EditSlides = () => {
   const [lessonData, setLessonData] = useState<any>();
   const [studyData, setStudyData] = useState<any>();
   const [saving, setSaving] = useState(false)
-  const name = useSelector((state: any) => state.praise.user.user.name);
   const { id } = useParams();
   const navigate = useNavigate();
   
@@ -143,8 +142,8 @@ const EditSlides = () => {
         changeFile={changeFile}
         back={handleBack}
         changeCard={changeCard}
-        lessonlist={lessonlist}
-        name={name}
+        lessonList={lessonlist}
+        user={{name : "John", auth:"", base : ""}}
         isBusy={saving}
       /> }
     </div>

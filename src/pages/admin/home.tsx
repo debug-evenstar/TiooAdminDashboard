@@ -1,4 +1,4 @@
-import Header from "../../components/header";
+import Header from "../../components/AppHeader";
 import HomeTabs from "../../components/homeTabs";
 
 export default function Home(): JSX.Element {

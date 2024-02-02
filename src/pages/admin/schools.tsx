@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import Header from "../../components/header"
+import Header from "../../components/AppHeader"
 import axiosInstance from "../../services/api";
 import SearchBar from "../../components/searchBar"
 import FilterPanel from "../../components/filterPanel"

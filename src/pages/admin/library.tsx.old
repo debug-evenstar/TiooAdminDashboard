@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, MouseEvent, Suspense, useRef, useState } from "react";
-import Header from "../../components/header"
+import Header from "../../components/AppHeader"
 import axiosInstance from "../../services/api";
 import LibrarySchoolsCurricula from "../../components/librarySchools/librarySchools";
 import LibraryCoCurricula from "../../components/libraryCocurricula/libraryCocurricula";

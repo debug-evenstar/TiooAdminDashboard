@@ -1,5 +1,5 @@
 import { Suspense, useState } from "react";
-import Header from "../../../components/header";
+import Header from "../../../components/AppHeader";
 
 
 import LibraryTab from "./components/libraryTab";

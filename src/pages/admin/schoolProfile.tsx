@@ -1,4 +1,4 @@
-import Header from "../../components/header"
+import Header from "../../components/AppHeader"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../services/api";

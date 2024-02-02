@@ -139,12 +139,10 @@ const EditSlides = () => {
       {!studyData && <p>Loading...</p>}
       {studyData && <Editorial
         data={lessonData}
-        changeFile={changeFile}
         back={handleBack}
-        changeCard={changeCard}
         lessonList={lessonlist}
         user={{name : "John", auth:"", base : ""}}
-        isBusy={saving}
+        refetch={() => {}}
       /> }
     </div>
   );

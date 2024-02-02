@@ -1,4 +1,4 @@
-import Header from "../../components/header"
+import Header from "../../components/AppHeader"
 import SearchBar from "../../components/searchBar"
 import FilterPanel from "../../components/filterPanel"
 import { IListProps } from "../../components/list/list"

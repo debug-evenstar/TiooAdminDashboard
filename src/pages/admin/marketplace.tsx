@@ -1,4 +1,4 @@
-import Header from "../../components/header"
+import Header from "../../components/AppHeader"
 import SearchBar from "../../components/searchBar"
 
 import market1 from '../../assets/images/market/market-1.png';

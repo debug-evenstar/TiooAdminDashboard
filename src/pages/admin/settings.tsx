@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Header from "../../components/header";
+import Header from "../../components/AppHeader";
 import SettingsNav from "../../components/settingsNav/settingsNav";
 
 export default function Settings() {

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { getSubjectWithLessonCount, getSubjects } from "../../../../api";
 import ThirdUpload from "./components/UploadLesson/ThirdUpload";
 import GeneratingLesson from "./components/GenerateLessons/Generating";
-import Header from "../../../../components/header";
+import Header from "../../../../components/AppHeader";
 
 function Lessons() {
   // eslint-disable-next-line

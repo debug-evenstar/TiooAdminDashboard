@@ -15,7 +15,7 @@ import Popup from "reactjs-popup";
 import { notify } from "../../../../components/notification/notification";
 import SelectClassModal from "../../../../pages/admin/library/components/selectClassModal";
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
-import DeleteTextbookModal from "./deleteMaterialModal";
+import DeleteTextbookModal from "./deleteTextbookModal";
 import EditTextbookModal from "../../../../components/editTextbookModal/editTextbookModal";
 
 type TMaterialCardItem = {

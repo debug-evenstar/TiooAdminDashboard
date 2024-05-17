@@ -30,6 +30,7 @@ type TOptionProps = {
   id: number;
   name: number | string;
 };
+
 const categoryOptions = [
   { id: 1, name: "Mathematics" },
   { id: 2, name: "English" },

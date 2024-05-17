@@ -21,6 +21,7 @@ const tabs: any[] = [
   { name: "Textbooks", tabId: 0 },
   { name: "Extra-curricula", tabId: 1 },
   { name: "Games", tabId: 2 },
+  { name: "Subjects", tabId: 3 },
 ];
 
 function LibraryTabs() {

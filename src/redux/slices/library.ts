@@ -1,14 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-export type TTextbookModals = {
-    id: number,
-    naming: string,
-    description: string,
-    age: number,
-    library: boolean,
-    SchoolManagementId: number,
-    lessonCount: number,
-    tab: number;
-}
+
 
 export type TLibraryLesson = {
     id: number,

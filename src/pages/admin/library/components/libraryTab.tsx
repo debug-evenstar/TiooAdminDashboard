@@ -6,7 +6,6 @@ import AddLibraryLesson from "../../../../components/libraryLessonModal/libraryL
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  TTextbookModals,
   setTextbookModals,
   setLibraryReload,
 } from "../../../../redux/slices/library";
@@ -17,165 +16,9 @@ import SelectClassModal from "../../../../pages/admin/library/components/selectC
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
 import DeleteTextbookModal from "./deleteTextbookModal";
 import EditTextbookModal from "../../../../components/editTextbookModal/editTextbookModal";
+import LibraryItemCard from "./libraryItemCard";
+import { TextbookItem } from "../types";
 
-type TMaterialCardItem = {
-  id: number;
-  naming: string;
-  description: string;
-  age: number;
-  library: boolean;
-  SchoolManagementId: number;
-  lessonCount: number;
-  tab: number;
-  library_status?: string | null;
-  classes?: any;
-};
-
-function MaterialCard({
-  color,
-  openEditModal,
-  textbookProps,
-}: {
-  color: string;
-  openEditModal: any;
-  textbookProps: TMaterialCardItem;
-}) {
-  const [modal, setModal] = useState<boolean>(false);
-  const [active, setActive] = useState<boolean>(false);
-  const [editModal, setEditModal] = useState<boolean>(false);
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  // const [ status, setStatus ] = useState<boolean | null>(textbookProps.library_status);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const viewLessonButton = () => {
-    // setDeleteModal(true);
-    navigate(
-      `/library/lessons/${textbookProps?.id}/${textbookProps?.classes[0]?.id}`,
-      { state: { material: textbookProps } }
-    );
-  };
-
-  const toggleStatus = () => {
-    // const status = !!textbookProps.library_status;
-    axiosInstance
-      .post("/librarysubject/status/" + textbookProps.id)
-      .then((response) => {
-        dispatch(setLibraryReload());
-        textbookProps.library_status == "published"
-          ? "unpuplished"
-          : "published";
-        notify.success(
-          `${
-            textbookProps.library_status == "published"
-              ? "Retracted"
-              : "Published"
-          } Library Material`
-        );
-      })
-      .catch((error) => console.log(error))
-      .finally(() => setActive(false));
-  };
-
-  return (
-    <>
-      <AddLibraryLesson {...{ modal, setModal, textbookProps }} />
-      {/* <AddTextbookModal modal={editModal} setModal={setEditModal} {...{ textbookProps }} tabId={textbookProps.tab} /> */}
-      {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} textbookProps={textbookProps} /> */}
-      <DeleteTextbookModal
-        modal={deleteModal}
-        setModal={setDeleteModal}
-        textbookProps={textbookProps}
-      />
-      <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
-        <div
-          className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}
-        >
-          <div className="flex justify-between relative">
-            <h1 className="font-[500] text-lg">{textbookProps.naming}</h1>
-            <Popup
-              open={active}
-              onOpen={() => setActive(true)}
-              trigger={
-                <button>
-                  <FaEllipsisV />
-                </button>
-              }
-              position="left top"
-            >
-              <div className="w-fit relative px-2 py-2 outline-none text-gray-400 bg-[#fff] overflow-hidden shadow rounded-[8px]">
-                <button
-                  onClick={() => openEditModal(textbookProps)}
-                  className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
-                >
-                  {/* <FaEdit /> */}
-                  <BsPen />
-                  <span>Edit</span>
-                </button>
-
-                <button
-                  onClick={toggleStatus}
-                  className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
-                >
-                  {textbookProps.library_status !== "published" ? (
-                    <>
-                      <BsDownload className="rotate-180 text-lg" />
-                      <span>Publish</span>
-                    </>
-                  ) : (
-                    <>
-                      <BsDownload className="text-lg" />
-                      <span>Retract</span>
-                    </>
-                  )}
-                </button>
-                <button
-                  onClick={() => {
-                    setDeleteModal(true);
-                    setActive(false);
-                  }}
-                  className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] space-x-2 text-gray-500 hover:text-white hover:bg-[#ff6666] text-sm flex items-center"
-                >
-                  <BsTrash />
-                  <span>Delete</span>
-                </button>
-              </div>
-            </Popup>
-          </div>
-          <p className="mt-3 text-xs">{textbookProps.description}</p>
-        </div>
-        <div className="px-4 mb-2 mt">
-          <span className="text-xs text-gray-400">Lessons uploaded</span>
-          <br />
-          <div className="text-xs mb-2 font-semibold">
-            {textbookProps.lessonCount}
-          </div>
-
-          <div className="w-full grid grid-cols-2 gap-x-4">
-            <button
-              onClick={viewLessonButton}
-              disabled={!textbookProps.lessonCount}
-              className={`px-4 py-2 text-sm font-semibold rounded border outline-none ${
-                textbookProps.lessonCount > 0
-                  ? "border-main text-main"
-                  : "border-gray-400 text-gray-400"
-              }`}
-            >
-              View Lesson
-            </button>
-            <button
-              onClick={() => setModal(true)}
-              className="px-4 py-2 text-sm font-semibold duration-300 hover:bg-hover rounded border border-main bg-main text-white"
-            >
-              Create Lesson
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
 
 export default function LibraryTab({ tab }: any) {
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
@@ -185,7 +28,7 @@ export default function LibraryTab({ tab }: any) {
   const reload = useSelector((state: RootState) => state.praise.library.reload);
   const [editModal, setEditModal] = useState(false);
   const [currentMaterial, setCurrentMaterial] =
-    useState<TTextbookModals | null>();
+    useState<TextbookItem | null>();
 
   const dispatch = useDispatch();
 
@@ -229,13 +72,13 @@ export default function LibraryTab({ tab }: any) {
         modal={editModal}
       />
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
-        {materials.map((textbookProps: TTextbookModals, index: number) => {
+        {materials.map((textbookProps: TextbookItem, index: number) => {
           if (tab.tabId == textbookProps.tab)
             return (
-              <MaterialCard
+              <LibraryItemCard
                 key={index}
                 openEditModal={openEditModal}
-                textbookProps={textbookProps}
+                itemData={textbookProps}
                 color={colors[index % colors.length]}
               />
             );
@@ -257,7 +100,7 @@ export default function LibraryTab({ tab }: any) {
               fill="#4F46E5"
             />
           </svg>
-          <span className="text-center font-[500]">Add a textbook</span>
+          <span className="text-center font-[500]">Add {tab.name.toLowerCase()}</span>
         </button>
       </div>
       <div className="mt-5"></div>

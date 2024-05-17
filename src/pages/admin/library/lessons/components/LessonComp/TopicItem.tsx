@@ -36,7 +36,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
   const [active, setActive] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [item, setItem] = useState("");
-  const [lessonStatus, setLessonStatus] = useState('')
+  const [lessonStatus, setLessonStatus] = useState("");
   const [editModal, setEditModal] = useState<boolean>(false);
 
   const openModal = (item: any, tabId: number): void => {
@@ -48,7 +48,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
     setActive(true);
     setActiveTab(tabId);
     setItem(item);
-    setLessonStatus(status)
+    setLessonStatus(status);
   };
   const closeModal = () => {
     setActive(false);
@@ -57,18 +57,28 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
 
   return (
     <>
-      {editModal && <EditLibraryLesson id={items.id} refetch={refetch} data={items} modal={editModal} setModal={setEditModal} />}
+      {editModal && (
+        <EditLibraryLesson
+          id={items.id}
+          refetch={refetch}
+          data={items}
+          modal={editModal}
+          setModal={setEditModal}
+        />
+      )}
       <div
         className="p-5 rounded-[8px] h-[130px] shadow grid content-between hover:scale-105 duration-100 cursor-pointer"
-        onClick={items.admin_status === 'Locked' ? () => openModal(items, 4) : () => openModal(items, 4)}
+        onClick={
+          items.admin_status === "Locked"
+            ? () => openModal(items, 4)
+            : () => openModal(items, 4)
+        }
       >
         <div className="flex justify-between">
           <p className="font-semibold text-[17px] text-[#030036BD]">
-            {
-              items.topic.length > 25
-                ? items.topic.slice(0, 25) + '...'
-                : items.topic
-            }
+            {items.topic.length > 25
+              ? items.topic.slice(0, 25) + "..."
+              : items.topic}
           </p>
           <div onClick={(e: any) => e.stopPropagation()}>
             <Menu placement="bottom-end">
@@ -86,7 +96,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                   Edit
                 </MenuItem>
                 {/* {true && (items.published > 0 ? ( */}
-                {items.published ?
+                {items.published ? (
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 5)}
@@ -94,7 +104,7 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     <BsDownload className="text-lg" />
                     Retract Lesson
                   </MenuItem>
-                  :
+                ) : (
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 1)}
@@ -102,9 +112,8 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     <BsDownload className="rotate-180 text-lg" />
                     Publish Lesson
                   </MenuItem>
-                }
-                {
-                  items.library_status !== "Locked" &&
+                )}
+                {items.library_status !== "Locked" && (
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openModal(items, 2)}
@@ -112,26 +121,24 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
                     <BsCalendarPlusFill />
                     Set Timeline
                   </MenuItem>
-                }
-                {
-                  items.library_status === "Locked" ? (
-                    <MenuItem
-                      className="flex gap-x-2 items-center"
-                      onClick={() => openStatusModal(items, 7, "Unlocked")}
-                    >
-                      <MdLockOpen className="text-lg" />
-                      Unlock Lesson
-                    </MenuItem>
-                  ) : (
-                    <MenuItem
-                      className="flex gap-x-2 items-center"
-                      onClick={() => openStatusModal(items, 7, "Locked")}
-                    >
-                      <MdLockOutline className="text-lg" />
-                      Lock Lesson
-                    </MenuItem>
-                  )
-                }
+                )}
+                {items.library_status === "Locked" ? (
+                  <MenuItem
+                    className="flex gap-x-2 items-center"
+                    onClick={() => openStatusModal(items, 7, "Unlocked")}
+                  >
+                    <MdLockOpen className="text-lg" />
+                    Unlock Lesson
+                  </MenuItem>
+                ) : (
+                  <MenuItem
+                    className="flex gap-x-2 items-center"
+                    onClick={() => openStatusModal(items, 7, "Locked")}
+                  >
+                    <MdLockOutline className="text-lg" />
+                    Lock Lesson
+                  </MenuItem>
+                )}
                 <MenuItem
                   className="flex gap-x-2 items-center bg-red-400 text-white"
                   onClick={() => openModal(items, 3)}
@@ -158,19 +165,36 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
             refetch={refetch}
           />
         ) : activeTab === 2 ? (
-          <ChooseTimelineModal close={() => setActive(false)} item={item} refetch={refetch} />
+          <ChooseTimelineModal
+            close={() => setActive(false)}
+            item={item}
+            refetch={refetch}
+          />
         ) : activeTab === 3 ? (
-          <DeleteLessonModal close={() => setActive(false)} item={item} refetch={refetch} />
+          <DeleteLessonModal
+            close={() => setActive(false)}
+            item={item}
+            refetch={refetch}
+          />
         ) : activeTab === 5 ? (
-          <UnPublishLesson close={() => setActive(false)}
+          <UnPublishLesson
+            close={() => setActive(false)}
             refetch={refetch}
             item={item}
-            name={name} />
+            name={name}
+          />
         ) : activeTab === 6 ? (
-          <UnavailableLesson close={() => setActive(false)}
-            item={item} />
-        ) : activeTab === 7 ? (<ChangeStatus close={() => setActive(false)} item={item} refetch={refetch} status={lessonStatus} />) :
-          <></>}
+          <UnavailableLesson close={() => setActive(false)} item={item} />
+        ) : activeTab === 7 ? (
+          <ChangeStatus
+            close={() => setActive(false)}
+            item={item}
+            refetch={refetch}
+            status={lessonStatus}
+          />
+        ) : (
+          <></>
+        )}
       </CenterModal>
       <CenterModal
         isOpen={activeTab === 4}

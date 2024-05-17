@@ -32,7 +32,7 @@ const prompts = [
   },
 ];
 
-export default function DeleteMaterialModal({
+export default function DeleteTextbookModal({
   modal,
   setModal,
   textbookProps,

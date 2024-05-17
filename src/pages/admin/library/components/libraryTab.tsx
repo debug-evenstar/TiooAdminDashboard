@@ -15,7 +15,7 @@ import Popup from "reactjs-popup";
 import { notify } from "../../../../components/notification/notification";
 import SelectClassModal from "../../../../pages/admin/library/components/selectClassModal";
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
-import DeleteMaterialModal from "./deleteMaterialModal";
+import DeleteTextbookModal from "./deleteMaterialModal";
 import EditTextbookModal from "../../../../components/editTextbookModal/editTextbookModal";
 
 type TMaterialCardItem = {
@@ -83,7 +83,7 @@ function MaterialCard({
       <AddLibraryLesson {...{ modal, setModal, textbookProps }} />
       {/* <AddTextbookModal modal={editModal} setModal={setEditModal} {...{ textbookProps }} tabId={textbookProps.tab} /> */}
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} textbookProps={textbookProps} /> */}
-      <DeleteMaterialModal
+      <DeleteTextbookModal
         modal={deleteModal}
         setModal={setDeleteModal}
         textbookProps={textbookProps}

@@ -48,7 +48,7 @@ export default function StudentProfile() {
 
                 <div className="mt-10">
                     <InfoField name="Phone number" value={student?.phone}/>
-                    <InfoField name="Address" value={student?.Student.residentialAddress}/>
+                    <InfoField name="Address" value={student?.Student.residential_address}/>
                     <InfoField name="Age" value={student?.Student.age}/>
                     <InfoField name="Class" value={student?.Student.class}/>
                 </div>

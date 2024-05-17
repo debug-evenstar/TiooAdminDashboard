@@ -60,8 +60,6 @@ function MaterialCard({ color, openEditModal, materialProps }: { color: string, 
   return (
     <>
       <AddLibraryLesson {...{ modal, setModal, materialProps }} />
-      {/* <AddLibraryMaterial modal={editModal} setModal={setEditModal} {...{ materialProps }} tabId={materialProps.tab} /> */}
-      {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} /> */}
       <DeleteMaterialModal modal={deleteModal} setModal={setDeleteModal} materialProps={materialProps} />
       <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
         <div className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}>

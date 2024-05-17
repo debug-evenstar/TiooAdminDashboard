@@ -24,19 +24,19 @@ import {
   SchoolSubjects,
 } from "./pages/admin";
 
-import StudentProfile from './pages/admin/studentProfile';
-import Login from './pages/auth/login';
-import PricingTab from './pages/admin/settingsPages/pricing';
-import UserLevels from './pages/admin/settingsPages/userLevels';
-import CouponTab from './pages/admin/settingsPages/coupon';
-import Notification from './components/notification/notification';
+import StudentProfile from "./pages/admin/students/studentProfile";
+import Login from "./pages/auth/login";
+import PricingTab from "./pages/admin/settings/settingsPages/pricing";
+import UserLevels from "./pages/admin/settings/settingsPages/userLevels";
+import CouponTab from "./pages/admin/settings/settingsPages/coupon";
+import Notification from "./components/notification/notification";
 // import ViewLesson from './pages/admin/library/viewLesson.old';
 import AdminLayoutExt from "./layout/school";
-import SchoolProfile from "./pages/admin/schoolProfile";
-import TeacherProfile from "./pages/admin/teacherProfile";
-import FreelancerProfile from "./pages/admin/freelancerProfile";
-import Lessons from './pages/admin/library/lessons/index';
-import { ROUTES } from './global/routes';
+import SchoolProfile from "./pages/admin/schools/schoolProfile";
+import TeacherProfile from "./pages/admin/teachers/teacherProfile";
+import FreelancerProfile from "./pages/admin/freelancers/freelancerProfile";
+import Lessons from "./pages/admin/library/lessons/index";
+import { ROUTES } from "./global/routes";
 import UploadedLesson from "./pages/admin/library/lessons/uploaded-lessons";
 import EditSlides from "./pages/admin/library/components/editSlides";
 
@@ -50,18 +50,41 @@ function App() {
           {/* school dashboard routes */}
           <Route element={<AdminLayoutExt />}>
             <Route index path="schools/:id/home" element={<SchoolHome />} />
-            <Route index path="schools/:id/students" element={<SchoolStudents />} />
-            <Route index path="schools/:id/lesson" element={<SchoolLessons />} />
-            <Route index path="schools/:id/teachers" element={<SchoolTeachers />} />
-            <Route index path="schools/:id/subjects" element={<SchoolSubjects />} />
-            <Route index path="schools/:id/lesson/:lessonid/:activeid" element={<LessonsDisplay />} />
+            <Route
+              index
+              path="schools/:id/students"
+              element={<SchoolStudents />}
+            />
+            <Route
+              index
+              path="schools/:id/lesson"
+              element={<SchoolLessons />}
+            />
+            <Route
+              index
+              path="schools/:id/teachers"
+              element={<SchoolTeachers />}
+            />
+            <Route
+              index
+              path="schools/:id/subjects"
+              element={<SchoolSubjects />}
+            />
+            <Route
+              index
+              path="schools/:id/lesson/:lessonid/:activeid"
+              element={<LessonsDisplay />}
+            />
           </Route>
           <Route element={<AdminLayout />}>
             <Route path="/" element={<Home />} />
 
             {/* Manage Freelancers */}
             <Route path="freelancers" element={<Freelancers />} />
-            <Route path="freelancers/profile/:id" element={<FreelancerProfile />} />
+            <Route
+              path="freelancers/profile/:id"
+              element={<FreelancerProfile />}
+            />
 
             {/* Manage Teachers */}
             <Route path="teachers" element={<Teachers />} />
@@ -75,13 +98,17 @@ function App() {
             <Route path="students" element={<Students />} />
             <Route path="students/profile/:id" element={<StudentProfile />} />
 
-
-
             {/* Library */}
             <Route path="library">
               <Route path="/library" element={<Library />} />
-              <Route path={'/library/' + ROUTES.LESSONS} element={<Lessons />} />
-              <Route path={'/library/' + ROUTES.UPLOADED_LESSONS} element={<UploadedLesson />} />
+              <Route
+                path={"/library/" + ROUTES.LESSONS}
+                element={<Lessons />}
+              />
+              <Route
+                path={"/library/" + ROUTES.UPLOADED_LESSONS}
+                element={<UploadedLesson />}
+              />
 
               {/* <Route path="library/view/:id" element={<ViewLesson />} /> */}
             </Route>
@@ -97,7 +124,10 @@ function App() {
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="*" element={<Navigate to="/"></Navigate>} />
           </Route>
-          <Route path="/library/lesson/editSlides/:id" element={<EditSlides />} />
+          <Route
+            path="/library/lesson/editSlides/:id"
+            element={<EditSlides />}
+          />
         </Routes>
       </Router>
     </>

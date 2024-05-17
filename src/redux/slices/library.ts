@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-export type TLibraryMaterials = {
+export type TTextbookModals = {
     id: number,
     naming: string,
     description: string,
@@ -46,7 +46,7 @@ export type TLibraryClass = {
 }
 
 type TStateProps = {
-    materials: TLibraryMaterials[],
+    materials: TTextbookModals[],
     lessons: TLibraryLesson[],
     classes: TLibraryClass[],
     reload: boolean,
@@ -64,7 +64,7 @@ const librarySlice = createSlice({
     name: 'library',
     initialState: initialState,
     reducers:{
-        setLibraryMaterials: (state, action: PayloadAction<TLibraryMaterials[]>) => {
+        setTextbookModals: (state, action: PayloadAction<TTextbookModals[]>) => {
             state.materials = action.payload;
         },
         setLibraryLessons: (state, action: PayloadAction<TLibraryLesson[]>) => {
@@ -80,5 +80,5 @@ const librarySlice = createSlice({
 })
 
 
-export const { setLibraryReload, setLibraryClass,setLibraryMaterials,setLibraryLessons }  = librarySlice.actions;
+export const { setLibraryReload, setLibraryClass,setTextbookModals,setLibraryLessons }  = librarySlice.actions;
 export default librarySlice.reducer;

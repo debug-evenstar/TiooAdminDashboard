@@ -5,7 +5,7 @@ import Header from '../../../components/AppHeader';
 import { RootState } from '../../../redux/store';
 import { useEffect, useRef, useState } from 'react';
 import axiosInstance from '../../../services/api';
-import { TLibraryClass, TLibraryLesson, TLibraryMaterials, setLibraryClass, setLibraryLessons, setLibraryMaterials } from '../../../redux/slices/library';
+import { TLibraryClass, TLibraryLesson, TTextbookModals, setLibraryClass, setLibraryLessons, setTextbookModals } from '../../../redux/slices/library';
 import AddLibraryLesson from '../../../components/libraryLessonModal/libraryLessonModal';
 import EditLibraryLesson from '../../../components/editLIbraryLessonModal/editLibraryLessonModal';
 
@@ -168,7 +168,7 @@ function AllLessonsCard({ classId }: { classId: number }) {
 
 
 export default function ViewLesson() {
-    const [current, setCurrent] = useState<TLibraryMaterials>();
+    const [current, setCurrent] = useState<TTextbookModals>();
     const navigate = useNavigate();
     const [currentClass, setCurrentClass] = useState<number>(0);
 
@@ -202,8 +202,8 @@ export default function ViewLesson() {
                 // console.log(currentClass);
                 axiosInstance.get('/management/subjects/lessons/count')
                     .then(response => {
-                        dispatch(setLibraryMaterials(response.data.data));
-                        // setCurrent(materials.find((item: TLibraryMaterials) => item.id === newID));
+                        dispatch(setTextbookModals(response.data.data));
+                        // setCurrent(materials.find((item: TTextbookModals) => item.id === newID));
                         axiosInstance.get(`/library/lesson/check?subject_id=${newID}`)
                             .then(response => {
                                 dispatch(setLibraryLessons(response.data.data));

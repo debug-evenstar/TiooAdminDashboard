@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { TCouponProps } from "../../pages/admin/settingsPages/coupon";
+import { TCouponProps } from "../../pages/admin/settings/settingsPages/coupon";
 
 
 

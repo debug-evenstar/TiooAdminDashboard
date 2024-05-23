@@ -1,13 +1,13 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import axiosInstance from "../../services/api";
-import { notify } from "../notification/notification";
-import { setLibraryReload } from "../../redux/slices/library";
-import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
-import WhiteSpinner from '../../components/whiteSpinner/spinner';
-import { BASE_URL } from "../../services/url";
+import axiosInstance from "@/services/api";
+import { notify } from "@/components/notification/notification";
+import { setLibraryReload } from "@/redux/slices/library";
+import SingleOptionsMenu from "@/components/singleOptionsMenu/singleOptionsMenu";
+import WhiteSpinner from '@/components/whiteSpinner/spinner';
+import { BASE_URL } from "@/services/url";
 
-import RawFileInput from '../../components/rawFileInput/rawFileInput';
+import RawFileInput from '@/components/rawFileInput/rawFileInput';
 
 type classOptionProps = {
     SchoolManagesmentId: number;
@@ -150,10 +150,10 @@ export default function EditTextbookModal({ textbookProps, modal, closeModal }: 
 
         axiosInstance.get(`${BASE_URL}/tio/classes`)
             .then((response) => {
-                // console.log(response.data.data);
+                console.log(response);
                 setClassOptions(response.data.data);
             })
-            .catch((error => console.log(error)))
+            .catch((error => console.log('')))
     }, [textbookProps]);
 
 
@@ -174,27 +174,18 @@ export default function EditTextbookModal({ textbookProps, modal, closeModal }: 
         const newErrors: TLibraryModalError = {};
         if (!formData.name || formData.name.length == 0)
             newErrors.name = "Please Enter a valid title"
-
         if (classes.length == 0)
             newErrors.class = "Please select a class from the menu";
-
         if (ages.length == 0)
             newErrors.ages = "Please enter a valid ages ";
-
-
-
         if (category == 0 && textbookProps?.tab === 0)
             newErrors.category = "Please select a category";
-
         if (formData.description == '')
             newErrors.description = "Please fill in a description";
-
         return newErrors;
     }
 
     const sendRequest = () => {
-
-
         const payload = new FormData();
         payload.append('naming', formData.name);
         payload.append('description', formData.description);
@@ -257,7 +248,7 @@ export default function EditTextbookModal({ textbookProps, modal, closeModal }: 
                         </div>
                         <div className="text-sm mb-3">
                             <label htmlFor="" className="text-sm">Class</label>
-                            <OptionsMenu selection={classes} options={classOptions.map((item: any) => ({ id: item.id, name: item.naming }))} setSelection={setClasses} />
+                            <OptionsMenu selection={classes} options={classOptions?.map((item: any) => ({ id: item.id, name: item.naming }))} setSelection={setClasses} />
                             <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
                         </div>
                         {

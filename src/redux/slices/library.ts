@@ -1,33 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { AnyAsyncThunk } from "@reduxjs/toolkit/dist/matchers";
 
 
-export type TLibraryLesson = {
-    id: number,
-    topic: string,
-    duration: string,
-    curriculum: string | null,
-    description: string,
-    objective: string,
-    additional_instruction: string | null,
-    week: string | null,
-    start_date: string | null,
-    end_date: string | null,
-    status: string,
-    admin_status: string,
-    published: number,
-    term: number,
-    files: any[],
-    age: number,
-    library: boolean,
-    createdAt: string,
-    updatedAt: string,
-    GroupId: number | null,
-    SubjectId: number,
-    ClassId: number | null,
-    ChapterId: number | null,
-    ClassArms: any[],
-    Class: any | null
-}
 
 export type TLibraryClass = {
     id: number,
@@ -37,9 +11,12 @@ export type TLibraryClass = {
 }
 
 type TStateProps = {
-    materials: TTextbookModals[],
-    lessons: TLibraryLesson[],
+    materials: any[],
+    lessons:any[],
     classes: TLibraryClass[],
+    textbooks: any[],
+    games: any[],
+    extra: any[],
     reload: boolean,
 }
 
@@ -47,6 +24,9 @@ type TStateProps = {
 const initialState: TStateProps = {
     materials: [], 
     lessons: [],
+    games: [],
+    extra: [],
+    textbooks: [],
     classes: [],
     reload: false,
 }
@@ -55,10 +35,18 @@ const librarySlice = createSlice({
     name: 'library',
     initialState: initialState,
     reducers:{
-        setTextbookModals: (state, action: PayloadAction<TTextbookModals[]>) => {
-            state.materials = action.payload;
+        setLibraryTextbooks: (state, action: PayloadAction<any[]>) => {
+            state.textbooks = action.payload;
         },
-        setLibraryLessons: (state, action: PayloadAction<TLibraryLesson[]>) => {
+        
+        setLibraryGames: (state, action: PayloadAction<any[]>) => {
+            state.games = action.payload;
+        },
+        setLibraryExtra: (state, action: PayloadAction<any[]>) => {
+            state.extra = action.payload;
+        },
+
+        setLibraryLessons: (state, action: PayloadAction<any[]>) => {
             state.lessons = action.payload
         },
         setLibraryClass: (state, action: PayloadAction<TLibraryClass[]>) => {
@@ -71,5 +59,5 @@ const librarySlice = createSlice({
 })
 
 
-export const { setLibraryReload, setLibraryClass,setTextbookModals,setLibraryLessons }  = librarySlice.actions;
+export const { setLibraryReload, setLibraryClass,setLibraryTextbooks,setLibraryGames, setLibraryExtra, setLibraryLessons }  = librarySlice.actions;
 export default librarySlice.reducer;

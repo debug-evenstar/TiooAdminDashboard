@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 
-import axiosInstance from "../../../../services/api";
+import axiosInstance from "@/services/api";
 import { useNavigate } from "react-router-dom";
-import { setLibraryReload } from "../../../../redux/slices/library";
-import { notify } from "../../../../components/notification/notification";
+import { setLibraryReload } from "@/redux/slices/library";
+import { notify } from "@/components/notification/notification";
 import { useDispatch } from "react-redux";
 import { AiOutlineWarning } from "react-icons/ai";
+import { reloadSubjects } from "@/redux/slices/subject";
 
 type TLibraryModalError = {
   age?: string;
@@ -21,38 +22,45 @@ type TOptionProps = {
   name: number | string;
 };
 
-const prompts = [
-  {
-    text: "Are you sure you want to delete this textbook?",
-    color: "bg-main shadow-main",
-  },
-  {
-    text: "Deleting this textbook is an irreversible process. Are you sure?",
-    color: "bg-red-400 shadow-red-500/50 focus:shadow-red-500/50",
-  },
-];
 
-export default function DeleteTextbookModal({
+
+export default function DeleteItemModal({
   modal,
   setModal,
-  textbookProps,
+  itemProps,
+  type,
+  url,
 }: {
-  textbookProps?: any;
+  itemProps?: any;
   modal: boolean;
+  type?: string;
+  url?: string;
   setModal: (state: boolean) => void;
 }) {
   const [index, setIndex] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-  // const navigate = useNavigate();
+
+  const prompts = [
+    {
+      text: `Are you sure you want to delete this ${type? type: "textbook"}?`,
+      color: "bg-main shadow-main",
+    },
+    {
+      text: `Deleting this ${type? type:"textbook" } is an irreversible process. Are you sure?`,
+      color: "bg-red-400 shadow-red-500/50 focus:shadow-red-500/50",
+    },
+  ];
   const dispatch = useDispatch();
+
+  const endpoint = url? `${url}/${itemProps.id}`: `/library/${itemProps.id}`;
 
   const deleteMaterial = () => {
     setLoading(true);
     axiosInstance
-      .delete("/library/" + textbookProps.id)
+      .delete(endpoint)
       .then(() => {
         dispatch(setLibraryReload());
-        notify.success("deleted library material");
+        notify.success("deleted item from list");
       })
       .catch((error) => console.log(error))
       .finally(() => {
@@ -66,7 +74,7 @@ export default function DeleteTextbookModal({
     setModal(false);
   };
   const handleSubmit = () => {
-    // navigate(`/library/lessons/${textbookProps?.id}/${classId}`, { state: { material: textbookProps } })
+    // navigate(`/library/lessons/${itemProps?.id}/${classId}`, { state: { material: itemProps } })
     if (index == 1) {
       deleteMaterial();
     } else {

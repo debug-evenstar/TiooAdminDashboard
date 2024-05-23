@@ -12,6 +12,7 @@ import studentReducer from './slices/student';
 import pricingExceptionReducer from './slices/pricingException';
 import libraryReducer from './slices/library';
 import paginatorReducer from "./slices/paginator";
+import subjectReducer from "./slices/subject";
 
 
 import authSlice from "../store/authSlice";
@@ -33,8 +34,9 @@ const store: ToolkitStore = configureStore({
             pricingException: pricingExceptionReducer,
             library: libraryReducer,
             paginator: paginatorReducer,
+            subject: subjectReducer,
         }),
-        gods: combineReducers( {
+        gods: combineReducers({
             auth: authSlice.reducer,
             class: classSlice.reducer,
             school: schoolSlice.reducer,

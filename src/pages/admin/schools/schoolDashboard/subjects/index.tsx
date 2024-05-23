@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 // import DashLayout from "../../../../layouts/DashLayout";
 import CenterModal from "../../../../../components/CenterModal";
-import AddSubjectCard from "./components/AddSubjectCard";
-import AddSubjectModal from "./components/AddSubjectModal";
 import SubjectCard from "./components/SubjectCard";
+import SubjectModal from "./components/AddSubjectModal";
+import AddSubjectCard from "./components/AddSubjectCard";
 import ClassesModal from "./components/ClassesModal";
 import TeachersModal from "./components/TeachersModal";
 import { alertActions } from "../../../../../components/alertActions";
@@ -131,7 +131,7 @@ function Subjects() {
               const color = colors[colorIndex];
 
               return (
-                <SubjectCard
+                <AddSubjectCard
                   key={index}
                   item={item}
                   subject={item.naming}
@@ -145,7 +145,7 @@ function Subjects() {
                 />
               );
             })}
-            {/* <AddSubjectCard
+            {/* <SubjectModalCard
                 title="Add subjects"
                 desc="e.g English, maths, history, etc "
                 onClick={addLesson}
@@ -155,7 +155,7 @@ function Subjects() {
       </div>
       {/* </DashLayout> */}
       <CenterModal isOpen={subjectModal} onClose={() => setSubjectModal(false)}>
-        <AddSubjectModal
+        <SubjectModal
           didchange={() => setchange(nchange + 1)}
           close={() => setSubjectModal(false)}
         />

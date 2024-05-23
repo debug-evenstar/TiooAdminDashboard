@@ -26,6 +26,7 @@ function ClassLessonCard(lesson: TLibraryLesson) {
 
     return (
         <>
+            <ModalLayout><
             <EditLibraryLesson {...{ modal, setModal }} data={editData} id={lesson.SubjectId} />
             <div className="w-[200px] hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col justify-between h-[140px]">
                 <div className="flex justify-between">

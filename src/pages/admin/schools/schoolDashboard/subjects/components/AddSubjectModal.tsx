@@ -4,22 +4,22 @@ import {
   InputField,
   TextAreaField,
   MultiSelectField,
-} from "../../../../../../components/Inputs";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+} from "@/components/Inputs";
+import { PrimaryButton } from "@/components/Buttons";
 import { useSelector } from "react-redux";
-import { createSubject } from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
-import { configure } from "../../../../../../services/config";
-import { parseDataForMultiSelect } from "../../../../../../components/multiSelectField";
-import CenterModal from "../../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../../components/DiscardWarning";
+import { createSubject } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
+import { configure } from "@/services/config";
+import { parseDataForMultiSelect } from "@/components/multiSelectField";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 
-interface AddSubjectModalProps {
+interface SubjectModalProps {
   close: () => void;
   didchange: () => void;
 }
 
-const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
+const SubjectModal: React.FC<SubjectModalModalProps> = ({
   close,
   didchange,
 }) => {
@@ -150,4 +150,4 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
   );
 };
 
-export default AddSubjectModal;
+export default SubjectModal;

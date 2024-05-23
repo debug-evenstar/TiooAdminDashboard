@@ -1,34 +1,38 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../../../../services/api";
+import axiosInstance from "@/services/api";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import AddTextbookModal from "../../../../components/libraryTextbookModal/libraryTextbookModal";
-import AddLibraryLesson from "../../../../components/libraryLessonModal/libraryLessonModal";
+import AddTextbookModal from "./libraryTextbookModal";
+import AddLibraryLesson from "@/pages/admin/library/components/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setTextbookModals,
+  setLibraryTextbooks,
   setLibraryReload,
-} from "../../../../redux/slices/library";
-import { RootState } from "../../../../redux/store";
+  setLibraryLessons,
+} from "@/redux/slices/library";
+import { RootState } from "@/redux/store";
 import Popup from "reactjs-popup";
-import { notify } from "../../../../components/notification/notification";
-import SelectClassModal from "../../../../pages/admin/library/components/selectClassModal";
+import { notify } from "@/components/notification/notification";
+import SelectClassModal from "@/pages/admin/library/components/selectClassModal";
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
-import DeleteTextbookModal from "./deleteTextbookModal";
-import EditTextbookModal from "../../../../components/editTextbookModal/editTextbookModal";
-import LibraryItemCard from "./libraryItemCard";
-import { TextbookItem } from "../types";
+import DeleteTextbookModal from "../deleteItemModal";
+import EditTextbookModal from "./editTextbookModal";
+import LibraryItemCard from "../libraryItemCard";
+import { TextbookItem } from "../../types";
+import ModalLayout from "@/components/modalLayout/modalLayout";
+import { setSubjects } from "@/redux/slices/subject";
+import TextbookModal from "./libraryTextbookModal";
+import LibraryTextbookCard from "./libraryTextbookCard";
 
-
-export default function LibraryTab({ tab }: any) {
+export default function LibraryTextbookTab() {
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
   const materials = useSelector(
-    (state: RootState) => state.praise.library.materials
+    (state: RootState) => state.praise.library.textbooks
   );
   const reload = useSelector((state: RootState) => state.praise.library.reload);
+
   const [editModal, setEditModal] = useState(false);
-  const [currentMaterial, setCurrentMaterial] =
-    useState<TextbookItem | null>();
+  const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();
 
   const dispatch = useDispatch();
 
@@ -45,11 +49,18 @@ export default function LibraryTab({ tab }: any) {
 
   useEffect(() => {
     axiosInstance
-      .get("management/subjects/lessons/count")
+      .get("library/textbooks")
       .then((response) => {
-        dispatch(setTextbookModals(response.data.data));
+        dispatch(setLibraryTextbooks(response.data.data));
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.log(""));
+
+    axiosInstance
+      .get("/subjects?default=true")
+      .then((response) => {
+        dispatch(setSubjects(response.data.data));
+      })
+      .catch((error) => console.log(""));
   }, [reload]);
 
   const openEditModal = (material: any) => {
@@ -61,27 +72,24 @@ export default function LibraryTab({ tab }: any) {
     setEditModal(false);
     setCurrentMaterial(null);
   };
+
   const [modal, setModal] = useState<boolean>(false);
 
   return (
     <div className="w-full overflow-y-auto">
-      <AddTextbookModal tabId={tab.tabId} {...{ modal, setModal }} />
-      <EditTextbookModal
-        closeModal={closeEditModal}
-        textbookProps={currentMaterial}
-        modal={editModal}
-      />
+      <ModalLayout {...{ modal, setModal }} title="Add Textbook">
+        <TextbookModal {...{ modal, setModal }} />
+      </ModalLayout>
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
         {materials.map((textbookProps: TextbookItem, index: number) => {
-          if (tab.tabId == textbookProps.tab)
-            return (
-              <LibraryItemCard
-                key={index}
-                openEditModal={openEditModal}
-                itemData={textbookProps}
-                color={colors[index % colors.length]}
-              />
-            );
+          return (
+            <LibraryTextbookCard
+              key={index}
+              openEditModal={openEditModal}
+              itemData={textbookProps}
+              color={colors[index % colors.length]}
+            />
+          );
         })}
         <button
           onClick={() => setModal(!modal)}
@@ -100,7 +108,7 @@ export default function LibraryTab({ tab }: any) {
               fill="#4F46E5"
             />
           </svg>
-          <span className="text-center font-[500]">Add {tab.name.toLowerCase()}</span>
+          <span className="text-center font-[500]">Add textbook</span>
         </button>
       </div>
       <div className="mt-5"></div>

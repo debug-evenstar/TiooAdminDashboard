@@ -1,51 +1,19 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import axiosInstance from "../../services/api";
-import { notify } from "../notification/notification";
-import { setLibraryReload } from "../../redux/slices/library";
-import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
-import WhiteSpinner from "../whiteSpinner/spinner";
-import { BASE_URL } from "../../services/url";
+import axiosInstance from "@/services/api";
+import { notify } from "@/components/notification/notification";
+import { setLibraryReload } from "@/redux/slices/library";
+import SingleOptionsMenu from "@/components/singleOptionsMenu/singleOptionsMenu";
+import WhiteSpinner from "@/components/whiteSpinner/spinner";
+import { BASE_URL } from "@/services/url";
 
-import RawFileInput from "../rawFileInput/rawFileInput";
-
-type classOptionProps = {
-  SchoolManagesmentId: number;
-  id: number;
-  naming: string;
-  type: string;
-};
-
-type TLibraryModalError = {
-  name?: string;
-  class?: string;
-  ages?: string;
-  description?: string;
-  file?: string;
-  category?: string;
-  cover?: string;
-};
+import RawFileInput from "@/components/rawFileInput/rawFileInput";
+import { reloadSubjects } from "@/redux/slices/subject";
 
 type TOptionProps = {
   id: number;
   name: number | string;
 };
-
-const categoryOptions = [
-  { id: 1, name: "Mathematics" },
-  { id: 2, name: "English" },
-  { id: 3, name: "Basic Science" },
-  { id: 4, name: "Quantitative Reasoning" },
-  { id: 5, name: "Verbal Reasoning" },
-  { id: 6, name: "CRK" },
-  { id: 7, name: "History" },
-  { id: 8, name: "Civic Education" },
-  { id: 9, name: "Security" },
-  { id: 10, name: "Business Studies" },
-  { id: 11, name: "Visual Arts" },
-  { id: 12, name: "Geography" },
-  { id: 13, name: "Others" },
-];
 
 function OptionsMenu({
   selection,
@@ -75,6 +43,7 @@ function OptionsMenu({
   const minName = options?.find((i: any) => i.id == min)?.name;
   const max = Math.max(...selection);
   const maxName = options?.find((i: any) => i.id == max)?.name;
+
   return (
     <>
       <div
@@ -82,7 +51,7 @@ function OptionsMenu({
         className="mt-2 cursor-pointer  outline-none rounded w-[21.9rem] px-3 py-2 border flex justify-between items-center"
       >
         {selection.length > 0 && !variant ? (
-          <p className="text-xs">{minName + " - " + maxName}</p>
+          <p className="text-xs"></p>
         ) : (
           <p></p>
         )}
@@ -133,67 +102,41 @@ function OptionsMenu({
   );
 }
 
-const agesOptions = [...Array(18 - 5 + 1)].map((_, index) => ({
-  id: index + 5,
-  name: index + 5,
-}));
-
-export default function AddTextbook({
-  textbookProps,
-  tabId,
+export default function SubjectModal({
+  subject,
   modal,
   setModal,
 }: {
-  textbookProps?: any;
-  tabId: number;
+  subject?: any;
   modal: boolean;
   setModal: (state: boolean) => void;
 }) {
-  const [classes, setClasses] = useState<number[]>([]);
-  const [category, setCategory] = useState<number>(0);
-  const [ages, setAge] = useState<number[]>([]);
-  const [errors, setErrors] = useState<TLibraryModalError>({});
+  const [errors, setErrors] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [classOptions, setClassOptions] = useState<classOptionProps[]>([]);
-  const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
+  const [classOptions, setClassOptions] = useState<any[]>([1, 2, 3, 4, 5, 6]);
   const dispatch = useDispatch();
-  // probably wanted to try something sha
+
   const [formData, setFormData] = useState<{
     name: string;
     description: string;
+    classes: number[];
+    default: number;
   }>({
     name: "",
     description: "",
+    default: 1,
+    classes: [],
   });
 
   useEffect(() => {
-    if (textbookProps) {
+    if (subject) {
       setFormData({
-        name: textbookProps.naming,
-        description: textbookProps.description,
+        name: subject.name,
+        description: subject.description,
+        classes: [],
+        default: 1,
       });
-
-      let classes = null;
-      if (typeof textbookProps.classes === "string") {
-        classes = JSON.parse(textbookProps.classes);
-      } else {
-        classes = textbookProps.classes;
-      }
-
-      const ids = classes.map((i: any) => i.id);
-      const category = textbookProps.subject_category;
-      setClasses(ids);
-      setCategory(category);
-      setAge(textbookProps.ages);
     }
-
-    axiosInstance
-      .get(`${BASE_URL}/tio/classes`)
-      .then((response) => {
-        // console.log(response.data.data);
-        setClassOptions(response.data.data);
-      })
-      .catch((error) => console.log(error));
   }, []);
 
   const handleOnChange = (
@@ -210,20 +153,12 @@ export default function AddTextbook({
   };
 
   const validate = () => {
-    const newErrors: TLibraryModalError = {};
+    const newErrors: any = {};
     if (!formData.name || formData.name.length == 0)
-      newErrors.name = "Please Enter a valid title";
+      newErrors.name = "Please enter a valid name";
 
-    if (classes.length == 0)
+    if (formData.classes.length == 0)
       newErrors.class = "Please select a class from the menu";
-
-    if (ages.length == 0) newErrors.ages = "Please enter a valid ages ";
-
-    // if (coverPhoto === null)
-    //   newErrors.cover = "Please select a cover photo";
-
-    if (category == 0 && tabId === 0)
-      newErrors.category = "Please select a category";
 
     if (formData.description == "")
       newErrors.description = "Please fill in a description";
@@ -232,45 +167,16 @@ export default function AddTextbook({
   };
 
   const sendRequest = () => {
-    // const payload =ass {
-    //   naming: formData.name,
-    //   class: classes,
-    //   description: formData.description,
-    //   ages: ages,
-    //   tab: tabId,
-    //   subject_category: category,
-    //   cover: coverPhoto
-    // }
-
-    const payload = new FormData();
-    payload.append("naming", formData.name);
-    payload.append("description", formData.description);
-    payload.append("tab", String(tabId));
-    payload.append("subject_category", String(category));
-    if (coverPhoto) {
-      payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
-    } else {
-      payload.append("cover", JSON.stringify(null));
-    }
-    // payload.append('ages',JSON.stringify(ages));
-    payload.append("class", JSON.stringify(classes));
-    ages.forEach((age: number) => {
-      payload.append("ages", age as unknown as string);
-    });
-
-    // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
-    axiosInstance
-      .post("/library/subject", payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+    const req = subject
+      ? axiosInstance.put("/subjects/"+subject.id, formData)
+      : axiosInstance.post("/subjects", formData);
+    req
       .then(() => {
-        notify.success("Added new lesson material");
-        dispatch(setLibraryReload());
+        notify.success(!!subject? "Updated subject":"Added new subject");
+        dispatch(reloadSubjects());
         setModal(false);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error);
       })
       .finally(() => setLoading(false));
@@ -301,7 +207,7 @@ export default function AddTextbook({
         } z-[100] bg-white rounded duration-1000 h-[517px] w-[380px] mx-auto `}
       >
         <div className="p-2 border-b px-4 flex items-center justify-between">
-          <h1>{textbookProps ? "Update" : "Add"} Textbook</h1>
+          <h1>{subject ? "Update" : "Add"} Subject</h1>
           <button className="text-2xl" onClick={() => setModal(false)}>
             &times;
           </button>
@@ -326,50 +232,16 @@ export default function AddTextbook({
                 Class
               </label>
               <OptionsMenu
-                selection={classes}
+                selection={formData.classes}
                 options={classOptions.map((item: any) => ({
-                  id: item.id,
-                  name: item.naming,
+                  id: item,
+                  name: item.toString(),
                 }))}
-                setSelection={setClasses}
+                setSelection={(value: any) => {
+                  setFormData({ ...formData, classes: value });
+                }}
               />
               <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
-            </div>
-            {tabId === 0 && (
-              <div className="text-sm mb-3">
-                <label htmlFor="" className="text-sm">
-                  Category
-                </label>
-                <SingleOptionsMenu
-                  selection={category}
-                  options={categoryOptions.map((item) => ({
-                    id: item.id,
-                    value: item.name,
-                  }))}
-                  setSelection={setCategory}
-                />
-                <p className="text-red-500 text-xs mt-1">{errors?.category}</p>
-              </div>
-            )}
-            <div className="text-sm mb-3">
-              <label htmlFor="" className="text-sm">
-                Cover photo
-              </label>
-              <RawFileInput setSelection={setCoverPhoto} />
-              <p className="text-red-500 text-xs mt-1">{errors?.cover}</p>
-            </div>
-
-            <div className="text-sm mb-3">
-              <label htmlFor="" className="text-sm">
-                Age
-              </label>
-              <OptionsMenu
-                selection={ages}
-                options={agesOptions}
-                setSelection={setAge}
-              />
-              {/* <input type="text" name="ages" value={formData.ages} onChange={handleOnChange} className="mt-1 outline-none rounded w-full px-3 py-2 border" /> */}
-              <p className="text-red-500 text-xs mt-1">{errors?.ages}</p>
             </div>
 
             <div className="text-sm mb-3">
@@ -396,7 +268,7 @@ export default function AddTextbook({
               {loading ? (
                 <WhiteSpinner />
               ) : (
-                <span>{textbookProps ? "Update" : "Create"}</span>
+                <span>{subject ? "Update" : "Create"}</span>
               )}
             </button>
           </div>

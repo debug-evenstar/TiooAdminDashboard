@@ -8,7 +8,7 @@ import SchoolSubjects from "./schools/schoolDashboard/subjects";
 
 const Home = lazy(() => import("./home/home"));
 const Schools = lazy(() => import("./schools/schools"));
-const Library = lazy(() => import("./library"));
+const Library = lazy(() => import("./library/library"));
 const Teachers = lazy(() => import("./teachers/teachers"));
 const Students = lazy(() => import("./students/students"));
 const Settings = lazy(() => import("./settings/settings"));

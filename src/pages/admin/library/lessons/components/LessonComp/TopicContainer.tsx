@@ -6,7 +6,7 @@ import AddLessonUploadForm from "../UploadLesson/AddLesson";
 import AddLessonSuccess from "../UploadLesson/AddLessonSuccess";
 import GeneratingLesson from "../GenerateLessons/Generating";
 import { useLocation } from "react-router-dom";
-import AddLibraryLesson from "../../../../../../components/libraryLessonModal/libraryLessonModal";
+import AddLibraryLesson from "../../../components/libraryLessonModal";
 
 interface Props {
   lesson: any;

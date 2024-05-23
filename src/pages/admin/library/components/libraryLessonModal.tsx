@@ -1,14 +1,14 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
-import axiosInstance from "../../services/api";
-import UploadFile from "../updateFile/uploadFile";
-import { notify } from "../notification/notification";
+import axiosInstance from "@/services/api";
+import UploadFile from "../../../../components/updateFile/uploadFile";
+import { notify } from "../../../../components/notification/notification";
 import { useDispatch } from "react-redux";
-import { setLibraryReload } from "../../redux/slices/library";
-import SingleOptionsMenu from "../singleOptionsMenu/singleOptionsMenu";
-import WhiteSpinner from "../../components/whiteSpinner/spinner";
-import RawFileInput from "../../components/rawFileInput/rawFileInput";
-import MultiFileUpload from "../../components/multiFileUpload/multiFileUpload";
-import { BASE_URL } from "../../services/url";
+import { setLibraryReload } from "@/redux/slices/library";
+import SingleOptionsMenu from "../../../../components/singleOptionsMenu/singleOptionsMenu";
+import WhiteSpinner from "@/components/whiteSpinner/spinner";
+import RawFileInput from "@/components/rawFileInput/rawFileInput";
+import MultiFileUpload from "@/components/multiFileUpload/multiFileUpload";
+import { BASE_URL } from "@/services/url";
 
 type classOptionProps = {
   SchoolManagementId: number;
@@ -144,11 +144,14 @@ export default function AddLibraryLesson({
   modal: boolean;
   setModal: any;
 }) {
-  const classIDs = textbookProps?.classes.map((item: any) => ({
+  const classIDs = textbookProps?.classes?.map((item: any) => ({
     id: item.id,
     name: item.naming,
   }));
-  const [klass, setClass] = useState<number[]>(classIDs.map((i: any) => i.id));
+
+  console.log(textbookProps);
+
+  const [klass, setClass] = useState<number[]>(classIDs?.map((i: any) => i.id));
   const [age, setAge] = useState<number[]>([]);
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -157,6 +160,7 @@ export default function AddLibraryLesson({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [PNGFiles, setPNGFiles] = useState<File[]>([]);
   const dispatch = useDispatch();
+
   // probably wanted to try something sha
   const [formData, setFormData] = useState<{
     title: string;
@@ -319,7 +323,7 @@ export default function AddLibraryLesson({
                 {/* <SingleOptionsMenu selection={klass} options={classOptions.map((item) => ({ id: item.id, value: item.naming }))} setSelection={setClass} /> */}
                 <OptionsMenu
                   readonly
-                  selection={klass}
+                  selection={[1, 2, 3, 4]}
                   options={classIDs}
                   setSelection={setClass}
                 />

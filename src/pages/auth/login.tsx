@@ -1,12 +1,12 @@
-import tioo from '../../assets/images/tioo-login.png';
-import illustration from '../../assets/images/login-illustration.png';
+import tioo from '@/assets/images/tioo-login.png';
+import illustration from '@/assets/images/login-illustration.png';
 import { FormEvent, useState } from 'react';
-import { authUser } from '../../services/api';
+import { authUser } from '@/services/api';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { update } from '../../redux/slices/user';
+import { update } from '@/redux/slices/user';
 import { useDispatch } from 'react-redux';
-import WhiteSpinner from '../../components/whiteSpinner/spinner';
+import WhiteSpinner from '@/components/whiteSpinner/spinner';
 
 interface LoginError {
     email?: string;

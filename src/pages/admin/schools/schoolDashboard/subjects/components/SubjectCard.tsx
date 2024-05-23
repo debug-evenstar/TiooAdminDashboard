@@ -28,7 +28,7 @@ interface SubjectCardProps {
   teacher?: boolean;
 }
 
-const SubjectCard: React.FC<SubjectCardProps> = ({
+const SubjectCard: React.FC<SubjectModalCardProps> = ({
   edit,
   color,
   subject,

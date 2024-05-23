@@ -12,7 +12,7 @@ import {
   BsDownload,
   BsThreeDotsVertical,
 } from "react-icons/bs";
-import CenterModal from "../../../../../../components/CenterModal";
+import CenterModal from "@/components/CenterModal";
 import ChooseTimelineModal from "../ChooseTimelineModal";
 import DeleteLessonModal from "../DeleteLessonModal";
 import PublishLesson from "../PublishLesson";
@@ -24,7 +24,8 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import ChangeStatus from "../ChangeStatus";
 import { MdLockOpen, MdLockOutline } from "react-icons/md";
 import { FiPenTool } from "react-icons/fi";
-import EditLibraryLesson from "../../../../../../components/editLIbraryLessonModal/editLibraryLessonModal";
+import EditLibraryLesson from "../../../components/editLibraryLessonModal";
+import ModalLayout from "@/components/modalLayout/modalLayout";
 
 interface Props {
   index: number;
@@ -58,13 +59,15 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
   return (
     <>
       {editModal && (
-        <EditLibraryLesson
-          id={items.id}
-          refetch={refetch}
-          data={items}
-          modal={editModal}
-          setModal={setEditModal}
-        />
+        <ModalLayout modal={editModal} setModal={setEditModal} title="Edit Lesson">
+          <EditLibraryLesson
+            id={items.id}
+            refetch={refetch}
+            data={items}
+            modal={editModal}
+            setModal={setEditModal}
+          />
+        </ModalLayout>
       )}
       <div
         className="p-5 rounded-[8px] h-[130px] shadow grid content-between hover:scale-105 duration-100 cursor-pointer"

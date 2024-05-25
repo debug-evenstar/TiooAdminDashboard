@@ -222,7 +222,7 @@ export default function TextbookModal({
     const payload = new FormData();
     payload.append("name", formData.name);
     payload.append("description", formData.description);
-    payload.append("SubjectId", formData.SubjectId);
+    payload.append("subject_id", formData.SubjectId);
     if (coverPhoto) {
       payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
     } else {

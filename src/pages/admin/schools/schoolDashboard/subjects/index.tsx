@@ -126,12 +126,12 @@ function Subjects() {
             )
           )}
           <div className="mt-[32px] w-full grid grid-cols-3 gap-[24px]">
-            {allsubject?.map((item: any, index) => {
+          {allsubject?.map((item: any, index) => {
               const colorIndex = index % colors.length;
               const color = colors[colorIndex];
 
               return (
-                <AddSubjectCard
+                <SubjectCard
                   key={index}
                   item={item}
                   subject={item.naming}

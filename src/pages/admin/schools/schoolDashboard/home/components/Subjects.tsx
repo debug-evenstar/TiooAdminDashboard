@@ -9,7 +9,7 @@ interface SubjectsProps {
   item: any;
 }
 
-const Subjects: React.FC<SubjectModalsProps> = ({ close, item }) => {
+const Subjects: React.FC<SubjectsProps> = ({ close, item }) => {
   const [loading, setLoading] = useState(false);
   const [armSubjects, setArmSubjects] = useState([]);
   const fetchSubjects = async () => {

@@ -64,11 +64,11 @@ export default function LibrarySubjectTab({ tab }: any) {
     <div className="w-full overflow-y-auto">
       <EditSubject {...{ modal, setModal }} />
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
-        {subjects.map((subject: any) => (
+        {subjects.map((subject: any, index: number) => (
           <LibrarySubjectCard
             openEditModal={true}
             itemData={subject}
-            color={colors[1 % colors.length]}
+            color={colors[index % colors.length]}
           />
         ))}
 

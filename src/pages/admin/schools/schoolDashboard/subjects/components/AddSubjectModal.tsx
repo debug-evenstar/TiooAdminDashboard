@@ -19,7 +19,7 @@ interface SubjectModalProps {
   didchange: () => void;
 }
 
-const SubjectModal: React.FC<SubjectModalModalProps> = ({
+const SubjectModal: React.FC<SubjectModalProps> = ({
   close,
   didchange,
 }) => {

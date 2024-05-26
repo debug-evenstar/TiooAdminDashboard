@@ -10,12 +10,7 @@ import { BASE_URL } from "@/services/url";
 import RawFileInput from "@/components/rawFileInput/rawFileInput";
 import { RootState } from "@/redux/store";
 
-type classOptionProps = {
-  SchoolManagesmentId: number;
-  id: number;
-  naming: string;
-  type: string;
-};
+
 
 type TLibraryModalError = {
   name?: string;
@@ -178,13 +173,13 @@ export default function TextbookModal({
       setSubject(category);
     }
 
-    // axiosInstance
-    //   .get(`${BASE_URL}/tio/classes`)
-    //   .then((response) => {
-    //     console.log(response.data.data);
-    //     // setClassOptions(response.data.data);
-    //   })
-    //   .catch((error) => console.log(''));
+    axiosInstance
+      .get(`${BASE_URL}/tio/classes`)
+      .then((response) => {
+        console.log(response.data.data);
+        setClassOptions(response.data.data);
+      })
+      .catch((error) => console.log(''));
   }, []);
 
   const handleOnChange = (
@@ -222,7 +217,7 @@ export default function TextbookModal({
     const payload = new FormData();
     payload.append("name", formData.name);
     payload.append("description", formData.description);
-    payload.append("subject_id", formData.SubjectId);
+    payload.append("subject_id", subject);
     if (coverPhoto) {
       payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
     } else {

@@ -277,7 +277,7 @@ function Home() {
         ) : activeTab === 5 ? (
           <Teachers item={classArm} close={() => setClassActive(false)} />
         ) : activeTab === 6 ? (
-          <SubjectModals item={classArm} close={() => setClassActive(false)} />
+          <Subjects item={classArm} close={() => setClassActive(false)} />
         ) : activeTab === 10 ? (
           <TeacherClassTab item={item} close={() => setClassActive(false)} />
         ) : activeTab === 11 ? (

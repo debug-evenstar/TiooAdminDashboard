@@ -6,7 +6,7 @@ interface SubjectCardProps {
   desc: string;
   onClick: () => void;
 }
-const SubjectCard: React.FC<SubjectModalCardProps> = ({
+const SubjectCard: React.FC<SubjectCardProps> = ({
   onClick,
   title,
   desc,

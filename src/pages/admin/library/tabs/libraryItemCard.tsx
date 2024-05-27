@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "@/services/api";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import AddLibraryLesson from "@/pages/admin/library/components/libraryLessonModal";
+import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLibraryReload } from "@/redux/slices/library";
 import Popup from "reactjs-popup";
 import { notify } from "@/components/notification/notification";
 import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
-import DeleteItemModal from "../deleteItemModal";
-import { SubjectItem, TextbookItem } from "../../types";
-import TextbookModal from "./libraryTextbookModal";
-import ModalLayout from "@/components/modalLayout/modalLayout";
+import DeleteTextbookModal from "./deleteItemModal";
+import { SubjectItem, TextbookItem } from "../types";
 
-function LibraryTextbookCard({
+function LibraryItemCard({
   color,
   openEditModal,
   itemData,
@@ -66,12 +64,9 @@ function LibraryTextbookCard({
         textbookProps={itemData}
         {...{ modal, setModal, itemData }}
       />
-      <ModalLayout  modal={textbookModal} setModal={setTextbookModal} title="Edit Textbook">
-        <TextbookModal  modal={textbookModal} setModal={setTextbookModal} textbookProps={itemData}/>
-      </ModalLayout>
+      {/* <AddTextbookModal modal={textbookModal} setModal={setTextbookModal} {...{ itemData }}/> */}
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} itemData={itemData} /> */}
-      <DeleteItemModal
-
+      <DeleteTextbookModal
         modal={deleteModal}
         setModal={setDeleteModal}
         url="/library/textbooks"
@@ -108,7 +103,7 @@ function LibraryTextbookCard({
                     onClick={toggleStatus}
                     className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
                   >
-                    {!itemData.published ? (
+                    {itemData.published ? (
                       <>
                         <BsDownload className="rotate-180 text-lg" />
                         <span>Publish</span>
@@ -170,4 +165,4 @@ function LibraryTextbookCard({
   );
 }
 
-export default LibraryTextbookCard;
+export default LibraryItemCard;

@@ -9,6 +9,7 @@ import { BASE_URL } from "@/services/url";
 
 import RawFileInput from "@/components/rawFileInput/rawFileInput";
 import { RootState } from "@/redux/store";
+import ModalLayout from "@/components/modalLayout/modalLayout";
 
 
 
@@ -130,10 +131,9 @@ export default function TextbookModal({
 }) {
   const [classes, setClasses] = useState<number[]>([]);
   const [subject, setSubject] = useState<any>(0);
-  const [ages, setAge] = useState<number[]>([]);
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [classOptions, setClassOptions] = useState<any[]>([1, 2, 3, 4, 5, 6]);
+  const [classOptions, setClassOptions] = useState<any[]>([]);
   const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
 
   const dispatch = useDispatch();
@@ -141,7 +141,8 @@ export default function TextbookModal({
   const subjects = useSelector(
     (state: RootState) => state.praise.subject.subjects
   );
-  // probably wanted to try something sha
+
+
   const [formData, setFormData] = useState<{
     name: string;
     description: string;
@@ -157,7 +158,7 @@ export default function TextbookModal({
       setFormData({
         name: textbookProps.name,
         description: textbookProps.description,
-        SubjectId: textbookProps.SubjectId,
+        SubjectId: textbookProps.subject_id,
       });
 
       let classes = null;
@@ -167,16 +168,13 @@ export default function TextbookModal({
         classes = textbookProps.classes;
       }
 
-      const ids = classes.map((i: any) => i.id);
-      const category = textbookProps.subject_category;
-      setClasses(ids);
-      setSubject(category);
+      setClasses(textbookProps.classes?.map((item:any) => item.id));
+      setSubject(textbookProps.subject_id);
     }
 
     axiosInstance
-      .get(`${BASE_URL}/tio/classes`)
+      .get(`/tio/classes`)
       .then((response) => {
-        console.log(response.data.data);
         setClassOptions(response.data.data);
       })
       .catch((error) => console.log(''));
@@ -220,14 +218,12 @@ export default function TextbookModal({
     payload.append("subject_id", subject);
     if (coverPhoto) {
       payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
-    } else {
-      payload.append("cover", JSON.stringify(null));
     }
     // payload.append('ages',JSON.stringify(ages));
     payload.append("classes", JSON.stringify(classes));
 
     // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
-    const header = {
+    const options = {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -237,9 +233,9 @@ export default function TextbookModal({
       ? axiosInstance.put(
           "/library/textbooks/" + textbookProps.id,
           payload,
-          header
+          options
         )
-      : axiosInstance.post("/library/textbooks", payload, header);
+      : axiosInstance.post("/library/textbooks", payload,options);
     req
       .then(() => {
         notify.success("Added new textbook");
@@ -288,10 +284,7 @@ export default function TextbookModal({
             </label>
             <OptionsMenu
               selection={classes}
-              options={classOptions?.map((item: any) => ({
-                id: item,
-                name: item,
-              }))}
+              options={classOptions}
               setSelection={setClasses}
             />
             <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
@@ -347,6 +340,7 @@ export default function TextbookModal({
           </button>
         </div>
       </div>
+      
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "@/services/api";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import AddLibraryLesson from "@/pages/admin/library/components/libraryLessonModal";
+import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLibraryReload } from "@/redux/slices/library";

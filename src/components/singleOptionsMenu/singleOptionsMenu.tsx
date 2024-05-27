@@ -8,7 +8,6 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
         setCurrentValue(value);
         const id = Number.parseInt(e.target.value);
         setSelection(id);
-        setActive(false);
     }
 
     return (
@@ -30,7 +29,7 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
                 <ul className="border shadow px-3 max-h-[18rem] overflow-y-auto">
                     {
                         options.map(({ id, value }: any) => (
-                            <li key={id} onClick={() => { setCurrentValue(value); setSelection(id) }} className="my-2 cursor-pointer rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
+                            <li key={id} onClick={() => { setCurrentValue(value); setSelection(id); setActive(false) }} className="my-2 cursor-pointer rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
                                 <input className="outline-none cursor-pointer" checked={selection === id} onChange={(e) => handleSelection(e, value)} type="radio" readOnly value={id} />
                                 <span className="text-gray-500">{value}</span>
                             </li>

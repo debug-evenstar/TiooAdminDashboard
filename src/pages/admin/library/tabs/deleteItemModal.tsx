@@ -29,12 +29,16 @@ export default function DeleteItemModal({
   setModal,
   itemProps,
   type,
+  refresh = () => null,
   url,
+  once = false,
 }: {
   itemProps?: any;
   modal: boolean;
   type?: string;
   url?: string;
+  once?: boolean;
+  refresh?: () => void;
   setModal: (state: boolean) => void;
 }) {
   const [index, setIndex] = useState<number>(0);
@@ -60,6 +64,7 @@ export default function DeleteItemModal({
       .delete(endpoint)
       .then(() => {
         dispatch(setLibraryReload());
+        refresh();
         notify.success("deleted item from list");
       })
       .catch((error) => console.log(error))
@@ -75,7 +80,7 @@ export default function DeleteItemModal({
   };
   const handleSubmit = () => {
     // navigate(`/library/lessons/${itemProps?.id}/${classId}`, { state: { material: itemProps } })
-    if (index == 1) {
+    if (index == 1 || once) {
       deleteMaterial();
     } else {
       setIndex((index) => index + 1);
@@ -84,7 +89,7 @@ export default function DeleteItemModal({
 
   return (
     <div
-      className={`fixed text-primary z-[90] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${
+      className={`fixed text-primary z-[1000] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${
         modal ? "" : "-translate-y-full"
       }`}
     >

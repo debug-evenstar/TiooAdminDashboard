@@ -24,7 +24,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import ChangeStatus from "../ChangeStatus";
 import { MdLockOpen, MdLockOutline } from "react-icons/md";
 import { FiPenTool } from "react-icons/fi";
-import EditLibraryLesson from "../../../components/editLibraryLessonModal";
+import EditLibraryLesson from "../../../tabs/editLibraryLessonModal";
 import ModalLayout from "@/components/modalLayout/modalLayout";
 
 interface Props {
@@ -59,7 +59,11 @@ const TopicItem: FC<Props> = ({ items, index, name, refetch }) => {
   return (
     <>
       {editModal && (
-        <ModalLayout modal={editModal} setModal={setEditModal} title="Edit Lesson">
+        <ModalLayout
+          modal={editModal}
+          setModal={setEditModal}
+          title="Edit Lesson"
+        >
           <EditLibraryLesson
             id={items.id}
             refetch={refetch}

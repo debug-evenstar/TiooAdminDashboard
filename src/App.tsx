@@ -38,8 +38,8 @@ import FreelancerProfile from "./pages/admin/freelancers/freelancerProfile";
 import Lessons from "./pages/admin/library/lessons/index";
 import { ROUTES } from "./global/routes";
 import UploadedLesson from "./pages/admin/library/lessons/uploaded-lessons";
-import EditSlides from "./pages/admin/library/components/editSlides";
-
+import EditSlides from "./pages/admin/library/tabs/editSlides";
+import Textbooks from "./pages/admin/library/textbooks";
 function App() {
   return (
     <>
@@ -104,6 +104,10 @@ function App() {
               <Route
                 path={"/library/" + ROUTES.LESSONS}
                 element={<Lessons />}
+              />
+              <Route
+                path={"/library/" + ROUTES.TEXTBOOKS}
+                element={<Textbooks />}
               />
               <Route
                 path={"/library/" + ROUTES.UPLOADED_LESSONS}

@@ -1,8 +1,8 @@
 import { Suspense, useState } from "react";
 import Header from "../../../components/AppHeader";
-import LibraryTextbookTab from "./components/textbooks/libraryTextbookTab";
-import LibrarySubjectTab from "./components/subjects/librarySubjectTab";
-import LibraryGameTab from "./components/games/libraryGameTab";
+import LibraryTextbookTab from "./tabs/textbooks/libraryTextbookTab";
+import LibrarySubjectTab from "./tabs/subjects/librarySubjectTab";
+import LibraryGameTab from "./tabs/games/libraryGameTab";
 
 export default function Library() {
   return (
@@ -54,10 +54,10 @@ function LibraryTabs() {
       </ul>
       <div className="mt-14 text-gray-600 pr-10">
         <Suspense fallback={<h1>Loading</h1>}>
-          { active === 0 && <LibraryTextbookTab  /> }
-          { active === 1 && <div></div> }
-          { active === 2 && <LibraryGameTab /> }
-          { active === 3 && <LibrarySubjectTab /> }
+          {active === 0 && <LibraryTextbookTab />}
+          {active === 1 && <div></div>}
+          {active === 2 && <LibraryGameTab />}
+          {active === 3 && <LibrarySubjectTab />}
         </Suspense>
       </div>
     </div>

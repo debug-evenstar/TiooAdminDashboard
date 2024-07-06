@@ -1,23 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "@/services/api";
-import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import AddTextbookModal from "./libraryTextbookModal";
-import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setLibraryTextbooks,
-  setLibraryReload,
-  setLibraryLessons,
+
 } from "@/redux/slices/library";
 import { RootState } from "@/redux/store";
-import Popup from "reactjs-popup";
-import { notify } from "@/components/notification/notification";
-import SelectClassModal from "@/pages/admin/library/tabs/selectClassModal";
-import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
-import DeleteTextbookModal from "../deleteItemModal";
-import EditTextbookModal from "./editTextbookModal";
-import LibraryItemCard from "../libraryItemCard";
 import { TextbookItem } from "../../types";
 import ModalLayout from "@/components/modalLayout/modalLayout";
 import { setSubjects } from "@/redux/slices/subject";

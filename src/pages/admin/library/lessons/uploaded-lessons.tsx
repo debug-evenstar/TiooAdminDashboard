@@ -23,25 +23,6 @@ const UploadedLesson = () => {
   const config = configure(userInfo.token);
 
 
-
-  // console.log("Material classes",classes);
-
-  // const fetchClassLesson = async () => {
-  //   if (!userInfo.token) {
-  //     config.headers.Authorization = "Bearer " + localStorage.getItem("token");
-  //   }
-  //   try {
-  //     const val = await getSubjectLesson(id, config);
-  //     // const val = await axiosInstance.get('/library/lesson/check/subject_id=')
-  //     val == "Network Error" &&
-  //       alertActions.error("Please check Internet connection");
-  //     setData(val?.data?.data);
-  //     setLoading(false);
-  //   } catch (error: any) {
-  //     setLoading(false);
-  //   }
-  // };
-
   const fetchClassLesson = () => {
     axiosInstance.get('/library/lesson/check?subject_id=' + id)
       .then(response => {

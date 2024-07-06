@@ -17,7 +17,7 @@ const EditSlides = () => {
       .then((res: any) => {
         if (!res.error) {
           setLessonData(res.data);
-          fetchClassLesson(res.data.SubjectId)
+          fetchClassLesson(res.data.Textbooks[0]?.subject_id)
         } else {
           notify.error(res.message);
         }
@@ -38,6 +38,7 @@ const EditSlides = () => {
   useEffect(() => {
     fetchLessonNote(id);
   }, []);
+  
   const changeFile = async (file: any, payload: any, id: any) => {
     setSaving(true)
     const checkImg = payload.filter(
@@ -69,6 +70,8 @@ const EditSlides = () => {
       } else console.log(res);
     });
   };
+
+
   const handleBack = () => {
     navigate(`/lessons/${lessonData.SubjectId}/${lessonData.GroupId}`);
   };

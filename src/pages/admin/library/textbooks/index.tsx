@@ -19,16 +19,26 @@ interface ChapterCardProps {
 const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
   const [active, setActive] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
-const [ deleteModal, setDeleteModal ] = useState<boolean>(false);
+  const [ deleteModal, setDeleteModal ] = useState<boolean>(false);
   const ref = useRef<any>();
 
   const toggle = () => ref.current.toggle();
+  const navigate = useNavigate();
+  const openLessons = () => {
+    const url = `/library/chapter/lessons/${chapter.textbook_id}/${chapter.id}/`;
+    navigate(url,{state: { chapter }});
+  }
 
   return (
     <>
-      <div className="w-[200px] hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col space-y-3 h-[140px]">
+      <div onClick={ openLessons} className="w-[200px] cursor-pointer hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col space-y-3 h-[140px]">
         <div className="flex justify-between">
-          <h1 className="text-primary  font-[500]">{chapter.name}</h1>
+          <p className="font-semibold text-[17px] text-[#030036BD]">
+            {chapter.name.length > 25
+              ? chapter.name.slice(0, 25) + "..."
+              : chapter.name}
+          </p>
+
           <div className="flex items-center">
             <Popup
               ref={ref}
@@ -98,7 +108,6 @@ const [ deleteModal, setDeleteModal ] = useState<boolean>(false);
           </div>
         </div>
         <p className="text-gray-400 text-sm">{chapter.description}</p>
-        {/* <span className='text-gray-400 text-xs'>{lesson.files?.length} slides</span> */}
       </div>
       <ChapterModal refresh={refresh} chapterProps={chapter} {...{ modal, setModal }} />
       <DeleteItemModal
@@ -153,7 +162,7 @@ function AllChaptersCard({ textbook}: { textbook: any }) {
             <div className={`flex flex-wrap space-x-3`}>
               {chapters.map((chapter: any) => (
                 <ChapterCard
-                    refresh={getAllChapters}
+                  refresh={getAllChapters}
                   key={chapter.id}
                   chapter={chapter} 
                 />

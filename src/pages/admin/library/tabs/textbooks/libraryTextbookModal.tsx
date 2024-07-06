@@ -229,7 +229,7 @@ export default function TextbookModal({
       },
     };
 
-    const req = textbookProps
+    const req = !!textbookProps
       ? axiosInstance.put(
           "/library/textbooks/" + textbookProps.id,
           payload,
@@ -238,7 +238,7 @@ export default function TextbookModal({
       : axiosInstance.post("/library/textbooks", payload,options);
     req
       .then(() => {
-        notify.success("Added new textbook");
+        notify.success(`${!!textbookProps? "Updated" : "Added new"} textbook`);
         dispatch(setLibraryReload());
         setModal(false);
       })

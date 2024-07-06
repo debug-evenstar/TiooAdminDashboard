@@ -10,6 +10,7 @@ export const ROUTES = {
     TEACHER : "/teacher/:id",
     LESSONS : "/lessons",
     TEXTBOOKS: "/chapters/:id",
+    TEXTBOOK_LESSONS : "/chapter/lessons/:textbookId/:chapterId",
     TEACHER_LESSONS : "/teacher/lessons",
     UPLOADED_LESSONS : "/lessons/:id/:classid",
     EDIT_LESSON_NOTE: "/lessons/note/:id",

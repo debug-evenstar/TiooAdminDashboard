@@ -40,6 +40,7 @@ import { ROUTES } from "./global/routes";
 import UploadedLesson from "./pages/admin/library/lessons/uploaded-lessons";
 import EditSlides from "./pages/admin/library/tabs/editSlides";
 import Textbooks from "./pages/admin/library/textbooks";
+import ChapterLesson from "./pages/admin/library/lessons/chapter-lessons";
 function App() {
   return (
     <>
@@ -113,7 +114,10 @@ function App() {
                 path={"/library/" + ROUTES.UPLOADED_LESSONS}
                 element={<UploadedLesson />}
               />
-
+              <Route
+                path={"/library/" + ROUTES.TEXTBOOK_LESSONS}
+                element={<ChapterLesson />}
+              />
               {/* <Route path="library/view/:id" element={<ViewLesson />} /> */}
             </Route>
 

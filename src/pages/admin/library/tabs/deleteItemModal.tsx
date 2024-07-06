@@ -99,7 +99,7 @@ export default function DeleteItemModal({
         } z-[100] bg-[#fff] rounded duration-300 w-[380px] mx-auto `}
       >
         <div className="p-2 border-b px-4 flex items-center justify-between">
-          <h1 className="font-[500]">Delete Textbook</h1>
+          <h1 className="font-[500]">Delete {type}</h1>
           <button className="text-2xl" onClick={() => close()}>
             &times;
           </button>

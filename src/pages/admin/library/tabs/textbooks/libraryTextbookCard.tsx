@@ -12,7 +12,7 @@ import DeleteItemModal from "../deleteItemModal";
 import { SubjectItem, TextbookItem } from "../../types";
 import TextbookModal from "./libraryTextbookModal";
 import ModalLayout from "@/components/modalLayout/modalLayout";
-import AddTextbookLesson from "./textbookLessonModal";
+import AddTextbookLesson from "../textbookLessonModal";
 
 function LibraryTextbookCard({
   color,

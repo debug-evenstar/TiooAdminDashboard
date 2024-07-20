@@ -28,6 +28,8 @@ import {
   removeClassesFromSubject,
   saveFile,
   studentInviteUrl,
+  subjectTopics,
+  topics,
 } from "./routes";
 
 /* ----------------------------- SCHOOL HANDLERS ---------------------------- */
@@ -51,6 +53,12 @@ export const getSubjects = async (id) => Request.get(allSubjects(id));
 export const getLevels = async () => Request.get(getClassLevels());
 
 export const getSubjectClasses = async (id) => Request.get(allClasses(id));
+
+export const fetchSubjectTopics = async (id) => Request.get(subjectTopics(id));
+
+export const createSubjectTopic = async (id, data) => Request.post(subjectTopics(id), data);
+
+export const deleteSubjectTopic = async (id) => Request.delete(topics(id));
 
 export const getSchoolTerm = async (id) => Request.get(getClassTerms(id));
 
@@ -109,3 +117,5 @@ export const getSchoolTeachers = async (id) =>
 
 export const editSlide = async (items, id) =>
   Request.put(editSlideInfo(id), items);
+
+

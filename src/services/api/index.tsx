@@ -9,7 +9,7 @@ export const API_BASE_URL = (env.VITE_API_KEY);
 // const token: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyZGF0YSI6eyJpZCI6MzQsImVtYWlsIjoiYWRtaW5AcHJheGV1bS5haSIsImFjY291bnRfdHlwZSI6ImFkbWluIn0sImlhdCI6MTY5MTk0NDE5MywiZXhwIjoxNjkyMjAzMzkzfQ.dKIex209L41wQ_Y6Pd7Lqvmd7sBYY2LvqnGgO_cNzoc"
 
 const axiosInstance = axios.create({
-  baseURL: `${API_BASE_URL}/admin/`,
+  baseURL: `${API_BASE_URL}`,
   // headers:{
   //   common: { 
   //     'Authorization': `Bearer ${token}`,

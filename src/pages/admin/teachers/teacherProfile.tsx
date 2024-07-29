@@ -1,7 +1,7 @@
 import Header from "../../../components/AppHeader"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axiosInstance from "../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { BASE_URL } from "../../../services/url";
 
 const InfoField = ({name,value}: {name: string,value?: string | number}) => {

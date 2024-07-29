@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { useNavigate } from "react-router-dom";
 import { setLibraryReload } from "@/redux/slices/library";
 import { notify } from "@/components/notification/notification";

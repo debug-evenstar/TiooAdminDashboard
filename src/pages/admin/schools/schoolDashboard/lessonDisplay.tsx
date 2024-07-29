@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getSchoolLesson, getSchoolSubjects } from "../../../../services/api";
 import LessonClasses from "../../../../components/schoolDashComp/LessonClasses";
 import TermContainer from "../../../../components/schoolDashComp/TermContainer";
+import { getSchoolLesson} from "@/apps/administrator/services/lesson.service";
+import { getSchoolSubjects } from "@/apps/administrator/services/subject.service";
 
 const LessonDisplay = () => {
   const { id, lessonid, activeid } = useParams();

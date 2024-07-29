@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { Load } from "../../../components/loader/loader";
 import { TTeachersProps, setTeachers } from "../../../redux/slices/teachers";
 import { BASE_URL } from "../../../services/url";
@@ -56,7 +56,7 @@ export default function Teachers() {
   const dispatch = useDispatch();
 
   const teachers = useSelector(
-    (state: RootState) => state.praise.teacher.teachers
+    (state: RootState) => state.teacher.teachers
   );
 
   const panels: string[] = ["All", "Recently Joined", "Active"];

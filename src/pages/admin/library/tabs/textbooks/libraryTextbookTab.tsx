@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setLibraryTextbooks,
@@ -15,9 +15,9 @@ import LibraryTextbookCard from "./libraryTextbookCard";
 export default function LibraryTextbookTab() {
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
   const materials = useSelector(
-    (state: RootState) => state.praise.library.textbooks
+    (state: RootState) => state.library.textbooks
   );
-  const reload = useSelector((state: RootState) => state.praise.library.reload);
+  const reload = useSelector((state: RootState) => state.library.reload);
 
   const [editModal, setEditModal] = useState(false);
   const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();

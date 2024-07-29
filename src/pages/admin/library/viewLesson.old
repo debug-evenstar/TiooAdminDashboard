@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../../components/AppHeader';
 import { RootState } from '../../../redux/store';
 import { useEffect, useRef, useState } from 'react';
-import axiosInstance from '../../../services/api';
+import { axiosInstance} from '@/api/request';
 import { TLibraryClass, TLibraryLesson, TTextbookModals, setLibraryClass, setLibraryLessons, setTextbookModals } from '../../../redux/slices/library';
 import AddLibraryLesson from '../../../components/libraryLessonModal/libraryLessonModal';
 import EditLibraryLesson from '../../../components/editLIbraryLessonModal/editLibraryLessonModal';
@@ -74,8 +74,8 @@ function ClassCard({ active, onClick, name }: { active: boolean, onClick?: any, 
 }
 function Classes({ currentClass, setCurrentClass }: { currentClass: number, setCurrentClass: any }) {
     const [classSelection, setClassSelection] = useState<TLibraryClass[]>([]);
-    const lessons = useSelector((state: RootState) => state.praise.library.lessons);
-    const classes = useSelector((state: RootState) => state.praise.library.classes);
+    const lessons = useSelector((state: RootState) => state.library.lessons);
+    const classes = useSelector((state: RootState) => state.library.classes);
 
     // const dispatch = useDispatch();
 
@@ -109,7 +109,7 @@ function Classes({ currentClass, setCurrentClass }: { currentClass: number, setC
 function AllLessonsCard({ classId }: { classId: number }) {
     const [active, setActive] = useState<boolean>(true);
     const [classLessons, setClassLessons] = useState<TLibraryLesson[]>([]);
-    const lessons = useSelector((state: RootState) => state.praise.library.lessons);
+    const lessons = useSelector((state: RootState) => state.library.lessons);
     const [subjectId, setSubjectId] = useState<number>(0);
     const [modal, setModal] = useState<boolean>(false);
     const [data, setData] = useState<any>();

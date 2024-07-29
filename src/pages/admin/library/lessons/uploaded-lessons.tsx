@@ -7,7 +7,7 @@ import { configure } from "../../../../services/config";
 import { useParams } from "react-router-dom";
 import { getSubjectWithLessonCount } from "../../../../api";
 import Header from "../../../../components/AppHeader";
-import axiosInstance from "../../../../services/api";
+import { axiosInstance} from "@/api/request";
 
 const UploadedLesson = () => {
   const { id, classid } = useParams();

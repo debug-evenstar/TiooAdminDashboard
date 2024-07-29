@@ -22,26 +22,22 @@ import lessonSlice from "../store/lessonSlice";
 
 const store: ToolkitStore = configureStore({
     reducer: combineReducers({
-        praise: combineReducers({
-            user: userReducer,
-            pricing: pricingReducer,
-            coupon: couponReducer,
-            admin: adminReducer,
-            school: schoolReducer,
-            teacher: teacherReducer,
-            freelancer: freelanceReducer,
-            student: studentReducer,
-            pricingException: pricingExceptionReducer,
-            library: libraryReducer,
-            paginator: paginatorReducer,
-            subject: subjectReducer,
-        }),
-        gods: combineReducers({
-            auth: authSlice.reducer,
-            class: classSlice.reducer,
-            school: schoolSlice.reducer,
-            lesson: lessonSlice.reducer
-        })
+        user: userReducer,
+        pricing: pricingReducer,
+        coupon: couponReducer,
+        admin: adminReducer,
+        school: schoolReducer,
+        teacher: teacherReducer,
+        freelancer: freelanceReducer,
+        student: studentReducer,
+        pricingException: pricingExceptionReducer,
+        library: libraryReducer,
+        paginator: paginatorReducer,
+        subject: subjectReducer,
+        auth: authSlice.reducer,
+        class: classSlice.reducer,
+        // school: schoolSlice.reducer,
+        lesson: lessonSlice.reducer
     })
 });
 

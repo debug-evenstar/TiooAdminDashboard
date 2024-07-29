@@ -25,7 +25,7 @@ export const loadSchoolClasses = async () => {
 export const loadSchoolSubjects = async () => {
   const state = store.getState();
   const response = await getSubjects(
-    state.praise.school?.schoolManagementInfo.schoolManagementId
+    state.school?.schoolManagementInfo.schoolManagementId
   );
   store.dispatch(schoolActions.schoolSubjects(response?.data));
   return;
@@ -34,7 +34,7 @@ export const loadSchoolSubjects = async () => {
 export const loadSchoolTeachers = async () => {
   const state = store.getState();
   const response = await getSchoolTeachers(
-    state.praise.school?.schoolManagementInfo.schoolManagementId
+    state.school?.schoolManagementInfo.schoolManagementId
   );
   store.dispatch(schoolActions.saveTeachersInfo(response?.data));
   return;

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { notify } from "@/components/notification/notification";
 import { setLibraryReload } from "@/redux/slices/library";
 import SingleOptionsMenu from "@/components/singleOptionsMenu/singleOptionsMenu";
@@ -51,7 +51,7 @@ export default function SubjectModal({
 
     }
     axiosInstance
-    .get(`/tio/classes`)
+    .get(`/classes`)
     .then((response) => {
       setClassOptions(response.data.data);
     })

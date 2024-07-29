@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { notify } from "@/components/notification/notification";
 import { setLibraryReload } from "@/redux/slices/library";
 import SingleOptionsMenu from "@/components/singleOptionsMenu/singleOptionsMenu";

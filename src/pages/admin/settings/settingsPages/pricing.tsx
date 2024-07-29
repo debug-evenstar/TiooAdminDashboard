@@ -20,7 +20,7 @@ import {
   setSchoolsTotalDollar,
   setSchoolsIDDollar,
 } from "../../../../redux/slices/pricing";
-import axiosInstance from "../../../../services/api";
+import { axiosInstance} from "@/api/request";
 import SchoolsChecklist from "../../../../components/schoolsChecklist/schoolsChecklist";
 import StudentsChecklist from "../../../../components/studentsChecklist/studentsChecklist";
 import FreelancersChecklist from "../../../../components/freelancersChecklist/freelancersChecklist";
@@ -45,29 +45,29 @@ export function PricingSchoolsComponent() {
   const dispatch = useDispatch();
 
   const teachers = useSelector(
-    (state: RootState) => state.praise.pricing.schools.teachers
+    (state: RootState) => state.pricing.schools.teachers
   );
   const students = useSelector(
-    (state: RootState) => state.praise.pricing.schools.students
+    (state: RootState) => state.pricing.schools.students
   );
   const schools = useSelector(
-    (state: RootState) => state.praise.pricing.schools
+    (state: RootState) => state.pricing.schools
   );
   const total = useSelector(
-    (state: RootState) => state.praise.pricing.schools.total
+    (state: RootState) => state.pricing.schools.total
   );
 
   const teachers_dollar = useSelector(
-    (state: RootState) => state.praise.pricing.schools_dollar.teachers
+    (state: RootState) => state.pricing.schools_dollar.teachers
   );
   const students_dollar = useSelector(
-    (state: RootState) => state.praise.pricing.schools_dollar.students
+    (state: RootState) => state.pricing.schools_dollar.students
   );
   const schools_dollar = useSelector(
-    (state: RootState) => state.praise.pricing.schools_dollar
+    (state: RootState) => state.pricing.schools_dollar
   );
   const total_dollar = useSelector(
-    (state: RootState) => state.praise.pricing.schools_dollar.total
+    (state: RootState) => state.pricing.schools_dollar.total
   );
 
   const handleTeachers = (data: PriceState, type: string) => {
@@ -735,13 +735,13 @@ function ExceptionAccordion({ data, type }: { data: any; type: string }) {
 
 function ExceptionsList({ type }: { type: string }) {
   const studentsException = useSelector(
-    (state: RootState) => state.praise.pricingException.students
+    (state: RootState) => state.pricingException.students
   );
   const schoolsException = useSelector(
-    (state: RootState) => state.praise.pricingException.schools
+    (state: RootState) => state.pricingException.schools
   );
   const freelancersException = useSelector(
-    (state: RootState) => state.praise.pricingException.freelancers
+    (state: RootState) => state.pricingException.freelancers
   );
 
   const condition = () => {
@@ -770,13 +770,13 @@ function ExceptionsList({ type }: { type: string }) {
 
 export function ExceptionsComponent({ type }: { type: string }) {
   const schools = useSelector(
-    (state: RootState) => state.praise.school.schools
+    (state: RootState) => state.school.schools
   );
   const freelancers = useSelector(
-    (state: RootState) => state.praise.freelancer.freelancers
+    (state: RootState) => state.freelancer.freelancers
   );
   const students = useSelector(
-    (state: RootState) => state.praise.student.students
+    (state: RootState) => state.student.students
   );
 
   const [active, setActive] = useState(false);
@@ -913,7 +913,7 @@ function StudentsTabComponent() {
   const [edit, setEdit] = useState(false);
 
   const students = useSelector(
-    (state: RootState) => state.praise.pricing.students
+    (state: RootState) => state.pricing.students
   );
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -989,7 +989,7 @@ function FreelancersTabComponent() {
   const [edit, setEdit] = useState(false);
 
   const freelancers = useSelector(
-    (state: RootState) => state.praise.pricing.freelancers
+    (state: RootState) => state.pricing.freelancers
   );
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -1067,7 +1067,7 @@ const tabs: { name: string; component: JSX.Element }[] = [
 
 export default function PricingTab() {
   const pricingReload = useSelector(
-    (state: RootState) => state.praise.pricing.reload
+    (state: RootState) => state.pricing.reload
   );
 
   const [active, setActive] = useState<number>(0);

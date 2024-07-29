@@ -1,16 +1,16 @@
 import { FC, useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { getLessonGroup } from "../../services/api";
 import { PrimaryButton } from "../button/button";
 import { useAppSelector } from "../../redux/store";
+import { getLessonGroup } from "@/apps/administrator/services/lesson.service";
 
 interface Props {
   id: any;
   close: () => void;
 }
 const PickClass: FC<Props> = ({ id, close }) => {
-  const activeId = useAppSelector((state: any) => state.praise.school.activeSchool.id);
+  const activeId = useAppSelector((state: any) => state.school.activeSchool.id);
   const [parsedClass, setParsedClass] = useState<any>([]);
   const [selectedClass, setSelectedClass] = useState("");
   const navigate = useNavigate()

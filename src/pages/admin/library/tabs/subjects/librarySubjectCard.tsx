@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
 import { SubjectItem, TextbookItem } from "../../types";
 import AddSubject from "./SubjectModal";
 import DeleteItemModal from "../deleteItemModal";
+import ModalLayout from "@/components/modalLayout/modalLayout";
+import TopicModal from "./libraryTopicModal";
 
 function LibrarySubjectCard({
   color,
@@ -23,7 +25,7 @@ function LibrarySubjectCard({
 }) {
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
-  const [editModal, setEditModal] = useState<boolean>(false);
+  const [topicModal, setTopicModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   // const [ status, setStatus ] = useState<boolean | null>(itemData.library_status);
 
@@ -33,6 +35,17 @@ function LibrarySubjectCard({
   return (
     <>
       <AddSubject subject={itemData} {...{ modal, setModal, itemData }} />
+      <ModalLayout
+        modal={topicModal}
+        setModal={setTopicModal}
+        title="Manage Topics"
+      >
+        <TopicModal
+          modal={topicModal}
+          setModal={setTopicModal}
+          topicProps={itemData}
+        />
+      </ModalLayout>
       <DeleteItemModal
         modal={deleteModal}
         setModal={setDeleteModal}
@@ -40,7 +53,7 @@ function LibrarySubjectCard({
         url="/subjects"
         type="Subject"
       />
-      <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[220px] flex flex-col justify-between rounded-[8px]">
+      <div className="w-[19.7rem] mr-5 border shadow-lg min-h-[180px] flex flex-col justify-between rounded-[8px]">
         <div
           className={`${color} h-[110px] p-4 text-left text-white rounded-t-[8px]`}
         >
@@ -81,6 +94,17 @@ function LibrarySubjectCard({
           </div>
           <p className="mt-3 text-xs">{itemData.description}</p>
         </div>
+        <div className="px-4 mb-2 mt">
+            <div className="w-full">
+              <button
+                onClick={() => setTopicModal(true)}
+                // disabled={!itemData.lessonCount}
+                className={`px-4 py-2 text-sm font-semibold rounded border outline-none ${"border-main text-main"}`}
+              >
+                Manage Topics
+              </button>
+            </div>
+          </div>
       </div>
     </>
   );

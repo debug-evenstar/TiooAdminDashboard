@@ -19,7 +19,7 @@ const CenterModal: React.FC<CenterModalProps> = ({
   // const [showModal, setShowModal] = useState(isOpen);
 
   if (!isOpen) {
-    return null;
+    return <></>;
   }
 
   

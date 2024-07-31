@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { Load } from "../../../components/loader/loader";
 import {
   TFreelancersProps,
@@ -61,7 +61,7 @@ export default function Freelancers() {
   const dispatch = useDispatch();
 
   const freelancers = useSelector(
-    (state: RootState) => state.praise.freelancer.freelancers
+    (state: RootState) => state.freelancer.freelancers
   );
 
   const panels: string[] = ["All", "Recently Joined", "Active"];

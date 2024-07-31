@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
 import { useNavigate } from "react-router-dom";

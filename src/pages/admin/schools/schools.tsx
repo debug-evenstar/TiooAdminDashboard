@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Header from "../../../components/AppHeader";
-import axiosInstance from "../../../services/api";
+import { axiosInstance} from "@/api/request";
 import SearchBar from "../../../components/searchBar";
 import FilterPanel from "../../../components/filterPanel";
 import { IListProps } from "../../../components/list/list";
@@ -56,7 +56,7 @@ export default function Schools() {
   const dispatch = useDispatch();
 
   const schools = useSelector(
-    (state: RootState) => state.praise.school.schools
+    (state: RootState) => state.school.schools
   );
 
   const panels: string[] = ["All", "Recently Joined", "Active"];

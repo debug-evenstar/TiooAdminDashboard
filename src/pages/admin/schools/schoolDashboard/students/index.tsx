@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../../../../../store/authSlice";
 import LoadingCompo from "../../../../../components/loadingCompo";
 import DeleteModal from "../../../../../components/deleteModal";
-import axiosInstance from "../../../../../services/api";
+import { axiosInstance} from "@/api/request";
 
 function SchoolStudents() {
   const [active, setActive] = useState(false);

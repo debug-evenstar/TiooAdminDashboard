@@ -19,7 +19,7 @@ import { getclassWithArms } from "../../../../../services/authServices";
 import { classActions } from "../../../../../store/classSlice";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { getSchoolSubjects } from "../../../../../services/api";
+import { getSchoolSubjects } from "@/apps/administrator/services/subject.service";
 
 function Subjects() {
   const [active, setActive] = useState(false);

@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";
 import { updateTimeline } from "../../../../../api";
 import { alertActions } from "../../../../../components/alertActions";
-import axiosInstance from "../../../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { notify } from "../../../../../components/notification/notification";
 
 interface Props {

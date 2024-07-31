@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import PlusIcon from "../../../../assets/icons/components/settingsNav/plus";
 import studentImage from "../../../../assets/images/student.png";
 import searchImage from "../../../../assets/images/search-md.png";
-import axiosInstance from "../../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdminReload, setAdmins } from "../../../../redux/slices/admin";
 import { RootState } from "../../../../redux/store";
@@ -502,8 +502,8 @@ function UserAccordion({ data }: { data: TUserLevel }) {
 export default function UserLevels() {
   const [modal, setModal] = useState<boolean>(false);
 
-  const admins = useSelector((state: RootState) => state.praise.admin.users);
-  const reload = useSelector((state: RootState) => state.praise.admin.reload);
+  const admins = useSelector((state: RootState) => state.admin.users);
+  const reload = useSelector((state: RootState) => state.admin.reload);
   const dispatch = useDispatch();
   const toggleModal = () => setModal(!modal);
 

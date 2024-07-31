@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ChapterContainer from "./components/ChapterLessonComp/ChapterContainer";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "../../../../components/AppHeader";
-import axiosInstance from "../../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { Spinner } from "@material-tailwind/react";
 import Loader from "@/components/loader/loader";
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import LessonCard from "../../../../components/schoolDashComp/LessonCard";
-import { getSchoolSubjects } from "../../../../services/api";
 import { useParams } from "react-router-dom";
+import { getSchoolSubjects } from "@/apps/administrator/services/subject.service";
 
 const SchoolLessons = () => {
   const { id } = useParams();

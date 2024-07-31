@@ -13,7 +13,7 @@ export default function PaginatedList({ menu, dataPerPage, data, selectRow }:
   // following the API or data you're working with.
 
   // get current page from state;
-  const page = useSelector((state: RootState) => state.praise.paginator.page);
+  const page = useSelector((state: RootState) => state.paginator.page);
   const dispatch = useDispatch();
 
   const [itemOffset, setItemOffset] = useState(0);

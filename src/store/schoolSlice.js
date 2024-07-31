@@ -19,19 +19,19 @@ const schoolSlice = createSlice({
     // },
     saveSchoolManagementInfo(state, action) {
       const data = action.payload;
-      state.praise.schoolManagementInfo = data;
+      state.schoolManagementInfo = data;
     },
     saveTeachersInfo(state, action) {
       const data = action.payload;
-      state.praise.teachersInfo = data;
+      state.teachersInfo = data;
     },
     saveTeachersSubject(state, action) {
       const data = action.payload;
-      state.praise.teachersSubject = data;
+      state.teachersSubject = data;
     },
     saveTeachersClass(state, action) {
       const data = action.payload;
-      state.praise.teachersClass = data;
+      state.teachersClass = data;
     },
     saveSubjectClass(state, action) {
       //   console.log(this.saveItem(action));
@@ -44,10 +44,10 @@ const schoolSlice = createSlice({
       state.subjectTeacher = action.payload;
     },
     schoolSubjects(state, action) {
-      state.praise.schoolSubject = action.payload;
+      state.schoolSubject = action.payload;
     },
     saveTeacherStudents(state, action) {
-      state.praise.teachersStudents = action.payload;
+      state.teachersStudents = action.payload;
     },
   },
 });

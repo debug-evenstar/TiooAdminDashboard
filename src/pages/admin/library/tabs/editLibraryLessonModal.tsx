@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import UploadFile from "@/components/updateFile/uploadFile";
 import { notify } from "@/components/notification/notification";
 import { useDispatch } from "react-redux";

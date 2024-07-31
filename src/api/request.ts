@@ -1,64 +1,92 @@
-import { BASE_URL } from "../services/url";
+const env = import.meta.env;
+import { isDomain } from "@/utils/url";
 import axios from "axios";
 
+export const API_BASE_URL = env.VITE_API_KEY;
+
+const PUBLISHER_DOMAIN = env.VITE_PUBLISHER_DOMAIN;
+const SENTINEL_DOMAIN = env.VITE_SENTINEL_DOMAIN;
 
 export default class Request {
-    
-  static getHeaders() {
-    const token = localStorage.getItem("token");
+    static axiosInstance() {
+        const instance = axios.create({
+            baseURL: `${API_BASE_URL}/${
+                isDomain(SENTINEL_DOMAIN) ? "admin/" : ""
+            }`,
+            headers: Request.getHeaders(),
+        });
 
-    return token
-      ? {
-          Authorization: "Bearer " + token,
-        }
-      : {};
-  }
+        // response interceptor for confirming authorization
+        instance.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error.response.status === 401) {
+                    window.location.assign("/login");
+                }
+                return Promise.reject(error);
+            }
+        );
+        return instance;
+    }
 
-  static parseParams(params: { [key: string]: string }) {
-    let paramsString = "?";
-    Object.keys(params).forEach((param) => {
-      paramsString += `${param}=${params[param]}`;
-    });
-    return paramsString;
-  }
+    static getHeaders() {
+        const token = localStorage.getItem("token");
 
-  static async get(path: string, params?: { [key: string]: string }) {
-    const url = `${BASE_URL}${path}` + (params ?? "");
-    const response = await axios.get(url, {
-      headers: Request.getHeaders(),
-    });
-    return response.data;
-  }
+        return token
+            ? {
+                  Authorization: "Bearer " + token,
+              }
+            : {};
+    }
 
-  static async post(path: string, body?: { [key: string]: string }) {
-    const url = `${BASE_URL}${path}`;
-    const response = await axios.post(url, body, {
-      headers: Request.getHeaders(),
-    });
-    return response.data;
-  }
+    static parseParams(params: { [key: string]: string }) {
+        let paramsString = "?";
+        Object.keys(params).forEach((param) => {
+            paramsString += `${param}=${params[param]}`;
+        });
+        return paramsString;
+    }
 
-  static async patch(path: string, body?: { [key: string]: string }) {
-    const url = `${BASE_URL}${path}`;
-    const response = await axios.patch(url, body, {
-      headers: Request.getHeaders(),
-    });
-    return response.data;
-  }
+    /* -------------------------------------------------------------------------- */
+    /*                     REFACTOR TO USE AXIOS INSTANCE LATER                    */
+    /* -------------------------------------------------------------------------- */
 
-  static async put(path: string, body?: { [key: string]: string }) {
-    const url = `${BASE_URL}${path}`;
-    const response = await axios.put(url, body, {
-      headers: Request.getHeaders(),
-    });
-    return response.data;
-  }
+    static async get(path: string, config?: { [key: string]: any }) {
+        const response = await Request.axiosInstance().get(path);
+        return response.data;
+    }
 
-  static async delete(path: string) {
-    const url = `${BASE_URL}${path}`;
-    const response = await axios.delete(url, {
-      headers: Request.getHeaders(),
-    });
-    return response.data;
-  }
+    static async post(
+        path: string,
+        body: { [key: string]: string } | FormData = {},
+        config?: { [key: string]: any }
+    ) {
+        const response = await Request.axiosInstance().post(path, body);
+        return response.data;
+    }
+
+    static async patch(
+        path: string,
+        body: { [key: string]: string } | FormData = {},
+        config?: { [key: string]: any }
+    ) {
+        const response = await Request.axiosInstance().patch(path, body);
+        return response.data;
+    }
+
+    static async put(
+        path: string,
+        body: { [key: string]: string } | FormData = {},
+        config?: { [key: string]: any }
+    ) {
+        const response = await Request.axiosInstance().put(path, body);
+        return response.data;
+    }
+
+    static async delete(path: string) {
+        const response = await Request.axiosInstance().delete(path);
+        return response.data;
+    }
 }
+
+export const axiosInstance = Request.axiosInstance();

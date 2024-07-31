@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";
 import { PrimaryButton } from "../button/button";
 import { toast } from "react-toastify";
-import { publishLesson } from "../../services/api";
+import { publishLesson } from "@/apps/administrator/services/lesson.service";
 // import { updateTimeline } from "../../../../api";
 // import { alertActions } from "../../../../components/alertActions";
 

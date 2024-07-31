@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { TStudentsProps, setStudents } from "../../../redux/slices/student";
-import axiosInstance from "../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { Load } from "../../../components/loader/loader";
 import { BASE_URL } from "../../../services/url";
 
@@ -57,7 +57,7 @@ export default function Students() {
   const dispatch = useDispatch();
 
   const students = useSelector(
-    (state: RootState) => state.praise.student.students
+    (state: RootState) => state.student.students
   );
 
   const panels: string[] = ["All", "Recently Joined", "Active"];

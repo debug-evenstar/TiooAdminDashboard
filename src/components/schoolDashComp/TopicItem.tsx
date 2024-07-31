@@ -11,10 +11,10 @@ import {
   BsThreeDotsVertical,
 } from "react-icons/bs";
 import { RiShareBoxLine, RiShareForwardLine } from "react-icons/ri";
-import { downloadLessonFile } from "../../services/api";
 import CenterModal from "../modal/CenterModal";
 import PublishLesson from "./PublishLesson";
 import UploadTemplateForm from "./UploadTemplate";
+import { downloadLessonFile } from "@/apps/administrator/services/lesson.service";
 
 interface Props {
   index: number;

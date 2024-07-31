@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -16,13 +16,13 @@ import { setSubjects } from "@/redux/slices/subject";
 export default function LibrarySubjectTab({ tab }: any) {
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
 
-  const reload = useSelector((state: RootState) => state.praise.subject.reload);
+  const reload = useSelector((state: RootState) => state.subject.reload);
 
   const [editModal, setEditModal] = useState(false);
   const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();
 
   const subjects = useSelector(
-    (state: RootState) => state.praise.subject.subjects
+    (state: RootState) => state.subject.subjects
   );
 
   const dispatch = useDispatch();

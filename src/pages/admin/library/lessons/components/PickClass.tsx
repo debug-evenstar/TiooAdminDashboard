@@ -8,7 +8,7 @@ import { getAllSubjectsClass, getLessonClass } from "../../../../../services/aut
 import { useNavigate } from "react-router-dom";
 import CenterModal from "../../../../../components/CenterModal";
 import DiscardWarning from "../../../../../components/DiscardWarning";
-// import axiosInstance from "../../../../services/api";
+// import { axiosInstance} from "@/api/request";
 interface Props {
   id: number;
   close: () => void;

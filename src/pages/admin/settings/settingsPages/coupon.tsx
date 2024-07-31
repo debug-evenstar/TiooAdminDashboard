@@ -1,6 +1,6 @@
 import PlusIcon from "../../../../assets/icons/components/settingsNav/plus";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import axiosInstance from "../../../../services/api";
+import { axiosInstance} from "@/api/request";
 import StudentsChecklist from "../../../../components/studentsChecklist/studentsChecklist";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
@@ -382,10 +382,10 @@ export default function CouponTab() {
   const [modal, setModal] = useState<boolean>(false);
 
   const coupons = useSelector(
-    (state: RootState) => state.praise.coupon.coupons
+    (state: RootState) => state.coupon.coupons
   );
   const couponReload = useSelector(
-    (state: RootState) => state.praise.coupon.reload
+    (state: RootState) => state.coupon.reload
   );
 
   const [loading, setLoading] = useState<boolean>(true);

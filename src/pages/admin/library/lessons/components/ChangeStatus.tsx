@@ -4,7 +4,7 @@ import { PrimaryButton } from "../../../../../components/Buttons";
 import { FaInfoCircle } from "react-icons/fa";
 import { alertActions } from "../../../../../components/alertActions";
 // import { DeleteLesson, EditLessonStatus } from "../../../../api";
-import axiosInstance from "../../../../../services/api";
+import { axiosInstance} from "@/api/request";
 
 interface Props {
   close: () => void;

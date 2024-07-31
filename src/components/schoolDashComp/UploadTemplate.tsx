@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
-import { uploadTemplate } from "../../services/api";
+import { uploadTemplate } from "@/apps/administrator/services/lesson.service";
 import { toast } from "react-toastify";
 import { formatSize } from "../../utils/format";
 import { PrimaryButton } from "../button/button";

@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import searchImage from '../../assets/images/search-md.png';
-import axiosInstance from '../../services/api';
+import { axiosInstance} from '@/api/request';
 import { useDispatch } from 'react-redux';
 import { setStudents } from '../../redux/slices/student';
 import { notify } from '../notification/notification';

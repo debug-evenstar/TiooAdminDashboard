@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "@/services/api";
+import { axiosInstance } from "@/api/request";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,13 +14,13 @@ import { setLibraryGames } from "@/redux/slices/library";
 export default function LibraryGameTab() {
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
 
-  const reload = useSelector((state: RootState) => state.praise.subject.reload);
+  const reload = useSelector((state: RootState) => state.subject.reload);
 
   const [editModal, setEditModal] = useState(false);
   const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();
 
   const games = useSelector(
-    (state: RootState) => state.praise.library.games
+    (state: RootState) => state.library.games
   );
 
   const dispatch = useDispatch();

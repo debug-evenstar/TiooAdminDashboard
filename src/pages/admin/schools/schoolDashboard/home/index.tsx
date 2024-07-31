@@ -29,7 +29,7 @@ import { authActions } from "../../../../../store/authSlice";
 import TeacherClassTab from "./components/TeacherClassTab";
 import TeacherInviteStudent from "./components/TeacherInvite";
 import LoadingCompo from "../../../../../components/loadingCompo";
-import axiosInstance from "../../../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { BASE_URL } from "../../../../../services/url";
 
 function Home() {

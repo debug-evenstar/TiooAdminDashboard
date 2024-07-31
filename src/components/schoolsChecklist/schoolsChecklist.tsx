@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import searchImage from '../../assets/images/search-md.png';
-import axiosInstance from '../../services/api';
+import { axiosInstance} from '@/api/request';
 import { useDispatch, useSelector } from 'react-redux';
 import { TSchoolsProps, setSchools } from '../../redux/slices/schools';
 import { RootState } from '../../redux/store';
@@ -32,7 +32,7 @@ export type TSchoolsChecklistProps = {
 export default function SchoolsChecklist({ selection, setSelection, onApply, className, close }: { className?: string, onApply: () => void, selection: number[], setSelection: any, close: (state: boolean) => void }) {
 
     const dispatch = useDispatch();
-    const schools = useSelector((state: RootState) => state.praise.school.schools);
+    const schools = useSelector((state: RootState) => state.school.schools);
 
     const [searchInput, setSearchInput] = useState<string>('');
 

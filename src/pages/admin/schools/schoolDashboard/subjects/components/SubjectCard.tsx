@@ -12,7 +12,7 @@ import {
   getAllSubjectsTeachers,
 } from "../../../../../../services/authServices";
 import { getSubjectClasses } from "../../../../../../api";
-import axiosInstance from "../../../../../../services/api";
+import { axiosInstance} from "@/api/request";
 import { BASE_URL } from "../../../../../../services/url";
 
 interface SubjectCardProps {

@@ -35,14 +35,17 @@ export default function LibraryTextbookTab() {
     "bg-[#4F46E5]",
   ];
 
-  useEffect(() => {
+  const fetchTextbooks = () => {
     axiosInstance
       .get("/library/textbooks")
       .then((response) => {
         dispatch(setLibraryTextbooks(response.data.data));
       })
       .catch((error) => console.log(""));
+  }
 
+  useEffect(() => {
+    fetchTextbooks();
     axiosInstance
       .get("/subjects?default=true")
       .then((response) => {
@@ -76,6 +79,7 @@ export default function LibraryTextbookTab() {
               openEditModal={openEditModal}
               itemData={textbookProps}
               color={colors[index % colors.length]}
+              refetch={fetchTextbooks}
             />
           );
         })}

@@ -13,20 +13,27 @@ import { SubjectItem, TextbookItem } from "../../types";
 import TextbookModal from "./libraryTextbookModal";
 import ModalLayout from "@/components/modalLayout/modalLayout";
 import AddTextbookLesson from "../textbookLessonModal";
+import CenterModal from "@/components/CenterModal";
+import PublishTextbook from "../../textbooks/components/publishTextbook";
 
-function LibraryTextbookCard({
-  color,
-  openEditModal,
-  itemData,
-}: {
+interface LibraryTextbooksProps {
   color: string;
   openEditModal: any;
   itemData: any;
-}) {
+  refetch : Function;
+}
+
+export default function LibraryTextbookCard({
+  color,
+  openEditModal,
+  itemData,
+  refetch
+} : LibraryTextbooksProps) {
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [textbookModal, setTextbookModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [item, setItem] = useState("");
   // const [ status, setStatus ] = useState<boolean | null>(itemData.library_status);
 
   const navigate = useNavigate();
@@ -42,6 +49,11 @@ function LibraryTextbookCard({
       state: { textbook: itemData },
     });
   };
+
+  const toggleModal = () => {
+    setModal(true);
+    setActive(false);
+  }
 
   const toggleStatus = () => {
     // const status = !!itemData.library_status;
@@ -93,7 +105,7 @@ function LibraryTextbookCard({
 
                 {"published" in itemData && (
                   <button
-                    onClick={toggleStatus}
+                    onClick={toggleModal}
                     className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
                   >
                     {!itemData.published ? (
@@ -165,6 +177,18 @@ function LibraryTextbookCard({
           textbookProps={itemData}
         />
       </ModalLayout>
+      <CenterModal
+        isOpen={modal}
+        onClose={() => setModal(false)}
+        variant={"small"}
+      >
+        <PublishTextbook
+            close={() => setModal(false)}
+            item={itemData}
+            name={itemData.name}
+            refetch={refetch}
+        />
+      </CenterModal>
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} itemData={itemData} /> */}
       <DeleteItemModal
         modal={deleteModal}
@@ -176,4 +200,3 @@ function LibraryTextbookCard({
   );
 }
 
-export default LibraryTextbookCard;

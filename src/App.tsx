@@ -44,6 +44,7 @@ import ChapterLesson from "./pages/admin/library/lessons/chapter-lessons";
 import PublisherRoutes from "./apps/publisher/routes";
 import { isDomain } from "./utils/url";
 import { useEffect } from "react";
+import { ConfigureLibrary } from "@Praxeum-ai/LearnBlocks";
 const env = import.meta.env;
 
 
@@ -53,7 +54,9 @@ function App() {
     const SENTINEL_DOMAIN = env.VITE_SENTINEL_DOMAIN;
 
     useEffect(()=>{
-        isDomain(PUBLISHER_DOMAIN);
+        ConfigureLibrary.save({
+            baseUrl : env.VITE_API_KEY
+        })
     },[]);
 
     return (

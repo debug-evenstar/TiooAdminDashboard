@@ -52,10 +52,7 @@ export default class Request {
     /* -------------------------------------------------------------------------- */
 
     static async get(path: string, config?: { [key: string]: any }) {
-        const url = `${API_BASE_URL}${path}`;
-        const response = await axios.get(url, {
-            headers: Request.getHeaders(),
-        });
+        const response = await Request.axiosInstance().get(path);
         return response.data;
     }
 
@@ -64,10 +61,7 @@ export default class Request {
         body: { [key: string]: string } | FormData = {},
         config?: { [key: string]: any }
     ) {
-        const url = `${API_BASE_URL}${path}`;
-        const response = await axios.post(url, body, {
-            headers: Request.getHeaders(),
-        });
+        const response = await Request.axiosInstance().post(path, body);
         return response.data;
     }
 
@@ -76,10 +70,7 @@ export default class Request {
         body: { [key: string]: string } | FormData = {},
         config?: { [key: string]: any }
     ) {
-        const url = `${API_BASE_URL}${path}`;
-        const response = await axios.patch(url, body, {
-            headers: Request.getHeaders(),
-        });
+        const response = await Request.axiosInstance().patch(path, body);
         return response.data;
     }
 
@@ -88,18 +79,12 @@ export default class Request {
         body: { [key: string]: string } | FormData = {},
         config?: { [key: string]: any }
     ) {
-        const url = `${API_BASE_URL}${path}`;
-        const response = await axios.put(url, body, {
-            headers: Request.getHeaders(),
-        });
+        const response = await Request.axiosInstance().put(path, body);
         return response.data;
     }
 
     static async delete(path: string) {
-        const url = `${API_BASE_URL}${path}`;
-        const response = await axios.delete(url, {
-            headers: Request.getHeaders(),
-        });
+        const response = await Request.axiosInstance().delete(path);
         return response.data;
     }
 }

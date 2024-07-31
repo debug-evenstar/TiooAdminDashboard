@@ -7,6 +7,7 @@ import { update } from '@/redux/slices/user';
 import { useDispatch } from 'react-redux';
 import WhiteSpinner from '@/components/whiteSpinner/spinner';
 import { authUser } from '@/apps/administrator/services/auth.service';
+import { toast } from 'react-toastify';
 
 interface LoginError {
     email?: string;
@@ -28,13 +29,19 @@ export default function Login() {
         setActive(true);
         try {
             const response = await authUser(data);
-            const token: string = response.data.token;
+            const token: string = response.token;
             localStorage.setItem('token', token);
-            let profile = response.data.profile;
+            let profile = response.profile;
             profile = JSON.stringify(profile);
             localStorage.setItem('profile', profile);
-            dispatch(update(profile))
-            navigate('/')
+            dispatch(update(profile));
+            toast.success("Login Successful",{
+                className : "text-[14px]",
+                autoClose : 2000
+            })
+            setTimeout(()=>{
+                window.location.replace('/')
+            },2500);
         } catch (e) {
             setActive(false);
             if (axios.isAxiosError(e)) {

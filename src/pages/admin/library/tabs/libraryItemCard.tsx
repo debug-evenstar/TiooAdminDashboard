@@ -15,7 +15,7 @@ function LibraryItemCard({
   color,
   openEditModal,
   itemData,
-}: {
+}:{
   color: string;
   openEditModal: any;
   itemData: TextbookItem | SubjectItem;

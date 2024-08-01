@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { axiosInstance } from "@/api/request";
-import UploadFile from "../../../../components/updateFile/uploadFile";
-import { notify } from "../../../../components/notification/notification";
+import UploadFile from "@/components/updateFile/uploadFile";
+import { notify } from "@/components/notification/notification";
 import { useDispatch } from "react-redux";
 import { setLibraryReload } from "@/redux/slices/library";
-import SingleOptionsMenu from "../../../../components/singleOptionsMenu/singleOptionsMenu";
+import SingleOptionsMenu from "@/components/singleOptionsMenu/singleOptionsMenu";
 import WhiteSpinner from "@/components/whiteSpinner/spinner";
 import RawFileInput from "@/components/rawFileInput/rawFileInput";
 import MultiFileUpload from "@/components/multiFileUpload/multiFileUpload";

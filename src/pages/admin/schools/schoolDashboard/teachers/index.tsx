@@ -3,7 +3,7 @@ import TeacherCard from "./components/TeacherCard";
 
 import { axiosInstance} from "@/api/request";
 import { useParams } from "react-router-dom";
-import { BASE_URL } from "../../../../../services/url";
+import { BASE_URL } from "@/services/url";
 
 function SchoolTeachers() {
   const [teachers, setTeachers] = useState<any>();

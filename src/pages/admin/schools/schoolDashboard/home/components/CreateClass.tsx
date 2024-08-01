@@ -1,13 +1,13 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { IoMdClose } from "react-icons/io";
-import { TagsInputField } from "../../../../../../components/Inputs";
-import { PrimaryButton } from "../../../../../../components/Buttons";
-import { createClassArm } from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
+import { TagsInputField } from "@/components/Inputs";
+import { PrimaryButton } from "@/components/Buttons";
+import { createClassArm } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
 import { useSelector } from "react-redux";
-import { configure } from "../../../../../../services/config";
-import CenterModal from "../../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../../components/DiscardWarning";
+import { configure } from "@/services/config";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 
 interface CreateClassProps {
   close: () => void;

@@ -4,16 +4,16 @@ import {
   InputField,
   TextAreaField,
   MultiSelectField,
-} from "../../../../../../components/Inputs";
+} from "@/components/Inputs";
 import { useSelector } from "react-redux";
-import { PrimaryButton } from "../../../../../../components/Buttons";
-import { classData } from "../../../../../../data/data";
-import { updateSubjects } from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
-import { configure } from "../../../../../../services/config";
-import { parseDataForMultiSelect } from "../../../../../../components/multiSelectField";
-import CenterModal from "../../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../../components/DiscardWarning";
+import { PrimaryButton } from "@/components/Buttons";
+import { classData } from "@/data/data";
+import { updateSubjects } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
+import { configure } from "@/services/config";
+import { parseDataForMultiSelect } from "@/components/multiSelectField";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 
 interface EditSubjectModalProps {
   close: () => void;

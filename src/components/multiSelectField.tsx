@@ -11,7 +11,7 @@ import React, {
 import { RiEyeLine, RiEyeOffLine, RiSearchLine } from "react-icons/ri";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { stringify } from "querystring";
-import { tryInt } from "../utilities/string";
+import { tryInt } from "@/utilities/string";
 
 interface SelectLevelOne {
   id: any;

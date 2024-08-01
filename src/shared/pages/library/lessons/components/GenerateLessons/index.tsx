@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { LessonButton } from '../../../../../../components/Buttons'
+import { LessonButton } from '@/components/Buttons'
 import FirstGenerate from './FirstGenerate'
 import GeneratingLesson from './Generating'
 

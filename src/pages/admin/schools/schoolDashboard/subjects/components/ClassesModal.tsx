@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { alertActions } from "../../../../../../components/alertActions";
+import { alertActions } from "@/components/alertActions";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { configure } from "../../../../../../services/config";
-import { getAllSubjectsClass } from "../../../../../../services/authServices";
+import { configure } from "@/services/config";
+import { getAllSubjectsClass } from "@/services/authServices";
 import {
   getSubjectClasses,
   removeClassFromSubject,
-} from "../../../../../../api";
+} from "@/api";
 
 interface ClassesModalProps {
   close: () => void;

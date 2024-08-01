@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect } from "react";
-import { fullNames } from "../../../../../../data/data";
+import { fullNames } from "@/data/data";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { configure } from "../../../../../../services/config";
-import { alertActions } from "../../../../../../components/alertActions";
-import { getClassStudent } from "../../../../../../services/authServices";
+import { configure } from "@/services/config";
+import { alertActions } from "@/components/alertActions";
+import { getClassStudent } from "@/services/authServices";
 interface Props {
   item: any;
 }

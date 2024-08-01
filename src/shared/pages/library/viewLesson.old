@@ -1,13 +1,13 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import { useDispatch, useSelector } from 'react-redux';
-import Header from '../../../components/AppHeader';
-import { RootState } from '../../../redux/store';
+import Header from '@/components/AppHeader';
+import { RootState } from '@/redux/store';
 import { useEffect, useRef, useState } from 'react';
 import { axiosInstance} from '@/api/request';
-import { TLibraryClass, TLibraryLesson, TTextbookModals, setLibraryClass, setLibraryLessons, setTextbookModals } from '../../../redux/slices/library';
-import AddLibraryLesson from '../../../components/libraryLessonModal/libraryLessonModal';
-import EditLibraryLesson from '../../../components/editLIbraryLessonModal/editLibraryLessonModal';
+import { TLibraryClass, TLibraryLesson, TTextbookModals, setLibraryClass, setLibraryLessons, setTextbookModals } from '@/redux/slices/library';
+import AddLibraryLesson from '@/components/libraryLessonModal/libraryLessonModal';
+import EditLibraryLesson from '@/components/editLIbraryLessonModal/editLibraryLessonModal';
 
 function ClassLessonCard(lesson: TLibraryLesson) {
     const [active, setActive] = useState<boolean>(false);

@@ -3,17 +3,17 @@ import { HiDotsVertical } from "react-icons/hi";
 import { RiDeleteBin5Line, RiEdit2Line } from "react-icons/ri";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { alertActions } from "../../../../../../components/alertActions";
+import { alertActions } from "@/components/alertActions";
 import { useDispatch } from "react-redux";
-import { schoolActions } from "../../../../../../store/schoolSlice";
-import { configure } from "../../../../../../services/config";
+import { schoolActions } from "@/store/schoolSlice";
+import { configure } from "@/services/config";
 import {
   getAllSubjectsClass,
   getAllSubjectsTeachers,
-} from "../../../../../../services/authServices";
-import { getSubjectClasses } from "../../../../../../api";
+} from "@/services/authServices";
+import { getSubjectClasses } from "@/api";
 import { axiosInstance} from "@/api/request";
-import { BASE_URL } from "../../../../../../services/url";
+import { BASE_URL } from "@/services/url";
 
 interface SubjectCardProps {
   del?: any;

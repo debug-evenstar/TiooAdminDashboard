@@ -1,16 +1,16 @@
-import Header from "../../../components/AppHeader";
-import SearchBar from "../../../components/searchBar";
-import FilterPanel from "../../../components/filterPanel";
-import PaginatedList from "../../../components/paginatedList/paginatedList";
-import { IListProps } from "../../../components/list/list";
+import Header from "@/components/AppHeader";
+import SearchBar from "@/components/searchBar";
+import FilterPanel from "@/components/filterPanel";
+import PaginatedList from "@/components/paginatedList/paginatedList";
+import { IListProps } from "@/components/list/list";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { RootState } from "../../../redux/store";
+import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance} from "@/api/request";
-import { Load } from "../../../components/loader/loader";
-import { TTeachersProps, setTeachers } from "../../../redux/slices/teachers";
-import { BASE_URL } from "../../../services/url";
+import { Load } from "@/components/loader/loader";
+import { TTeachersProps, setTeachers } from "@/redux/slices/teachers";
+import { BASE_URL } from "@/services/url";
 
 function TeacherContextMenu({ selectedId }: any): JSX.Element {
   const menuData: { route: string; name: string }[] = [

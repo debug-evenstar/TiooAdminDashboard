@@ -1,19 +1,19 @@
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { configure } from "../../../../../../services/config";
-import { getAllSubjectsClass, getLessonClass } from "../../../../../../services/authServices";
-import { LessonButton } from "../../../../../../components/Buttons";
-import { ClassArmSelectField } from "../../../../../../components/ClassArmselect";
-import { RadioSelect } from "../../../../../../components/RadioSelectField";
-import { InputField } from "../../../../../../components/Inputs";
-import { getSchoolTerm } from "../../../../../../api";
-import { alertActions } from "../../../../../../components/alertActions";
+import { configure } from "@/services/config";
+import { getAllSubjectsClass, getLessonClass } from "@/services/authServices";
+import { LessonButton } from "@/components/Buttons";
+import { ClassArmSelectField } from "@/components/ClassArmselect";
+import { RadioSelect } from "@/components/RadioSelectField";
+import { InputField } from "@/components/Inputs";
+import { getSchoolTerm } from "@/api";
+import { alertActions } from "@/components/alertActions";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { RiArrowDownLine, RiArrowDropDownLine, RiArrowUpSLine } from "react-icons/ri";
 import { FiChevronDown } from "react-icons/fi";
-import { lessonActions } from "../../../../../../store/lessonSlice";
+import { lessonActions } from "@/store/lessonSlice";
 
 interface Props {
   id: number;

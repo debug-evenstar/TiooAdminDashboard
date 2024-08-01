@@ -15,10 +15,10 @@ import paginatorReducer from "./slices/paginator";
 import subjectReducer from "./slices/subject";
 
 
-import authSlice from "../store/authSlice";
-import classSlice from "../store/classSlice";
-import schoolSlice from "../store/schoolSlice";
-import lessonSlice from "../store/lessonSlice";
+import authSlice from "@/store/authSlice";
+import classSlice from "@/store/classSlice";
+import schoolSlice from "@/store/schoolSlice";
+import lessonSlice from "@/store/lessonSlice";
 
 const store: ToolkitStore = configureStore({
     reducer: combineReducers({

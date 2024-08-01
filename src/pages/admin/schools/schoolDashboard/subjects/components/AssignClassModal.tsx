@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { useSelector } from "react-redux";
-import { alertActions } from "../../../../../../components/alertActions";
-import CenterModal from "../../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../../components/DiscardWarning";
+import { alertActions } from "@/components/alertActions";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 import {
   MultiLevelSelect,
   parseDataForMultiSelect,
-} from "../../../../../../components/multiSelectField";
-import { assignClassToSubject } from "../../../../../../api";
+} from "@/components/multiSelectField";
+import { assignClassToSubject } from "@/api";
 
 interface AssignclasssModalProps {
   close: () => void;

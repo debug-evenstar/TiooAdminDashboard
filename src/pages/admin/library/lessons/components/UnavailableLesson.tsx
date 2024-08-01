@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { IoMdClose } from 'react-icons/io';
-import { PrimaryButton } from '../../../../../components/Buttons';
+import { PrimaryButton } from '@/components/Buttons';
 import { BsInfoCircleFill } from 'react-icons/bs';
 interface Props {
   close: () => void;

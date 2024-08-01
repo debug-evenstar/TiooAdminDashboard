@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import CenterModal from "../../../../../components/CenterModal";
+import CenterModal from "@/components/CenterModal";
 import PickClass from "./PickClass";
 
 

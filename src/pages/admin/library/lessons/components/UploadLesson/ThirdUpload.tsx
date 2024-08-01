@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { SuccessCheck } from "../../../../../../components/AlertCheck";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { SuccessCheck } from "@/components/AlertCheck";
+import { PrimaryButton } from "@/components/Buttons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 

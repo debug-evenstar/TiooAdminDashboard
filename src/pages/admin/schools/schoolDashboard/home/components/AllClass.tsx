@@ -4,21 +4,21 @@ import { FiEdit, FiUsers, FiBookOpen } from "react-icons/fi";
 import { GiTeacher } from "react-icons/gi";
 import { RiDeleteBin5Line, RiEdit2Line, RiBookLine } from "react-icons/ri";
 import { HiDotsVertical } from "react-icons/hi";
-import { alertActions } from "../../../../../../components/alertActions";
+import { alertActions } from "@/components/alertActions";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import {
   getclassSubjcts,
   getclassTeacher,
   getclassWithArmsbyClassID,
-} from "../../../../../../services/authServices";
+} from "@/services/authServices";
 import { useDispatch } from "react-redux";
-import { classActions } from "../../../../../../store/classSlice";
-import { configure } from "../../../../../../services/config";
-import CenterModal from "../../../../../../components/CenterModal";
+import { classActions } from "@/store/classSlice";
+import { configure } from "@/services/config";
+import CenterModal from "@/components/CenterModal";
 import DeleteClassArmModal from "./DeleteClassArm";
 import EditClassArm from "./EditClassArm";
-import { getClassArmsByClass } from "../../../../../../api";
+import { getClassArmsByClass } from "@/api";
 
 interface AllClassProps {
   close: () => void;

@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import Header from "../../../components/AppHeader";
+import Header from "@/components/AppHeader";
 import { axiosInstance} from "@/api/request";
-import SearchBar from "../../../components/searchBar";
-import FilterPanel from "../../../components/filterPanel";
-import { IListProps } from "../../../components/list/list";
-import { TSchoolsProps, setSchools } from "../../../redux/slices/schools";
-import PaginatedList from "../../../components/paginatedList/paginatedList";
-import { Load } from "../../../components/loader/loader";
-import { RootState } from "../../../redux/store";
+import SearchBar from "@/components/searchBar";
+import FilterPanel from "@/components/filterPanel";
+import { IListProps } from "@/components/list/list";
+import { TSchoolsProps, setSchools } from "@/redux/slices/schools";
+import PaginatedList from "@/components/paginatedList/paginatedList";
+import { Load } from "@/components/loader/loader";
+import { RootState } from "@/redux/store";
 
 function SchoolContextMenu({ selectedId }: any): JSX.Element {
   // custom school context menu for each school item

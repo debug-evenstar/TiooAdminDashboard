@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { RootState } from '@/redux/store';
 import { useEffect, useRef, useState } from "react";
 
-import Header from "../../../../components/AppHeader";
+import Header from "@/components/AppHeader";
 import { axiosInstance } from "@/api/request";
 import ChapterModal from "./components/chapterModal";
 import DeleteItemModal from "../tabs/deleteItemModal";

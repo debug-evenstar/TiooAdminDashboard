@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import LessonCard from "../../../../components/schoolDashComp/LessonCard";
+import LessonCard from "@/components/schoolDashComp/LessonCard";
 import { useParams } from "react-router-dom";
 import { getSchoolSubjects } from "@/apps/administrator/services/subject.service";
 

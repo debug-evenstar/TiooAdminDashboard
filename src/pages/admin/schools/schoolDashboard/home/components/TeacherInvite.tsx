@@ -4,17 +4,17 @@ import { IoMdClose } from "react-icons/io";
 import {
   InputField,
   TagsInputField,
-} from "../../../../../../components/Inputs";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+} from "@/components/Inputs";
+import { PrimaryButton } from "@/components/Buttons";
 import {
   generateInviteStudent,
   teacherInviteStudents,
-} from "../../../../../../services/authServices";
+} from "@/services/authServices";
 import { useSelector } from "react-redux";
-import { configure } from "../../../../../../services/config";
-import { alertActions } from "../../../../../../components/alertActions";
+import { configure } from "@/services/config";
+import { alertActions } from "@/components/alertActions";
 import { useNavigate } from "react-router-dom";
-import { ClassArmSelectField } from "../../../../../../components/ClassArmselect";
+import { ClassArmSelectField } from "@/components/ClassArmselect";
 
 interface Props {
   close: () => void;

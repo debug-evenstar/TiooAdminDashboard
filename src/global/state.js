@@ -5,10 +5,10 @@ import {
   getSubjectClasses,
   getSubjects,
   loadSchoolProfile,
-} from "../api";
-import store from "../store";
-import { classActions } from "../store/classSlice";
-import { schoolActions } from "../store/schoolSlice";
+} from "@/api";
+import store from "@/store";
+import { classActions } from "@/store/classSlice";
+import { schoolActions } from "@/store/schoolSlice";
 
 export const loadSchoolInfo = async () => {
   const response = await loadSchoolProfile();

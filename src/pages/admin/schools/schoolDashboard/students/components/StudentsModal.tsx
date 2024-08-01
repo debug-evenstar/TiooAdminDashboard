@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
-import { fullNames } from "../../../../../../data/data";
+import { fullNames } from "@/data/data";
 import { RiSearchLine } from "react-icons/ri";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import {
   deleteStudent,
   getClassStudent,
-} from "../../../../../../services/authServices";
+} from "@/services/authServices";
 import { useSelector } from "react-redux";
-import { configure } from "../../../../../../services/config";
-import { alertActions } from "../../../../../../components/alertActions";
+import { configure } from "@/services/config";
+import { alertActions } from "@/components/alertActions";
 import { useDispatch } from "react-redux";
-import { classActions } from "../../../../../../store/classSlice";
-import DeleteModal from "../../../../../../components/deleteModal";
-import CenterModal from "../../../../../../components/CenterModal";
+import { classActions } from "@/store/classSlice";
+import DeleteModal from "@/components/deleteModal";
+import CenterModal from "@/components/CenterModal";
 import { loadavg } from "os";
 
 interface StudentsModalProps {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../../components/Buttons";
-import { ClassArmSelectField } from "../../../../../../components/ClassArmselect";
+import { PrimaryButton } from "@/components/Buttons";
+import { ClassArmSelectField } from "@/components/ClassArmselect";
 import { useSelector } from "react-redux";
-import { configure } from "../../../../../../services/config";
-import { bindSubject___Teacher } from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
-import CenterModal from "../../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../../components/DiscardWarning";
+import { configure } from "@/services/config";
+import { bindSubject___Teacher } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 
 interface AssignTeachersModalProps {
   close: () => void;

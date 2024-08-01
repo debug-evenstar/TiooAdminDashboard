@@ -1,12 +1,12 @@
-import PlusIcon from "../../../../assets/icons/components/settingsNav/plus";
+import PlusIcon from "@/assets/icons/components/settingsNav/plus";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { axiosInstance} from "@/api/request";
-import StudentsChecklist from "../../../../components/studentsChecklist/studentsChecklist";
+import StudentsChecklist from "@/components/studentsChecklist/studentsChecklist";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../redux/store";
-import { setCouponReload, setCoupons } from "../../../../redux/slices/coupon";
-import { notify } from "../../../../components/notification/notification";
-import WhiteSpinner from "../../../../components/whiteSpinner/spinner";
+import { RootState } from "@/redux/store";
+import { setCouponReload, setCoupons } from "@/redux/slices/coupon";
+import { notify } from "@/components/notification/notification";
+import WhiteSpinner from "@/components/whiteSpinner/spinner";
 
 export type TCouponProps = {
   id: number;

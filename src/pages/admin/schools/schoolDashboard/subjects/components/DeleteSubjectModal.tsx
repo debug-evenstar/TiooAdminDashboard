@@ -3,10 +3,10 @@ import { IoMdClose, IoIosWarning } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
 
 import { useSelector } from "react-redux";
-import { PrimaryButton } from "../../../../../../components/Buttons";
-import { deleteSubject } from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
-import { configure } from "../../../../../../services/config";
+import { PrimaryButton } from "@/components/Buttons";
+import { deleteSubject } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
+import { configure } from "@/services/config";
 
 interface DeleteSubjectModalProps {
   close: () => void;

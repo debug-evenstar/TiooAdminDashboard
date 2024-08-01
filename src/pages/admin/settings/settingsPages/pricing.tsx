@@ -2,9 +2,9 @@ import Popup from "reactjs-popup";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import PricingInput from "../../../../components/pricingInput/pricingInput";
-import NairaInput from "../../../../components/nairaInput/nairaInput";
-import { RootState } from "../../../../redux/store";
+import PricingInput from "@/components/pricingInput/pricingInput";
+import NairaInput from "@/components/nairaInput/nairaInput";
+import { RootState } from "@/redux/store";
 import {
   PriceState,
   reloadPricing,
@@ -19,24 +19,24 @@ import {
   setSchoolsStudentsDollar,
   setSchoolsTotalDollar,
   setSchoolsIDDollar,
-} from "../../../../redux/slices/pricing";
+} from "@/redux/slices/pricing";
 import { axiosInstance} from "@/api/request";
-import SchoolsChecklist from "../../../../components/schoolsChecklist/schoolsChecklist";
-import StudentsChecklist from "../../../../components/studentsChecklist/studentsChecklist";
-import FreelancersChecklist from "../../../../components/freelancersChecklist/freelancersChecklist";
-import { TSchoolsProps } from "../../../../redux/slices/schools";
+import SchoolsChecklist from "@/components/schoolsChecklist/schoolsChecklist";
+import StudentsChecklist from "@/components/studentsChecklist/studentsChecklist";
+import FreelancersChecklist from "@/components/freelancersChecklist/freelancersChecklist";
+import { TSchoolsProps } from "@/redux/slices/schools";
 
-import { TFreelancersProps } from "../../../../redux/slices/freelancer";
-import { TStudentsProps } from "../../../../redux/slices/student";
+import { TFreelancersProps } from "@/redux/slices/freelancer";
+import { TStudentsProps } from "@/redux/slices/student";
 import {
   setExceptionReload,
   setFreelancersException,
   setSchoolsException,
   setStudentsException,
-} from "../../../../redux/slices/pricingException";
-import { notify } from "../../../../components/notification/notification";
+} from "@/redux/slices/pricingException";
+import { notify } from "@/components/notification/notification";
 
-import WhiteSpinner from "../../../../components/whiteSpinner/spinner";
+import WhiteSpinner from "@/components/whiteSpinner/spinner";
 
 export function PricingSchoolsComponent() {
   const [edit, setEdit] = useState(false);

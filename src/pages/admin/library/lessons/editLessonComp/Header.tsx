@@ -9,7 +9,7 @@ import { CgPrinter } from "react-icons/cg";
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import useDisclosure from "../../../../../hooks/useDisclosure";
 import { useSelector } from "react-redux";
-import NameAvatar from "../../../../../components/NameAvatar";
+import NameAvatar from "@/components/NameAvatar";
 
 interface Props {
   lesson: any

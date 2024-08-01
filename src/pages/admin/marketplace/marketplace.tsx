@@ -1,8 +1,8 @@
-import Header from "../../../components/AppHeader";
-import SearchBar from "../../../components/searchBar";
+import Header from "@/components/AppHeader";
+import SearchBar from "@/components/searchBar";
 
-import market1 from "../../../assets/images/market/market-1.png";
-import market2 from "../../../assets/images/market/market-2.png";
+import market1 from "@/assets/images/market/market-1.png";
+import market2 from "@/assets/images/market/market-2.png";
 
 type TMarketCardProps = {
   title: string;

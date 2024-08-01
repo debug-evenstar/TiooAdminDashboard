@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import TopicItem from "./TopicItem";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import CenterModal from "../../../../../../components/CenterModal";
+import CenterModal from "@/components/CenterModal";
 import AddLessonUploadForm from "../UploadLesson/AddLesson";
 import AddLessonSuccess from "../UploadLesson/AddLessonSuccess";
 import GeneratingLesson from "../GenerateLessons/Generating";

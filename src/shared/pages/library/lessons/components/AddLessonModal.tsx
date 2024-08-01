@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import AddLessonUploadForm from './UploadLesson/AddLesson';
-import Tabs from '../../../../../components/Tabs';
+import Tabs from '@/components/Tabs';
 import AddGenerated from './GenerateLessons/AddGenerated';
 import { IoMdClose } from 'react-icons/io';
 

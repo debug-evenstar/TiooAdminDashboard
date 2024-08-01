@@ -2,8 +2,8 @@ import React from "react";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance} from "@/api/request";
-import { notify } from "../../../../../components/notification/notification";
-import WhiteSpinner from "../../../../../components/whiteSpinner/spinner";
+import { notify } from "@/components/notification/notification";
+import WhiteSpinner from "@/components/whiteSpinner/spinner";
 
 import ModalLayout from "@/components/modalLayout/modalLayout";
 

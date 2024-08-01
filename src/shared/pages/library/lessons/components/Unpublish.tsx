@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
-import { PrimaryButton } from "../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { IoMdClose } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";
-import { updateTimeline } from "../../../../../api";
-import { alertActions } from "../../../../../components/alertActions";
+import { updateTimeline } from "@/api";
+import { alertActions } from "@/components/alertActions";
 import { axiosInstance} from "@/api/request";
-import { notify } from "../../../../../components/notification/notification";
+import { notify } from "@/components/notification/notification";
 
 interface Props {
   close: () => void;

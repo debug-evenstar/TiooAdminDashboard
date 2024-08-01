@@ -1,14 +1,14 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import PlusIcon from "../../../../assets/icons/components/settingsNav/plus";
-import studentImage from "../../../../assets/images/student.png";
-import searchImage from "../../../../assets/images/search-md.png";
+import PlusIcon from "@/assets/icons/components/settingsNav/plus";
+import studentImage from "@/assets/images/student.png";
+import searchImage from "@/assets/images/search-md.png";
 import { axiosInstance} from "@/api/request";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdminReload, setAdmins } from "../../../../redux/slices/admin";
-import { RootState } from "../../../../redux/store";
-import { notify } from "../../../../components/notification/notification";
-import SingleOptionsMenu from "../../../../components/singleOptionsMenu/singleOptionsMenu";
-import WhiteSpinner from "../../../../components/whiteSpinner/spinner";
+import { setAdminReload, setAdmins } from "@/redux/slices/admin";
+import { RootState } from "@/redux/store";
+import { notify } from "@/components/notification/notification";
+import SingleOptionsMenu from "@/components/singleOptionsMenu/singleOptionsMenu";
+import WhiteSpinner from "@/components/whiteSpinner/spinner";
 
 type TUserLevel = {
   id: number;

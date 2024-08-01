@@ -4,18 +4,18 @@ import { useSelector } from "react-redux";
 import {
   InputField,
   TagsInputField,
-} from "../../../../../../components/Inputs";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+} from "@/components/Inputs";
+import { PrimaryButton } from "@/components/Buttons";
 import {
   generateInviteStudent,
   inviteStudent,
-} from "../../../../../../services/authServices";
-import { configure } from "../../../../../../services/config";
-import { alertActions } from "../../../../../../components/alertActions";
-import CenterModal from "../../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../../components/DiscardWarning";
-import { inviteBulkStudents, inviteStudents } from "../../../../../../api";
-import { RadioSelect } from "../../../../../../components/RadioSelectField";
+} from "@/services/authServices";
+import { configure } from "@/services/config";
+import { alertActions } from "@/components/alertActions";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
+import { inviteBulkStudents, inviteStudents } from "@/api";
+import { RadioSelect } from "@/components/RadioSelectField";
 
 interface InviteStudentsProps {
   close: () => void;

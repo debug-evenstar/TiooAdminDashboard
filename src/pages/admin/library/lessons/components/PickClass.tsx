@@ -1,13 +1,13 @@
 import React, { FC, useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../components/Buttons";
-import { configure } from "../../../../../services/config";
+import { PrimaryButton } from "@/components/Buttons";
+import { configure } from "@/services/config";
 import { useSelector } from "react-redux";
-import { getAllSubjectsClass, getLessonClass } from "../../../../../services/authServices";
-// import { RadioSelect } from "../../../../components/RadioSelectField";
+import { getAllSubjectsClass, getLessonClass } from "@/services/authServices";
+// import { RadioSelect } from "@/components/RadioSelectField";
 import { useNavigate } from "react-router-dom";
-import CenterModal from "../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../components/DiscardWarning";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 // import { axiosInstance} from "@/api/request";
 interface Props {
   id: number;

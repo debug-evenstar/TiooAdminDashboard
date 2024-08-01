@@ -1,12 +1,12 @@
 import { FC, useState } from "react";
-// import { PrimaryButton } from "../../../../components/Buttons";
+// import { PrimaryButton } from "@/components/Buttons";
 import { IoMdClose } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";
 import { PrimaryButton } from "../button/button";
 import { toast } from "react-toastify";
 import { publishLesson } from "@/apps/administrator/services/lesson.service";
-// import { updateTimeline } from "../../../../api";
-// import { alertActions } from "../../../../components/alertActions";
+// import { updateTimeline } from "@/api";
+// import { alertActions } from "@/components/alertActions";
 
 interface Props {
   close: () => void;

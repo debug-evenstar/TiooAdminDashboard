@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 // import DashLayout from "../../../../layouts/DashLayout";
 import ClassCard from "./components/ClassCard";
-import CenterModal from "../../../../../components/CenterModal";
+import CenterModal from "@/components/CenterModal";
 import InviteStudents from "./components/InviteStudents";
 import StudentsModal from "./components/StudentsModal";
-import { configure } from "../../../../../services/config";
+import { configure } from "@/services/config";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getclassWithArms } from "../../../../../services/authServices";
-import { alertActions } from "../../../../../components/alertActions";
-import { classActions } from "../../../../../store/classSlice";
+import { getclassWithArms } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
+import { classActions } from "@/store/classSlice";
 import { useDispatch } from "react-redux";
-import { authActions } from "../../../../../store/authSlice";
-import LoadingCompo from "../../../../../components/loadingCompo";
-import DeleteModal from "../../../../../components/deleteModal";
+import { authActions } from "@/store/authSlice";
+import LoadingCompo from "@/components/loadingCompo";
+import DeleteModal from "@/components/deleteModal";
 import { axiosInstance} from "@/api/request";
 
 function SchoolStudents() {

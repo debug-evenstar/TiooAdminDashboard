@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { PrimaryButton } from "../button/button";
-import { useAppSelector } from "../../redux/store";
+import { useAppSelector } from "@/redux/store";
 import { getLessonGroup } from "@/apps/administrator/services/lesson.service";
 
 interface Props {

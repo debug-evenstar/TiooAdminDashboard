@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-import { configure } from "../../../../../../services/config";
+import { configure } from "@/services/config";
 import {
   getAllSubjectsTeachers,
   unassignTeacher,
-} from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
+} from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
 
 interface TeachersModalProps {
   close: () => void;

@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { FaInfoCircle } from "react-icons/fa";
-import { alertActions } from "../../../../../components/alertActions";
-// import { DeleteLesson, EditLessonStatus } from "../../../../api";
+import { alertActions } from "@/components/alertActions";
+// import { DeleteLesson, EditLessonStatus } from "@/api";
 import { axiosInstance} from "@/api/request";
 
 interface Props {

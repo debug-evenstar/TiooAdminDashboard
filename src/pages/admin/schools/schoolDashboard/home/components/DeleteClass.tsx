@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { deleteClass } from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
-import { configure } from "../../../../../../services/config";
-import DeleteModal from "../../../../../../components/deleteModal";
+import { deleteClass } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
+import { configure } from "@/services/config";
+import DeleteModal from "@/components/deleteModal";
 import { IoMdClose } from "react-icons/io";
 import { AiOutlineWarning } from "react-icons/ai";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 
 interface DeleteSubjectModalProps {
   close: () => void;

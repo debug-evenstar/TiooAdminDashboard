@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { fullNames } from "../../../../../../data/data";
+import { fullNames } from "@/data/data";
 import { useSelector } from "react-redux";
 
 interface TeachersProps {

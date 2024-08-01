@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { subjects } from "../../../../../../data/data";
+import { subjects } from "@/data/data";
 import { useSelector } from "react-redux";
-import { getClassArmSubjects } from "../../../../../../api";
+import { getClassArmSubjects } from "@/api";
 
 interface SubjectsProps {
   close: () => void;

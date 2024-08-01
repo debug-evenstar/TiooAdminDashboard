@@ -1,12 +1,12 @@
 import { Suspense, useEffect } from 'react';
-import Sidebar from '../components/sidebar/';
+import Sidebar from '@/components/sidebar/';
 
-import Loader from '../components/loader/loader';
+import Loader from '@/components/loader/loader';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-// import { RootState } from '../redux/store';
+// import { RootState } from '@/redux/store';
 
-import { update } from '../redux/slices/user';
+import { update } from '@/redux/slices/user';
 
 
 

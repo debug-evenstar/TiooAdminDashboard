@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 // import DashLayout from "../../../layouts/DashLayout";
 import InfoCard from "./components/InfoCard";
 import ClassCard from "./components/ClassCard";
-import CenterModal from "../../../../../components/CenterModal";
+import CenterModal from "@/components/CenterModal";
 import EditClass from "./components/EditClass";
 import CreateClass from "./components/CreateClass";
 import AllClass from "./components/AllClass";
 import Students from "./components/Students";
 import Teachers from "./components/Teachers";
 import Subjects from "./components/Subjects";
-import { alertActions } from "../../../../../components/alertActions";
+import { alertActions } from "@/components/alertActions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { classActions } from "../../../../../store/classSlice";
+import { classActions } from "@/store/classSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import {
@@ -20,17 +20,17 @@ import {
   getSchoolTeachers,
   getTeacherClass,
   getclassWithArms,
-} from "../../../../../services/authServices";
-import { schoolActions } from "../../../../../store/schoolSlice";
-import { configure } from "../../../../../services/config";
+} from "@/services/authServices";
+import { schoolActions } from "@/store/schoolSlice";
+import { configure } from "@/services/config";
 import CreateNewClass from "./components/CreateNewClass";
 import DeleteClassModal from "./components/DeleteClass";
-import { authActions } from "../../../../../store/authSlice";
+import { authActions } from "@/store/authSlice";
 import TeacherClassTab from "./components/TeacherClassTab";
 import TeacherInviteStudent from "./components/TeacherInvite";
-import LoadingCompo from "../../../../../components/loadingCompo";
+import LoadingCompo from "@/components/loadingCompo";
 import { axiosInstance} from "@/api/request";
-import { BASE_URL } from "../../../../../services/url";
+import { BASE_URL } from "@/services/url";
 
 function Home() {
   const [active, setActive] = useState(false);

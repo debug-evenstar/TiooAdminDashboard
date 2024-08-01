@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { InputField } from "../../../../../../components/Inputs";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { InputField } from "@/components/Inputs";
+import { PrimaryButton } from "@/components/Buttons";
 import { useSelector } from "react-redux";
-import { updateClassName } from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
-import { configure } from "../../../../../../services/config";
-import CenterModal from "../../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../../components/DiscardWarning";
+import { updateClassName } from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
+import { configure } from "@/services/config";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 
 interface EditClassProps {
   close: () => void;

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 // import DashLayout from "../../../../layouts/DashLayout";
-import CenterModal from "../../../../../components/CenterModal";
+import CenterModal from "@/components/CenterModal";
 import SubjectCard from "./components/SubjectCard";
 import SubjectModal from "./components/AddSubjectModal";
 import AddSubjectCard from "./components/AddSubjectCard";
 import ClassesModal from "./components/ClassesModal";
 import TeachersModal from "./components/TeachersModal";
-import { alertActions } from "../../../../../components/alertActions";
+import { alertActions } from "@/components/alertActions";
 import AssignTeachersModal from "./components/AssignTeachers";
 import EditSubjectModal from "./components/EditSubjectModal";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteSubjectModal from "./components/DeleteSubjectModal";
 
 import AssignClassModal from "./components/AssignClassModal";
-import { getClasses, getSubjects } from "../../../../../api";
-import LoadingCompo from "../../../../../components/loadingCompo";
-import { getclassWithArms } from "../../../../../services/authServices";
-import { classActions } from "../../../../../store/classSlice";
+import { getClasses, getSubjects } from "@/api";
+import LoadingCompo from "@/components/loadingCompo";
+import { getclassWithArms } from "@/services/authServices";
+import { classActions } from "@/store/classSlice";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { getSchoolSubjects } from "@/apps/administrator/services/subject.service";

@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
-import { getclassSubjcts } from "../../../../../../services/authServices";
+import { getclassSubjcts } from "@/services/authServices";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { configure } from "../../../../../../services/config";
-import { alertActions } from "../../../../../../components/alertActions";
+import { configure } from "@/services/config";
+import { alertActions } from "@/components/alertActions";
 interface Props {
   item: any;
 }

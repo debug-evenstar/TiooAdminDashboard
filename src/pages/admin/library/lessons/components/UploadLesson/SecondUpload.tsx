@@ -1,19 +1,19 @@
 import React, { FC, useState, useEffect } from "react";
-import { InputField } from "../../../../../../components/Inputs";
+import { InputField } from "@/components/Inputs";
 import { useSelector } from "react-redux";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { formatSize } from "../../../../../../utilities/format";
-import { configure } from "../../../../../../services/config";
+import { formatSize } from "@/utilities/format";
+import { configure } from "@/services/config";
 import {
     createLessons,
     getLessonClass,
-} from "../../../../../../services/authServices";
-import { alertActions } from "../../../../../../components/alertActions";
+} from "@/services/authServices";
+import { alertActions } from "@/components/alertActions";
 import { useDispatch } from "react-redux";
-import { lessonActions } from "../../../../../../store/lessonSlice";
-import { AddNewLesson, getSchoolTerm } from "../../../../../../api";
+import { lessonActions } from "@/store/lessonSlice";
+import { AddNewLesson, getSchoolTerm } from "@/api";
 
 interface Props {
     id: number;

@@ -1,19 +1,19 @@
-import Header from "../../../components/AppHeader";
-import SearchBar from "../../../components/searchBar";
-import FilterPanel from "../../../components/filterPanel";
-import { IListProps } from "../../../components/list/list";
-import PaginatedList from "../../../components/paginatedList/paginatedList";
+import Header from "@/components/AppHeader";
+import SearchBar from "@/components/searchBar";
+import FilterPanel from "@/components/filterPanel";
+import { IListProps } from "@/components/list/list";
+import PaginatedList from "@/components/paginatedList/paginatedList";
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { RootState } from "../../../redux/store";
+import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance} from "@/api/request";
-import { Load } from "../../../components/loader/loader";
+import { Load } from "@/components/loader/loader";
 import {
   TFreelancersProps,
   setFreelancers,
-} from "../../../redux/slices/freelancer";
+} from "@/redux/slices/freelancer";
 
 function FreelancerContextMenu({ selectedId }: any): JSX.Element {
   const menuData: { route: string; name: string }[] = [

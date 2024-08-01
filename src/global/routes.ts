@@ -9,8 +9,11 @@ export const ROUTES = {
     TEACHERS : "/teachers",
     TEACHER : "/teacher/:id",
     LESSONS : "/lessons",
+    TEXTBOOKS: "/chapters/:id",
+    TEXTBOOK_LESSONS : "/chapter/lessons/:textbookId/:chapterId",
     TEACHER_LESSONS : "/teacher/lessons",
     UPLOADED_LESSONS : "/lessons/:id/:classid",
     EDIT_LESSON_NOTE: "/lessons/note/:id",
-    TEACHER_LESSON : "/teacher/lessons/:id"
+    TEACHER_LESSON : "/teacher/lessons/:id",
+    EDIT_SLIDES : "lesson/editSlides/:id"
 }

@@ -36,7 +36,7 @@ const DeleteModal: React.FC<DeleteSubjectModalProps> = ({
   // const [loading, setloading] = useState(false);
   // const classInfo = useSelector((state: any) => state.class.classInformation);
   // const SchoolInfo = useSelector(
-  //   (state: any) => state.praise.school.schoolManagementInfo
+  //   (state: any) => state.school.schoolManagementInfo
   // );
 
   return (

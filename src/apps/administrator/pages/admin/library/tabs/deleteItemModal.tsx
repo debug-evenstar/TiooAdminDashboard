@@ -1,0 +1,129 @@
+import { useEffect, useState } from "react";
+
+import { axiosInstance } from "@/api/request";
+import { useNavigate } from "react-router-dom";
+import { setLibraryReload } from "@/redux/slices/library";
+import { notify } from "@/components/notification/notification";
+import { useDispatch } from "react-redux";
+import { AiOutlineWarning } from "react-icons/ai";
+import { reloadSubjects } from "@/redux/slices/subject";
+
+type TLibraryModalError = {
+  age?: string;
+  file?: string;
+  title?: string;
+  class?: string;
+  chapter?: string;
+  objective?: string;
+};
+
+type TOptionProps = {
+  id: number;
+  name: number | string;
+};
+
+
+
+export default function DeleteItemModal({
+  modal,
+  setModal,
+  itemProps,
+  type,
+  refresh = () => null,
+  url,
+  once = false,
+}: {
+  itemProps?: any;
+  modal: boolean;
+  type?: string;
+  url?: string;
+  once?: boolean;
+  refresh?: () => void;
+  setModal: (state: boolean) => void;
+}) {
+  const [index, setIndex] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
+
+  const prompts = [
+    {
+      text: `Are you sure you want to delete this ${type? type: "textbook"}?`,
+      color: "bg-main shadow-main",
+    },
+    {
+      text: `Deleting this ${type? type:"textbook" } is an irreversible process. Are you sure?`,
+      color: "bg-red-400 shadow-red-500/50 focus:shadow-red-500/50",
+    },
+  ];
+  const dispatch = useDispatch();
+
+  const endpoint = url? `${url}/${itemProps.id}`: `/library/${itemProps.id}`;
+
+  const deleteMaterial = () => {
+    setLoading(true);
+    axiosInstance
+      .delete(endpoint)
+      .then(() => {
+        dispatch(setLibraryReload());
+        refresh();
+        notify.success("deleted item from list");
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setModal(false);
+        setLoading(false);
+      });
+  };
+
+  const close = () => {
+    setIndex(0);
+    setModal(false);
+  };
+  const handleSubmit = () => {
+    // navigate(`/library/lessons/${itemProps?.id}/${classId}`, { state: { material: itemProps } })
+    if (index == 1 || once) {
+      deleteMaterial();
+    } else {
+      setIndex((index) => index + 1);
+    }
+  };
+
+  return (
+    <div
+      className={`fixed text-primary z-[1000] bg-[#00000044] duration-0 inset-0 h-screen w-screen ${
+        modal ? "" : "-translate-y-full"
+      }`}
+    >
+      <div
+        className={`${
+          modal ? "translate-y-[3rem]" : "translate-y-0"
+        } z-[100] bg-[#fff] rounded duration-300 w-[380px] mx-auto `}
+      >
+        <div className="p-2 border-b px-4 flex items-center justify-between">
+          <h1 className="font-[500]">Delete {type}</h1>
+          <button className="text-2xl" onClick={() => close()}>
+            &times;
+          </button>
+        </div>
+        <div onSubmit={handleSubmit}>
+          <div
+            className={`px-4 mt-4 h-[10rem] overflow-y-auto flex flex-col space-y-3 justify-center items-center text-center font-[500] text-[1.1rem]`}
+          >
+            <span className="text-4xl">
+              <AiOutlineWarning />
+            </span>
+            <h1>{prompts[index]?.text}</h1>
+          </div>
+          <div className="px-4 w-full h-[4rem] mt-[2px] flex border-t items-center">
+            <button
+              onClick={handleSubmit}
+              className={`outline-none focus:shadow-lg outline-none w-full text-sm text-center py-2 
+                                shadow-md rounded text-white font-[500] ${prompts[index]?.color}`}
+            >
+              <span>{loading ? "Deleting..." : "Delete"}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

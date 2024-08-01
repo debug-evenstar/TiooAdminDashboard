@@ -3,9 +3,9 @@ import ReactPaginate from 'react-paginate';
 import ListComponent, { IListProps } from '../list/list';
 
 import './paginate.css'
-import { RootState } from '../../redux/store';
+import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage } from '../../redux/slices/paginator';
+import { setPage } from '@/redux/slices/paginator';
 
 export default function PaginatedList({ menu, dataPerPage, data, selectRow }:
   { menu: ReactNode, data: IListProps[], dataPerPage: number, selectRow: (id: any) => void }) {
@@ -13,7 +13,7 @@ export default function PaginatedList({ menu, dataPerPage, data, selectRow }:
   // following the API or data you're working with.
 
   // get current page from state;
-  const page = useSelector((state: RootState) => state.praise.paginator.page);
+  const page = useSelector((state: RootState) => state.paginator.page);
   const dispatch = useDispatch();
 
   const [itemOffset, setItemOffset] = useState(0);

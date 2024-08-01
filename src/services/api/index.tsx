@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const env = import.meta.env;
+
 export const API_BASE_URL = (env.VITE_API_KEY);
 // export const API_BASE_URL: string = "https://api.hellotioo.com/admin";
 
@@ -36,48 +37,12 @@ axiosInstance.interceptors.response.use(
   response => response,
   error => {
     if (error.response.status === 401) {
-      window.location.assign('/login');
+      console.log(error.response);
+      // window.location.assign('/login');
     }
     return Promise.reject(error);
   }
 )
-
-export const fetchUser = () => {
-  return axiosInstance.get('/user');
-}
-
-
-export const fetchPricing = () => {
-  return axiosInstance.get('/settings/pricing');
-}
-
-export const authUser = (data: any) => {
-  return axiosInstance.post('/login', data);
-}
-
-// lesson endpoint service
-// lesson endpoint service
-
-export const getSchoolSubjects = (id: string) => {
-  return axiosInstance.get(`/school/dashboard/subjects/?school_id=${id}`)
-}
-
-export const getLessonGroup = (id: string) => {
-  return axiosInstance.get(`/management/subject/groups?subject_id=${id}`)
-}
-
-export const getSchoolLesson = (id: any) => {
-  return axiosInstance.get(`/management/lesson/check?subject_id=${id}`)
-}
-export const downloadLessonFile = (id: any) => {
-  return axiosInstance.get(`/management/lesson/${id}/download`, { responseType: "blob" })
-}
-export const publishLesson = (id: string, status: string) => {
-  return axiosInstance.put(`/management/lesson/${id}/status?status=${status}`)
-}
-export const uploadTemplate = (id: number, payload: FormData) => {
-  return axiosInstance.post(`/management/lessons/${id}/template`, payload)
-}
 
 
 export default axiosInstance;

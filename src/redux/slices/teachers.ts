@@ -15,8 +15,8 @@ export type TTeachersProps = {
     createdAt: string,
     Teacher: {
         id: number,
-        dateOfBirth: string | null,
-        owerner_name: null | string,
+        dob: string | null,
+        name: null | string,
         gender: null | string,
         email: null | string,
         phone: null | string,

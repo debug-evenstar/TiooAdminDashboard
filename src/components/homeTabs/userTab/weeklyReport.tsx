@@ -1,11 +1,11 @@
 import ReportCard from "./reportCard";
-import schoolImage from '../../../assets/icons/school.svg';
-import freelancerImage from '../../../assets/icons/freelancers.svg';
-import teacherImage from '../../../assets/icons/teachers.svg';
-import studentImage from '../../../assets/icons/students.svg';
+import schoolImage from '@/assets/icons/school.svg';
+import freelancerImage from '@/assets/icons/freelancers.svg';
+import teacherImage from '@/assets/icons/teachers.svg';
+import studentImage from '@/assets/icons/students.svg';
 import Button from "../../button/button";
 import ScrollButton from "../../scrollButtons/scrollButtons";
-import chevronImage from '../../../assets/icons/chevron-down.svg';
+import chevronImage from '@/assets/icons/chevron-down.svg';
 import { TMenuProps } from "../../menu/menu";
 import Popup from "reactjs-popup";
 import { useState } from "react";

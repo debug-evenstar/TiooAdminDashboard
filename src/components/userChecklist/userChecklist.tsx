@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import searchImage from '../../assets/images/search-md.png';
+import searchImage from '@/assets/images/search-md.png';
 
 
 

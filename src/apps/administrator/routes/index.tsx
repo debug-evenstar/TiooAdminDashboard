@@ -9,7 +9,6 @@ import {
 import AdminLayout from "../layouts/admin";
 import {
     Home,
-    Library,
     Schools,
     Students,
     Settings,

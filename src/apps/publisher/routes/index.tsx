@@ -26,7 +26,7 @@ function PublisherRoutes() {
     const [profile, setProfile] = useState<any>(
         localProfile ? JSON.parse(localProfile) : null
     );
-    const isActive = () => profile && profile.flag == "active";
+    const isActive = () => profile && profile.status == "active";
 
     const SHARED_ROUTES_PROPS = {
         library: {

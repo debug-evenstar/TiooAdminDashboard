@@ -1,12 +1,12 @@
 import React, { FC, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RadioSelect } from "../../../../../../components/RadioSelectField";
-import { PrimaryButton } from "../../../../../../components/Buttons";
-import { getAllSubjectsClass } from "../../../../../../services/authServices";
-import { configure } from "../../../../../../services/config";
-import { ClassArmSelectField } from "../../../../../../components/ClassArmselect";
+import { RadioSelect } from "@/components/RadioSelectField";
+import { PrimaryButton } from "@/components/Buttons";
+import { getAllSubjectsClass } from "@/services/authServices";
+import { configure } from "@/services/config";
+import { ClassArmSelectField } from "@/components/ClassArmselect";
 import { useDispatch } from "react-redux";
-import { lessonActions } from "../../../../../../store/lessonSlice";
+import { lessonActions } from "@/store/lessonSlice";
 
 interface Props {
   id: number

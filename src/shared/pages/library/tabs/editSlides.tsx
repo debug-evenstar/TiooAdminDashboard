@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Editorial } from "@Praxeum-ai/LearnBlocks";
-import { notify } from "../../../../components/notification/notification";
+import { notify } from "@/components/notification/notification";
 import { editSlide, fetchLessons, fetchTemplate, uploadFile } from "@/shared/services/lesson.service";
 
 const EditSlides = () => {

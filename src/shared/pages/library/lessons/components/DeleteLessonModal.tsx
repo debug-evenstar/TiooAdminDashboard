@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { AiOutlineWarning } from "react-icons/ai";
-import { DeleteLesson } from "../../../../../api";
-import { alertActions } from "../../../../../components/alertActions";
+import { DeleteLesson } from "@/api";
+import { alertActions } from "@/components/alertActions";
 
 
 interface DeleteLessonModalProps {

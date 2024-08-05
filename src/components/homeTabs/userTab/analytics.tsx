@@ -1,4 +1,4 @@
-import image from '../../../assets/images/image_34-removebg-preview 1.png';
+import image from '@/assets/images/image_34-removebg-preview 1.png';
 
 export type TUserAnalyticsProps = {
     Schools: number,

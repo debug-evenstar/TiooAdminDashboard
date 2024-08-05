@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react'
-import { SuccessCheck } from '../../../../../../components/AlertCheck'
-import { PrimaryButton } from '../../../../../../components/Buttons'
+import { SuccessCheck } from '@/components/AlertCheck'
+import { PrimaryButton } from '@/components/Buttons'
 
 interface Props {
   close: () => void

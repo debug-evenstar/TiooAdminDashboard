@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import searchImage from '../../assets/images/search-md.png';
+import searchImage from '@/assets/images/search-md.png';
 import { axiosInstance} from '@/api/request';
 import { useDispatch, useSelector } from 'react-redux';
-import { TSchoolsProps, setSchools } from '../../redux/slices/schools';
-import { RootState } from '../../redux/store';
+import { TSchoolsProps, setSchools } from '@/redux/slices/schools';
+import { RootState } from '@/redux/store';
 
 
 

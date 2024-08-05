@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import ChapterContainer from "./components/LessonComp/ChapterContainer";
 import LessonClasses from "./components/LessonComp/LessonClasses";
 import { useSelector } from "react-redux";
-import { configure } from "../../../../services/config";
+import { configure } from "@/services/config";
 
 import { useParams } from "react-router-dom";
-import { getSubjectWithLessonCount } from "../../../../api";
-import Header from "../../../../components/AppHeader";
+import { getSubjectWithLessonCount } from "@/api";
+import Header from "@/components/AppHeader";
 import { axiosInstance} from "@/api/request";
 
 const UploadedLesson = () => {

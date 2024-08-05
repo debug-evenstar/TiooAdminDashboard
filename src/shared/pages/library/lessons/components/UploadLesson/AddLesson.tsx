@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useState } from "react";
-import { InputField } from "../../../../../../components/Inputs";
+import { InputField } from "@/components/Inputs";
 import { useSelector } from "react-redux";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { PrimaryButton } from "@/components/Buttons";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { formatSize } from "../../../../../../utilities/format";
-import { alertActions } from "../../../../../../components/alertActions";
+import { formatSize } from "@/utilities/format";
+import { alertActions } from "@/components/alertActions";
 import { useDispatch } from "react-redux";
-import { lessonActions } from "../../../../../../store/lessonSlice";
+import { lessonActions } from "@/store/lessonSlice";
 import { IoMdClose } from "react-icons/io";
-import { AddNewLesson, getSchoolTerm } from "../../../../../../api";
+import { AddNewLesson, getSchoolTerm } from "@/api";
 
 interface Props {
   id: number;

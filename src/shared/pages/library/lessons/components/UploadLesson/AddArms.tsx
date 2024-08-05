@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
-import { PrimaryButton } from '../../../../../../components/Buttons'
+import { PrimaryButton } from '@/components/Buttons'
 import { useSelector } from 'react-redux'
-import { configure } from '../../../../../../services/config'
-import { getLessonClass, getclassWithArmsbyClassID } from '../../../../../../services/authServices'
-import { AddNewLessonArms } from '../../../../../../api'
-import { alertActions } from '../../../../../../components/alertActions'
+import { configure } from '@/services/config'
+import { getLessonClass, getclassWithArmsbyClassID } from '@/services/authServices'
+import { AddNewLessonArms } from '@/api'
+import { alertActions } from '@/components/alertActions'
 
 interface Props {
   item: any

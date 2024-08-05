@@ -2,12 +2,12 @@ import React, { FC, useEffect, useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi';
 import { RiArrowUpSLine } from 'react-icons/ri';
 import ReactQuill from 'react-quill';
-import { InputField } from '../../../../../../components/Inputs';
-import { LessonButton } from '../../../../../../components/Buttons';
-import { lessonActions } from '../../../../../../store/lessonSlice';
+import { InputField } from '@/components/Inputs';
+import { LessonButton } from '@/components/Buttons';
+import { lessonActions } from '@/store/lessonSlice';
 import { useDispatch } from 'react-redux';
-import { getSchoolTerm } from '../../../../../../api';
-import { alertActions } from '../../../../../../components/alertActions';
+import { getSchoolTerm } from '@/api';
+import { alertActions } from '@/components/alertActions';
 import { useSelector } from 'react-redux';
 
 interface Props {

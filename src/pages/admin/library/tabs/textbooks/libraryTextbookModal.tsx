@@ -22,6 +22,7 @@ type TLibraryModalError = {
   category?: string;
   cover?: string;
   subject?: string;
+  plan?: string;
 };
 
 type TOptionProps = {
@@ -115,10 +116,7 @@ function OptionsMenu({
   );
 }
 
-const agesOptions = [...Array(18 - 5 + 1)].map((_, index) => ({
-  id: index + 5,
-  name: index + 5,
-}));
+;
 
 export default function TextbookModal({
   textbookProps,
@@ -135,13 +133,17 @@ export default function TextbookModal({
   const [loading, setLoading] = useState<boolean>(false);
   const [classOptions, setClassOptions] = useState<any[]>([]);
   const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
-
+  const [plan, setPlan] = useState<any>(0);
   const dispatch = useDispatch();
 
   const subjects = useSelector(
     (state: RootState) => state.subject.subjects
   );
 
+  const plans = [
+    { name: "Basic" },
+    { name: "Premium" }
+  ];
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -168,7 +170,7 @@ export default function TextbookModal({
         classes = textbookProps.classes;
       }
 
-      setClasses(textbookProps.classes?.map((item:any) => item.id));
+      setClasses(textbookProps.classes?.map((item: any) => item.id));
       setSubject(textbookProps.subject_id);
     }
 
@@ -208,9 +210,12 @@ export default function TextbookModal({
     if (formData.description == "")
       newErrors.description = "Please fill in a description";
 
+    // if (plan == 0) newErrors.plan = "Please select a plan";
+    console.log(newErrors);
     return newErrors;
   };
 
+  
   const sendRequest = () => {
     const payload = new FormData();
     payload.append("name", formData.name);
@@ -222,6 +227,10 @@ export default function TextbookModal({
     // payload.append('ages',JSON.stringify(ages));
     payload.append("classes", JSON.stringify(classes));
 
+    console.log(plans[plan]);
+    // add the plan
+    payload.append('plan', `${plans[plan]?.name}`)
+
     // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
     const options = {
       headers: {
@@ -231,14 +240,14 @@ export default function TextbookModal({
 
     const req = !!textbookProps
       ? axiosInstance.put(
-          "/library/textbooks/" + textbookProps.id,
-          payload,
-          options
-        )
-      : axiosInstance.post("/library/textbooks", payload,options);
+        "/library/textbooks/" + textbookProps.id,
+        payload,
+        options
+      )
+      : axiosInstance.post("/library/textbooks", payload, options);
     req
       .then(() => {
-        notify.success(`${!!textbookProps? "Updated" : "Added new"} textbook`);
+        notify.success(`${!!textbookProps ? "Updated" : "Added new"} textbook`);
         dispatch(setLibraryReload());
         setModal(false);
       })
@@ -305,6 +314,20 @@ export default function TextbookModal({
           </div>
           <div className="text-sm mb-3">
             <label htmlFor="" className="text-sm">
+              Plan Type
+            </label>
+            <SingleOptionsMenu
+              selection={plan}
+              options={plans.map((item: any, index: number) => ({
+                id: index,
+                value: item.name,
+              }))}
+              setSelection={setPlan}
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
+          </div>
+          <div className="text-sm mb-3">
+            <label htmlFor="" className="text-sm">
               Cover photo
             </label>
             <RawFileInput setSelection={setCoverPhoto} />
@@ -340,7 +363,7 @@ export default function TextbookModal({
           </button>
         </div>
       </div>
-      
+
     </>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "@/api/request";
+import axiosInstance from "@/services/api";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ function LibraryItemCard({
   color,
   openEditModal,
   itemData,
-}:{
+}: {
   color: string;
   openEditModal: any;
   itemData: TextbookItem | SubjectItem;

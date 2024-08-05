@@ -44,24 +44,23 @@ function LibraryTextbookCard({
   };
 
   const toggleStatus = () => {
-    // const status = !!itemData.library_status;
-    // axiosInstance
-    //     .post("/librarysubject/status/" + itemData.id)
-    //     .then((response) => {
-    //         dispatch(setLibraryReload());
-    //         itemData.library_status == "published"
-    //             ? "unpuplished"
-    //             : "published";
-    //         notify.success(
-    //             `${
-    //                 itemData.library_status == "published"
-    //                     ? "Retracted"
-    //                     : "Published"
-    //             } Library Material`
-    //         );
-    //     })
-    //     .catch((error) => console.log(error))
-    //     .finally(() => setActive(false));
+    axiosInstance
+        .post(`/library/textbooks/${itemData.id}/publish`)
+        .then((response) => {
+            dispatch(setLibraryReload());
+            itemData.published
+                ? "unpuplished"
+                : "published";
+            notify.success(
+                `${
+                    itemData.published
+                        ? "Retracted"
+                        : "Published"
+                } Library Material`
+            );
+        })
+        .catch((error) => console.log(error))
+        .finally(() => setActive(false));
   };
 
   return (

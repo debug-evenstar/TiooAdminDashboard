@@ -31,7 +31,7 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
 
   return (
     <>
-      <div onClick={ openLessons} className="w-[200px] cursor-pointer hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col space-y-3 h-[140px]">
+      <div onClick={openLessons} className="w-[200px] cursor-pointer hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col space-y-3 h-[140px]">
         <div className="flex justify-between">
           <p className="font-semibold text-[17px] text-[#030036BD]">
             {chapter.name.length > 25
@@ -39,7 +39,7 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
               : chapter.name}
           </p>
 
-          <div className="flex items-center">
+          <div className="flex z-[100] items-center" onClick={(e) => e.stopPropagation()}>
             <Popup
               ref={ref}
               open={active}
@@ -159,7 +159,7 @@ function AllChaptersCard({ textbook}: { textbook: any }) {
                 You haven't added any chapter
               </h2>
             )}
-            <div className={`flex flex-wrap space-x-3`}>
+            <div className={`flex flex-wrap gap-x-3`}>
               {chapters.map((chapter: any) => (
                 <ChapterCard
                   refresh={getAllChapters}

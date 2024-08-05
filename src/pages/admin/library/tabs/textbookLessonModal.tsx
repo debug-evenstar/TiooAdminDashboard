@@ -105,7 +105,7 @@ function EmptyTextbookLesson({
     checkText("description", "Please fill in a description");
     checkText("duration", "Please fill in a duration");
     checkText("curriculum", "Please fill in a curriculum");
-    checkText("preview", "Please select a preview image");
+    // checkText("preview", "Please select a preview image");
 
     return newErrors;
   };
@@ -120,10 +120,10 @@ function EmptyTextbookLesson({
     payload.append("duration", formData.duration);
 
     if (formData.preview) {
-      payload.append("preview", formData.preview);
+      // payload.append("preview", formData.preview);
     }
     payload.append("library", "true");
-    payload.append("additional_information", formData.additional_instruction);
+    // payload.append("additional_information", formData.additional_instruction);
 
     payload.append("chapter_id", String(chapterId));
 
@@ -150,6 +150,7 @@ function EmptyTextbookLesson({
     e.preventDefault();
     setLoading(true);
     const newErrors = validate();
+    console.log(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       sendRequest();
@@ -251,7 +252,7 @@ function EmptyTextbookLesson({
           />
           <p className="text-red-500 text-xs mt-1">{errors?.description}</p>
         </div>
-        <div className="text-sm mb-3">
+        {/* <div className="text-sm mb-3">
           <label htmlFor="" className="text-sm">
             Preview
           </label>
@@ -275,13 +276,13 @@ function EmptyTextbookLesson({
             className="mt-1 outline-none rounded w-full px-3 py-2 border"
           />
           <p className="text-red-500 text-xs mt-1"></p>
-        </div>
+        </div> */}
       </div>
       <div className="px-4 w-full h-[3.8rem] mt-[2px] flex border-t items-center">
         <button
           disabled={loading}
           onClick={handleSubmit}
-          className="bg-main shadow shadow-xl focus:shadow-lg outline-none w-full text-sm text-center py-2 rounded text-white font-[500]"
+          className="bg-main shadow-xl focus:shadow-lg outline-none w-full text-sm text-center py-2 rounded text-white font-[500]"
         >
           {loading ? <WhiteSpinner /> : <span>Create Lesson</span>}
         </button>

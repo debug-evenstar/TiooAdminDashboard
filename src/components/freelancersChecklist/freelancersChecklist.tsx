@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import searchImage from '../../assets/images/search-md.png';
+import searchImage from '@/assets/images/search-md.png';
 import { axiosInstance} from '@/api/request';
 import { useDispatch } from 'react-redux';
-import { setFreelancers } from '../../redux/slices/freelancer';
+import { setFreelancers } from '@/redux/slices/freelancer';
 
 
 

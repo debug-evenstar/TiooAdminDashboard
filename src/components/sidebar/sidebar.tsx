@@ -6,11 +6,10 @@ import {
     UserIcon,
     UsersIcon,
     SchoolIcon,
-} from '../../assets/icons/components/sidebar';
+} from '@/assets/icons/components/sidebar';
 
 import { Link, useLocation } from 'react-router-dom';
-
-import logo from '../../assets/logos/logo.png';
+import logo from '@/assets/logos/logo.png';
 
 import './sidebar.css';
 

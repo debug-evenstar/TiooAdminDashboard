@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ChevronLeft from "../../assets/icons/components/common/chevronLeft";
-import ChevronRight from "../../assets/icons/components/common/chevronRight";
+import ChevronLeft from "@/assets/icons/components/common/chevronLeft";
+import ChevronRight from "@/assets/icons/components/common/chevronRight";
 
 export type TScrollBtnProps = {
     units: number,

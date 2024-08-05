@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
-import filterImage from '../../assets/images/filter-lines.png';
-import searchImage from '../../assets/images/search-md.png';
+import filterImage from '@/assets/images/filter-lines.png';
+import searchImage from '@/assets/images/search-md.png';
 
 interface ISearchBarProps {
     items?: any,

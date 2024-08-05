@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-// import { LessonButton } from '../../../../components/Buttons'
+// import { LessonButton } from '@/components/Buttons'
 
 interface Props {
     prompt: (value: any) => void

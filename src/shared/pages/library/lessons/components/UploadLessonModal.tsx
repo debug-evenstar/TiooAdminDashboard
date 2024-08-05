@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Tabs from "../../../../../components/Tabs";
+import Tabs from "@/components/Tabs";
 import UploadLessonIndex from "./UploadLesson";
 import GenerateLessons from "./GenerateLessons";
 import { IoMdClose } from "react-icons/io";
-import CenterModal from "../../../../../components/CenterModal";
-import DiscardWarning from "../../../../../components/DiscardWarning";
+import CenterModal from "@/components/CenterModal";
+import DiscardWarning from "@/components/DiscardWarning";
 
 
 interface UploadLessonModalProps {

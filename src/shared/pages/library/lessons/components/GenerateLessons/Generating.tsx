@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useState } from "react";
-import { SuccessCheck } from "../../../../../../components/AlertCheck";
-import { PrimaryButton } from "../../../../../../components/Buttons";
+import { SuccessCheck } from "@/components/AlertCheck";
+import { PrimaryButton } from "@/components/Buttons";
 import { useNavigate } from "react-router-dom";
 import { LiaTimesSolid } from "react-icons/lia";
 import { LuUploadCloud } from "react-icons/lu";
 import { useSelector } from "react-redux";
-import { addGeneratedLesson, generateLesson } from "../../../../../../api";
-import { alertActions } from "../../../../../../components/alertActions";
-import { lessonActions } from "../../../../../../store/lessonSlice";
-import { getLessonClass } from "../../../../../../services/authServices";
-import { configure } from "../../../../../../services/config";
+import { addGeneratedLesson, generateLesson } from "@/api";
+import { alertActions } from "@/components/alertActions";
+import { lessonActions } from "@/store/lessonSlice";
+import { getLessonClass } from "@/services/authServices";
+import { configure } from "@/services/config";
 import { useDispatch } from "react-redux";
 
 interface Props {

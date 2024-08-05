@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { PrimaryButton } from "../../../../../components/Buttons";
-import { InputField, DateField } from "../../../../../components/Inputs";
+import { PrimaryButton } from "@/components/Buttons";
+import { InputField, DateField } from "@/components/Inputs";
 import { DateRange } from "react-date-range";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import dayjs from "dayjs";
-import { updateTimeline } from "../../../../../api";
-import { alertActions } from "../../../../../components/alertActions";
+import { updateTimeline } from "@/api";
+import { alertActions } from "@/components/alertActions";
 
 interface ChooseTimelineModalProps {
   close: () => void;

@@ -1,8 +1,8 @@
 import Popup from 'reactjs-popup';
-// import image from '../../assets/images/user.png';
+// import image from '@/assets/images/user.png';
 import { ReactNode } from 'react';
-import { useAppDispatch } from '../../redux/store';
-import { saveActiveSchId } from '../../redux/slices/schools';
+import { useAppDispatch } from '@/redux/store';
+import { saveActiveSchId } from '@/redux/slices/schools';
 
 export type IListProps = {
     name: string;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "@/api/request";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import AddLibraryLesson from "../../../../pages/library/tabs/libraryLessonModal";
+// import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLibraryReload } from "@/redux/slices/library";
@@ -13,27 +13,20 @@ import { SubjectItem, TextbookItem } from "../../types";
 import TextbookModal from "./libraryTextbookModal";
 import ModalLayout from "@/components/modalLayout/modalLayout";
 import AddTextbookLesson from "../textbookLessonModal";
-import CenterModal from "@/components/CenterModal";
-import PublishTextbook from "../../textbooks/components/publishTextbook";
 
-interface LibraryTextbooksProps {
-  color: string;
-  openEditModal: any;
-  itemData: any;
-  refetch : Function;
-}
-
-export default function LibraryTextbookCard({
+function LibraryTextbookCard({
   color,
   openEditModal,
   itemData,
-  refetch
-} : LibraryTextbooksProps) {
+}: {
+  color: string;
+  openEditModal: any;
+  itemData: any;
+}) {
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [textbookModal, setTextbookModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [item, setItem] = useState("");
   // const [ status, setStatus ] = useState<boolean | null>(itemData.library_status);
 
   const navigate = useNavigate();
@@ -50,30 +43,24 @@ export default function LibraryTextbookCard({
     });
   };
 
-  const toggleModal = () => {
-    setModal(true);
-    setActive(false);
-  }
-
   const toggleStatus = () => {
-    // const status = !!itemData.library_status;
-    // axiosInstance
-    //     .post("/librarysubject/status/" + itemData.id)
-    //     .then((response) => {
-    //         dispatch(setLibraryReload());
-    //         itemData.library_status == "published"
-    //             ? "unpuplished"
-    //             : "published";
-    //         notify.success(
-    //             `${
-    //                 itemData.library_status == "published"
-    //                     ? "Retracted"
-    //                     : "Published"
-    //             } Library Material`
-    //         );
-    //     })
-    //     .catch((error) => console.log(error))
-    //     .finally(() => setActive(false));
+    axiosInstance
+        .post(`/library/textbooks/${itemData.id}/publish`)
+        .then((response) => {
+            dispatch(setLibraryReload());
+            itemData.published
+                ? "unpuplished"
+                : "published";
+            notify.success(
+                `${
+                    itemData.published
+                        ? "Retracted"
+                        : "Published"
+                } Library Material`
+            );
+        })
+        .catch((error) => console.log(error))
+        .finally(() => setActive(false));
   };
 
   return (
@@ -105,7 +92,7 @@ export default function LibraryTextbookCard({
 
                 {"published" in itemData && (
                   <button
-                    onClick={toggleModal}
+                    onClick={toggleStatus}
                     className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
                   >
                     {!itemData.published ? (
@@ -177,18 +164,6 @@ export default function LibraryTextbookCard({
           textbookProps={itemData}
         />
       </ModalLayout>
-      <CenterModal
-        isOpen={modal}
-        onClose={() => setModal(false)}
-        variant={"small"}
-      >
-        <PublishTextbook
-            close={() => setModal(false)}
-            item={itemData}
-            name={itemData.name}
-            refetch={refetch}
-        />
-      </CenterModal>
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} itemData={itemData} /> */}
       <DeleteItemModal
         modal={deleteModal}
@@ -200,3 +175,4 @@ export default function LibraryTextbookCard({
   );
 }
 
+export default LibraryTextbookCard;

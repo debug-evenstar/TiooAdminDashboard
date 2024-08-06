@@ -39,7 +39,7 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
               : chapter.name}
           </p>
 
-          <div className="flex items-center">
+          <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
             <Popup
               ref={ref}
               open={active}

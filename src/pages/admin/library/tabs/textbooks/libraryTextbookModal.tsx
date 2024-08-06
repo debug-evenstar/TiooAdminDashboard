@@ -221,7 +221,7 @@ export default function TextbookModal({
     payload.append("name", formData.name);
     payload.append("description", formData.description);
     payload.append("subject_id", subject);
-    if (coverPhoto) {
+    if (coverPhoto) {3e4786a74a19207d4fb2d03524c6e77e4d7f70c4
       payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
     }
     // payload.append('ages',JSON.stringify(ages));

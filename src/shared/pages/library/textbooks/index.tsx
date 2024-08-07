@@ -45,7 +45,6 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
               open={active}
               position="left center"
               trigger={
-                // hahaha
                 <button
                   className="outline-none"
                   onClick={() => {
@@ -159,7 +158,7 @@ function AllChaptersCard({ textbook}: { textbook: any }) {
                 You haven't added any chapter
               </h2>
             )}
-            <div className={`flex flex-wrap space-x-3`}>
+            <div className={`flex flex-wrap gap-3`}>
               {chapters.map((chapter: any) => (
                 <ChapterCard
                   refresh={getAllChapters}

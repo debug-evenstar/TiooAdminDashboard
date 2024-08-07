@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ChapterContainer from "./components/ChapterLessonComp/ChapterContainer";
 import { useLocation, useParams } from "react-router-dom";
 import Header from "@/components/AppHeader";
-import { axiosInstance} from "@/api/request";
+import { axiosInstance } from "@/api/request";
 import { Spinner } from "@material-tailwind/react";
 import Loader from "@/components/loader/loader";
 
@@ -66,11 +66,11 @@ const ChapterLesson = () => {
         <div className="flex mt-5">
           <div className="w-9/12 lg:pr-12">
 
-              <ChapterContainer
-                item={lessons}
-                textbook={textbook}
-                refetch={getAllTextbookLessons}
-              />
+            <ChapterContainer
+              item={lessons}
+              textbook={textbook}
+              refetch={getAllTextbookLessons}
+            />
 
           </div>
           <div className="w-3/12 px-8 relative">

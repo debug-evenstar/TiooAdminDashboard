@@ -45,22 +45,21 @@ function LibraryTextbookCard({
 
   const toggleStatus = () => {
     axiosInstance
-        .post(`/library/textbooks/${itemData.id}/publish`)
-        .then((response) => {
-            dispatch(setLibraryReload());
-            itemData.published
-                ? "unpuplished"
-                : "published";
-            notify.success(
-                `${
-                    itemData.published
-                        ? "Retracted"
-                        : "Published"
-                } Library Material`
-            );
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setActive(false));
+      .post(`/library/textbooks/${itemData.id}/publish`)
+      .then((response) => {
+        dispatch(setLibraryReload());
+        itemData.published
+          ? "unpuplished"
+          : "published";
+        notify.success(
+          `${itemData.published
+            ? "Retracted"
+            : "Published"
+          } Library Material`
+        );
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setActive(false));
   };
 
   return (
@@ -153,17 +152,20 @@ function LibraryTextbookCard({
         textbookProps={itemData}
         {...{ modal, setModal, itemData }}
       /> */}
-      <ModalLayout
-        modal={textbookModal}
-        setModal={setTextbookModal}
-        title="Edit Textbook"
-      >
-        <TextbookModal
+      {
+        textbookModal &&
+        <ModalLayout
           modal={textbookModal}
           setModal={setTextbookModal}
-          textbookProps={itemData}
-        />
-      </ModalLayout>
+          title="Edit Textbook"
+        >
+          <TextbookModal
+            modal={textbookModal}
+            setModal={setTextbookModal}
+            textbookProps={itemData}
+          />
+        </ModalLayout>
+      }
       {/* <SelectClassModal modal={deleteModal} setModal={setDeleteModal} itemData={itemData} /> */}
       <DeleteItemModal
         modal={deleteModal}

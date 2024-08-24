@@ -21,6 +21,7 @@ type TLibraryModalError = {
   file?: string;
   category?: string;
   cover?: string;
+  author?: string;
   subject?: string;
   plan?: string;
 };
@@ -149,10 +150,12 @@ export default function TextbookModal({
     name: string;
     description: string;
     SubjectId: any;
+    author: string;
   }>({
     name: "",
     description: "",
     SubjectId: "",
+    author: "",
   });
 
   useEffect(() => {
@@ -161,6 +164,7 @@ export default function TextbookModal({
         name: textbookProps.name,
         description: textbookProps.description,
         SubjectId: textbookProps.subject_id,
+        author: textbookProps.author,
       });
 
       let classes = null;
@@ -215,7 +219,7 @@ export default function TextbookModal({
     return newErrors;
   };
 
-  
+
   const sendRequest = () => {
     const payload = new FormData();
     payload.append("name", formData.name);
@@ -224,14 +228,9 @@ export default function TextbookModal({
     if (coverPhoto) {
       payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
     }
-    // payload.append('ages',JSON.stringify(ages));
     payload.append("classes", JSON.stringify(classes));
-
-    console.log(plans[plan]);
-    // add the plan
+    payload.append('author', formData.author);
     payload.append('plan', `${plans[plan]?.name}`)
-
-    // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
     const options = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -286,6 +285,19 @@ export default function TextbookModal({
               className="mt-1 outline-none rounded w-full px-3 py-2 border"
             />
             <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
+          </div>
+          <div className="text-sm mb-3">
+            <label htmlFor="" className="text-sm">
+              Author
+            </label>
+            <input
+              type="text"
+              name="author"
+              value={formData.author}
+              onChange={handleOnChange}
+              className="mt-1 outline-none rounded w-full px-3 py-2 border"
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.author}</p>
           </div>
           <div className="text-sm mb-3 ">
             <label htmlFor="" className="text-sm">

@@ -20,6 +20,9 @@ const TopicContainer: FC<Props> = ({ lesson, refetch, textbook }) => {
 
   const [modal, setModal] = useState<boolean>(false);
 
+  // const [ addLessonModal, setAddLessonModal ] = useState(false);
+  // const [ editLessonModal, setEditLessonModal ] = useState(false);
+
   const toggleTab = (item: any, tabId: number): void => {
     setActive(true);
     setActiveTab(tabId);
@@ -35,7 +38,7 @@ const TopicContainer: FC<Props> = ({ lesson, refetch, textbook }) => {
         <TextbookLesson
           textbookProps={textbook}
           refetch={refetch}
-          lesson={lesson[0]}
+          // lesson={lesson[0]}
           {...{ modal, setModal }}
         />
       )}
@@ -69,14 +72,7 @@ const TopicContainer: FC<Props> = ({ lesson, refetch, textbook }) => {
             </div>
           </div>
 
-          {/* <div 
-          className={`${!lesson.length && "w-[180px]"} p-5 rounded-[8px] h-[130px] shadow grid place-content-center hover:scale-105 duration-100 cursor-pointer`} onClick={() => toggleTab(lesson[0]?.GroupId, 1)}>
-          <div className="text-center text-[#4F46E5]">
-            <AiOutlinePlusCircle className="text-2xl mx-auto" />
-            <p className="font-medium text-[17px] mt-2">Add Lesson</p>
-          </div>
-        </div> 
-        */}
+
         </div>
       ) : (
         <Loader />

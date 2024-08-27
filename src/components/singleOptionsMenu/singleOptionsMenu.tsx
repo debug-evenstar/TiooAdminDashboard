@@ -11,7 +11,7 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
     }
 
     return (
-        <>
+        <div className="relative">
             <div onClick={() => setActive(!active)} className="mt-2 cursor-pointer  outline-none rounded w-full px-3 py-2 border flex justify-between">
                 <span>{ options.find((i: any) => i.id == selection)?.value }</span>
                 <div
@@ -26,7 +26,7 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
             </div>
             {
                 active &&
-                <ul className="border shadow px-3 max-h-[18rem] overflow-y-auto">
+                <ul className="border shadow px-3 max-h-[18rem] w-full bg-white z-[20] absolute overflow-y-auto">
                     {
                         options.map(({ id, value }: any) => (
                             <li key={id} onClick={() => { setCurrentValue(value); setSelection(id); setActive(false) }} className="my-2 cursor-pointer rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
@@ -37,6 +37,6 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
                     }
                 </ul>
             }
-        </>
+        </div>
     );
 }

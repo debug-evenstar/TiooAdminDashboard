@@ -114,8 +114,8 @@ function AdministratorRoutes() {
                     />
                 </Route>
                 <Route path="/marketplace" element={<Marketplace />} />
-                <Route path="*" element={<Navigate to="/"></Navigate>} />
                 {SharedRoutes(SHARED_ROUTES_PROPS)}
+                <Route path="*" element={<Navigate to="/"></Navigate>} />
             </Route>
         </Routes>
     );

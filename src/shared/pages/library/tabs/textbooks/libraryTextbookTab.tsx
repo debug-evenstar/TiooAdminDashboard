@@ -68,9 +68,12 @@ export default function LibraryTextbookTab() {
 
   return (
     <div className="w-full overflow-y-auto">
-      <ModalLayout {...{ modal, setModal }} title="Add Textbook">
-        <TextbookModal {...{ modal, setModal }} />
-      </ModalLayout>
+      {
+        modal &&
+        <ModalLayout {...{ modal, setModal }} title="Add Textbook">
+          <TextbookModal {...{ modal, setModal }} />
+        </ModalLayout>
+      }
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
         {materials.map((textbookProps: TextbookItem, index: number) => {
           return (
@@ -79,7 +82,7 @@ export default function LibraryTextbookTab() {
               openEditModal={openEditModal}
               itemData={textbookProps}
               color={colors[index % colors.length]}
-              refetch={fetchTextbooks}
+              // refetch={fetchTextbooks}
             />
           );
         })}

@@ -62,7 +62,9 @@ const EditSlides = () => {
 
 
   const handleBack = () => {
-    navigate(`/lessons/${lessonData.SubjectId}/${lessonData.GroupId}`);
+    navigate(-1);
+    // navigate(`/library/chapter/lessons/${lessonData.Textbook.id}/${lessonData.Chapter.id}`)   
+    // navigate(`/lessons/${lessonData.SubjectId}/${lessonData.GroupId}`);
   };
 
   const lessonlist = {

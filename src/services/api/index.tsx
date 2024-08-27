@@ -39,7 +39,6 @@ axiosInstance.interceptors.response.use(
   error => {
     if (error.response.status === 401) {
       console.log(error.response);
-      // window.location.assign('/login');
     }
     return Promise.reject(error);
   }

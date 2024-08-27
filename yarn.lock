@@ -2061,9 +2061,9 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@Praxeum-ai/LearnBlocks@github:Praxeum-ai/LearnBlocks#v1.0.2-beta":
+"@Praxeum-ai/LearnBlocks@github:Praxeum-ai/LearnBlocks#v1.0.3-beta":
   version "0.1.0"
-  resolved "git+ssh://git@github.com/Praxeum-ai/LearnBlocks.git#04909a1d917f6cfb55c8ef770afe06e754e85be6"
+  resolved "git+ssh://git@github.com/Praxeum-ai/LearnBlocks.git#35362d085879286002c714a544a2e7e426fb01ae"
   dependencies:
     "@emotion/react" "^11.11.3"
     "@emotion/styled" "^11.11.0"
@@ -2093,6 +2093,7 @@
     react-resizable "^3.0.5"
     react-router-dom "^6.14.1"
     react-scripts "5.0.1"
+    react-spinners "^0.14.1"
     redux "^5.0.0"
     redux-persist "^6.0.0"
     swiper "^9.4.1"
@@ -11112,6 +11113,11 @@ react-spinners@^0.13.8:
   version "0.13.8"
   resolved "https://registry.npmjs.org/react-spinners/-/react-spinners-0.13.8.tgz"
   integrity sha512-3e+k56lUkPj0vb5NDXPVFAOkPC//XyhKPJjvcGjyMNPWsBKpplfeyialP74G7H7+It7KzhtET+MvGqbKgAqpZA==
+
+react-spinners@^0.14.1:
+  version "0.14.1"
+  resolved "https://registry.npmjs.org/react-spinners/-/react-spinners-0.14.1.tgz"
+  integrity sha512-2Izq+qgQ08HTofCVEdcAQCXFEYfqTDdfeDQJeo/HHQiQJD4imOicNLhkfN2eh1NYEWVOX4D9ok2lhuDB0z3Aag==
 
 react-toastify@^9.1.3:
   version "9.1.3"

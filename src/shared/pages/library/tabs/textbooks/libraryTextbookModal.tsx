@@ -21,7 +21,9 @@ type TLibraryModalError = {
   file?: string;
   category?: string;
   cover?: string;
+  author?: string;
   subject?: string;
+  plan?: string;
 };
 
 type TOptionProps = {
@@ -115,10 +117,7 @@ function OptionsMenu({
   );
 }
 
-const agesOptions = [...Array(18 - 5 + 1)].map((_, index) => ({
-  id: index + 5,
-  name: index + 5,
-}));
+;
 
 export default function TextbookModal({
   textbookProps,
@@ -135,22 +134,28 @@ export default function TextbookModal({
   const [loading, setLoading] = useState<boolean>(false);
   const [classOptions, setClassOptions] = useState<any[]>([]);
   const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
-
+  const [plan, setPlan] = useState<any>(0);
   const dispatch = useDispatch();
 
   const subjects = useSelector(
     (state: RootState) => state.subject.subjects
   );
 
+  const plans = [
+    { name: "Basic" },
+    { name: "Premium" }
+  ];
 
   const [formData, setFormData] = useState<{
     name: string;
     description: string;
     SubjectId: any;
+    author: string;
   }>({
     name: "",
     description: "",
     SubjectId: "",
+    author: "",
   });
 
   useEffect(() => {
@@ -159,6 +164,7 @@ export default function TextbookModal({
         name: textbookProps.name,
         description: textbookProps.description,
         SubjectId: textbookProps.subject_id,
+        author: textbookProps.author,
       });
 
       let classes = null;
@@ -168,12 +174,12 @@ export default function TextbookModal({
         classes = textbookProps.classes;
       }
 
-      setClasses(textbookProps.classes?.map((item:any) => item.id));
+      setClasses(textbookProps.classes?.map((item: any) => item.id));
       setSubject(textbookProps.subject_id);
     }
 
     axiosInstance
-      .get("/classes?default=1")
+      .get(`/classes`)
       .then((response) => {
         setClassOptions(response.data.data);
       })
@@ -208,8 +214,11 @@ export default function TextbookModal({
     if (formData.description == "")
       newErrors.description = "Please fill in a description";
 
+    // if (plan == 0) newErrors.plan = "Please select a plan";
+    console.log(newErrors);
     return newErrors;
   };
+
 
   const sendRequest = () => {
     const payload = new FormData();
@@ -219,10 +228,9 @@ export default function TextbookModal({
     if (coverPhoto) {
       payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
     }
-    // payload.append('ages',JSON.stringify(ages));
     payload.append("classes", JSON.stringify(classes));
-
-    // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    payload.append('author', formData.author);
+    payload.append('plan', `${plans[plan]?.name}`)
     const options = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -231,14 +239,14 @@ export default function TextbookModal({
 
     const req = !!textbookProps
       ? axiosInstance.put(
-          "/library/textbooks/" + textbookProps.id,
-          payload,
-          options
-        )
-      : axiosInstance.post("/library/textbooks", payload,options);
+        "/library/textbooks/" + textbookProps.id,
+        payload,
+        options
+      )
+      : axiosInstance.post("/library/textbooks", payload, options);
     req
       .then(() => {
-        notify.success(`${!!textbookProps? "Updated" : "Added new"} textbook`);
+        notify.success(`${!!textbookProps ? "Updated" : "Added new"} textbook`);
         dispatch(setLibraryReload());
         setModal(false);
       })
@@ -278,6 +286,19 @@ export default function TextbookModal({
             />
             <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
           </div>
+          <div className="text-sm mb-3">
+            <label htmlFor="" className="text-sm">
+              Author
+            </label>
+            <input
+              type="text"
+              name="author"
+              value={formData.author}
+              onChange={handleOnChange}
+              className="mt-1 outline-none rounded w-full px-3 py-2 border"
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.author}</p>
+          </div>
           <div className="text-sm mb-3 ">
             <label htmlFor="" className="text-sm">
               Classes
@@ -300,6 +321,20 @@ export default function TextbookModal({
                 value: item.name,
               }))}
               setSelection={setSubject}
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
+          </div>
+          <div className="text-sm mb-3">
+            <label htmlFor="" className="text-sm">
+              Plan Type
+            </label>
+            <SingleOptionsMenu
+              selection={plan}
+              options={plans.map((item: any, index: number) => ({
+                id: index,
+                value: item.name,
+              }))}
+              setSelection={setPlan}
             />
             <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
           </div>
@@ -340,7 +375,7 @@ export default function TextbookModal({
           </button>
         </div>
       </div>
-      
+
     </>
   );
 }

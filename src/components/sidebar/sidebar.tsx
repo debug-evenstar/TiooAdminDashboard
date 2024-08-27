@@ -12,6 +12,7 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '@/assets/logos/logo.png';
 
 import './sidebar.css';
+
 import { useEffect, useState } from 'react';
 
 type TMenu = {
@@ -42,12 +43,11 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
         const userProfile = localStorage.getItem('profile');
         if (userProfile) {
             const perm = JSON.parse(userProfile);
-            setPermissions(perm.authorization);
+            setPermissions(perm.authorization ?? ['manage_library']);
         }
     }, []);
 
     const hasCommonValues = (a: any, b: any) => {
-
         // check for common values
         const setA = new Set(a);
         const setB = new Set(b);
@@ -102,7 +102,7 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
                 </ul>
                 <ul className="h-fit">
                     {
-                        permissions.includes("manage_admin") &&
+                        permissions?.includes("manage_admin") &&
                         <Link to="/settings/pricing">
                             <li className={` px-3 my-[0.3rem] flex items-center space-x-2 rounded-[8px] hover:bg-light cursor-pointer  py-[10px] border-l-[4px] ${checkActive('/settings', true)}`}>
                                 <div className="pr-4 fill-main">

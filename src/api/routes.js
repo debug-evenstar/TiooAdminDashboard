@@ -15,9 +15,12 @@ export const classArmStudents = (id) => `class/arms/students/${id}`
 export const classArmSubjects = (id) => `class/arms/${id}/subjects`
 export const SubjectWithLessonCount = () => `/admin/management/subjects/lessons/count`
 export const UpdateLessonTime = (id) => `/lesson/${id}`
+export const updateLesson = (textbook_id, lesson_id) => `/library/textbooks/${textbook_id}/lessons/${lesson_id}`
 export const AddLessons = (id) => `lesson/groups/${id}/add`
 export const AddLessonsArms = (id) => `lesson/groups/${id}/editarms`
-export const deleteLesson = (id) => `lesson/${id}`
+export const deleteLesson = (id) => `/library/textbooks/${id}/lessons/${id}`
+// export const deleteLesson = (id) => `lesson/${id}`
+
 export const changeStatus = (id, status) => `lesson/${id}/status?status=${status}`
 export const getClassTerms = (id) => `school/${id}/terms`
 export const generationLesson = () => `lesson/generate`

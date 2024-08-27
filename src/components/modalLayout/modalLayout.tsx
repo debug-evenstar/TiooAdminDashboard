@@ -28,7 +28,7 @@ export default function ModalLayout({
           </button>
         </div>
         {children}
-      </div>te
+      </div>
     </div>
   );
 }

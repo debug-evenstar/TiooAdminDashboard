@@ -29,6 +29,7 @@ export const addGenerated = (id) => `lesson/generate/groups/${id}`
 export const promptGenerated = (id) => `lesson/${id}/generate/extra`
 export const subjectTopics = (id) => `subjects/${id}/topics`;
 export const topics = (id) => `topics/${id}`;
+export const categories = () => '/library/textbooks/categories'
 
 /* -------------------------------- STUDENTS -------------------------------- */
 export const inviteBulkStudentsUrl = () => `students/bulk/invite`;

@@ -12,6 +12,7 @@ import UploadedLesson from "../pages/library/lessons/uploaded-lessons";
 import ChapterLesson from "../pages/library/lessons/chapter-lessons";
 import { ReactElement } from "react";
 import EditSlides from "../pages/library/tabs/editSlides";
+import LibraryCategories from "../pages/library/categories";
 
 type SharedRoute = {
     path: string;
@@ -30,7 +31,8 @@ const ROUTE_GROUPS: { [key: string]: RouteGroupInterface } = {
 };
 
 const SHARED_ROUTES: SharedRoutesInterface = [
-    { path: `/library`, Element: Library, pathName: "library" },
+    { path: `/library`, Element: LibraryCategories, pathName: "library" },
+    { path: `/library/textbooks`, Element: Library, pathName: "library" },
     {
         path: `/library/${ROUTES.LESSONS}`,
         Element: Lessons,

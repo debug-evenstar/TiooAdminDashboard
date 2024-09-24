@@ -30,6 +30,7 @@ import {
   studentInviteUrl,
   subjectTopics,
   topics,
+  categories,
   updateLesson
 } from "./routes";
 
@@ -65,6 +66,12 @@ export const deleteSubjectTopic = async (id) => Request.delete(topics(id));
 
 export const getSchoolTerm = async (id) => Request.get(getClassTerms(id));
 
+export const fetchCategories = async () => Request.get(categories())
+
+export const createOrUpdateCategory = async (data) => Request.post(categories(), data)
+
+export const deleteCategory = async (id) => Request.delete(categories(),{id})
+
 export const assignClassToSubject = async (items) =>
   Request.post(assignClassesToSubject(), items);
 
@@ -87,7 +94,7 @@ export const DeleteLesson = async (id) =>
   Request.delete(deleteLesson(id));
 
 export const UpdateLesson = async (textbook_id, lesson_id, data) =>
-   Request.put(updateLesson(textbook_id, lesson_id),data);
+  Request.put(updateLesson(textbook_id, lesson_id), data);
 
 export const EditLessonStatus = async (id, status) =>
   Request.put(changeStatus(id, status));

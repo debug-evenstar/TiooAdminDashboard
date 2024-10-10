@@ -25,6 +25,7 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
   const toggle = () => ref.current.toggle();
   const navigate = useNavigate();
   const openLessons = () => {
+    
     const url = `/library/chapter/lessons/${chapter.textbook_id}/${chapter.id}/`;
     navigate(url,{state: { chapter }});
   }

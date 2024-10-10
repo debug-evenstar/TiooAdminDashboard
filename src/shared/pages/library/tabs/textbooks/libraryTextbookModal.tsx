@@ -117,13 +117,16 @@ function OptionsMenu({
 
 export default function TextbookModal({
   textbookProps,
+  category_id,
   modal,
   setModal,
 }: {
   textbookProps?: any;
   modal: boolean;
+  category_id?: any;
   setModal: (state: boolean) => void;
 }) {
+
   const [classes, setClasses] = useState<number[]>([]);
   const [subject, setSubject] = useState<any>(0);
   const [errors, setErrors] = useState<TLibraryModalError>({});
@@ -131,8 +134,9 @@ export default function TextbookModal({
   const [classOptions, setClassOptions] = useState<any[]>([]);
   const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
   const [plan, setPlan] = useState<any>(0);
+  const [ bookType, setBookType ] = useState();
   const [category, setCategory] = useState<any>(null);
-  const [categories, setCategories] = useState<any[]>([]);
+  // const [categories, setCategories] = useState<any[]>([]);
   const dispatch = useDispatch();
 
   const subjects = useSelector((state: RootState) => state.subject.subjects);
@@ -151,6 +155,12 @@ export default function TextbookModal({
     author: "",
   });
 
+
+  useEffect(() => {
+    setCategory(category_id);
+
+  },[category_id])
+
   useEffect(() => {
     if (textbookProps) {
       setFormData({
@@ -168,7 +178,7 @@ export default function TextbookModal({
       }
       setClasses(textbookProps.classes?.map((item: any) => item.id));
       setSubject(textbookProps.subject_id);
-      setCategory(textbookProps.category_id)
+      // setCategory(textbookProps.category_id)
     }
 
     axiosInstance
@@ -176,14 +186,14 @@ export default function TextbookModal({
       .then((response) => {
         setClassOptions(response.data.data);
       })
-      .catch((error) => console.log(""));
+      .catch((error) => console.log(error));
 
-    const getBookCategories = async () => {
-      const response = await axiosInstance.get("/library/textbooks/categories");
-      setCategories(response?.data?.data);
-    };
+    // const getBookCategories = async () => {
+    //   const response = await axiosInstance.get("/library/textbooks/categories");
+    //   setCategories(response?.data?.data);
+    // };
 
-    getBookCategories();
+    // getBookCategories();
   }, []);
 
   const handleOnChange = (
@@ -215,8 +225,6 @@ export default function TextbookModal({
     if (formData.description == "")
       newErrors.description = "Please fill in a description";
 
-    // if (plan == 0) newErrors.plan = "Please select a plan";
-    console.log(newErrors);
     return newErrors;
   };
 
@@ -232,6 +240,8 @@ export default function TextbookModal({
     payload.append("plan", `${plans[plan]?.name}`);
     payload.append('category_id',category);
 
+    payload.append('book_type',bookType ?? "");
+    
     const options = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -327,6 +337,20 @@ export default function TextbookModal({
           </div>
           <div className="text-sm mb-4">
             <label htmlFor="" className="text-sm">
+              Select Book Type
+            </label>
+            <SingleOptionsMenu
+              selection={bookType}
+              options={["Tutorial","Past questions"]?.map((item: any, index: number) => ({
+                id: item,
+                value: item,
+              }))}
+              setSelection={setBookType}
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
+          </div>
+          {/* <div className="text-sm mb-4">
+            <label htmlFor="" className="text-sm">
               Category
             </label>
             <SingleOptionsMenu
@@ -338,10 +362,10 @@ export default function TextbookModal({
               setSelection={setCategory}
             />
             <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
-          </div>
+          </div> */}
           <div className="text-sm mb-3">
             <label htmlFor="" className="text-sm">
-              Plan Type
+              Select Plan Type
             </label>
             <SingleOptionsMenu
               selection={plan}

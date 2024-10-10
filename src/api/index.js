@@ -31,7 +31,9 @@ import {
   subjectTopics,
   topics,
   categories,
-  updateLesson
+  updateLesson,
+  category,
+  subcategories
 } from "./routes";
 
 
@@ -68,7 +70,13 @@ export const getSchoolTerm = async (id) => Request.get(getClassTerms(id));
 
 export const fetchCategories = async () => Request.get(categories())
 
+export const fetchCategory = async (id) => Request.get(category(id))
+
 export const createOrUpdateCategory = async (data) => Request.post(categories(), data)
+
+export const addSubCategory = async (id,data) => Request.post(subcategories(id), data)
+
+export const removeSubCategory = async (id) => Request.delete(subcategories(id))
 
 export const deleteCategory = async (id) => Request.delete(categories(),{id})
 

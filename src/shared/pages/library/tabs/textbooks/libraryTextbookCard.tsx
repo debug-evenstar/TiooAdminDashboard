@@ -16,11 +16,13 @@ import AddTextbookLesson from "../textbookLessonModal";
 
 function LibraryTextbookCard({
   color,
+  category_id,
   openEditModal,
   itemData,
 }: {
   color: string;
   openEditModal: any;
+  category_id?: any;
   itemData: any;
 }) {
   const [modal, setModal] = useState<boolean>(false);
@@ -162,6 +164,7 @@ function LibraryTextbookCard({
           <TextbookModal
             modal={textbookModal}
             setModal={setTextbookModal}
+            category_id={category_id}
             textbookProps={itemData}
           />
         </ModalLayout>

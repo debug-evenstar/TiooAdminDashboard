@@ -30,6 +30,8 @@ export const promptGenerated = (id) => `lesson/${id}/generate/extra`
 export const subjectTopics = (id) => `subjects/${id}/topics`;
 export const topics = (id) => `topics/${id}`;
 export const categories = () => '/library/textbooks/categories'
+export const category = (id) => `/library/textbooks/categories/${id}`
+export const subcategories = (id) => `/library/textbooks/categories/${id}/sub-categories`
 
 /* -------------------------------- STUDENTS -------------------------------- */
 export const inviteBulkStudentsUrl = () => `students/bulk/invite`;

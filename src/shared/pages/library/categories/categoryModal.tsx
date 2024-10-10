@@ -1,23 +1,15 @@
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { axiosInstance } from "@/api/request";
+import { FormEvent,useEffect, useState } from "react";
 import { notify } from "@/components/notification/notification";
-import { setLibraryReload } from "@/redux/slices/library";
-import SingleOptionsMenu from "@/components/singleOptionsMenu/singleOptionsMenu";
 import WhiteSpinner from "@/components/whiteSpinner/spinner";
-import { BASE_URL } from "@/services/url";
 
-import RawFileInput from "@/components/rawFileInput/rawFileInput";
-import { RootState } from "@/redux/store";
-import ModalLayout from "@/components/modalLayout/modalLayout";
 import { createOrUpdateCategory, deleteCategory, fetchCategories } from "@/api";
-import { FiTrash, FiTrash2 } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
 
 type TLibraryModalError = {
   name?: string;
 };
 
-export default function CategoryModal({ categoryProps, modal }: any) {
+export default function CategoryModal({ categoryProps, refetch}: any) {
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [categoryName, setCategoryName] = useState<string>("");
@@ -53,6 +45,7 @@ export default function CategoryModal({ categoryProps, modal }: any) {
         } else {
           notify.error(res.message);
         }
+        refetch();
       })
       .catch((err: any) => {
         console.log(err);
@@ -67,6 +60,7 @@ export default function CategoryModal({ categoryProps, modal }: any) {
         notify.success(`Added category successfully`);
         loadCategories();
         setCategoryName("");
+        refetch();
       })
       .catch((err: any) => {
         console.log(err);

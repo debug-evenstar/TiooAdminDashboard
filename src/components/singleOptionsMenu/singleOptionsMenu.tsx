@@ -1,11 +1,11 @@
 import { useState, ChangeEvent } from "react";
 
-export default function SingleOptionsMenu({ options, selection, setSelection }: { selection: number, setSelection: (s: number) => void, options: { id: number, value: string }[] }) {
+export default function SingleOptionsMenu({ options, selection, setSelection }: { selection: any, setSelection: (s: any) => void, options: { id: number, value: string }[] }) {
     const [active, setActive] = useState(false);
-    const [currentValue, setCurrentValue] = useState<number | string>('');
+    // const [currentValue, setCurrentValue] = useState<number | string>('');
 
     const handleSelection = (e: ChangeEvent<HTMLInputElement>, value: number | string) => {
-        setCurrentValue(value);
+        // setCurrentValue(value);
         const id = Number.parseInt(e.target.value);
         setSelection(id);
     }
@@ -29,7 +29,7 @@ export default function SingleOptionsMenu({ options, selection, setSelection }: 
                 <ul className="border shadow px-3 max-h-[18rem] w-full bg-white z-[20] absolute overflow-y-auto">
                     {
                         options.map(({ id, value }: any) => (
-                            <li key={id} onClick={() => { setCurrentValue(value); setSelection(id); setActive(false) }} className="my-2 cursor-pointer rounded-sm py-1.5 px-3 shadow flex items-center space-x-3">
+                            <li key={id} onClick={() => { setSelection(id); setActive(false) }} className="my-2 cursor-pointer rounded-sm py-1.5 px-3 border-b flex items-center space-x-3">
                                 <input className="outline-none cursor-pointer" checked={selection === id} onChange={(e) => handleSelection(e, value)} type="radio" readOnly value={id} />
                                 <span className="text-gray-500">{value}</span>
                             </li>

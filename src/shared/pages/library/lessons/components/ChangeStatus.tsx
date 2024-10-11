@@ -17,9 +17,9 @@ const ChangeStatus: FC<Props> = ({ close, item, refetch, status }) => {
   const [isBusy, setIsBusy] = useState(false);
   const updateStatus = async () => {
 
-    axiosInstance.put(`/management/librarylesson/${item.id}/status?status=${status}`)
+    axiosInstance.put(`/management/librarylesson/${item.id}/status?status=${status.toUpperCase()}`)
       .then(response => {
-        alertActions.success(`${status} lesson successfuly`);
+        alertActions.success(`Changed lesson status to ${status}`);
         refetch(item.SubjectId, item.GroupId);
         close();
       })

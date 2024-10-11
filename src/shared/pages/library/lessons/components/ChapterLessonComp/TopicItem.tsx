@@ -126,7 +126,7 @@ const TopicItem: FC<Props> = ({ lesson, index, textbook, refetch }) => {
                     Set Timeline
                   </MenuItem>
                 )}
-                {lesson.library_status === "Locked" ? (
+                {lesson.status === "LOCKED" ? (
                   <MenuItem
                     className="flex gap-x-2 items-center"
                     onClick={() => openStatusModal(lesson, 7, "Unlocked")}

@@ -45,7 +45,7 @@ export default function LibraryTextbookTab() {
       .then((response) => {
         const books = response.data.data;
         //TODO: remove true
-        dispatch(setLibraryTextbooks(books?.filter((b: any) => true || b.category_id == category_id)));
+        dispatch(setLibraryTextbooks(books?.filter((b: any) => b.category_id == category_id)));
       })
       .catch((error) => console.log(""));
   }

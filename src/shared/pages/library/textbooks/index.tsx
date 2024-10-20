@@ -149,7 +149,7 @@ function AllChaptersCard({ textbook}: { textbook: any }) {
           <h1>All Chapters({chapters.length})</h1>
         </div>
         <div
-          className={`px-4 duration-700 transition-[max-height]  ease-out ${
+          className={`px-4 duration-700 transition-[max-height] scroll overflow-y-auto ease-out ${
             active ? "max-h-[30rem]" : "max-h-0"
           }`}
         >

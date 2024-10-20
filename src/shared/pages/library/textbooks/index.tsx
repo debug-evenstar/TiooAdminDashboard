@@ -37,10 +37,8 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
         className="w-[200px] cursor-pointer hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col space-y-3 h-[140px]"
       >
         <div className="flex justify-between">
-          <p className="font-semibold text-[17px] text-[#030036BD]">
-            {chapter.name.length > 25
-              ? chapter.name.slice(0, 25) + "..."
-              : chapter.name}
+          <p className="font-semibold text-[17px] text-[#030036BD]" title={chapter.name}>
+            { truncate(chapter.name,25) }
           </p>
 
           <div
@@ -113,7 +111,7 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
             </button>
           </div>
         </div>
-        <p className="text-gray-400 text-sm overflow-hidden">
+        <p className="text-gray-400 text-sm overflow-hidden" title={chapter.description}>
           { truncate(chapter.description,83) }
         </p>
       </div>

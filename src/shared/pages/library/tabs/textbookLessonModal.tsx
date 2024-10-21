@@ -11,6 +11,7 @@ import ModalLayout from "@/components/modalLayout/modalLayout";
 import OptionsMenu from "@/components/optionsMenu";
 import { useParams } from "react-router-dom";
 import RawFileInput from "@/components/rawFileInput/rawFileInput";
+import { UpdateLesson } from "@/api";
 
 
 type TLibraryModalError = {
@@ -29,6 +30,7 @@ function EmptyTextbookLesson({
   lesson,
   refetch,
   textbookProps,
+  isEdit,
 }: {
   textbookProps?: any;
   subjectId?: number;
@@ -36,6 +38,7 @@ function EmptyTextbookLesson({
   refetch?: any;
   modal: boolean;
   setModal: any;
+  isEdit: boolean;
 }) {
 
   const [klass, setClass] = useState<number>(0);
@@ -60,7 +63,7 @@ function EmptyTextbookLesson({
 
   console.log(lesson)
   useEffect(() => {
-    if(lesson){
+    if (lesson) {
       setFormData({
         duration: lesson.duration,
         objective: lesson.objective,
@@ -73,7 +76,7 @@ function EmptyTextbookLesson({
         description: lesson.description,
       });
     }
-  },[])
+  }, [])
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -90,9 +93,9 @@ function EmptyTextbookLesson({
     if (!formData.topic || formData.topic.length == 0)
       newErrors.topic = "Please Enter a valid topic";
 
-    if (!lesson) {
-      if (klass == null) newErrors.class = "Please select a class";
-    }
+    // if (!lesson) {
+    //   if (klass == null) newErrors.class = "Please select a class";
+    // }
 
     const checkText = (name: string, message: string) => {
       // @ts-ignore
@@ -101,55 +104,73 @@ function EmptyTextbookLesson({
       }
     };
 
-    checkText("objective", "Please fill in an objective");
-    checkText("description", "Please fill in a description");
+    // checkText("objective", "Please fill in an objective");
+    // checkText("description", "Please fill in a description");
     checkText("duration", "Please fill in a duration");
     checkText("curriculum", "Please fill in a curriculum");
-    checkText("preview", "Please select a preview image");
+    // checkText("preview", "Please select a preview image");
 
     return newErrors;
   };
 
-  const sendRequest = () => {
+  const sendRequest = async () => {
     let payload = new FormData();
     payload.append("topic", formData.topic);
-    payload.append("class", lesson?.ClassId || String(klass));
-    payload.append("objective", formData.objective);
+    // payload.append("class", lesson?.ClassId || String(klass));
+    payload.append("class", lesson?.ClassId || textbookProps.classes[0]?.id);
+    // payload.append("objective", formData.objective);
     payload.append("curriculum", formData.curriculum);
-    payload.append("description", formData.description);
+    // payload.append("description", formData.description);
     payload.append("duration", formData.duration);
 
     if (formData.preview) {
-      payload.append("preview", formData.preview);
+      // payload.append("preview", formData.preview);
     }
     payload.append("library", "true");
-    payload.append("additional_information", formData.additional_instruction);
+    // payload.append("additional_information", formData.additional_instruction);
 
     payload.append("chapter_id", String(chapterId));
 
-    axiosInstance
-      .post(`/library/textbooks/${textbookProps.id}/lessons`, payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(() => {
-        if (textbookProps && refetch) {
-          refetch();
-        }
-        setModal(false);
-        notify.success("Added lesson successfuly");
-      })
-      .catch((error) => {
-        notify.error(error?.response?.message);
-      })
-      .finally(() => setLoading(false));
+    if (isEdit) {
+      await UpdateLesson(lesson.textbook_id, lesson.id, payload)
+        .then((res: any) => {
+          if (!res.error) {
+            notify.success(res.message)
+            refetch && refetch();
+          } else {
+            notify.error(res.message)
+          }
+        })
+        .finally(() => {
+          setModal(false);
+        })
+    } else {
+      axiosInstance
+        .post(`/library/textbooks/${textbookProps.id}/lessons`, payload, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          if (textbookProps && refetch) {
+            refetch();
+          }
+          setModal(false);
+          notify.success("Added lesson successfuly");
+        })
+        .catch((error) => {
+          notify.error(error?.response?.message);
+        })
+        .finally(() => setLoading(false));
+    }
+
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const newErrors = validate();
+    console.log(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       sendRequest();
@@ -177,7 +198,7 @@ function EmptyTextbookLesson({
           <p className="text-red-500 text-xs mt-1">{errors?.topic}</p>
         </div>
 
-        {
+        {/* {
           <div className="text-sm mb-3 w-full">
             <label htmlFor="" className="text-sm">
               Class
@@ -193,7 +214,7 @@ function EmptyTextbookLesson({
 
             <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
           </div>
-        }
+        } */}
         <div className="text-sm mb-3">
           <label htmlFor="" className="text-sm">
             Lesson duration
@@ -222,7 +243,7 @@ function EmptyTextbookLesson({
           <p className="text-red-500 text-xs mt-1">{errors?.curriculum}</p>
         </div>
 
-        <div className="text-sm mb-3">
+        {/* <div className="text-sm mb-3">
           <label htmlFor="" className="text-sm">
             Lesson Objective
           </label>
@@ -235,9 +256,9 @@ function EmptyTextbookLesson({
             className="mt-1 outline-none rounded w-full px-3 py-2 border"
           />
           <p className="text-red-500 text-xs mt-1">{errors?.objective}</p>
-        </div>
+        </div> */}
 
-        <div className="text-sm mb-3">
+        {/* <div className="text-sm mb-3">
           <label htmlFor="" className="text-sm">
             Lesson description
           </label>
@@ -250,8 +271,8 @@ function EmptyTextbookLesson({
             className="mt-1 outline-none rounded w-full px-3 py-2 border"
           />
           <p className="text-red-500 text-xs mt-1">{errors?.description}</p>
-        </div>
-        <div className="text-sm mb-3">
+        </div> */}
+        {/* <div className="text-sm mb-3">
           <label htmlFor="" className="text-sm">
             Preview
           </label>
@@ -275,15 +296,15 @@ function EmptyTextbookLesson({
             className="mt-1 outline-none rounded w-full px-3 py-2 border"
           />
           <p className="text-red-500 text-xs mt-1"></p>
-        </div>
+        </div> */}
       </div>
       <div className="px-4 w-full h-[3.8rem] mt-[2px] flex border-t items-center">
         <button
           disabled={loading}
           onClick={handleSubmit}
-          className="bg-main shadow shadow-xl focus:shadow-lg outline-none w-full text-sm text-center py-2 rounded text-white font-[500]"
+          className="bg-main shadow-xl focus:shadow-lg outline-none w-full text-sm text-center py-2 rounded text-white font-[500]"
         >
-          {loading ? <WhiteSpinner /> : <span>Create Lesson</span>}
+          {loading ? <WhiteSpinner /> : <span> {isEdit ? "Edit Lesson" : "Create Lesson"}</span>}
         </button>
       </div>
     </div>
@@ -327,7 +348,7 @@ function TemplateTextbookLesson({
     objective: "",
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -457,11 +478,7 @@ function TemplateTextbookLesson({
             <p className="text-red-500 text-xs mt-1">{errors?.class}</p>
           </div>
         )}
-        {/* <div className="text-sm mb-3">
-    <label htmlFor="" className="text-sm">Age</label>
-    <OptionsMenu selection={age} options={ageOptions} setSelection={setAge} />
-    <p className="text-red-500 text-xs mt-1">{errors?.age}</p>
-</div> */}
+
         <div className="text-sm mb-3">
           <label htmlFor="" className="text-sm">
             Lesson Objective
@@ -604,7 +621,7 @@ function TemplateTextbookLesson({
         <button
           disabled={loading}
           onClick={handleSubmit}
-          className="bg-main shadow shadow-xl focus:shadow-lg outline-none w-full text-sm text-center py-2 rounded text-white font-[500]"
+          className="bg-main shadow-xl focus:shadow-lg outline-none w-full text-sm text-center py-2 rounded text-white font-[500]"
         >
           {loading ? <WhiteSpinner /> : <span>Upload</span>}
         </button>
@@ -628,21 +645,20 @@ export default function AddTextbookLesson({
   setModal: any;
 }) {
   const [active, setActive] = useState(1);
+  const isEdit = !!lesson;
   return (
-    <ModalLayout title="Add Lesson" {...{ modal, setModal }}>
+    <ModalLayout title={isEdit ? "Edit Lesson" : "Add Lesson"} {...{ modal, setModal }}>
       <ul className="text-sm  flex items-center mt-1 px-1 space-x-3 border-b">
         <li
-          className={`py-2 border-main cursor-pointer px-3 rounded-t-lg ${
-            active == 1 && "border-b-2"
-          }`}
+          className={`py-2 border-main cursor-pointer px-3 rounded-t-lg ${active == 1 && "border-b-2"
+            }`}
           onClick={() => setActive(1)}
         >
           Empty Lesson
         </li>
         <li
-          className={`py-2 border-main cursor-pointer px-3 rounded-t-lg ${
-            active == 2 && "border-b-2"
-          }`}
+          className={`py-2 border-main cursor-pointer px-3 rounded-t-lg ${active == 2 && "border-b-2"
+            }`}
           onClick={() => setActive(2)}
         >
           Lesson Template
@@ -650,7 +666,7 @@ export default function AddTextbookLesson({
       </ul>
       {active == 1 && (
         <EmptyTextbookLesson
-          {...{ modal, setModal, lesson, refetch, textbookProps }}
+          {...{ modal, isEdit, setModal, lesson, refetch, textbookProps }}
         />
       )}
       {active == 2 && (

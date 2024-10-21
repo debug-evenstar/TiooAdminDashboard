@@ -30,6 +30,10 @@ import {
   studentInviteUrl,
   subjectTopics,
   topics,
+  categories,
+  updateLesson,
+  category,
+  subcategories
 } from "./routes";
 
 
@@ -64,6 +68,18 @@ export const deleteSubjectTopic = async (id) => Request.delete(topics(id));
 
 export const getSchoolTerm = async (id) => Request.get(getClassTerms(id));
 
+export const fetchCategories = async () => Request.get(categories())
+
+export const fetchCategory = async (id) => Request.get(category(id))
+
+export const createOrUpdateCategory = async (data) => Request.post(categories(), data)
+
+export const addSubCategory = async (id,data) => Request.post(subcategories(id), data)
+
+export const removeSubCategory = async (id) => Request.delete(subcategories(id))
+
+export const deleteCategory = async (id) => Request.delete(categories(),{id})
+
 export const assignClassToSubject = async (items) =>
   Request.post(assignClassesToSubject(), items);
 
@@ -85,8 +101,12 @@ export const AddNewLessonArms = async (items, id) =>
 export const DeleteLesson = async (id) =>
   Request.delete(deleteLesson(id));
 
+export const UpdateLesson = async (textbook_id, lesson_id, data) =>
+  Request.put(updateLesson(textbook_id, lesson_id), data);
+
 export const EditLessonStatus = async (id, status) =>
   Request.put(changeStatus(id, status));
+
 
 export const generateLesson = async (items) =>
   Request.post(generationLesson(), items);
@@ -111,10 +131,10 @@ export const inviteStudents = async (data) =>
 export const getSchoolTeachers = async (id) =>
   Request.get(fetchSchoolTeachers(id));
 
-  // library
-  export const fetchLessons = async (id) => Request.get(getLessons(id));
-  export const fetchTemplate = async (id) => Request.get(lessonTemplate(id));
-  export const uploadFile = async (items, id) =>
+// library
+export const fetchLessons = async (id) => Request.get(getLessons(id));
+export const fetchTemplate = async (id) => Request.get(lessonTemplate(id));
+export const uploadFile = async (items, id) =>
   Request.put(saveFile(id), items);
 
 export const editSlide = async (items, id) =>

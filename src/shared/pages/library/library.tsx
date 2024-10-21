@@ -4,12 +4,11 @@ import LibraryTextbookTab from "./tabs/textbooks/libraryTextbookTab";
 import LibrarySubjectTab from "./tabs/subjects/librarySubjectTab";
 import LibraryGameTab from "./tabs/games/libraryGameTab";
 
-
 interface LibraryPageProps {
-  libraryTabs? : {[key : string] : string}[];
+  libraryTabs?: { [key: string]: string }[];
 }
 
-export default function Library({ libraryTabs } : LibraryPageProps) {
+export default function Library({ libraryTabs }: LibraryPageProps) {
   return (
     <div>
       <Header title="Library" />
@@ -21,15 +20,15 @@ export default function Library({ libraryTabs } : LibraryPageProps) {
 }
 
 const defaultTabs = [
-  { name: "Textbooks", tabId: 0 },
-  { name: "Extra-curricula", tabId: 1 },
-  { name: "Games", tabId: 2 },
-  { name: "Subjects ", tabId: 3 },
+  { name: "Textbooks" },
+  { name: "Extra-curricula" },
+  { name: "Games" },
+  { name: "Subjects " },
 ];
 
-function LibraryTabs({ libraryTabs } : any) {
+function LibraryTabs({ libraryTabs }: any) {
   const [active, setActive] = useState(0);
-  const tabs : any[] = libraryTabs ?? defaultTabs;
+  const tabs: any[] = libraryTabs ?? defaultTabs;
   return (
     <div>
       <ul className="border-b w-full flex space-x-4">

@@ -10,6 +10,7 @@ import Header from "@/components/AppHeader";
 import { axiosInstance } from "@/api/request";
 import ChapterModal from "./components/chapterModal";
 import DeleteItemModal from "../tabs/deleteItemModal";
+import { truncate } from "@/utilities/string";
 
 interface ChapterCardProps {
   chapter: any;
@@ -19,33 +20,36 @@ interface ChapterCardProps {
 const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
   const [active, setActive] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
-  const [ deleteModal, setDeleteModal ] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const ref = useRef<any>();
 
   const toggle = () => ref.current.toggle();
   const navigate = useNavigate();
   const openLessons = () => {
     const url = `/library/chapter/lessons/${chapter.textbook_id}/${chapter.id}/`;
-    navigate(url,{state: { chapter }});
-  }
+    navigate(url, { state: { chapter } });
+  };
 
   return (
     <>
-      <div onClick={ openLessons} className="w-[200px] cursor-pointer hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col space-y-3 h-[140px]">
+      <div
+        onClick={openLessons}
+        className="w-[200px] cursor-pointer hover:shadow-lg mb-4 rounded-[8px] shadow border px-2 py-3 flex flex-col space-y-3 h-[140px]"
+      >
         <div className="flex justify-between">
-          <p className="font-semibold text-[17px] text-[#030036BD]">
-            {chapter.name.length > 25
-              ? chapter.name.slice(0, 25) + "..."
-              : chapter.name}
+          <p className="font-semibold text-[17px] text-[#030036BD]" title={chapter.name}>
+            { truncate(chapter.name,25) }
           </p>
 
-          <div className="flex items-center">
+          <div
+            className="flex items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Popup
               ref={ref}
               open={active}
               position="left center"
               trigger={
-                // hahaha
                 <button
                   className="outline-none"
                   onClick={() => {
@@ -66,7 +70,7 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
                 </li>
                 <li
                   onClick={() => {
-                    setDeleteModal(true)
+                    setDeleteModal(true);
                   }}
                   className="py-2 rounded px-4 hover:bg-red-400 text-red-500 cursor-pointer hover:text-white text-sm"
                 >
@@ -107,9 +111,15 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
             </button>
           </div>
         </div>
-        <p className="text-gray-400 text-sm">{chapter.description}</p>
+        <p className="text-gray-400 text-sm overflow-hidden" title={chapter.description}>
+          { truncate(chapter.description,83) }
+        </p>
       </div>
-      <ChapterModal refresh={refresh} chapterProps={chapter} {...{ modal, setModal }} />
+      <ChapterModal
+        refresh={refresh}
+        chapterProps={chapter}
+        {...{ modal, setModal }}
+      />
       <DeleteItemModal
         itemProps={chapter}
         modal={deleteModal}
@@ -123,20 +133,19 @@ const ChapterCard: FC<ChapterCardProps> = ({ chapter, refresh }: any) => {
   );
 };
 
-function AllChaptersCard({ textbook}: { textbook: any }) {
+function AllChaptersCard({ textbook }: { textbook: any }) {
   const [active, setActive] = useState<boolean>(true);
   const [modal, setModal] = useState<boolean>(false);
   const [chapters, setChapters] = useState([]);
 
-    const getAllChapters = () => {
-        axiosInstance
-        .get(`/library/textbooks/${textbook.id}/chapters`)
-        .then((response) => {
-          setChapters(response.data.data);
-        })
-        .catch((error) => console.log(error));
-  
-    }
+  const getAllChapters = () => {
+    axiosInstance
+      .get(`/library/textbooks/${textbook.id}/chapters`)
+      .then((response) => {
+        setChapters(response.data.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     getAllChapters();
@@ -149,7 +158,7 @@ function AllChaptersCard({ textbook}: { textbook: any }) {
           <h1>All Chapters({chapters.length})</h1>
         </div>
         <div
-          className={`px-4 duration-700 transition-[max-height]  ease-out ${
+          className={`px-4 duration-700 transition-[max-height] scroll overflow-y-auto ease-out ${
             active ? "max-h-[30rem]" : "max-h-0"
           }`}
         >
@@ -159,12 +168,12 @@ function AllChaptersCard({ textbook}: { textbook: any }) {
                 You haven't added any chapter
               </h2>
             )}
-            <div className={`flex flex-wrap space-x-3`}>
+            <div className={`flex flex-wrap gap-3`}>
               {chapters.map((chapter: any) => (
                 <ChapterCard
                   refresh={getAllChapters}
                   key={chapter.id}
-                  chapter={chapter} 
+                  chapter={chapter}
                 />
               ))}
               <button
@@ -217,7 +226,13 @@ function AllChaptersCard({ textbook}: { textbook: any }) {
           </button>
         </div>
       </div>
-      { modal &&  <ChapterModal textbookId={textbook.id} refresh={getAllChapters} {...{ modal, setModal }} /> }
+      {modal && (
+        <ChapterModal
+          textbookId={textbook.id}
+          refresh={getAllChapters}
+          {...{ modal, setModal }}
+        />
+      )}
     </>
   );
 }

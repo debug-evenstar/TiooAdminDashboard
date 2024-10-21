@@ -11,8 +11,6 @@ import RawFileInput from "@/components/rawFileInput/rawFileInput";
 import { RootState } from "@/redux/store";
 import ModalLayout from "@/components/modalLayout/modalLayout";
 
-
-
 type TLibraryModalError = {
   name?: string;
   class?: string;
@@ -21,7 +19,9 @@ type TLibraryModalError = {
   file?: string;
   category?: string;
   cover?: string;
+  author?: string;
   subject?: string;
+  plan?: string;
 };
 
 type TOptionProps = {
@@ -115,43 +115,51 @@ function OptionsMenu({
   );
 }
 
-const agesOptions = [...Array(18 - 5 + 1)].map((_, index) => ({
-  id: index + 5,
-  name: index + 5,
-}));
-
 export default function TextbookModal({
   textbookProps,
+  category_id,
   modal,
   setModal,
 }: {
   textbookProps?: any;
   modal: boolean;
+  category_id?: any;
   setModal: (state: boolean) => void;
 }) {
+
   const [classes, setClasses] = useState<number[]>([]);
   const [subject, setSubject] = useState<any>(0);
   const [errors, setErrors] = useState<TLibraryModalError>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [classOptions, setClassOptions] = useState<any[]>([]);
   const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
-
+  const [plan, setPlan] = useState<any>(0);
+  const [ bookType, setBookType ] = useState();
+  const [category, setCategory] = useState<any>(null);
+  // const [categories, setCategories] = useState<any[]>([]);
   const dispatch = useDispatch();
 
-  const subjects = useSelector(
-    (state: RootState) => state.subject.subjects
-  );
+  const subjects = useSelector((state: RootState) => state.subject.subjects);
 
+  const plans = [{ name: "Basic" }, { name: "Premium" }];
 
   const [formData, setFormData] = useState<{
     name: string;
     description: string;
     SubjectId: any;
+    author: string;
   }>({
     name: "",
     description: "",
     SubjectId: "",
+    author: "",
   });
+
+
+  useEffect(() => {
+    setCategory(category_id);
+
+  },[category_id])
 
   useEffect(() => {
     if (textbookProps) {
@@ -159,6 +167,7 @@ export default function TextbookModal({
         name: textbookProps.name,
         description: textbookProps.description,
         SubjectId: textbookProps.subject_id,
+        author: textbookProps.author,
       });
 
       let classes = null;
@@ -167,17 +176,24 @@ export default function TextbookModal({
       } else {
         classes = textbookProps.classes;
       }
-
-      setClasses(textbookProps.classes?.map((item:any) => item.id));
+      setClasses(textbookProps.classes?.map((item: any) => item.id));
       setSubject(textbookProps.subject_id);
+      // setCategory(textbookProps.category_id)
     }
 
     axiosInstance
-      .get("/classes?default=1")
+      .get(`/classes`)
       .then((response) => {
         setClassOptions(response.data.data);
       })
-      .catch((error) => console.log(''));
+      .catch((error) => console.log(error));
+
+    // const getBookCategories = async () => {
+    //   const response = await axiosInstance.get("/library/textbooks/categories");
+    //   setCategories(response?.data?.data);
+    // };
+
+    // getBookCategories();
   }, []);
 
   const handleOnChange = (
@@ -201,7 +217,8 @@ export default function TextbookModal({
     if (classes.length == 0)
       newErrors.class = "Please select a class from the menu";
 
-    if (coverPhoto === null && !textbookProps) newErrors.cover = "Please select a cover photo";
+    if (coverPhoto === null && !textbookProps)
+      newErrors.cover = "Please select a cover photo";
 
     if (subject == 0) newErrors.subject = "Please select a subject";
 
@@ -216,13 +233,15 @@ export default function TextbookModal({
     payload.append("name", formData.name);
     payload.append("description", formData.description);
     payload.append("subject_id", subject);
-    if (coverPhoto) {
-      payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
-    }
-    // payload.append('ages',JSON.stringify(ages));
-    payload.append("classes", JSON.stringify(classes));
+    coverPhoto && payload.append("cover", coverPhoto as Blob, coverPhoto?.name);
 
-    // payload.append('cover', coverPhoto as Blob, coverPhoto?.name);
+    payload.append("classes", JSON.stringify(classes));
+    payload.append("author", formData.author);
+    payload.append("plan", `${plans[plan]?.name}`);
+    payload.append('category_id',category);
+
+    payload.append('book_type',bookType ?? "");
+    
     const options = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -235,10 +254,10 @@ export default function TextbookModal({
           payload,
           options
         )
-      : axiosInstance.post("/library/textbooks", payload,options);
+      : axiosInstance.post("/library/textbooks", payload, options);
     req
       .then(() => {
-        notify.success(`${!!textbookProps? "Updated" : "Added new"} textbook`);
+        notify.success(`${!!textbookProps ? "Updated" : "Added new"} textbook`);
         dispatch(setLibraryReload());
         setModal(false);
       })
@@ -278,6 +297,19 @@ export default function TextbookModal({
             />
             <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
           </div>
+          <div className="text-sm mb-3">
+            <label htmlFor="" className="text-sm">
+              Author
+            </label>
+            <input
+              type="text"
+              name="author"
+              value={formData.author}
+              onChange={handleOnChange}
+              className="mt-1 outline-none rounded w-full px-3 py-2 border"
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.author}</p>
+          </div>
           <div className="text-sm mb-3 ">
             <label htmlFor="" className="text-sm">
               Classes
@@ -300,6 +332,48 @@ export default function TextbookModal({
                 value: item.name,
               }))}
               setSelection={setSubject}
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
+          </div>
+          <div className="text-sm mb-4">
+            <label htmlFor="" className="text-sm">
+              Select Book Type
+            </label>
+            <SingleOptionsMenu
+              selection={bookType}
+              options={["Tutorial","Past questions"]?.map((item: any, index: number) => ({
+                id: item,
+                value: item,
+              }))}
+              setSelection={setBookType}
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
+          </div>
+          {/* <div className="text-sm mb-4">
+            <label htmlFor="" className="text-sm">
+              Category
+            </label>
+            <SingleOptionsMenu
+              selection={category}
+              options={categories?.map((item: any, index: number) => ({
+                id: index,
+                value: item.name,
+              }))}
+              setSelection={setCategory}
+            />
+            <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
+          </div> */}
+          <div className="text-sm mb-3">
+            <label htmlFor="" className="text-sm">
+              Select Plan Type
+            </label>
+            <SingleOptionsMenu
+              selection={plan}
+              options={plans.map((item: any, index: number) => ({
+                id: index,
+                value: item.name,
+              }))}
+              setSelection={setPlan}
             />
             <p className="text-red-500 text-xs mt-1">{errors?.subject}</p>
           </div>
@@ -340,7 +414,6 @@ export default function TextbookModal({
           </button>
         </div>
       </div>
-      
     </>
   );
 }

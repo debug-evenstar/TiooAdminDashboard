@@ -11,6 +11,7 @@ import ModalLayout from "@/components/modalLayout/modalLayout";
 import { setSubjects } from "@/redux/slices/subject";
 import TextbookModal from "./libraryTextbookModal";
 import LibraryTextbookCard from "./libraryTextbookCard";
+import { useParams } from "react-router-dom";
 
 export default function LibraryTextbookTab() {
   // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
@@ -18,9 +19,12 @@ export default function LibraryTextbookTab() {
     (state: RootState) => state.library.textbooks
   );
   const reload = useSelector((state: RootState) => state.library.reload);
+  const [ categoryID, setCategoryID] = useState<any>();
+  // const [editModal, setEditModal] = useState(false);
+  // const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();
 
-  const [editModal, setEditModal] = useState(false);
-  const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();
+  const params = useParams();
+  const category_id = params.id;
 
   const dispatch = useDispatch();
 
@@ -39,7 +43,9 @@ export default function LibraryTextbookTab() {
     axiosInstance
       .get("/library/textbooks")
       .then((response) => {
-        dispatch(setLibraryTextbooks(response.data.data));
+        const books = response.data.data;
+        //TODO: remove true
+        dispatch(setLibraryTextbooks(books?.filter((b: any) => b.category_id == category_id)));
       })
       .catch((error) => console.log(""));
   }
@@ -49,37 +55,43 @@ export default function LibraryTextbookTab() {
     axiosInstance
       .get("/subjects?default=true")
       .then((response) => {
+
         dispatch(setSubjects(response.data.data));
       })
-      .catch((error) => console.log(""));
-  }, [reload]);
+      .catch((error) => console.log(error));
+      setCategoryID(category_id);
+  }, [reload,category_id]);
 
   const openEditModal = (material: any) => {
-    setEditModal(true);
-    setCurrentMaterial(material);
+    // setEditModal(true);
+    // setCurrentMaterial(material);
   };
 
   const closeEditModal = () => {
-    setEditModal(false);
-    setCurrentMaterial(null);
+    // setEditModal(false);
+    // setCurrentMaterial(null);
   };
 
   const [modal, setModal] = useState<boolean>(false);
 
   return (
     <div className="w-full overflow-y-auto">
-      <ModalLayout {...{ modal, setModal }} title="Add Textbook">
-        <TextbookModal {...{ modal, setModal }} />
-      </ModalLayout>
+      {
+        modal && category_id &&
+        <ModalLayout {...{ modal, setModal }} title="Add Textbook">
+          <TextbookModal category_id={category_id} {...{ modal, setModal }} />
+        </ModalLayout>
+      }
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
         {materials.map((textbookProps: TextbookItem, index: number) => {
           return (
             <LibraryTextbookCard
               key={index}
               openEditModal={openEditModal}
+              category_id={category_id}
               itemData={textbookProps}
               color={colors[index % colors.length]}
-              refetch={fetchTextbooks}
+              // refetch={fetchTextbooks}
             />
           );
         })}

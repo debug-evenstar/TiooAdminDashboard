@@ -1,7 +1,7 @@
 import Select from "../../select/select";
-import walletImage from '../../../assets/icons/wallet.svg';
-import educatorsImage from '../../../assets/icons/educators.svg';
-import referalsImage from '../../../assets/icons/referals.svg';
+import walletImage from '@/assets/icons/wallet.svg';
+import educatorsImage from '@/assets/icons/educators.svg';
+import referalsImage from '@/assets/icons/referals.svg';
 import Button from "../../button/button";
 
 type EarningsCardProps = {

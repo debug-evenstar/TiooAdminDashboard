@@ -6,14 +6,14 @@ import {
     UserIcon,
     // UsersIcon,
     // SchoolIcon,
-} from '../../assets/icons/components/sidebar';
+} from '@/assets/icons/components/sidebar';
 
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../../assets/logos/logo.png';
+import logo from '@/assets/logos/logo.png';
 
 
 import './sidebar.css';
-import { useAppSelector } from '../../redux/store';
+import { useAppSelector } from '@/redux/store';
 
 type TMenu = {
     title: string
@@ -23,7 +23,7 @@ type TMenu = {
 }
 
 export default function SchoolSidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
-    const activeId = useAppSelector((state) => state.praise.school.activeSchool.id)
+    const activeId = useAppSelector((state) => state.school.activeSchool.id)
     if (!menus) {
         menus = [
             { route: `schools/${activeId}/home`, icon: HomeIcon, title: 'Home', path: 'home' },

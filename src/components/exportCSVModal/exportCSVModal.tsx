@@ -48,8 +48,8 @@ const exportOptions: any = [
 
 export default function ExportCSVModal({ modal, setModal }: { modal?: boolean, setModal?: any }) {
     const styling = modal
-        ? 'bg-[#00000033] z-[20] fixed inset-0 h-screen w-screen pt-20 overflow-hidden flex justify-center opacity-100'
-        : 'bg-[#00000033] z-[20] fixed inset-0 h-screen w-screen pt-0 overflow-hidden flex justify-center opacity-0 pointer-events-none'
+        ? 'bg-[#00000033] z-[200] fixed inset-0 h-screen w-screen pt-20 overflow-hidden flex justify-center opacity-100'
+        : 'bg-[#00000033] z-[200] fixed inset-0 h-screen w-screen pt-0 overflow-hidden flex justify-center opacity-0 pointer-events-none'
 
     return (
         <div className={`transition-all ease-in-out duration-500 ${styling}`}>

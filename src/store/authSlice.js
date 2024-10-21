@@ -28,7 +28,7 @@ const authSlice = createSlice({
     },
     saveSchoolInfo(state, action) {
       const data = action.payload;
-      state.praise.schoolInformation = data;
+      state.schoolInformation = data;
     },
     savecustomSchoolInfo(state, action) {
       const data = action.payload;

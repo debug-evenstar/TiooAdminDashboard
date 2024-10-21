@@ -12,34 +12,32 @@ import studentReducer from './slices/student';
 import pricingExceptionReducer from './slices/pricingException';
 import libraryReducer from './slices/library';
 import paginatorReducer from "./slices/paginator";
+import subjectReducer from "./slices/subject";
 
 
-import authSlice from "../store/authSlice";
-import classSlice from "../store/classSlice";
-import schoolSlice from "../store/schoolSlice";
-import lessonSlice from "../store/lessonSlice";
+import authSlice from "@/store/authSlice";
+import classSlice from "@/store/classSlice";
+import schoolSlice from "@/store/schoolSlice";
+import lessonSlice from "@/store/lessonSlice";
 
 const store: ToolkitStore = configureStore({
     reducer: combineReducers({
-        praise: combineReducers({
-            user: userReducer,
-            pricing: pricingReducer,
-            coupon: couponReducer,
-            admin: adminReducer,
-            school: schoolReducer,
-            teacher: teacherReducer,
-            freelancer: freelanceReducer,
-            student: studentReducer,
-            pricingException: pricingExceptionReducer,
-            library: libraryReducer,
-            paginator: paginatorReducer,
-        }),
-        gods: combineReducers( {
-            auth: authSlice.reducer,
-            class: classSlice.reducer,
-            school: schoolSlice.reducer,
-            lesson: lessonSlice.reducer
-        })
+        user: userReducer,
+        pricing: pricingReducer,
+        coupon: couponReducer,
+        admin: adminReducer,
+        school: schoolReducer,
+        teacher: teacherReducer,
+        freelancer: freelanceReducer,
+        student: studentReducer,
+        pricingException: pricingExceptionReducer,
+        library: libraryReducer,
+        paginator: paginatorReducer,
+        subject: subjectReducer,
+        auth: authSlice.reducer,
+        class: classSlice.reducer,
+        // school: schoolSlice.reducer,
+        lesson: lessonSlice.reducer
     })
 });
 

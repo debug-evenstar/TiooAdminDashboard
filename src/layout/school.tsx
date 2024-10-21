@@ -1,13 +1,13 @@
 import { Suspense, useEffect } from 'react';
 
-import Loader from '../components/loader/loader';
+import Loader from '@/components/loader/loader';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-// import { RootState } from '../redux/store';
+// import { RootState } from '@/redux/store';
 
-import { update } from '../redux/slices/user';
-import SchoolSideBar from '../components/schSidebar';
-import Profile from '../components/profile';
+import { update } from '@/redux/slices/user';
+import SchoolSideBar from '@/components/schSidebar';
+import Profile from '@/components/profile';
 
 
 

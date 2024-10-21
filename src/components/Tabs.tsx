@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { classNames } from "../utilities/format";
+import { classNames } from "@/utilities/format";
 
 interface Props {
   tabs: {

@@ -1,8 +1,8 @@
 import { NavLink, useLocation } from "react-router-dom";
-import PriceTagIcon from "../../assets/icons/components/settingsNav/priceTag";
-import LockIcon from "../../assets/icons/components/settingsNav/lock";
-import UserIcon from "../../assets/icons/components/settingsNav/user";
-import CouponIcon from "../../assets/icons/components/settingsNav/coupon";
+import PriceTagIcon from "@/assets/icons/components/settingsNav/priceTag";
+import LockIcon from "@/assets/icons/components/settingsNav/lock";
+import UserIcon from "@/assets/icons/components/settingsNav/user";
+import CouponIcon from "@/assets/icons/components/settingsNav/coupon";
 
 export default function SettingsNav() {
     const settingsNavItems = [

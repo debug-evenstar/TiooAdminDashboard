@@ -1,124 +1,142 @@
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import Request from "@/api/request";
 import { notify } from "@/components/notification/notification";
 import WhiteSpinner from "@/components/whiteSpinner/spinner";
-
-import {
-  addSubCategory,
-  createOrUpdateCategory,
-  deleteCategory,
-  fetchCategories,
-  fetchCategory,
-} from "@/api";
-import { FiTrash2 } from "react-icons/fi";
+import RawFileInput from "@/components/rawFileInput/rawFileInput";
+import { subcategories } from "@/api/routes";
+import { addSubCategory, updateSubCategory } from "@/api";
 
 type TLibraryModalError = {
   name?: string;
+  cover?: string;
 };
 
-export default function SubCategoryModal({ categoryProps, refetch }: any) {
+export default function SubCategoryModal({
+  setModal,
+  refetch,
+  currentCategoryProps,
+  parentCategoryProps,
+}: {
+  currentCategoryProps?: any;
+  refetch?: any;
+  setModal: any;
+  parentCategoryProps?: any;
+}) {
+  const [name, setName] = useState("");
+  const [cover, setCover] = useState<File | null>(null);
   const [errors, setErrors] = useState<TLibraryModalError>({});
-  const [loading, setLoading] = useState<boolean>(false);
-  const [categoryName, setCategoryName] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log(currentCategoryProps);
+    if (currentCategoryProps) {
+      setName(currentCategoryProps.name);
+    }
+  }, [currentCategoryProps]);
+
+
+  const handleOnChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    let { value } = e.target;
+    setName(value);
+  };
 
   const validate = () => {
-    const newErrors: TLibraryModalError = {};
-    if (!categoryName) newErrors.name = "Please enter a valid category";
+    const newErrors: any = {};
+    if (!name || name.length == 0)
+      newErrors.topic = "Please Enter a valid name";
+
     return newErrors;
   };
 
-  const removeCategory = (categoryId: number) => {
+  const sendRequest = async () => {
+    let payload = new FormData();
+    payload.append("name", name);
 
-    deleteCategory(categoryId)
-      .then((res: any) => {
-        console.log(res);
-        if (!res.error) {
-          notify.success(`Category removed successfully`);
-          // loadCategories();
-        } else {
-          notify.error(res.message);
-        }
-        refetch();
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
-  };
+    payload.append("cover", cover as File);
 
-  const sendRequest = () => {
-    addSubCategory(categoryProps?.id, {
-      name: categoryName,
-    })
-      .then((res: any) => {
-        notify.success(`Added category successfully`);
-        // loadCategories();
-        setCategoryName("");
-        refetch();
-      })
-      .catch((err: any) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
+    if (!currentCategoryProps) {
+      await addSubCategory(parentCategoryProps.id, payload)
+        .then((res: any) => {
+          if (!res.error) {
+            notify.success(res.message);
+            refetch && refetch();
+          } else {
+            notify.error(res.message);
+          }
+        })
+        .finally(() => {
+          setModal(false);
+        });
+    } else {
+      await updateSubCategory(currentCategoryProps.id, payload)
+        .then(() => {
+          refetch && refetch();
+          setModal(false);
+          notify.success("Added successfuly");
+        })
+        .catch((error) => {
+          notify.error(error?.response?.message);
+        })
+        .finally(() => setLoading(false));
+    }
+
+    setLoading(false);
+    setName('');
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const newErrors = validate();
+    console.log(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setErrors({});
       sendRequest();
     } else {
       setErrors(newErrors);
+      console.log(errors);
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    // loadCategories();
-    setCategories(categoryProps?.sub_categories);
-  }, [categoryProps]);
-
   return (
-    <div onSubmit={handleSubmit}>
-      <div className="px-4 mt-4 h-[25rem] overflow-y-auto">
+    <div>
+      <div className={`px-4 mt-4 max-h-[70vh] overflow-y-auto`}>
         <div className="text-sm mb-3">
-          <label htmlFor="name" className="text-sm">
-            Sub category Name
+          <label htmlFor="" className="text-sm">
+            Name
           </label>
           <input
             type="text"
-            name="name"
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
+            name="topic"
+            value={name}
+            onChange={handleOnChange}
             className="mt-1 outline-none rounded w-full px-3 py-2 border"
           />
           <p className="text-red-500 text-xs mt-1">{errors?.name}</p>
         </div>
-        <div>
-          {categories?.map((category: any, index: number) => (
-            <div
-              key={index}
-              className=" w-full relative bg-[#f5f5f5] px-2 py-1 mb-1 rounded-md border-2 flex items-center"
-            >
-              <span className="text-[13px]">{category.name}</span>
-              <button
-                className="h-full px-2 absolute right-0 hover:bg-white rounded-md"
-                onClick={() => removeCategory(category.id)}
-              >
-                <FiTrash2 stroke="#e30b1a" />
-              </button>
-            </div>
-          ))}
+
+        <div className="text-sm mb-3">
+          <label htmlFor="" className="text-sm">
+            Cover Image
+          </label>
+          <RawFileInput setSelection={setCover} />
+          <p className="text-red-500 text-xs mt-1">{errors?.cover}</p>
         </div>
       </div>
-      <div className="px-4 w-full h-[3rem] mt-[2px] flex border-t items-center">
+      <div className="px-4 w-full h-[3.8rem] mt-[2px] flex border-t items-center">
         <button
           disabled={loading}
           onClick={handleSubmit}
-          className="bg-main focus:shadow-lg outline-none w-full text-sm text-center py-1.5 rounded text-white font-[500]"
+          className="bg-main shadow-xl focus:shadow-lg outline-none w-full text-sm text-center py-2 rounded text-white font-[500]"
         >
-          {loading ? <WhiteSpinner /> : <span>Add</span>}
+          {loading ? (
+            <WhiteSpinner />
+          ) : (
+            <span> {currentCategoryProps ? "Edit" : "Add"}</span>
+          )}
         </button>
       </div>
     </div>

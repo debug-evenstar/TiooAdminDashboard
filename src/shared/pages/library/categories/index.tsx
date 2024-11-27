@@ -36,8 +36,20 @@ export default function LibraryCategories() {
     getCategories();
   }, []);
   
+
+  const pagesMap = [
+    { name: "Exam Prep", route: "/library/categories/exams"},
+    { name: "", route: "/library/categories/exams"},
+  ];
+
+
   const handleNextPage = (category: any) => {
-    navigate(`/library/categories/${category?.id}`);
+    const page = pagesMap.find((i: any) => i.name.toLowerCase() == category.name.toLowerCase() )
+    if(page){
+      navigate(page.route)
+    }else{
+      navigate(`/library/category/${category?.id}`);
+    }
   };
 
   return (

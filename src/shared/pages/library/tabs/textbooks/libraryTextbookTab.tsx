@@ -14,18 +14,15 @@ import LibraryTextbookCard from "./libraryTextbookCard";
 import { useParams } from "react-router-dom";
 
 export default function LibraryTextbookTab() {
-  // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
-  const materials = useSelector(
+  const textbooks = useSelector(
     (state: RootState) => state.library.textbooks
   );
   const reload = useSelector((state: RootState) => state.library.reload);
   const [ categoryID, setCategoryID] = useState<any>();
-  // const [editModal, setEditModal] = useState(false);
-  // const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();
 
   const params = useParams();
-  const category_id = params.id;
-
+  const category_id = 0; //params.id;
+  const exam_id = params.exam_id
   const dispatch = useDispatch();
 
   const colors: string[] = [
@@ -44,10 +41,9 @@ export default function LibraryTextbookTab() {
       .get("/library/textbooks")
       .then((response) => {
         const books = response.data.data;
-        //TODO: remove true
-        dispatch(setLibraryTextbooks(books?.filter((b: any) => b.category_id == category_id)));
+        dispatch(setLibraryTextbooks(books?.filter((b: any) => b.exam_id == exam_id)));
       })
-      .catch((error) => console.log(""));
+      .catch((error) => console.log(error));
   }
 
   useEffect(() => {
@@ -55,7 +51,6 @@ export default function LibraryTextbookTab() {
     axiosInstance
       .get("/subjects?default=true")
       .then((response) => {
-
         dispatch(setSubjects(response.data.data));
       })
       .catch((error) => console.log(error));
@@ -67,23 +62,19 @@ export default function LibraryTextbookTab() {
     // setCurrentMaterial(material);
   };
 
-  const closeEditModal = () => {
-    // setEditModal(false);
-    // setCurrentMaterial(null);
-  };
 
   const [modal, setModal] = useState<boolean>(false);
 
   return (
     <div className="w-full overflow-y-auto">
       {
-        modal && category_id &&
+        modal && exam_id &&
         <ModalLayout {...{ modal, setModal }} title="Add Textbook">
-          <TextbookModal category_id={category_id} {...{ modal, setModal }} />
+          <TextbookModal exam_id={exam_id} category_id={category_id} {...{ modal, setModal }} />
         </ModalLayout>
       }
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
-        {materials.map((textbookProps: TextbookItem, index: number) => {
+        {textbooks.map((textbookProps: TextbookItem, index: number) => {
           return (
             <LibraryTextbookCard
               key={index}

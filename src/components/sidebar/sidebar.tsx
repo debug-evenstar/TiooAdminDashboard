@@ -31,6 +31,7 @@ export default function Sidebar({ menus }: { menus?: TMenu[] }): JSX.Element {
             { permission: ['manage_teacher'], route: '/teachers', icon: UserIcon, title: 'Manage Teachers' },
             { permission: ['manage_students'], route: '/students', icon: UsersIcon, title: 'Manage Students' },
             { permission: ['manage_library'], route: '/library', icon: BookIcon, title: 'Library' },
+            { permission: ['manage_library'], route: '/exam_set', icon: BookIcon, title: 'Exam set' },
             { permission: ['manage_marketplace'], route: '/marketplace', icon: BagIcon, title: 'Marketplace' },
         ];
     }

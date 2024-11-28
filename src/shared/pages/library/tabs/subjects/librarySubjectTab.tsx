@@ -25,7 +25,6 @@ export default function LibrarySubjectTab({ tab }: any) {
   );
 
   const dispatch = useDispatch();
-  console.log(subjects);
 
   const colors: string[] = [
     "bg-[#AE1E56]",

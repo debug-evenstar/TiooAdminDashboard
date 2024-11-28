@@ -14,6 +14,7 @@ import { ReactElement } from "react";
 import EditSlides from "../pages/library/tabs/editSlides";
 import LibraryCategories from "../pages/library/categories";
 import LibrarySubCategory from "../pages/library/categories/subCategory";
+import ExamSet from "../pages/examSet";
 
 type SharedRoute = {
   path: string;
@@ -61,6 +62,8 @@ const SHARED_ROUTES: SharedRoutesInterface = [
     Element: EditSlides,
     pathName: "library.lesson.editSlides",
   },
+  { path: `/exam_set`, Element: ExamSet, pathName: "exam_set" },
+
 ];
 
 function SharedRoutes(props: any) {

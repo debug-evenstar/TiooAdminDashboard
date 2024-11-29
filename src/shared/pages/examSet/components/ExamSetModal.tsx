@@ -20,12 +20,14 @@ export default function ExamSetModal({
   setModal,
   itemData,
   refetch,
+  exam_id,
   title,
 }: {
   modal: boolean;
   setModal: any;
   refetch: any;
   itemData?: any;
+  exam_id: any;
   title: string;
 }) {
   const [subjects, setSubjects] = useState<SubjectProps[]>([]);
@@ -39,7 +41,7 @@ export default function ExamSetModal({
 
   const getSubjects = () => {
     axiosInstance
-      .get("/exam-set/subjects")
+      .get(`/exam-set/subjects/${exam_id}`)
       .then((response) => {
         setSubjects(response.data.data);
       })
@@ -81,6 +83,7 @@ export default function ExamSetModal({
     const payload = {
       name: name == "" ? "Exam set" : name,
       data,
+      exam_id,
     };
 
     if (data.length == 0) {
@@ -95,14 +98,22 @@ export default function ExamSetModal({
         .then(() => {
           notify.success("saved");
         })
-        .finally(() => { setLoading(false); setModal(false); refetch() });
+        .finally(() => {
+          setLoading(false);
+          setModal(false);
+          refetch();
+        });
     } else {
       axiosInstance
         .post("/exam-set", payload)
         .then(() => {
           notify.success("saved");
         })
-        .finally(() => { setLoading(false); setModal(false); refetch() });
+        .finally(() => {
+          setLoading(false);
+          setModal(false);
+          refetch();
+        });
     }
   };
 

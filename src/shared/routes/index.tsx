@@ -14,11 +14,12 @@ import { ReactElement } from "react";
 import EditSlides from "../pages/library/tabs/editSlides";
 import LibraryCategories from "../pages/library/categories";
 import LibrarySubCategory from "../pages/library/categories/subCategory";
-import ExamSet from "../pages/examSet";
 import LibraryExams from "../pages/library/exams";
 import UniversityAdmissions from "../pages/library/exams/universityAdmissions";
 import UniversityExams from "../pages/library/exams/universityExams";
 import UniversityExamsPage from "../pages/library/exams/universityExamsPage";
+import GroupingPage from "../pages/examSet";
+import ExamSet from "../pages/examSet/ExamGroups";
 
 type SharedRoute = {
   path: string;
@@ -70,7 +71,8 @@ const SHARED_ROUTES: SharedRoutesInterface = [
     Element: EditSlides,
     pathName: "library.lesson.editSlides",
   },
-  { path: `/exam_set`, Element: ExamSet, pathName: "exam_set" },
+  { path: `/exam-grouping/`, Element: GroupingPage, pathName: "exam-grouping" },
+  { path: `/exam-grouping/:exam_id/exam_set`, Element: ExamSet, pathName: "exam-grouping" },
 
 ];
 

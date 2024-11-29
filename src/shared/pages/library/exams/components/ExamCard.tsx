@@ -10,8 +10,8 @@ interface ExamCardProps {
   setExamProps?: any;
   setModal?: any;
   refetch?: any;
+  hasMenu?: boolean;
 }
-
 
 const ExamCard = ({
   exam,
@@ -20,28 +20,26 @@ const ExamCard = ({
   setExamProps,
   setModal,
   refetch,
+  hasMenu = true,
 }: ExamCardProps) => {
-
-  console.log(exam);
-
   const deleteExam = async () => {
-    await axiosInstance.delete(`/exams/${exam.id}`)
-    .then((res: any) => {
+    await axiosInstance.delete(`/exams/${exam.id}`).then((res: any) => {
       if (!res.error) {
         notify.success(res.message);
         refetch();
       } else {
         notify.error(res.message);
       }
-    })
-  }
-  
+    });
+  };
+
   return (
     <button
       onClick={() => nextPage(exam)}
       style={{ backgroundColor: background + "66" }}
       className={` h-[10rem] text-white relative font-bold rounded-xl flex items-center justify-center`}
     >
+      {hasMenu && (
         <div className="absolute top-2 bg-black/10 w-6 h-6 flex items-center justify-center rounded-full right-2">
           <CardOptionsButton
             item={exam}
@@ -50,6 +48,7 @@ const ExamCard = ({
             onDelete={deleteExam}
           />
         </div>
+      )}
       <p
         className="px-4 py-1  rounded"
         style={{ backgroundColor: background + "cc" }}

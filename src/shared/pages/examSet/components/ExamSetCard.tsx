@@ -1,45 +1,33 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "@/api/request";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-// import AddLibraryLesson from "@/pages/admin/library/tabs/libraryLessonModal";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setLibraryReload } from "@/redux/slices/library";
 import Popup from "reactjs-popup";
 import { notify } from "@/components/notification/notification";
-import { BsDownload, BsPen, BsTrash } from "react-icons/bs";
-import ModalLayout from "@/components/modalLayout/modalLayout";
 import ExamSetModal from "./ExamSetModal";
 import { PulseLoader } from "react-spinners";
 
 function ExamSetCard({
   color,
   itemData,
+  exam_id,
   refetch,
 }: {
   color: string;
   itemData: any;
   refetch: any;
+  exam_id: any;
 }) {
   const [modal, setModal] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [examSetModal, setExamSetModal] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
-  // const [ status, setStatus ] = useState<boolean | null>(itemData.library_status);
-
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const toggleStatus = () => {
     axiosInstance
-      .post(`/library/examSets/${itemData.id}/publish`)
+      .post(`/exam-set/${itemData.id}/status`)
       .then((response) => {
-        dispatch(setLibraryReload());
-        itemData.published ? "unpuplished" : "published";
-        notify.success(
-          `${itemData.published ? "Retracted" : "Published"} Library Material`
-        );
+        notify.success(`Activated set`);
+        refetch();
       })
       .catch((error) => console.log(error))
       .finally(() => setActive(false));
@@ -65,47 +53,31 @@ function ExamSetCard({
         >
           <div className="flex justify-between relative">
             <h1 className="font-[500] text-lg">{itemData.name}</h1>
-
-
-
-            <Popup
-              open={active}
-              onOpen={() => setActive(true)}
-              trigger={
-                <button>
-                  <FaEllipsisV />
-                </button>
-              }
-              position="left top"
-            >
-              <div className="w-fit relative px-2 py-2 outline-none text-gray-400 bg-[#fff] overflow-hidden shadow rounded-[8px]">
-                <button
-                  onClick={() => setModal(true)}
-                  className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
-                >
-                  {/* <FaEdit /> */}
-                  <BsPen />
-                  <span>Edit</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    setDeleteModal(true);
-                    setActive(false);
-                  }}
-                  className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] space-x-2 text-gray-500 hover:text-white hover:bg-[#ff6666] text-sm flex items-center"
-                >
-                  <BsTrash />
-                  <span>Delete</span>
-                </button>
-              </div>
-            </Popup>
-
-
-
-
-
-
+            <div className="flex items-center">
+              <span className="font-bold">{itemData.status ? "active" : "inactive"}</span>
+              <Popup
+                open={active}
+                onOpen={() => setActive(true)}
+                trigger={
+                  <button>
+                    <FaEllipsisV />
+                  </button>
+                }
+                position="left top"
+              >
+                <div className="w-fit relative px-2 py-2 outline-none text-gray-400 bg-[#fff] overflow-hidden shadow rounded-[8px]">
+                  <button
+                    onClick={() => {
+                      toggleStatus();
+                      setModal(true);
+                    }}
+                    className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
+                  >
+                    <span>Set Active</span>
+                  </button>
+                </div>
+              </Popup>
+            </div>
           </div>
           {/* <p className="mt-3 text-xs">{itemData.description}</p> */}
         </div>
@@ -143,6 +115,7 @@ function ExamSetCard({
 
       {examSetModal && (
         <ExamSetModal
+          exam_id={exam_id}
           title="Edit Exam set"
           {...{
             modal: examSetModal,

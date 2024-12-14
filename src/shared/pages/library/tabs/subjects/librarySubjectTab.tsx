@@ -1,31 +1,27 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "@/api/request";
-import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Popup from "reactjs-popup";
-import { notify } from "@/components/notification/notification";
-import LibraryItemCard from "../libraryItemCard";
+
 import { TextbookItem } from "../../types";
-import EditSubject from "./SubjectModal";
+import SubjectModal from "./SubjectModal";
 import LibrarySubjectCard from "./librarySubjectCard";
 import { setSubjects } from "@/redux/slices/subject";
+import { useParams } from "react-router-dom";
 
 export default function LibrarySubjectTab({ tab }: any) {
-  // const [lessons, setLessons] = useState<TLessonCardProps[]>([]);
 
   const reload = useSelector((state: RootState) => state.subject.reload);
 
-  const [editModal, setEditModal] = useState(false);
-  const [currentMaterial, setCurrentMaterial] = useState<TextbookItem | null>();
+  const { exam_id } = useParams();
+
 
   const subjects = useSelector(
     (state: RootState) => state.subject.subjects
   );
 
   const dispatch = useDispatch();
-  console.log(subjects);
 
   const colors: string[] = [
     "bg-[#AE1E56]",
@@ -47,21 +43,13 @@ export default function LibrarySubjectTab({ tab }: any) {
       .catch((error) => console.error(error));
   }, [reload]);
 
-  const openEditModal = (material: any) => {
-    setEditModal(true);
-    setCurrentMaterial(material);
-  };
 
-  const closeEditModal = () => {
-    setEditModal(false);
-    setCurrentMaterial(null);
-  };
 
   const [modal, setModal] = useState<boolean>(false);
 
   return (
     <div className="w-full overflow-y-auto">
-      <EditSubject {...{ modal, setModal }} />
+      <SubjectModal {...{ modal,exam_id, setModal }} />
       <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
         {subjects.map((subject: any, index: number) => (
           <LibrarySubjectCard

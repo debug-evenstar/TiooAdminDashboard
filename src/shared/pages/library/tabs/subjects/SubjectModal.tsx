@@ -17,10 +17,12 @@ export default function SubjectModal({
   subject,
   modal,
   setModal,
+  exam_id,
 }: {
   subject?: any;
   modal: boolean;
   setModal: (state: boolean) => void;
+  exam_id?: any;
 }) {
   const [errors, setErrors] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,6 +34,7 @@ export default function SubjectModal({
     description: string;
     classes: number[];
     default: number;
+    exam_id?: any;
   }>({
     name: "",
     description: "",
@@ -86,6 +89,8 @@ export default function SubjectModal({
   };
 
   const sendRequest = () => {
+    formData.exam_id = exam_id;
+
     const req = subject
       ? axiosInstance.put("/subjects/"+subject.id, formData)
       : axiosInstance.post("/subjects", formData);

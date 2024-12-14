@@ -19,9 +19,9 @@ function App() {
     // Handle routing based on domain in request
     const PUBLISHER_DOMAIN = env.VITE_PUBLISHER_DOMAIN;
     const SENTINEL_DOMAIN = env.VITE_SENTINEL_DOMAIN;
-    const token = localStorage.getItem('token');
     
     useEffect(() => {
+        const token = localStorage.getItem('token');
         ConfigureLibrary.save({
             baseUrl: env.VITE_API_KEY,
             token: token ?? "",

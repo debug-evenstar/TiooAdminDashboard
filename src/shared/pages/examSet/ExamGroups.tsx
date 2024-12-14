@@ -1,0 +1,86 @@
+import { useEffect, useState } from "react";
+import Request, { axiosInstance } from "@/api/request";
+import { useDispatch, useSelector } from "react-redux";
+import { setLibraryTextbooks } from "@/redux/slices/library";
+import { RootState } from "@/redux/store";
+import ModalLayout from "@/components/modalLayout/modalLayout";
+import { useParams } from "react-router-dom";
+import ExamSetCard from "./components/ExamSetCard";
+import Header from "@/components/header";
+import ExamSetModal from "./components/ExamSetModal";
+
+export default function ExamSet() {
+  const [sets, setExamSets] = useState([]);
+  const { exam_id } = useParams();
+  const colors: string[] = [
+    "bg-[#AE1E56]",
+    "bg-[#86A94B]",
+    "bg-[#776DB4]",
+    "bg-[#148CFA]",
+    "bg-[#DDA0DD]",
+    "bg-[#681AB0]",
+    "bg-[#330072]",
+    "bg-[#4F46E5]",
+  ];
+
+  const getExamSets = () => {
+    Request.get(`/exam-set/exam/${exam_id}`).then((response) => {
+      setExamSets(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getExamSets();
+  }, []);
+
+  const [modal, setModal] = useState<boolean>(false);
+
+  return (
+    <div className="w-full overflow-y-auto">
+      {modal && (
+        <ExamSetModal
+          exam_id={exam_id}
+          title="Add Exam set"
+          {...{ refetch: getExamSets, modal, setModal }}
+        />
+      )}
+      <Header hasBack title="Exam sets" />
+      <div className="px-5 py-10">
+        <div className="grid grid-cols-3 gap-y-3 sm:md:lg:gap-2 items-center">
+          {sets?.map((examSetProps: any, index: number) => {
+            return (
+              <ExamSetCard
+                exam_id={exam_id}
+                key={index}
+                refetch={getExamSets}
+                itemData={examSetProps}
+                color={colors[index % colors.length]}
+              />
+            );
+          })}
+          <button
+            onClick={() => setModal(!modal)}
+            className="w-[221px] mt-4 h-[170px] px-[52px] py-[35px] border shadow rounded-[8px]
+              flex items-center justify-center flex-col text-main hover:shadow-lg duration-300"
+          >
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 8C32.822 8 40 15.178 40 24C40 32.822 32.822 40 24 40C15.178 40 8 32.822 8 24C8 15.178 15.178 8 24 8ZM24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4ZM34 22H26V14H22V22H14V26H22V34H26V26H34V22Z"
+                fill="#4F46E5"
+              />
+            </svg>
+            <span className="text-center font-[500]">Add Set</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-5"></div>
+    </div>
+  );
+}

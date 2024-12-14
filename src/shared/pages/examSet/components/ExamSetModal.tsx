@@ -41,7 +41,7 @@ export default function ExamSetModal({
 
   const getSubjects = () => {
     axiosInstance
-      .get(`/exam-set/subjects/${exam_id}`)
+      .get(`/exam-set/subjects`)
       .then((response) => {
         setSubjects(response.data.data);
       })
@@ -49,23 +49,23 @@ export default function ExamSetModal({
   };
 
   const convertToSelectedLessons = (
-    data: { subject_id: number; lesson_ids: number[] }[]
+    data: { subject_id: number; lesson_id: number }[]
   ) => {
     const selectedLessons: { [subjectId: number]: number } = {};
-
-    data.forEach(({ subject_id, lesson_ids }) => {
-      if (lesson_ids.length > 0) {
-        selectedLessons[subject_id] = lesson_ids[0]; // Assuming you want to use the first lesson in the array
+    data.forEach(({ subject_id, lesson_id}) => {
+      if (lesson_id) {
+        selectedLessons[subject_id] = lesson_id; 
       }
     });
-
     return selectedLessons;
   };
 
   useEffect(() => {
     getSubjects();
     if (itemData && subjects) {
+      console.log(itemData.data);
       const selection = convertToSelectedLessons(itemData.data);
+      console.log(selection);
       setSelectedLessons(selection);
       setName(itemData.name);
     }
@@ -76,7 +76,7 @@ export default function ExamSetModal({
     const data = Object.entries(selectedLessons).map(
       ([subjectId, lessonId]) => ({
         subject_id: Number(subjectId),
-        lesson_ids: [lessonId],
+        lesson_id: lessonId,
       })
     );
 

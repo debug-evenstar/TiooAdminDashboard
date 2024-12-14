@@ -38,9 +38,7 @@ export default function LibrarySubjectTab({ tab }: any) {
     axiosInstance
       .get("subjects?default=true")
       .then((response) => {
-        const subjects = response.data?.data?.filter((sub: any) => sub.exam_id == exam_id);
-        dispatch(setSubjects(subjects));
-        // dispatch(setSubjects(response.data.data));
+        dispatch(setSubjects(response.data.data));
       })
       .catch((error) => console.error(error));
   }, [reload]);

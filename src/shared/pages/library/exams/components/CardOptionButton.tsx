@@ -1,5 +1,5 @@
 import { BsPen, BsTrash } from "react-icons/bs";
-import { FaEllipsisH, FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisH, FaEllipsisV, FaPlus } from "react-icons/fa";
 
 import Popup from "reactjs-popup";
 
@@ -9,12 +9,23 @@ const CardOptionsButton = ({
   setItemProps,
   setModal,
   item,
+  actions
 }: any) => {
 
   const handleOpenEdit = () => {
     setItemProps(item);
     setModal(true);
   };
+
+
+  const handleOpenSubjects = () => {
+    actions.setSubjectsModal(true);
+  }
+
+
+  const handleOpenTextbooks = () => {
+    actions.setTextbooksModal(true);
+  }
 
   return (
     <Popup
@@ -36,7 +47,18 @@ const CardOptionsButton = ({
           <BsPen />
           <span>Edit</span>
         </button>
-
+        <button
+          onClick={handleOpenSubjects}
+          className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
+        >
+          <FaPlus/> <span>Subjects</span>
+        </button>
+        <button
+          onClick={handleOpenTextbooks}
+          className="px-2 py-1.5 outline-none w-[6.5rem] rounded-[4px] hover:bg-light  text-gray-500 space-x-2 text-sm flex items-center"
+        >
+          <FaPlus/> <span>Textbooks</span>
+        </button>
         <button
           onClick={() => {
             onDelete();

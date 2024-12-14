@@ -54,7 +54,7 @@ function ExamSetCard({
           <div className="flex justify-between relative">
             <h1 className="font-[500] text-lg">{itemData.name}</h1>
             <div className="flex items-center">
-              <span className="font-bold">{itemData.status ? "active" : "inactive"}</span>
+              <span className="font-bold">{itemData.active ? "active" : "inactive"}</span>
               <Popup
                 open={active}
                 onOpen={() => setActive(true)}

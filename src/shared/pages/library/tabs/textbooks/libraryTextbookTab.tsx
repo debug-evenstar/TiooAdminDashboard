@@ -41,7 +41,7 @@ export default function LibraryTextbookTab() {
       .get("/library/textbooks")
       .then((response) => {
         const books = response.data.data;
-        dispatch(setLibraryTextbooks(books?.filter((b: any) => b.exam_id == exam_id)));
+        dispatch(setLibraryTextbooks(books));
       })
       .catch((error) => console.log(error));
   }
@@ -51,7 +51,7 @@ export default function LibraryTextbookTab() {
     axiosInstance
       .get("/subjects?default=true")
       .then((response) => {
-        const subjects = response.data?.data?.filter((sub: any) => sub.exam_id == exam_id);
+        const subjects = response.data?.data;
         dispatch(setSubjects(subjects));
         // dispatch(setSubjects(response.data.data));
       })

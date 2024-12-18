@@ -118,12 +118,14 @@ function OptionsMenu({
 export default function TextbookModal({
   textbookProps,
   category_id,
+  exam_id,
   modal,
   setModal,
 }: {
   textbookProps?: any;
   modal: boolean;
   category_id?: any;
+  exam_id?: any;
   setModal: (state: boolean) => void;
 }) {
 
@@ -239,9 +241,11 @@ export default function TextbookModal({
     payload.append("author", formData.author);
     payload.append("plan", `${plans[plan]?.name}`);
     payload.append('category_id',category);
+    payload.append('exam_id',exam_id);
 
     payload.append('book_type',bookType ?? "");
     
+
     const options = {
       headers: {
         "Content-Type": "multipart/form-data",

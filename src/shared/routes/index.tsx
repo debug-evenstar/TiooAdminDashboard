@@ -14,6 +14,12 @@ import { ReactElement } from "react";
 import EditSlides from "../pages/library/tabs/editSlides";
 import LibraryCategories from "../pages/library/categories";
 import LibrarySubCategory from "../pages/library/categories/subCategory";
+import LibraryExams from "../pages/library/exams";
+import UniversityAdmissions from "../pages/library/exams/universityAdmissions";
+import UniversityExams from "../pages/library/exams/universityExams";
+import UniversityExamsPage from "../pages/library/exams/universityExamsPage";
+import GroupingPage from "../pages/examSet";
+import ExamSet from "../pages/examSet/ExamGroups";
 
 type SharedRoute = {
   path: string;
@@ -33,9 +39,13 @@ const ROUTE_GROUPS: { [key: string]: RouteGroupInterface } = {
 
 const SHARED_ROUTES: SharedRoutesInterface = [
   { path: `/library`, Element: LibraryCategories, pathName: "library" },
-  { path: `/library/categories/:id`, Element: LibrarySubCategory, pathName: "library" },
-  { path: `/library/categories/textbooks/:id`, Element: Library, pathName: "library" },
-  { path: `/library/textbooks`, Element: Library, pathName: "library" },
+  { path: `/library/categories/exams`, Element: LibraryExams, pathName: "library" },
+  { path: `/library/categories/exams/university-admissions`, Element: UniversityAdmissions, pathName: "library" },
+  { path: `/library/categories/exams/university-exams`, Element: UniversityExams, pathName: "library" },
+  { path: `/library/categories/university/:id/exams`, Element: UniversityExamsPage, pathName: "library" },
+  { path: `/library/category/:id`, Element: LibrarySubCategory, pathName: "library" },
+  // { path: `/library/categories/textbooks/:id`, Element: Library, pathName: "library" },
+  { path: `/library/textbooks/:exam_id/`, Element: Library, pathName: "library" },
   {
     path: `/library/${ROUTES.LESSONS}`,
     Element: Lessons,
@@ -61,6 +71,9 @@ const SHARED_ROUTES: SharedRoutesInterface = [
     Element: EditSlides,
     pathName: "library.lesson.editSlides",
   },
+  { path: `/exam-grouping/`, Element: GroupingPage, pathName: "exam-grouping" },
+  { path: `/exam-grouping/:exam_id/exam_set`, Element: ExamSet, pathName: "exam-grouping" },
+
 ];
 
 function SharedRoutes(props: any) {
